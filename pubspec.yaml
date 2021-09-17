@@ -1,0 +1,78 @@
+name: rillliveapp
+description: A social media app.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  agora_rtc_engine: 4.0.5
+  agora_uikit: ^0.0.3
+  permission_handler: ^8.1.4+2
+  device_info: ^2.0.2
+  connectivity: ^3.0.6
+  flutter_bloc: 
+  http: ^0.13.3
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  file_picker: ^4.0.1
+  video_player: ^2.1.15
+  chewie: any
+  cached_network_image: ^3.1.0
+  sentry_flutter: 
+  
+  path_provider: ^2.0.2
+  cupertino_icons: ^1.0.2
+  video_player_web: ^2.0.3
+  intl_phone_field: ^2.0.0
+  image_picker: ^0.8.4
+  flutter_spinkit: 5.1.0
+  camera: any
+
+  firebase_core: any
+  firebase_auth: any
+  firebase_storage: any
+  cloud_firestore: any
+  firebase_messaging: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+ 
+  flutter_lints: ^1.0.0
+
+flutter:
+
+  uses-material-design: true
+
+ 
+  assets:
+      - assets/images/
+   
+fonts: 
+  - family: Montserrat-B
+    fonts:
+      - asset: fonts/Montserrat-Bold.ttf
+        weight: 700
+  - family: Montserrat-M
+    fonts:
+      - asset: fonts/Montserrat-Medium.ttf
+  - family: Montserrat-R
+    fonts:
+      - asset: fonts/Montserrat-Regular.ttf
+  - family: Montserrat-SB
+    fonts:
+      - asset: fonts/Montserrat-SemiBold.ttf
+        weight: 400
+
+  - family: Gotham
+    fonts:
+      - asset: fonts/GothamMedium_0.ttf

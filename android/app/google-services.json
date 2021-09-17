@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "125849481656",
+    "project_id": "rill-app-live",
+    "storage_bucket": "rill-app-live.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125849481656:android:c7fefa6cae820512771f4d",
+        "android_client_info": {
+          "package_name": "com.oxy.rillliveapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "125849481656-03ms3kpjvmvcr3ddfhnbkdeon02k7kis.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRjIjM9cACRgRP65p39b7zBQU9MbvTfUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "125849481656-03ms3kpjvmvcr3ddfhnbkdeon02k7kis.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "125849481656-2j9q6l9phjpmkk4qup80k5in0qbjbjkb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.oxy.rillliveapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
