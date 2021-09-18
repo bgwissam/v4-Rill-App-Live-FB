@@ -30,6 +30,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
           videoPlayerController: widget.videoController,
           autoPlay: true,
           allowMuting: true,
+          autoInitialize: true,
           looping: true);
     } else {
       _initializeController = initializeController();
@@ -62,18 +63,27 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   }
 
   Widget _videoPlayerWidget() {
-    return Center(
-        child: Chewie(
-      controller: chewieController,
-    ));
+    return FutureBuilder(
+        future: initializeController(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return Center(child: Chewie(controller: snapshot.data));
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 
-  Future<void> initializeController() async {
+  Future<ChewieController> initializeController() async {
     await widget.videoController.initialize();
     chewieController = ChewieController(
         videoPlayerController: widget.videoController,
         autoPlay: false,
         allowMuting: true,
+        autoInitialize: true,
         looping: true);
+    return chewieController;
   }
 }

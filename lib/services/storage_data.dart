@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:path/path.dart' as Path;
+import 'package:video_compress/video_compress.dart';
 
 class StorageData {
   final ImagePicker _picker = ImagePicker();
@@ -54,7 +55,7 @@ class StorageData {
   }
 
   //Upload file to firebase storage
-  Future<String> uploadFile(XFile? file, String folderName) async {
+  Future<String> uploadFile(MediaInfo? file, String folderName) async {
     String fileUrl;
 
     try {
@@ -62,9 +63,9 @@ class StorageData {
         storageReferece = FirebaseStorage.instance;
         Reference ref = storageReferece
             .ref()
-            .child('$folderName/${Path.basename(file.path)}');
+            .child('$folderName/${Path.basename(file.path!)}');
 
-        UploadTask uploadTask = ref.putFile(File(file.path));
+        UploadTask uploadTask = ref.putFile(File(file.path!));
         var downloadUrl = await (await uploadTask).ref.getDownloadURL();
         fileUrl = downloadUrl.toString();
       } else {

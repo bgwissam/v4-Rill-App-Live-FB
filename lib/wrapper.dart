@@ -7,7 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rillliveapp/authentication/signin.dart';
+import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/screens/main_screen.dart';
+import 'package:rillliveapp/services/database.dart';
 
 import 'models/user_model.dart';
 
@@ -22,6 +24,7 @@ class _WrapperState extends State<Wrapper> {
   var _isUserVerified = false;
   var _isUserSignedIn = false;
   late UserModel? currentUser;
+  DatabaseService db = DatabaseService();
   @override
   void initState() {
     super.initState();
@@ -49,7 +52,16 @@ class _WrapperState extends State<Wrapper> {
       });
     }
     return _isUserSignedIn
-        ? MainScreen(userId: currentUser?.userId)
+        ? MultiProvider(providers: [
+            StreamProvider<List<ImageVideoModel?>>.value(
+              value: db.getImageList(),
+              initialData: [],
+              catchError: (context, error) {
+                print('Error fetching image stream: $error');
+                return [];
+              },
+            ),
+          ], child: MainScreen(userId: currentUser?.userId))
         : const SignInSignUp();
   }
 }

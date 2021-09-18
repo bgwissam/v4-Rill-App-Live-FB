@@ -1,19 +1,18 @@
-class ImageModel {
+class ImageVideoModel {
   String? uid;
   String? userId;
-  String? imageUrl;
-  String? tags;
-  String? imageName;
+  String? url;
+  List<dynamic>? tags;
+  String? name;
+  String? type;
+  String? videoThumbnailurl;
 
-  ImageModel({this.uid, this.userId, this.imageUrl, this.tags, this.imageName});
-}
-
-class VideoModel {
-  String? uid;
-  String? userId;
-  String? videoUrl;
-  String? tags;
-  String? videoName;
-
-  VideoModel({this.uid, this.userId, this.videoUrl, this.tags, this.videoName});
+  ImageVideoModel(
+      {this.uid,
+      this.userId,
+      this.url,
+      this.tags,
+      this.name,
+      this.type,
+      this.videoThumbnailurl});
 }

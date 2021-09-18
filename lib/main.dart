@@ -6,10 +6,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:rillliveapp/services/auth.dart';
+import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/wrapper.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+import 'models/file_model.dart';
 import 'models/user_model.dart';
 
 void main() async {
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool _userSignedIn = false;
+    DatabaseService db = DatabaseService();
     return MultiProvider(
       providers: [
         StreamProvider<UserModel?>.value(
@@ -42,6 +45,14 @@ class MyApp extends StatelessWidget {
             return null;
           },
         ),
+        // StreamProvider<List<ImageModel?>>.value(
+        //   value: db.getImageList(),
+        //   initialData: [],
+        //   catchError: (_, error) {
+        //     print('Error fetching image stream: $error');
+        //     return [];
+        //   },
+        // )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/shared/parameters.dart';
+import 'package:rillliveapp/shared/video_viewer.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 class DatabaseService {
@@ -13,10 +14,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('user_model');
   final CollectionReference liveStreamingCollection =
       FirebaseFirestore.instance.collection('live_streaming');
-  final CollectionReference imageCollection =
-      FirebaseFirestore.instance.collection('images');
-  final CollectionReference videoCollection =
-      FirebaseFirestore.instance.collection('videos');
+  final CollectionReference imageVideoCollection =
+      FirebaseFirestore.instance.collection('images_videos');
 
   //Create a new a user
   Future<String> createUser({
@@ -140,19 +139,20 @@ class DatabaseService {
 
   //This section is to create, update and delete images in the database
   //Add image
-  Future<String> uploadImage(
+  Future<String> createImageVideo(
       {String? userId,
-      String? imageName,
-      String? imageUrl,
-      List<String>? tags}) async {
+      String? name,
+      String? url,
+      List<String>? tags,
+      String? type}) async {
     try {
-      var result = await imageCollection.add({
-        ImageParams.USER_ID: userId,
-        ImageParams.IMAGE_NAME: imageName,
-        ImageParams.IMAGE_URL: imageUrl,
-        ImageParams.IMAGE_TAGS: tags,
+      var result = await imageVideoCollection.add({
+        ImageVideoParams.USER_ID: userId,
+        ImageVideoParams.NAME: name,
+        ImageVideoParams.URL: url,
+        ImageVideoParams.TAGS: tags,
+        ImageVideoParams.TYPE: type,
       }).then((value) => value.id);
-
       return result;
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
@@ -161,16 +161,53 @@ class DatabaseService {
   }
 
   //update image file by id
+  Future<String?> updateImage(
+      {String? uid,
+      String? userId,
+      String? name,
+      String? url,
+      List<String>? tags}) async {
+    try {
+      await imageVideoCollection.doc(uid).update({
+        ImageVideoParams.USER_ID: userId,
+        ImageVideoParams.NAME: name,
+        ImageVideoParams.URL: url,
+        ImageVideoParams.TAGS: tags,
+      });
+      print('$name has been updated');
+      return '$name has been updated';
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      rethrow;
+    }
+  }
 
   //Map image file
-  List<ImageModel> _mapImageFromSnapshot(QuerySnapshot snapshot) {
+  List<ImageVideoModel?> _mapImageFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return ImageModel();
+      return ImageVideoModel(
+        uid: doc.id,
+        userId: (doc.data() as Map)[ImageVideoParams.USER_ID],
+        name: (doc.data() as Map)[ImageVideoParams.NAME],
+        url: (doc.data() as Map)[ImageVideoParams.URL],
+        tags: (doc.data() as Map)[ImageVideoParams.TAGS],
+        type: (doc.data() as Map)[ImageVideoParams.TYPE],
+      );
     }).toList();
   }
 
   //Stream image file
-  Stream<List<ImageModel>> getImageList() {
-    return imageCollection.snapshots().map(_mapImageFromSnapshot);
+  Stream<List<ImageVideoModel?>> getImageList() {
+    return imageVideoCollection.snapshots().map(_mapImageFromSnapshot);
+  }
+
+  //Delete Image
+  Future<String?> deleteImage({String? uid, String? name}) async {
+    try {
+      await imageVideoCollection.doc(uid).delete();
+      return '$name has been deleted';
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+    }
   }
 }

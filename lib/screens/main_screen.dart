@@ -6,9 +6,11 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:rillliveapp/controller/live_streaming.dart';
 import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/controller/token_controller.dart';
+import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/screens/account_screen.dart';
 import 'package:rillliveapp/screens/message_screen.dart';
 import 'package:rillliveapp/screens/search_screen.dart';
@@ -21,6 +23,7 @@ import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/loading_view.dart';
 import 'package:rillliveapp/shared/parameters.dart';
 import 'package:rillliveapp/shared/video_viewer.dart';
+import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 
 /*
@@ -63,8 +66,7 @@ class _MainScreenState extends State<MainScreen>
   VideoPlayerController? _controller;
   VideoPlayerController? _toBeDisposed;
   //Futures
-  late Future getStreamingVideos;
-  late Future getAllBucketData;
+
   late Future getSubscriptionFeed;
   //Define controller
   RecordingController recordingController = RecordingController();
@@ -72,7 +74,7 @@ class _MainScreenState extends State<MainScreen>
   StorageData storageData = StorageData();
   Parameters params = Parameters();
   DatabaseService db = DatabaseService();
-
+  late List<ImageVideoModel?> imageVideoProvider;
   late bool _isLoadingStream = false;
   late bool _isUploadingFile = false;
   @override
@@ -80,8 +82,8 @@ class _MainScreenState extends State<MainScreen>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     //listenToStreamingVideos();
-    getStreamingVideos = _getStreamingVideos();
-    getAllBucketData = _getAllObjects();
+    // getStreamingVideos = _getStreamingVideos();
+    // getAllBucketData = _getAllObjects();
     getSubscriptionFeed = _getSubscriptionChannels();
     _getCameraMicPermission();
   }
@@ -94,6 +96,7 @@ class _MainScreenState extends State<MainScreen>
 
   @override
   Widget build(BuildContext context) {
+    imageVideoProvider = Provider.of<List<ImageVideoModel?>>(context);
     _size = MediaQuery.of(context).size;
     _buildMainScreenWidget();
     return Container(
@@ -157,74 +160,6 @@ class _MainScreenState extends State<MainScreen>
         //Horizontal list view to show latest live stream
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: FutureBuilder(
-            future: getStreamingVideos,
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return SizedBox(
-                    height: 100,
-                    width: _size.width - 30,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        var record = snapshot.data[index];
-
-                        if (record['_deleted'] == null) {
-                          return InkWell(
-                            onTap: () async {
-                              setState(() {
-                                print(
-                                    'the version: ${record['id']} - ${record['_version']} - ${record['_lastChangedAt']}}');
-                              });
-
-                              // await amplifyDS.deleteStreamingVideo(
-                              //     record['id'], record['_version']);
-                              // await amplifyDS
-                              //     .fetchStreamingVideoUrlPerId(
-                              //         record['id']);
-
-                              // await db.updateStreamingVideo(
-                              //   record['id'],
-                              //   record['streamerId'],
-                              //   record['token'],
-                              // );
-                              await db.fetchStreamingVideoUrl();
-                            },
-                            child: Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('Channel: ${record['streamName']}'),
-                                    Text('User: ${record['streamerName']}'),
-                                    Text('Version: ${record['_version']}'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                        return SizedBox.shrink();
-                      },
-                    ),
-                  );
-                }
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else {
-                return const Text('No data was found');
-              }
-              return Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(border: Border.all()),
-                  height: 100,
-                  width: _size.width,
-                  child: const Text('nothing'));
-            },
-          ),
         ),
         //end of live streaming section view
         //Popular videos
@@ -672,13 +607,15 @@ class _MainScreenState extends State<MainScreen>
                       setState(() {
                         _isUploadingFile = true;
                       });
-                      var result = await storageData.uploadFile(file, 'images');
-                      if (result.isNotEmpty) {
-                        await db.uploadImage(
-                            imageName: 'example',
-                            imageUrl: result,
-                            tags: ['cat', 'cute']);
-                      }
+                      // var result = await storageData.uploadFile(file, 'images');
+                      // if (result.isNotEmpty) {
+                      //   await db.createImageVideo(
+                      //       name: 'example',
+                      //       userId: widget.userId,
+                      //       url: result,
+                      //       tags: ['cat', 'cute'],
+                      //       type: 'image');
+                      // }
                       setState(() {
                         _isUploadingFile = false;
                       });
@@ -716,7 +653,27 @@ class _MainScreenState extends State<MainScreen>
               actions: [
                 TextButton(
                   onPressed: () async {
-                    await storageData.uploadFile(file, 'videos');
+                    //compress selected video
+                    await VideoCompress.setLogLevel(0);
+                    final MediaInfo? info = await VideoCompress.compressVideo(
+                        File(file.path).path,
+                        quality: VideoQuality.MediumQuality,
+                        deleteOrigin: true,
+                        includeAudio: true);
+                    if (info != null) {
+                      print('Info Path: ${info.path}');
+                    }
+                    //upload compressed video
+                    var result = await storageData.uploadFile(info, 'videos');
+                    if (result.isNotEmpty) {
+                      //save video file url
+                      await db.createImageVideo(
+                          name: 'example name',
+                          userId: widget.userId,
+                          url: result,
+                          tags: ['awsome', 'creative'],
+                          type: 'video');
+                    }
                     Navigator.pop(context);
                   },
                   child: Text('Upload', style: textStyle_3),
@@ -767,107 +724,135 @@ class _MainScreenState extends State<MainScreen>
 
   //All Feed section
   Widget _allFeeds() {
-    return FutureBuilder(
-      future: getAllBucketData,
-      builder: (context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData && snapshot.data.isNotEmpty) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            late String extension;
-            _isLoadingStream = false;
-            late ChewieController _chewieController;
-            return RefreshIndicator(
-              onRefresh: _pullRefresh,
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 5,
-                    childAspectRatio: 0.5),
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  if (snapshot.data[index]['type'] == 'image') {
-                    return Container(
-                      alignment: Alignment.center,
-                      child: InkWell(
-                        onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (builder) => ImageViewer(
-                                    imageUrl: snapshot.data[index]['value'])),
-                          );
-                        },
-                        child: CachedNetworkImage(
-                            imageUrl: snapshot.data[index]['value'],
-                            progressIndicatorBuilder:
-                                (context, imageUrl, progress) {
-                              return const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                child: LinearProgressIndicator(
-                                  minHeight: 12.0,
-                                ),
-                              );
-                            }),
-                      ),
-                      decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(10.0)),
+    late String extension;
+    _isLoadingStream = false;
+    late ChewieController _chewieController;
+
+    return RefreshIndicator(
+      onRefresh: _pullRefresh,
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            mainAxisSpacing: 2,
+            crossAxisSpacing: 2,
+            childAspectRatio: 0.5),
+        itemCount: imageVideoProvider.length,
+        itemBuilder: (context, index) {
+          if (imageVideoProvider[index]!.uid != null) {
+            if (imageVideoProvider[index]!.type == 'image') {
+              return Container(
+                alignment: Alignment.center,
+                child: InkWell(
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => ImageViewer(
+                              imageUrl:
+                                  imageVideoProvider[index]!.url.toString())),
                     );
-                  } else {
-                    _chewieController = ChewieController(
-                      videoPlayerController: snapshot.data[index]['value'],
-                      autoInitialize: false,
-                      autoPlay: false,
-                      looping: false,
-                      showControls: false,
-                      allowMuting: true,
-                    );
-                    return InkWell(
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (builder) => VideoPlayerPage(
-                                videoController: snapshot.data[index]['value']),
+                  },
+                  child: CachedNetworkImage(
+                      imageUrl: imageVideoProvider[index]!.url!,
+                      progressIndicatorBuilder: (context, imageUrl, progress) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: LinearProgressIndicator(
+                            minHeight: 12.0,
                           ),
                         );
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: snapshot.data[index]['value'].value.isInitialized
-                            ? Chewie(controller: _chewieController)
-                            : const Text('Not initialized'),
-                      ),
-                    );
-                  }
+                      }),
+                ),
+                decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(10.0)),
+              );
+            } else {
+              // VideoPlayerController.network(
+              //         imageVideoProvider[index]!.url.toString())
+              //     .initialize();
+
+              _chewieController = ChewieController(
+                videoPlayerController: VideoPlayerController.network(
+                    imageVideoProvider[index]!.url.toString()),
+                autoInitialize: true,
+                autoPlay: false,
+                looping: false,
+                showControls: false,
+                allowMuting: true,
+              );
+              return InkWell(
+                onTap: () async {
+                  print('we are tapping');
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (builder) => VideoPlayerPage(
+                          videoController: VideoPlayerController.network(
+                              imageVideoProvider[index]!.url.toString())),
+                    ),
+                  );
                 },
-              ),
-            );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: LoadingAmination(
-                animationType: 'ThreeInOut',
-              ),
-            );
-          } else {
-            return const Center(
-              child: Text('Please wait...'),
-            );
+                child: Container(
+                  alignment: Alignment.center,
+                  child: VideoPlayerController.network(
+                              imageVideoProvider[index]!.url!)
+                          .value
+                          .isInitialized
+                      ? Center(child: Chewie(controller: _chewieController))
+                      : InkWell(
+                          onTap: () async {
+                            print('we are tapping');
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (builder) => VideoPlayerPage(
+                                    videoController:
+                                        VideoPlayerController.network(
+                                            imageVideoProvider[index]!
+                                                .url
+                                                .toString())),
+                              ),
+                            );
+                          },
+                          child: FutureBuilder(
+                              future: initializeVideo(
+                                  imageVideoProvider[index]!.url.toString()),
+                              builder: (context, AsyncSnapshot snapshot) {
+                                if (snapshot.hasData) {
+                                  return Chewie(
+                                    controller: snapshot.data,
+                                  );
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              }),
+                        ),
+                ),
+              );
+            }
           }
-        } else if (snapshot.hasError) {
-          print('Error getting Stream: ${snapshot.error}');
-          return Center(
-            child: Text(
-              'Error getting Stream: ${snapshot.error}',
+          return const Center(
+            child: LoadingAmination(
+              animationType: 'ThreeInOut',
             ),
           );
-        } else {
-          return const LoadingAmination(
-            animationType: 'ThreeInOut',
-          );
-        }
-      },
+        },
+      ),
     );
+  }
+
+  //Initialize video player
+  Future<ChewieController> initializeVideo(
+      String _videoPlayerController) async {
+    await VideoPlayerController.network(_videoPlayerController).initialize();
+    return ChewieController(
+        videoPlayerController:
+            VideoPlayerController.network(_videoPlayerController),
+        autoPlay: false,
+        allowMuting: true,
+        looping: false);
   }
 
   //Subscribed feed section

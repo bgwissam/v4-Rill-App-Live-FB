@@ -35,10 +35,11 @@ class UserParams {
   static String ADDRESS = 'address';
 }
 
-class ImageParams {
+class ImageVideoParams {
   static String IMAGE_ID = 'uid';
   static String USER_ID = 'userId';
-  static String IMAGE_URL = 'imageUrl';
-  static String IMAGE_TAGS = 'tags';
-  static String IMAGE_NAME = 'imageName';
+  static String URL = 'imageUrl';
+  static String TAGS = 'tags';
+  static String NAME = 'imageName';
+  static String TYPE = 'type';
 }
