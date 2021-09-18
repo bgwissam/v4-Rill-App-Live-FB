@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 class Parameters {
 //App id is required for all backend request
   final app_ID = 'd480c821a2a946d6a4d29292462a3d6f';
@@ -31,4 +33,12 @@ class UserParams {
   static String ROLES = 'roles';
   static String AVATAR = 'avatarUrl';
   static String ADDRESS = 'address';
+}
+
+class ImageParams {
+  static String IMAGE_ID = 'uid';
+  static String USER_ID = 'userId';
+  static String IMAGE_URL = 'imageUrl';
+  static String IMAGE_TAGS = 'tags';
+  static String IMAGE_NAME = 'imageName';
 }

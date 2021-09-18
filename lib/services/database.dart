@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/shared/parameters.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -12,6 +13,10 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('user_model');
   final CollectionReference liveStreamingCollection =
       FirebaseFirestore.instance.collection('live_streaming');
+  final CollectionReference imageCollection =
+      FirebaseFirestore.instance.collection('images');
+  final CollectionReference videoCollection =
+      FirebaseFirestore.instance.collection('videos');
 
   //Create a new a user
   Future<String> createUser({
@@ -131,5 +136,41 @@ class DatabaseService {
   //fetch all streaming videos
   Future<String> fetchStreamingVideoUrl() async {
     return '';
+  }
+
+  //This section is to create, update and delete images in the database
+  //Add image
+  Future<String> uploadImage(
+      {String? userId,
+      String? imageName,
+      String? imageUrl,
+      List<String>? tags}) async {
+    try {
+      var result = await imageCollection.add({
+        ImageParams.USER_ID: userId,
+        ImageParams.IMAGE_NAME: imageName,
+        ImageParams.IMAGE_URL: imageUrl,
+        ImageParams.IMAGE_TAGS: tags,
+      }).then((value) => value.id);
+
+      return result;
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      rethrow;
+    }
+  }
+
+  //update image file by id
+
+  //Map image file
+  List<ImageModel> _mapImageFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return ImageModel();
+    }).toList();
+  }
+
+  //Stream image file
+  Stream<List<ImageModel>> getImageList() {
+    return imageCollection.snapshots().map(_mapImageFromSnapshot);
   }
 }

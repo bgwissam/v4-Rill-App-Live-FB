@@ -592,9 +592,7 @@ class _AccountScreenState extends State<AccountScreen>
               await Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (builder) => const Wrapper(
-                      userSignedIn: false,
-                    ),
+                    builder: (builder) => const Wrapper(),
                   ),
                   (route) => false);
             },

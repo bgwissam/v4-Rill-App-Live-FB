@@ -1,17 +1,16 @@
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'dart:io' as io;
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
-import 'package:rillliveapp/authentication/signin.dart';
-import 'package:rillliveapp/screens/main_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:rillliveapp/services/auth.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
-import 'package:rillliveapp/shared/loading_animation.dart';
-import 'package:rillliveapp/shared/loading_view.dart';
 import 'package:rillliveapp/wrapper.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+
+import 'models/user_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,16 +32,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool _userSignedIn = false;
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Rill Live Streaming',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        StreamProvider<UserModel?>.value(
+          value: AuthService().user,
+          initialData: null,
+          catchError: (_, error) {
+            print('Error streaming user: $error');
+            return null;
+          },
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Rill Live Streaming',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MySplashScreen(),
+        routes: <String, WidgetBuilder>{
+          '/home': (BuildContext context) => Wrapper(),
+        },
       ),
-      home: MySplashScreen(),
-      routes: <String, WidgetBuilder>{
-        '/home': (BuildContext context) => Wrapper(userSignedIn: _userSignedIn),
-      },
     );
   }
 }
@@ -58,6 +69,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   late String identifier;
   late Future _checkSignedIn;
+  late UserModel currentUser;
+  late bool userSignedIn = false;
   //Controllers
   AuthService as = AuthService();
   @override
@@ -69,21 +82,23 @@ class _MySplashScreenState extends State<MySplashScreen> {
   void initState() {
     super.initState();
     //_checkSignedIn = checkSignedInUser();
+    //_getDeviceInfo();
     Timer(
-      const Duration(seconds: 2),
+      Duration(seconds: 4),
       () => Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (builder) => SignInSignUp()),
-          (route) => false),
+        context,
+        MaterialPageRoute(builder: (builder) => Wrapper()),
+        ModalRoute.withName('/home'),
+      ),
     );
   }
 
   Future _getDeviceInfo() async {
     try {
-      if (Platform.isAndroid) {
+      if (io.Platform.isAndroid) {
         var build = await deviceInfoPlugin.androidInfo;
         identifier = build.id.toString();
-      } else if (Platform.isIOS) {
+      } else if (io.Platform.isIOS) {
         var data = await deviceInfoPlugin.iosInfo;
         identifier = data.identifierForVendor;
       }
@@ -134,25 +149,5 @@ class _MySplashScreenState extends State<MySplashScreen> {
         ],
       ),
     );
-  }
-
-  //check if user is signed in
-  Future<String?> checkSignedInUser() async {
-    var result;
-    //as.listenToAuthChanges();
-    if (result != null) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (builder) => MainScreen(
-                    userId: result,
-                  )),
-          (route) => false);
-    } else {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (builder) => const SignInSignUp()),
-          (route) => false);
-    }
   }
 }

@@ -10,6 +10,7 @@ class UserModel {
   String? bioDescription;
   bool? isActive;
   List<String>? roles;
+  String? error;
   UserModel(
       {this.userId,
       this.userName,
@@ -21,5 +22,6 @@ class UserModel {
       this.dob,
       this.bioDescription,
       this.isActive,
-      this.roles});
+      this.roles,
+      this.error});
 }

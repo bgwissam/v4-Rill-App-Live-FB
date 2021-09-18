@@ -74,7 +74,7 @@ class _MainScreenState extends State<MainScreen>
   DatabaseService db = DatabaseService();
 
   late bool _isLoadingStream = false;
-  late bool _isUploadingFile;
+  late bool _isUploadingFile = false;
   @override
   void initState() {
     super.initState();
@@ -363,275 +363,279 @@ class _MainScreenState extends State<MainScreen>
         ? showModalBottomSheet(
             context: context,
             builder: (BuildContext context) {
-              return Padding(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: Form(
-                  key: _formKey,
-                  child: Container(
-                      height: _size.height / 4,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(25.0),
-                          topRight: Radius.circular(25.0),
+              return Stack(children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Form(
+                    key: _formKey,
+                    child: Container(
+                        height: _size.height / 4,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25.0),
+                            topRight: Radius.circular(25.0),
+                          ),
+                          color: Colors.white,
                         ),
-                        color: Colors.white,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: TextFormField(
-                                initialValue: _channelName ?? '',
-                                decoration: const InputDecoration(
-                                  hintText: 'Stream Name',
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0)),
-                                      borderSide:
-                                          BorderSide(color: Colors.grey)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0)),
-                                      borderSide:
-                                          BorderSide(color: Colors.blue)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 15),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: TextFormField(
+                                  initialValue: _channelName ?? '',
+                                  decoration: const InputDecoration(
+                                    hintText: 'Stream Name',
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15.0)),
+                                        borderSide:
+                                            BorderSide(color: Colors.grey)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15.0)),
+                                        borderSide:
+                                            BorderSide(color: Colors.blue)),
+                                  ),
+                                  validator: (val) {
+                                    if (val == null || val.isEmpty) {
+                                      return 'Name is required';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (val) {
+                                    _channelName = val;
+                                  },
                                 ),
-                                validator: (val) {
-                                  if (val == null || val.isEmpty) {
-                                    return 'Name is required';
-                                  }
-                                  return null;
-                                },
-                                onChanged: (val) {
-                                  _channelName = val;
-                                },
                               ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: TextButton.icon(
-                                      label: const Text('Live'),
-                                      style: TextButton.styleFrom(
-                                        primary: color_4,
-                                      ),
-                                      onPressed: _isLoadingStream
-                                          ? null
-                                          : () async {
-                                              if (_formKey.currentState!
-                                                  .validate()) {
-                                                if (_channelName != null) {
-                                                  setState(() {
-                                                    _isLoadingStream = true;
-                                                  });
-                                                  //Get token
-                                                  _userRole = 'publisher';
+                              Expanded(
+                                flex: 1,
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: TextButton.icon(
+                                        label: const Text('Live'),
+                                        style: TextButton.styleFrom(
+                                          primary: color_4,
+                                        ),
+                                        onPressed: _isLoadingStream
+                                            ? null
+                                            : () async {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  if (_channelName != null) {
+                                                    setState(() {
+                                                      _isLoadingStream = true;
+                                                    });
+                                                    //Get token
+                                                    _userRole = 'publisher';
 
-                                                  token = await tokenGenerator
-                                                      .createVideoAudioChannelToken(
-                                                          channelName:
-                                                              _channelName,
-                                                          role: _userRole,
-                                                          userId: _userId);
+                                                    token = await tokenGenerator
+                                                        .createVideoAudioChannelToken(
+                                                            channelName:
+                                                                _channelName,
+                                                            role: _userRole,
+                                                            userId: _userId);
 
-                                                  var acquireResult =
-                                                      await recordingController
-                                                          .getVideoRecordingRefId(
-                                                              _channelName,
-                                                              _userId,
-                                                              token);
-                                                  acquireResponse =
-                                                      await json.decode(
-                                                          acquireResult.body);
-
-                                                  //check if acquire id has returned a value
-                                                  if (acquireResponse[
-                                                          'resourceId'] !=
-                                                      null) {
-                                                    var startResult =
+                                                    var acquireResult =
                                                         await recordingController
-                                                            .startRecordingVideo(
-                                                                acquireResponse[
-                                                                    'resourceId'],
-                                                                'mix',
+                                                            .getVideoRecordingRefId(
                                                                 _channelName,
                                                                 _userId,
                                                                 token);
-                                                    startRecordingResponse =
+                                                    acquireResponse =
                                                         await json.decode(
-                                                            startResult.body);
+                                                            acquireResult.body);
 
-                                                    print(
-                                                        'Start response: ${startResult.body}');
-                                                  }
+                                                    //check if acquire id has returned a value
+                                                    if (acquireResponse[
+                                                            'resourceId'] !=
+                                                        null) {
+                                                      var startResult =
+                                                          await recordingController
+                                                              .startRecordingVideo(
+                                                                  acquireResponse[
+                                                                      'resourceId'],
+                                                                  'mix',
+                                                                  _channelName,
+                                                                  _userId,
+                                                                  token);
+                                                      startRecordingResponse =
+                                                          await json.decode(
+                                                              startResult.body);
 
-                                                  //check if recording could be started
-                                                  if (startRecordingResponse[
-                                                          'sid'] !=
-                                                      null) {
-                                                    await Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) => LiveStreaming(
-                                                            token: token,
-                                                            channelName:
-                                                                _channelName,
-                                                            userRole: _userRole,
-                                                            resourceId:
-                                                                acquireResponse[
-                                                                    'resourceId'],
-                                                            sid:
-                                                                startRecordingResponse[
-                                                                    'sid'],
-                                                            mode: 'mix',
-                                                            userId: _userId,
-                                                            loadingStateCallback:
-                                                                callBackLoadingState),
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    print(
-                                                        'Recording could not be started');
+                                                      print(
+                                                          'Start response: ${startResult.body}');
+                                                    }
+
+                                                    //check if recording could be started
+                                                    if (startRecordingResponse[
+                                                            'sid'] !=
+                                                        null) {
+                                                      await Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) => LiveStreaming(
+                                                              token: token,
+                                                              channelName:
+                                                                  _channelName,
+                                                              userRole:
+                                                                  _userRole,
+                                                              resourceId:
+                                                                  acquireResponse[
+                                                                      'resourceId'],
+                                                              sid:
+                                                                  startRecordingResponse[
+                                                                      'sid'],
+                                                              mode: 'mix',
+                                                              userId: _userId,
+                                                              loadingStateCallback:
+                                                                  callBackLoadingState),
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      print(
+                                                          'Recording could not be started');
+                                                    }
                                                   }
                                                 }
-                                              }
-                                            },
-                                      icon: const Icon(Icons.stream),
-                                    ),
-                                  ),
-                                  //Image Gallery
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: TextButton.icon(
-                                      label: const Text('Image'),
-                                      style: TextButton.styleFrom(
-                                        primary: color_4,
+                                              },
+                                        icon: const Icon(Icons.stream),
                                       ),
-                                      onPressed: () async {
-                                        var result =
-                                            await storageData.uploadImageFile(
-                                                fileType: 'imageGallery');
-                                        setState(() {
-                                          _previewImage(result);
-                                        });
-                                      },
-                                      icon: const Icon(Icons.image),
                                     ),
-                                  ),
-                                  //Image camera
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: TextButton.icon(
-                                      label: const Text('Camera'),
-                                      style: TextButton.styleFrom(
-                                        primary: color_4,
+                                    //Image Gallery
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: TextButton.icon(
+                                        label: const Text('Image'),
+                                        style: TextButton.styleFrom(
+                                          primary: color_4,
+                                        ),
+                                        onPressed: () async {
+                                          var result =
+                                              await storageData.uploadImageFile(
+                                                  fileType: 'imageGallery');
+                                          setState(() {
+                                            _previewImage(result);
+                                          });
+                                        },
+                                        icon: const Icon(Icons.image),
                                       ),
-                                      onPressed: () async {
-                                        var result =
-                                            await storageData.uploadImageFile(
-                                                fileType: 'imageCamera');
+                                    ),
+                                    //Image camera
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: TextButton.icon(
+                                        label: const Text('Camera'),
+                                        style: TextButton.styleFrom(
+                                          primary: color_4,
+                                        ),
+                                        onPressed: () async {
+                                          var result =
+                                              await storageData.uploadImageFile(
+                                                  fileType: 'imageCamera');
 
-                                        setState(() {
-                                          _previewImage(result);
-                                        });
-                                      },
-                                      icon: const Icon(Icons.camera),
-                                    ),
-                                  ),
-                                  //Video gallery
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: TextButton.icon(
-                                      label: const Text('Videos'),
-                                      style: TextButton.styleFrom(
-                                        primary: color_4,
+                                          setState(() {
+                                            _previewImage(result);
+                                          });
+                                        },
+                                        icon: const Icon(Icons.camera),
                                       ),
-                                      onPressed: () async {
-                                        var result =
-                                            await storageData.uploadImageFile(
-                                                fileType: 'videoGallery');
-                                        await _playVideo(result);
-
-                                        setState(() {
-                                          _previewVideo(result);
-                                        });
-                                      },
-                                      icon: const Icon(Icons.video_collection),
                                     ),
-                                  ),
-                                  //Video Camera
-                                  Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: TextButton.icon(
-                                      label: const Text('Video Cam'),
-                                      style: TextButton.styleFrom(
-                                        primary: color_4,
+                                    //Video gallery
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: TextButton.icon(
+                                        label: const Text('Videos'),
+                                        style: TextButton.styleFrom(
+                                          primary: color_4,
+                                        ),
+                                        onPressed: () async {
+                                          var result =
+                                              await storageData.uploadImageFile(
+                                                  fileType: 'videoGallery');
+                                          await _playVideo(result);
+
+                                          setState(() {
+                                            _previewVideo(result);
+                                          });
+                                        },
+                                        icon:
+                                            const Icon(Icons.video_collection),
                                       ),
-                                      onPressed: () async {
-                                        var result =
-                                            await storageData.uploadImageFile(
-                                                fileType: 'videoCamera');
-                                        await _playVideo(result);
-
-                                        setState(() {
-                                          _previewVideo(result);
-                                        });
-                                      },
-                                      icon: Icon(Icons.video_call),
                                     ),
-                                  ),
-                                ],
+                                    //Video Camera
+                                    Container(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      child: TextButton.icon(
+                                        label: const Text('Video Cam'),
+                                        style: TextButton.styleFrom(
+                                          primary: color_4,
+                                        ),
+                                        onPressed: () async {
+                                          var result =
+                                              await storageData.uploadImageFile(
+                                                  fileType: 'videoCamera');
+                                          await _playVideo(result);
+
+                                          setState(() {
+                                            _previewVideo(result);
+                                          });
+                                        },
+                                        icon: Icon(Icons.video_call),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
 
-                            // DecoratedBox(
-                            //   decoration: buttonStyle5,
-                            //   child: ElevatedButton(
-                            //       onPressed: () async {
-                            //         if (_formKey.currentState!.validate()) {
-                            //           if (_channelName != null) {
-                            //             _userRole = 'subscriber';
-                            //             //await _getToken();
-                            //             await Navigator.push(
-                            //               context,
-                            //               MaterialPageRoute(
-                            //                 builder: (context) => LiveStreaming(
-                            //                   token: token,
-                            //                   channelName: _channelName,
-                            //                   userRole: _userRole,
-                            //                   userId: _userId,
-                            //                 ),
-                            //               ),
-                            //             );
-                            //           }
-                            //         }
-                            //       },
-                            //       style: ElevatedButton.styleFrom(
-                            //         primary: Colors.transparent,
-                            //         shape: RoundedRectangleBorder(
-                            //           borderRadius: BorderRadius.circular(10),
-                            //         ),
-                            //       ),
-                            //       child: const Text('Join')),
-                            // ),
-                          ],
-                        ),
-                      )),
+                              // DecoratedBox(
+                              //   decoration: buttonStyle5,
+                              //   child: ElevatedButton(
+                              //       onPressed: () async {
+                              //         if (_formKey.currentState!.validate()) {
+                              //           if (_channelName != null) {
+                              //             _userRole = 'subscriber';
+                              //             //await _getToken();
+                              //             await Navigator.push(
+                              //               context,
+                              //               MaterialPageRoute(
+                              //                 builder: (context) => LiveStreaming(
+                              //                   token: token,
+                              //                   channelName: _channelName,
+                              //                   userRole: _userRole,
+                              //                   userId: _userId,
+                              //                 ),
+                              //               ),
+                              //             );
+                              //           }
+                              //         }
+                              //       },
+                              //       style: ElevatedButton.styleFrom(
+                              //         primary: Colors.transparent,
+                              //         shape: RoundedRectangleBorder(
+                              //           borderRadius: BorderRadius.circular(10),
+                              //         ),
+                              //       ),
+                              //       child: const Text('Join')),
+                              // ),
+                            ],
+                          ),
+                        )),
+                  ),
                 ),
-              );
+              ]);
             })
         : ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -651,26 +655,46 @@ class _MainScreenState extends State<MainScreen>
       showDialog(
           context: context,
           builder: (builder) {
-            return AlertDialog(
-              content: Semantics(
-                child: Image.file(File(file.path)),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () async {
-                    await storageData.uploadFile(file);
-                    Navigator.pop(context);
-                  },
-                  child: Text('Upload', style: textStyle_3),
+            return Stack(children: [
+              _isUploadingFile
+                  ? const Center(
+                      child: LoadingAmination(
+                      animationType: 'ThreeInOut',
+                    ))
+                  : const SizedBox.shrink(),
+              AlertDialog(
+                content: Semantics(
+                  child: Image.file(File(file.path)),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('Cancel', style: textStyle_3),
-                )
-              ],
-            );
+                actions: [
+                  TextButton(
+                    onPressed: () async {
+                      setState(() {
+                        _isUploadingFile = true;
+                      });
+                      var result = await storageData.uploadFile(file, 'images');
+                      if (result.isNotEmpty) {
+                        await db.uploadImage(
+                            imageName: 'example',
+                            imageUrl: result,
+                            tags: ['cat', 'cute']);
+                      }
+                      setState(() {
+                        _isUploadingFile = false;
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: Text('Upload', style: textStyle_3),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Cancel', style: textStyle_3),
+                  )
+                ],
+              ),
+            ]);
           });
       return const Center(
         child: Text('Error retreiving image'),
@@ -692,7 +716,7 @@ class _MainScreenState extends State<MainScreen>
               actions: [
                 TextButton(
                   onPressed: () async {
-                    await storageData.uploadFile(file);
+                    await storageData.uploadFile(file, 'videos');
                     Navigator.pop(context);
                   },
                   child: Text('Upload', style: textStyle_3),
