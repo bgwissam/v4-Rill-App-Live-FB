@@ -55,21 +55,32 @@ class StorageData {
   }
 
   //Upload file to firebase storage
-  Future<String> uploadFile(MediaInfo? file, String folderName) async {
-    String fileUrl;
+  Future<String> uploadFile(
+      {MediaInfo? mfile, XFile? xfile, String? folderName}) async {
+    String fileUrl = '';
 
     try {
-      if (file != null) {
+      if (mfile != null) {
         storageReferece = FirebaseStorage.instance;
         Reference ref = storageReferece
             .ref()
-            .child('$folderName/${Path.basename(file.path!)}');
+            .child('$folderName/${Path.basename(mfile.path!)}');
 
-        UploadTask uploadTask = ref.putFile(File(file.path!));
+        UploadTask uploadTask = ref.putFile(File(mfile.path!));
         var downloadUrl = await (await uploadTask).ref.getDownloadURL();
         fileUrl = downloadUrl.toString();
-      } else {
-        fileUrl = '';
+        return fileUrl;
+      }
+      if (xfile != null) {
+        storageReferece = FirebaseStorage.instance;
+        Reference ref = storageReferece
+            .ref()
+            .child('$folderName/${Path.basename(xfile.path)}');
+
+        UploadTask uploadTask = ref.putFile(File(xfile.path));
+        var downloadUrl = await (await uploadTask).ref.getDownloadURL();
+        fileUrl = downloadUrl.toString();
+        return fileUrl;
       }
       return fileUrl;
     } catch (e, stackTrace) {

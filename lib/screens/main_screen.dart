@@ -139,6 +139,7 @@ class _MainScreenState extends State<MainScreen>
 
   //Main feed widget
   Widget _mainFeed() {
+    var streamingProvider = Provider.of<List<StreamingModel?>>(context);
     return Column(
       //causing renderFlex error, need to be fixed
       mainAxisAlignment: MainAxisAlignment.start,
@@ -159,7 +160,28 @@ class _MainScreenState extends State<MainScreen>
         ),
         //Horizontal list view to show latest live stream
         Container(
+          height: 100,
           padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: streamingProvider.isNotEmpty
+              ? ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: streamingProvider.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      height: 100,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(streamingProvider[index]!.uid.toString()),
+                          Text(streamingProvider[index]!.channelName.toString())
+                        ],
+                      ),
+                    );
+                  })
+              : Center(
+                  child: Text('No Streams available'),
+                ),
         ),
         //end of live streaming section view
         //Popular videos
@@ -205,11 +227,7 @@ class _MainScreenState extends State<MainScreen>
   }
 
   //Pull refresh
-  Future<void> _pullRefresh() async {
-    var result = await _getAllObjects();
-
-    print('the result: $result');
-  }
+  Future<void> _pullRefresh() async {}
 
   //Bottom navigation bar
   Widget _bottomNavigationWidget() {
@@ -607,15 +625,16 @@ class _MainScreenState extends State<MainScreen>
                       setState(() {
                         _isUploadingFile = true;
                       });
-                      // var result = await storageData.uploadFile(file, 'images');
-                      // if (result.isNotEmpty) {
-                      //   await db.createImageVideo(
-                      //       name: 'example',
-                      //       userId: widget.userId,
-                      //       url: result,
-                      //       tags: ['cat', 'cute'],
-                      //       type: 'image');
-                      // }
+                      var result = await storageData.uploadFile(
+                          xfile: file, folderName: 'images', mfile: null);
+                      if (result.isNotEmpty) {
+                        await db.createImageVideo(
+                            name: 'example',
+                            userId: widget.userId,
+                            url: result,
+                            tags: ['cat', 'cute'],
+                            type: 'image');
+                      }
                       setState(() {
                         _isUploadingFile = false;
                       });
@@ -664,7 +683,8 @@ class _MainScreenState extends State<MainScreen>
                       print('Info Path: ${info.path}');
                     }
                     //upload compressed video
-                    var result = await storageData.uploadFile(info, 'videos');
+                    var result = await storageData.uploadFile(
+                        mfile: info, folderName: 'videos', xfile: null);
                     if (result.isNotEmpty) {
                       //save video file url
                       await db.createImageVideo(
@@ -731,6 +751,7 @@ class _MainScreenState extends State<MainScreen>
     return RefreshIndicator(
       onRefresh: _pullRefresh,
       child: GridView.builder(
+        cacheExtent: 1000,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             mainAxisSpacing: 2,
@@ -768,41 +789,14 @@ class _MainScreenState extends State<MainScreen>
                     borderRadius: BorderRadius.circular(10.0)),
               );
             } else {
-              // VideoPlayerController.network(
-              //         imageVideoProvider[index]!.url.toString())
-              //     .initialize();
-
-              _chewieController = ChewieController(
-                videoPlayerController: VideoPlayerController.network(
-                    imageVideoProvider[index]!.url.toString()),
-                autoInitialize: true,
-                autoPlay: false,
-                looping: false,
-                showControls: false,
-                allowMuting: true,
-              );
-              return InkWell(
-                onTap: () async {
-                  print('we are tapping');
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (builder) => VideoPlayerPage(
-                          videoController: VideoPlayerController.network(
-                              imageVideoProvider[index]!.url.toString())),
-                    ),
-                  );
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  child: VideoPlayerController.network(
-                              imageVideoProvider[index]!.url!)
-                          .value
-                          .isInitialized
-                      ? Center(child: Chewie(controller: _chewieController))
-                      : InkWell(
+              return FutureBuilder(
+                  future: initializeVideo(
+                      imageVideoProvider[index]!.url.toString()),
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      return GestureDetector(
                           onTap: () async {
-                            print('we are tapping');
+                            print('tapping tapping');
                             await Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -815,22 +809,15 @@ class _MainScreenState extends State<MainScreen>
                               ),
                             );
                           },
-                          child: FutureBuilder(
-                              future: initializeVideo(
-                                  imageVideoProvider[index]!.url.toString()),
-                              builder: (context, AsyncSnapshot snapshot) {
-                                if (snapshot.hasData) {
-                                  return Chewie(
-                                    controller: snapshot.data,
-                                  );
-                                } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                }
-                              }),
-                        ),
-                ),
-              );
+                          child: Chewie(
+                            controller: snapshot.data,
+                          ));
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  });
             }
           }
           return const Center(
@@ -846,13 +833,19 @@ class _MainScreenState extends State<MainScreen>
   //Initialize video player
   Future<ChewieController> initializeVideo(
       String _videoPlayerController) async {
-    await VideoPlayerController.network(_videoPlayerController).initialize();
+    VideoPlayerController _controller =
+        VideoPlayerController.network(_videoPlayerController);
+    await _controller.initialize();
     return ChewieController(
-        videoPlayerController:
-            VideoPlayerController.network(_videoPlayerController),
-        autoPlay: false,
-        allowMuting: true,
-        looping: false);
+      videoPlayerController: _controller,
+      autoPlay: false,
+      // aspectRatio: _controller.value.aspectRatio,
+      allowMuting: true,
+      looping: false,
+      showControlsOnInitialize: false,
+      showOptions: false,
+      showControls: false,
+    );
   }
 
   //Subscribed feed section

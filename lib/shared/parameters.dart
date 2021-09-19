@@ -43,3 +43,12 @@ class ImageVideoParams {
   static String NAME = 'imageName';
   static String TYPE = 'type';
 }
+
+class LiveStreamingParams {
+  static String UID = 'uid';
+  static String USER_ID = 'userId';
+  static String URL = 'streamUrl';
+  static String TAGS = 'tags';
+  static String CHANNEL_NAME = 'channelName';
+  static String TOKEN = 'Token';
+}

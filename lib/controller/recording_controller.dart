@@ -63,8 +63,8 @@ class RecordingController {
           token: token,
           userId: userId,
           userName: 'Example');
-      print('the streamModel: ${streamModel['id']}');
-      streamVideoUrlId = streamModel['id'];
+      print('the streamModel Token: $token');
+      streamVideoUrlId = streamModel;
       return await http.post(
         rtcStartUrl,
         headers: headers,

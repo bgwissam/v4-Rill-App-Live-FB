@@ -61,6 +61,14 @@ class _WrapperState extends State<Wrapper> {
                 return [];
               },
             ),
+            StreamProvider<List<StreamingModel?>>.value(
+              value: db.getStreamingVidoes(),
+              initialData: [],
+              catchError: (context, error) {
+                print('Error fetching image stream: $error');
+                return [];
+              },
+            ),
           ], child: MainScreen(userId: currentUser?.userId))
         : const SignInSignUp();
   }

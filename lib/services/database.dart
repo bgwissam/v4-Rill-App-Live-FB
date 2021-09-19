@@ -124,13 +124,43 @@ class DatabaseService {
       {String? channelName,
       String? token,
       String? userId,
-      String? userName}) async {}
+      String? userName,
+      String? thumbnailUrl}) async {
+    try {
+      var result = await liveStreamingCollection.add({
+        LiveStreamingParams.USER_ID: userId,
+        LiveStreamingParams.CHANNEL_NAME: channelName,
+        LiveStreamingParams.TOKEN: token,
+        LiveStreamingParams.URL: thumbnailUrl,
+      }).then((value) => value.id);
+
+      return result;
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      rethrow;
+    }
+  }
 
   //Delete data stream
   Future<void> deleteStreamingVideo({String? streamId}) async {}
 
-  //Fetch streaming video per id
-  Future<void> fetchStreamingVideobyId({String? id}) async {}
+  //Map streaming video
+  List<StreamingModel?> _mapStreamsFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return StreamingModel(
+          uid: doc.id,
+          userId: (doc.data() as Map)[LiveStreamingParams.USER_ID],
+          channelName: (doc.data() as Map)[LiveStreamingParams.CHANNEL_NAME],
+          url: (doc.data() as Map)[LiveStreamingParams.URL],
+          tags: (doc.data() as Map)[LiveStreamingParams.TAGS],
+          token: (doc.data() as Map)[LiveStreamingParams.TOKEN],
+          thumbnailUrl: (doc.data() as Map)[LiveStreamingParams.URL]);
+    }).toList();
+  }
+
+  Stream<List<StreamingModel?>> getStreamingVidoes() {
+    return liveStreamingCollection.snapshots().map(_mapStreamsFromSnapshot);
+  }
 
   //fetch all streaming videos
   Future<String> fetchStreamingVideoUrl() async {
@@ -138,7 +168,7 @@ class DatabaseService {
   }
 
   //This section is to create, update and delete images in the database
-  //Add image
+  //Add Video
   Future<String> createImageVideo(
       {String? userId,
       String? name,

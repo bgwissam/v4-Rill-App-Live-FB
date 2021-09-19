@@ -25,16 +25,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.videoController.value.isInitialized) {
-      chewieController = ChewieController(
-          videoPlayerController: widget.videoController,
-          autoPlay: true,
-          allowMuting: true,
-          autoInitialize: true,
-          looping: true);
-    } else {
-      _initializeController = initializeController();
-    }
   }
 
   @override
@@ -67,7 +57,15 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
         future: initializeController(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            return Center(child: Chewie(controller: snapshot.data));
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Center(child: Chewie(controller: snapshot.data));
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
           } else {
             return Center(
               child: CircularProgressIndicator(),
@@ -77,13 +75,16 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   }
 
   Future<ChewieController> initializeController() async {
-    await widget.videoController.initialize();
+    if (widget.videoController.value.isInitialized) {
+      await widget.videoController.initialize();
+    }
     chewieController = ChewieController(
         videoPlayerController: widget.videoController,
         autoPlay: false,
         allowMuting: true,
-        autoInitialize: true,
-        looping: true);
+        autoInitialize: false,
+        aspectRatio: widget.videoController.value.aspectRatio,
+        looping: false);
     return chewieController;
   }
 }

@@ -17,6 +17,7 @@ MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Ril
 MERGED from [:firebase_auth] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [:video_compress] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/video_compress/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:firebase_storage] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
+MERGED from [:better_player] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/better_player/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:wakelock] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/wakelock/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:permission_handler] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/permission_handler/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-46:12
@@ -29,17 +30,24 @@ MERGED from [:video_player] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_li
 MERGED from [com.otaliastudios:transcoder:0.9.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4a96f581a79a77a714ec387c31be3827/jetified-transcoder-0.9.1/AndroidManifest.xml:2:1-13:12
 MERGED from [com.otaliastudios.opengl:egloo:0.4.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7387e2ca0602fe958ef2b48f6c1e1b68/jetified-egloo-0.4.0/AndroidManifest.xml:2:1-12:12
 MERGED from [androidx.exifinterface:exifinterface:1.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6cbe1b875e8051e34086dedfa62610e6/exifinterface-1.3.0/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4ab29d5d04ea42bc4f90dcab64efeada/jetified-exoplayer-hls-2.14.2/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/22b5fefbd1d10dca23910ee234763c17/jetified-exoplayer-dash-2.14.2/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dfeb90ce42c2f0af099191c61a95f77c/jetified-exoplayer-smoothstreaming-2.14.1/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-ui:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f66b5fb9016c7b297117b6b9f8d7ce11/jetified-exoplayer-ui-2.14.2/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/983fcccaaf39eda3c572c95f0818dccf/jetified-exoplayer-core-2.14.2/AndroidManifest.xml:17:1-26:12
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:17:1-83:12
-MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:17:1-58:12
-MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ccb096213b2316f144e74f28718170b1/jetified-play-services-stats-17.0.0/AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d2b5093db64c37161d7376ab3c52933e/legacy-support-v4-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.browser:browser:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/3d833cb82a4986d94c56f5eab2cc714d/browser-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/676efb13a2613000c0fef0a4569249da/legacy-support-core-ui-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:17:1-58:12
+MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ccb096213b2316f144e74f28718170b1/jetified-play-services-stats-17.0.0/AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/89b789ef047c01bc39ce97a97c4aef68/legacy-support-core-utils-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/42f1cd6361aa4403625f1719fb85b8bb/localbroadcastmanager-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7da9892509fd35806a67b4b9b6d9c979/jetified-exoplayer-hls-2.14.1/AndroidManifest.xml:17:1-24:12
-MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6bdfcbb621ca63787890c058a02e0b7f/jetified-exoplayer-dash-2.14.1/AndroidManifest.xml:17:1-24:12
-MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dfeb90ce42c2f0af099191c61a95f77c/jetified-exoplayer-smoothstreaming-2.14.1/AndroidManifest.xml:17:1-24:12
-MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/36d302a3a34ec528de515be28c60323a/jetified-exoplayer-core-2.14.1/AndroidManifest.xml:17:1-26:12
+MERGED from [io.sentry:sentry-android:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c1a6f85aa5fd685eda1b4c0066425217/jetified-sentry-android-5.1.2/AndroidManifest.xml:2:1-11:12
+MERGED from [io.sentry:sentry-android-ndk:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/44ef20c9e9b1abaa3336b6c027990af9/jetified-sentry-android-ndk-5.1.2/AndroidManifest.xml:2:1-9:12
+MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:2:1-25:12
+MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:17:1-143:12
+MERGED from [androidx.lifecycle:lifecycle-service:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ad5de40cfea605cbabd53ac49d6f4926/jetified-lifecycle-service-2.1.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:2:1-26:12
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:15:1-39:12
 MERGED from [com.google.android.gms:play-services-auth-api-phone:17.4.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/07ee7827ed5242d444b5e63ac1b0baaa/jetified-play-services-auth-api-phone-17.4.0/AndroidManifest.xml:2:1-7:12
@@ -59,9 +67,9 @@ MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/w
 MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:17:1-28:12
 MERGED from [androidx.fragment:fragment:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a0489aae6ca691b5067ca0d0b2e7fa2f/fragment-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.activity:activity:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/19e393f4a078a3efe449ac529f3ce068/jetified-activity-1.0.0/AndroidManifest.xml:17:1-24:12
-MERGED from [io.sentry:sentry-android:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c1a6f85aa5fd685eda1b4c0066425217/jetified-sentry-android-5.1.2/AndroidManifest.xml:2:1-11:12
-MERGED from [io.sentry:sentry-android-ndk:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/44ef20c9e9b1abaa3336b6c027990af9/jetified-sentry-android-ndk-5.1.2/AndroidManifest.xml:2:1-9:12
-MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:2:1-25:12
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/3a08e864805b9d0766f538da13f89d5f/recyclerview-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:extension-mediasession:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/71261792e718dbf597d827c89faaef29/jetified-extension-mediasession-2.14.2/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.media:media:1.2.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/cc61944c0470e74644aa21886cb6970b/media-1.2.1/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/118e115ab25deac5a17e7e2cb280355e/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.loader:loader:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c7e277a1068aba0e26af23480b54b18a/loader-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e089ac0fe447464d98e218044ad10315/coordinatorlayout-1.0.0/AndroidManifest.xml:17:1-22:12
@@ -73,23 +81,26 @@ MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/wiss
 MERGED from [androidx.core:core:1.3.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/649e0c0efc915ed729b494f3417970c7/core-1.3.2/AndroidManifest.xml:17:1-26:12
 MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6afdc73a770cb262193a944db55e76a5/jetified-lifecycle-process-2.2.0/AndroidManifest.xml:17:1-32:12
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/965ba026b5f55ad4676d92bf1d9b71ff/lifecycle-runtime-2.2.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9b3655f68abdfb113adb94e947b78114/lifecycle-livedata-2.1.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d9f52b7b1bc3ac92b37d6339d319a5f6/lifecycle-livedata-core-2.1.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.savedstate:savedstate:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c61857beadb5bfa29447af581c0146e6/jetified-savedstate-1.0.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/65fad188db19350f67710c4f63a82316/lifecycle-livedata-2.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c00e92046db6878c25e1f509e3b5a9da/lifecycle-livedata-core-2.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6ab91703ec67da5711ffdd1afc3c22ce/jetified-exoplayer-extractor-2.14.1/AndroidManifest.xml:17:1-24:12
-MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/2649a4111675cc9f9e5f82d61e07f1c5/jetified-exoplayer-common-2.14.1/AndroidManifest.xml:17:1-26:12
-MERGED from [androidx.arch.core:core-runtime:2.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/170cb899454270d97dc14c84dc24c30b/core-runtime-2.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/46a8e58ac04c3344607ea46e19accf07/jetified-exoplayer-extractor-2.14.2/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ce684050ff3341c6f4791ee86de5335c/jetified-exoplayer-common-2.14.2/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.room:room-runtime:2.2.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e74a6febba8b0aff6f8126614f1e7556/room-runtime-2.2.5/AndroidManifest.xml:17:1-31:12
+MERGED from [androidx.sqlite:sqlite-framework:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/da096a92215c9cef8cd8dd500791b065/sqlite-framework-2.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.sqlite:sqlite:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9165e6ebd7179d8bd614ad01fe467fcd/sqlite-2.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/77ba7eea6c797d43e471ae4e2bfbd7c7/core-runtime-2.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16e2a6158b1a242faa89e1f77ae6d807/versionedparcelable-1.1.0/AndroidManifest.xml:17:1-27:12
 MERGED from [com.google.firebase:firebase-components:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7929dff8581cf5142e456918f8a8cb54/jetified-firebase-components-17.0.0/AndroidManifest.xml:15:1-23:12
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:15:1-38:12
 MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/09411377c961036dd60a36e40ebd7c4e/jetified-transport-runtime-3.0.0/AndroidManifest.xml:15:1-41:12
 MERGED from [com.google.android.datatransport:transport-api:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/26314e09324df5d69d589db1a8e6d149/jetified-transport-api-3.0.0/AndroidManifest.xml:15:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e0deaf555724e25493155e38bce2f539/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f9b9bd73bb7a5ec956788a17e50cc775/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/03819cfeeeef77e31024e507042fcb72/jetified-firebase-encoders-json-18.0.0/AndroidManifest.xml:15:1-23:12
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c018edfd99f1478d35e8458dedc3c5a7/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/69b2d45cf8e3ff25a52380a2d726f742/documentfile-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.print:print:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e380e3f7c8493e091848022ac3794b8a/print-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f9b9bd73bb7a5ec956788a17e50cc775/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c018edfd99f1478d35e8458dedc3c5a7/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e0deaf555724e25493155e38bce2f539/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/03819cfeeeef77e31024e507042fcb72/jetified-firebase-encoders-json-18.0.0/AndroidManifest.xml:15:1-23:12
 MERGED from [com.github.agorabuilder:native-full-sdk:3.4.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/525c2745eadf113038db61e4e41c12cf/jetified-native-full-sdk-3.4.5/AndroidManifest.xml:2:1-11:12
 MERGED from [io.grpc:grpc-android:1.28.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1c5aaf1a342a82fe816777bb66d09ad9/jetified-grpc-android-1.28.0/AndroidManifest.xml:2:1-13:12
 MERGED from [com.google.firebase:protolite-well-known-types:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d29c5efb4a3bfa33b7c9aa98f739b1d4/jetified-protolite-well-known-types-18.0.0/AndroidManifest.xml:2:1-11:12
@@ -136,6 +147,10 @@ MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughan
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:27:5-56:19
 MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ccb096213b2316f144e74f28718170b1/jetified-play-services-stats-17.0.0/AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ccb096213b2316f144e74f28718170b1/jetified-play-services-stats-17.0.0/AndroidManifest.xml:7:5-20
+MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:11:5-23:19
+MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:11:5-23:19
+MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:30:5-141:19
+MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:30:5-141:19
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:16:5-24:19
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:16:5-24:19
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:29:5-37:19
@@ -162,12 +177,12 @@ MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/w
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6c730579034a17512b25dfcbdcf08f6e/jetified-firebase-measurement-connector-19.0.0/AndroidManifest.xml:22:5-23:19
 MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:22:5-26:19
 MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:22:5-26:19
-MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:11:5-23:19
-MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:11:5-23:19
 MERGED from [androidx.core:core:1.3.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/649e0c0efc915ed729b494f3417970c7/core-1.3.2/AndroidManifest.xml:24:5-89
 MERGED from [androidx.core:core:1.3.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/649e0c0efc915ed729b494f3417970c7/core-1.3.2/AndroidManifest.xml:24:5-89
 MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6afdc73a770cb262193a944db55e76a5/jetified-lifecycle-process-2.2.0/AndroidManifest.xml:24:5-30:19
 MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6afdc73a770cb262193a944db55e76a5/jetified-lifecycle-process-2.2.0/AndroidManifest.xml:24:5-30:19
+MERGED from [androidx.room:room-runtime:2.2.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e74a6febba8b0aff6f8126614f1e7556/room-runtime-2.2.5/AndroidManifest.xml:24:5-29:19
+MERGED from [androidx.room:room-runtime:2.2.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e74a6febba8b0aff6f8126614f1e7556/room-runtime-2.2.5/AndroidManifest.xml:24:5-29:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16e2a6158b1a242faa89e1f77ae6d807/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16e2a6158b1a242faa89e1f77ae6d807/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:28:5-36:19
@@ -250,6 +265,8 @@ MERGED from [:video_compress] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_
 MERGED from [:video_compress] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/video_compress/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_storage] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_storage] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:better_player] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/better_player/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:better_player] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/better_player/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:wakelock] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/wakelock/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:wakelock] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/wakelock/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:permission_handler] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/permission_handler/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
@@ -274,28 +291,42 @@ MERGED from [com.otaliastudios.opengl:egloo:0.4.0] /Users/wissamboughannam/.grad
 MERGED from [com.otaliastudios.opengl:egloo:0.4.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7387e2ca0602fe958ef2b48f6c1e1b68/jetified-egloo-0.4.0/AndroidManifest.xml:6:5-8:41
 MERGED from [androidx.exifinterface:exifinterface:1.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6cbe1b875e8051e34086dedfa62610e6/exifinterface-1.3.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.exifinterface:exifinterface:1.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6cbe1b875e8051e34086dedfa62610e6/exifinterface-1.3.0/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4ab29d5d04ea42bc4f90dcab64efeada/jetified-exoplayer-hls-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4ab29d5d04ea42bc4f90dcab64efeada/jetified-exoplayer-hls-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/22b5fefbd1d10dca23910ee234763c17/jetified-exoplayer-dash-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/22b5fefbd1d10dca23910ee234763c17/jetified-exoplayer-dash-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dfeb90ce42c2f0af099191c61a95f77c/jetified-exoplayer-smoothstreaming-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dfeb90ce42c2f0af099191c61a95f77c/jetified-exoplayer-smoothstreaming-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-ui:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f66b5fb9016c7b297117b6b9f8d7ce11/jetified-exoplayer-ui-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-ui:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f66b5fb9016c7b297117b6b9f8d7ce11/jetified-exoplayer-ui-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/983fcccaaf39eda3c572c95f0818dccf/jetified-exoplayer-core-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/983fcccaaf39eda3c572c95f0818dccf/jetified-exoplayer-core-2.14.2/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:21:5-44
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:21:5-44
-MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:20:5-44
-MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ccb096213b2316f144e74f28718170b1/jetified-play-services-stats-17.0.0/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ccb096213b2316f144e74f28718170b1/jetified-play-services-stats-17.0.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d2b5093db64c37161d7376ab3c52933e/legacy-support-v4-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d2b5093db64c37161d7376ab3c52933e/legacy-support-v4-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.browser:browser:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/3d833cb82a4986d94c56f5eab2cc714d/browser-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.browser:browser:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/3d833cb82a4986d94c56f5eab2cc714d/browser-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/676efb13a2613000c0fef0a4569249da/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/676efb13a2613000c0fef0a4569249da/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ccb096213b2316f144e74f28718170b1/jetified-play-services-stats-17.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ccb096213b2316f144e74f28718170b1/jetified-play-services-stats-17.0.0/AndroidManifest.xml:5:5-44
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/89b789ef047c01bc39ce97a97c4aef68/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/89b789ef047c01bc39ce97a97c4aef68/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/42f1cd6361aa4403625f1719fb85b8bb/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/42f1cd6361aa4403625f1719fb85b8bb/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7da9892509fd35806a67b4b9b6d9c979/jetified-exoplayer-hls-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7da9892509fd35806a67b4b9b6d9c979/jetified-exoplayer-hls-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6bdfcbb621ca63787890c058a02e0b7f/jetified-exoplayer-dash-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6bdfcbb621ca63787890c058a02e0b7f/jetified-exoplayer-dash-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dfeb90ce42c2f0af099191c61a95f77c/jetified-exoplayer-smoothstreaming-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dfeb90ce42c2f0af099191c61a95f77c/jetified-exoplayer-smoothstreaming-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/36d302a3a34ec528de515be28c60323a/jetified-exoplayer-core-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/36d302a3a34ec528de515be28c60323a/jetified-exoplayer-core-2.14.1/AndroidManifest.xml:20:5-22:41
+MERGED from [io.sentry:sentry-android:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c1a6f85aa5fd685eda1b4c0066425217/jetified-sentry-android-5.1.2/AndroidManifest.xml:6:5-9:57
+MERGED from [io.sentry:sentry-android:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c1a6f85aa5fd685eda1b4c0066425217/jetified-sentry-android-5.1.2/AndroidManifest.xml:6:5-9:57
+MERGED from [io.sentry:sentry-android-ndk:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/44ef20c9e9b1abaa3336b6c027990af9/jetified-sentry-android-ndk-5.1.2/AndroidManifest.xml:5:5-7:41
+MERGED from [io.sentry:sentry-android-ndk:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/44ef20c9e9b1abaa3336b6c027990af9/jetified-sentry-android-ndk-5.1.2/AndroidManifest.xml:5:5-7:41
+MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:5:5-7:41
+MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.lifecycle:lifecycle-service:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ad5de40cfea605cbabd53ac49d6f4926/jetified-lifecycle-service-2.1.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-service:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ad5de40cfea605cbabd53ac49d6f4926/jetified-lifecycle-service-2.1.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:7:5-9:41
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:7:5-9:41
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:20:5-22:41
@@ -334,12 +365,12 @@ MERGED from [androidx.fragment:fragment:1.1.0] /Users/wissamboughannam/.gradle/c
 MERGED from [androidx.fragment:fragment:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a0489aae6ca691b5067ca0d0b2e7fa2f/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.activity:activity:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/19e393f4a078a3efe449ac529f3ce068/jetified-activity-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.activity:activity:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/19e393f4a078a3efe449ac529f3ce068/jetified-activity-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [io.sentry:sentry-android:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c1a6f85aa5fd685eda1b4c0066425217/jetified-sentry-android-5.1.2/AndroidManifest.xml:6:5-9:57
-MERGED from [io.sentry:sentry-android:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c1a6f85aa5fd685eda1b4c0066425217/jetified-sentry-android-5.1.2/AndroidManifest.xml:6:5-9:57
-MERGED from [io.sentry:sentry-android-ndk:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/44ef20c9e9b1abaa3336b6c027990af9/jetified-sentry-android-ndk-5.1.2/AndroidManifest.xml:5:5-7:41
-MERGED from [io.sentry:sentry-android-ndk:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/44ef20c9e9b1abaa3336b6c027990af9/jetified-sentry-android-ndk-5.1.2/AndroidManifest.xml:5:5-7:41
-MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:5:5-7:41
-MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/3a08e864805b9d0766f538da13f89d5f/recyclerview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/3a08e864805b9d0766f538da13f89d5f/recyclerview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:extension-mediasession:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/71261792e718dbf597d827c89faaef29/jetified-extension-mediasession-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:extension-mediasession:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/71261792e718dbf597d827c89faaef29/jetified-extension-mediasession-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.media:media:1.2.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/cc61944c0470e74644aa21886cb6970b/media-1.2.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.media:media:1.2.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/cc61944c0470e74644aa21886cb6970b/media-1.2.1/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/118e115ab25deac5a17e7e2cb280355e/viewpager-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/118e115ab25deac5a17e7e2cb280355e/viewpager-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.loader:loader:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c7e277a1068aba0e26af23480b54b18a/loader-1.0.0/AndroidManifest.xml:20:5-44
@@ -362,18 +393,24 @@ MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam
 MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6afdc73a770cb262193a944db55e76a5/jetified-lifecycle-process-2.2.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/965ba026b5f55ad4676d92bf1d9b71ff/lifecycle-runtime-2.2.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/965ba026b5f55ad4676d92bf1d9b71ff/lifecycle-runtime-2.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9b3655f68abdfb113adb94e947b78114/lifecycle-livedata-2.1.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9b3655f68abdfb113adb94e947b78114/lifecycle-livedata-2.1.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d9f52b7b1bc3ac92b37d6339d319a5f6/lifecycle-livedata-core-2.1.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d9f52b7b1bc3ac92b37d6339d319a5f6/lifecycle-livedata-core-2.1.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c61857beadb5bfa29447af581c0146e6/jetified-savedstate-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.savedstate:savedstate:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c61857beadb5bfa29447af581c0146e6/jetified-savedstate-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/65fad188db19350f67710c4f63a82316/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/65fad188db19350f67710c4f63a82316/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c00e92046db6878c25e1f509e3b5a9da/lifecycle-livedata-core-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c00e92046db6878c25e1f509e3b5a9da/lifecycle-livedata-core-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6ab91703ec67da5711ffdd1afc3c22ce/jetified-exoplayer-extractor-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6ab91703ec67da5711ffdd1afc3c22ce/jetified-exoplayer-extractor-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/2649a4111675cc9f9e5f82d61e07f1c5/jetified-exoplayer-common-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/2649a4111675cc9f9e5f82d61e07f1c5/jetified-exoplayer-common-2.14.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.arch.core:core-runtime:2.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/170cb899454270d97dc14c84dc24c30b/core-runtime-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.arch.core:core-runtime:2.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/170cb899454270d97dc14c84dc24c30b/core-runtime-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/46a8e58ac04c3344607ea46e19accf07/jetified-exoplayer-extractor-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/46a8e58ac04c3344607ea46e19accf07/jetified-exoplayer-extractor-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ce684050ff3341c6f4791ee86de5335c/jetified-exoplayer-common-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ce684050ff3341c6f4791ee86de5335c/jetified-exoplayer-common-2.14.2/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.room:room-runtime:2.2.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e74a6febba8b0aff6f8126614f1e7556/room-runtime-2.2.5/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.room:room-runtime:2.2.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e74a6febba8b0aff6f8126614f1e7556/room-runtime-2.2.5/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.sqlite:sqlite-framework:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/da096a92215c9cef8cd8dd500791b065/sqlite-framework-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.sqlite:sqlite-framework:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/da096a92215c9cef8cd8dd500791b065/sqlite-framework-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.sqlite:sqlite:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9165e6ebd7179d8bd614ad01fe467fcd/sqlite-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.sqlite:sqlite:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9165e6ebd7179d8bd614ad01fe467fcd/sqlite-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/77ba7eea6c797d43e471ae4e2bfbd7c7/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/77ba7eea6c797d43e471ae4e2bfbd7c7/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16e2a6158b1a242faa89e1f77ae6d807/versionedparcelable-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16e2a6158b1a242faa89e1f77ae6d807/versionedparcelable-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.firebase:firebase-components:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7929dff8581cf5142e456918f8a8cb54/jetified-firebase-components-17.0.0/AndroidManifest.xml:19:5-21:41
@@ -384,18 +421,18 @@ MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wi
 MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/09411377c961036dd60a36e40ebd7c4e/jetified-transport-runtime-3.0.0/AndroidManifest.xml:18:5-20:41
 MERGED from [com.google.android.datatransport:transport-api:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/26314e09324df5d69d589db1a8e6d149/jetified-transport-api-3.0.0/AndroidManifest.xml:18:5-20:41
 MERGED from [com.google.android.datatransport:transport-api:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/26314e09324df5d69d589db1a8e6d149/jetified-transport-api-3.0.0/AndroidManifest.xml:18:5-20:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e0deaf555724e25493155e38bce2f539/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e0deaf555724e25493155e38bce2f539/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f9b9bd73bb7a5ec956788a17e50cc775/interpolator-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f9b9bd73bb7a5ec956788a17e50cc775/interpolator-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/03819cfeeeef77e31024e507042fcb72/jetified-firebase-encoders-json-18.0.0/AndroidManifest.xml:19:5-21:41
-MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/03819cfeeeef77e31024e507042fcb72/jetified-firebase-encoders-json-18.0.0/AndroidManifest.xml:19:5-21:41
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c018edfd99f1478d35e8458dedc3c5a7/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c018edfd99f1478d35e8458dedc3c5a7/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/69b2d45cf8e3ff25a52380a2d726f742/documentfile-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/69b2d45cf8e3ff25a52380a2d726f742/documentfile-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.print:print:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e380e3f7c8493e091848022ac3794b8a/print-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.print:print:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e380e3f7c8493e091848022ac3794b8a/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f9b9bd73bb7a5ec956788a17e50cc775/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f9b9bd73bb7a5ec956788a17e50cc775/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c018edfd99f1478d35e8458dedc3c5a7/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c018edfd99f1478d35e8458dedc3c5a7/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e0deaf555724e25493155e38bce2f539/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e0deaf555724e25493155e38bce2f539/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/03819cfeeeef77e31024e507042fcb72/jetified-firebase-encoders-json-18.0.0/AndroidManifest.xml:19:5-21:41
+MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/03819cfeeeef77e31024e507042fcb72/jetified-firebase-encoders-json-18.0.0/AndroidManifest.xml:19:5-21:41
 MERGED from [com.github.agorabuilder:native-full-sdk:3.4.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/525c2745eadf113038db61e4e41c12cf/jetified-native-full-sdk-3.4.5/AndroidManifest.xml:7:5-9:41
 MERGED from [com.github.agorabuilder:native-full-sdk:3.4.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/525c2745eadf113038db61e4e41c12cf/jetified-native-full-sdk-3.4.5/AndroidManifest.xml:7:5-9:41
 MERGED from [io.grpc:grpc-android:1.28.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1c5aaf1a342a82fe816777bb66d09ad9/jetified-grpc-android-1.28.0/AndroidManifest.xml:7:5-9:41
@@ -420,6 +457,8 @@ MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/R
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-67
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:23:5-67
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:23:5-67
+MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:9:5-67
+MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:9:5-67
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:14:5-67
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:14:5-67
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:27:5-67
@@ -428,8 +467,6 @@ MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissambou
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:11:5-67
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:8:5-67
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:8:5-67
-MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:9:5-67
-MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:9:5-67
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:26:5-67
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:26:5-67
 	android:name
@@ -543,12 +580,14 @@ MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/R
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-79
 MERGED from [:connectivity] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/connectivity/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
 MERGED from [:connectivity] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/connectivity/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/983fcccaaf39eda3c572c95f0818dccf/jetified-exoplayer-core-2.14.2/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/983fcccaaf39eda3c572c95f0818dccf/jetified-exoplayer-core-2.14.2/AndroidManifest.xml:24:5-79
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:22:5-79
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:22:5-79
-MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/36d302a3a34ec528de515be28c60323a/jetified-exoplayer-core-2.14.1/AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/36d302a3a34ec528de515be28c60323a/jetified-exoplayer-core-2.14.1/AndroidManifest.xml:24:5-79
+MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:26:5-79
+MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:26:5-79
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:13:5-79
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:13:5-79
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
@@ -557,8 +596,8 @@ MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissambou
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:7:5-79
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:7:5-79
-MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/2649a4111675cc9f9e5f82d61e07f1c5/jetified-exoplayer-common-2.14.1/AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/2649a4111675cc9f9e5f82d61e07f1c5/jetified-exoplayer-common-2.14.1/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ce684050ff3341c6f4791ee86de5335c/jetified-exoplayer-common-2.14.2/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ce684050ff3341c6f4791ee86de5335c/jetified-exoplayer-common-2.14.2/AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:25:5-79
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:25:5-79
 MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/09411377c961036dd60a36e40ebd7c4e/jetified-transport-runtime-3.0.0/AndroidManifest.xml:22:5-79
@@ -601,6 +640,8 @@ uses-permission#android.permission.WAKE_LOCK
 ADDED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-68
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:23:5-68
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:23:5-68
+MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:25:5-68
+MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:25:5-68
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:9:5-68
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:9:5-68
 	android:name
@@ -749,6 +790,236 @@ ADDED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughann
 		ADDED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:54:17-82
 	android:name
 		ADDED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:53:17-119
+provider#io.sentry.android.core.SentryPerformanceProvider
+ADDED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:18:9-22:39
+	android:authorities
+		ADDED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:20:13-77
+	android:exported
+		ADDED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:21:13-37
+	android:initOrder
+		ADDED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:22:13-36
+	android:name
+		ADDED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:19:13-76
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:27:5-81
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:27:22-78
+uses-permission#android.permission.FOREGROUND_SERVICE
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:28:5-77
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:28:22-74
+provider#androidx.work.impl.WorkManagerInitializer
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:31:9-37:35
+	android:authorities
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:33:13-68
+	android:multiprocess
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:36:13-40
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:35:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:37:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:34:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:32:13-69
+service#androidx.work.impl.background.systemalarm.SystemAlarmService
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:39:9-44:35
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:42:13-72
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:43:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:44:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:41:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:40:13-88
+service#androidx.work.impl.background.systemjob.SystemJobService
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:45:9-51:35
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:48:13-70
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:49:13-36
+	android:permission
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:50:13-69
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:51:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:47:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:46:13-84
+service#androidx.work.impl.foreground.SystemForegroundService
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:52:9-57:35
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:55:13-77
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:56:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:57:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:54:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:53:13-81
+receiver#androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:59:9-64:35
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:62:13-35
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:63:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:64:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:61:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:60:13-88
+receiver#androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:65:9-75:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:68:13-36
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:69:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:70:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:67:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:66:13-106
+intent-filter#action:name:android.intent.action.ACTION_POWER_CONNECTED+action:name:android.intent.action.ACTION_POWER_DISCONNECTED
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:71:13-74:29
+action#android.intent.action.ACTION_POWER_CONNECTED
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:72:17-87
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:72:25-84
+action#android.intent.action.ACTION_POWER_DISCONNECTED
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:73:17-90
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:73:25-87
+receiver#androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:76:9-86:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:79:13-36
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:80:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:81:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:78:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:77:13-104
+intent-filter#action:name:android.intent.action.BATTERY_LOW+action:name:android.intent.action.BATTERY_OKAY
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:82:13-85:29
+action#android.intent.action.BATTERY_OKAY
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:83:17-77
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:83:25-74
+action#android.intent.action.BATTERY_LOW
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:84:17-76
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:84:25-73
+receiver#androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:87:9-97:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:90:13-36
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:91:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:92:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:89:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:88:13-104
+intent-filter#action:name:android.intent.action.DEVICE_STORAGE_LOW+action:name:android.intent.action.DEVICE_STORAGE_OK
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:93:13-96:29
+action#android.intent.action.DEVICE_STORAGE_LOW
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:94:17-83
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:94:25-80
+action#android.intent.action.DEVICE_STORAGE_OK
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:95:17-82
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:95:25-79
+receiver#androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:98:9-107:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:101:13-36
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:102:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:103:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:100:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:99:13-103
+intent-filter#action:name:android.net.conn.CONNECTIVITY_CHANGE
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:104:13-106:29
+action#android.net.conn.CONNECTIVITY_CHANGE
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:105:17-79
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:105:25-76
+receiver#androidx.work.impl.background.systemalarm.RescheduleReceiver
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:108:9-119:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:111:13-36
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:112:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:113:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:110:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:109:13-88
+intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:android.intent.action.TIMEZONE_CHANGED+action:name:android.intent.action.TIME_SET
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:114:13-118:29
+action#android.intent.action.BOOT_COMPLETED
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:115:17-79
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:115:25-76
+action#android.intent.action.TIME_SET
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:116:17-73
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:116:25-70
+action#android.intent.action.TIMEZONE_CHANGED
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:117:17-81
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:117:25-78
+receiver#androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:120:9-129:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:123:13-72
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:124:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:125:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:122:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:121:13-99
+intent-filter#action:name:androidx.work.impl.background.systemalarm.UpdateProxies
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:126:13-128:29
+action#androidx.work.impl.background.systemalarm.UpdateProxies
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:127:17-98
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:127:25-95
+receiver#androidx.work.impl.diagnostics.DiagnosticsReceiver
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:130:9-140:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:133:13-35
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:134:13-36
+	android:permission
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:135:13-57
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:136:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:132:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:131:13-78
+intent-filter#action:name:androidx.work.diagnostics.REQUEST_DIAGNOSTICS
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:137:13-139:29
+action#androidx.work.diagnostics.REQUEST_DIAGNOSTICS
+ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:138:17-88
+	android:name
+		ADDED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:138:25-85
 meta-data#com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar
 ADDED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:20:13-22:85
 	android:value
@@ -799,16 +1070,6 @@ ADDED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamb
 		ADDED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:25:13-66
 	android:name
 		ADDED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:24:13-58
-provider#io.sentry.android.core.SentryPerformanceProvider
-ADDED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:18:9-22:39
-	android:authorities
-		ADDED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:20:13-77
-	android:exported
-		ADDED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:21:13-37
-	android:initOrder
-		ADDED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:22:13-36
-	android:name
-		ADDED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:19:13-76
 provider#androidx.lifecycle.ProcessLifecycleOwnerInitializer
 ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6afdc73a770cb262193a944db55e76a5/jetified-lifecycle-process-2.2.0/AndroidManifest.xml:25:9-29:43
 	android:authorities
@@ -819,6 +1080,14 @@ ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam/
 		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6afdc73a770cb262193a944db55e76a5/jetified-lifecycle-process-2.2.0/AndroidManifest.xml:28:13-37
 	android:name
 		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6afdc73a770cb262193a944db55e76a5/jetified-lifecycle-process-2.2.0/AndroidManifest.xml:26:13-79
+service#androidx.room.MultiInstanceInvalidationService
+ADDED from [androidx.room:room-runtime:2.2.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e74a6febba8b0aff6f8126614f1e7556/room-runtime-2.2.5/AndroidManifest.xml:25:9-28:40
+	android:exported
+		ADDED from [androidx.room:room-runtime:2.2.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e74a6febba8b0aff6f8126614f1e7556/room-runtime-2.2.5/AndroidManifest.xml:28:13-37
+	android:directBootAware
+		ADDED from [androidx.room:room-runtime:2.2.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e74a6febba8b0aff6f8126614f1e7556/room-runtime-2.2.5/AndroidManifest.xml:27:13-43
+	android:name
+		ADDED from [androidx.room:room-runtime:2.2.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e74a6febba8b0aff6f8126614f1e7556/room-runtime-2.2.5/AndroidManifest.xml:26:13-74
 service#com.google.android.datatransport.runtime.backends.TransportBackendDiscovery
 ADDED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:29:9-35:19
 MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/09411377c961036dd60a36e40ebd7c4e/jetified-transport-runtime-3.0.0/AndroidManifest.xml:36:9-38:40
