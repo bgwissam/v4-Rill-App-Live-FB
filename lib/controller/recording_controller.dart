@@ -58,13 +58,7 @@ class RecordingController {
           'https://api.agora.io/v1/apps/${param.app_ID}/cloud_recording/resourceid/$referenceId/mode/$mode/start');
 
       //update streaming video data model with the current stream
-      var streamModel = await db.createNewDataStream(
-          channelName: channelName,
-          token: token,
-          userId: userId,
-          userName: 'Example');
-      print('the streamModel Token: $token');
-      streamVideoUrlId = streamModel;
+
       return await http.post(
         rtcStartUrl,
         headers: headers,
@@ -115,7 +109,8 @@ class RecordingController {
       required String userId,
       String? sid,
       String? resouceId,
-      String? mode}) async {
+      String? mode,
+      String? streamId}) async {
     var rtcStopUrl = Uri.parse(
         'https://api.agora.io/v1/apps/${param.app_ID}/cloud_recording/resourceid/$resouceId/sid/$sid/mode/$mode/stop');
     String credentials = '${param.Customer_ID}:${param.Customer_secret}';
@@ -128,9 +123,10 @@ class RecordingController {
 
     try {
       //delete stream from stream video url data store
-
-      if (streamVideoUrlId != '') {
+      print('starting to delete: $streamVideoUrlId');
+      if (streamVideoUrlId.isNotEmpty) {
         await db.deleteStreamingVideo(streamId: streamVideoUrlId);
+        print('stream has been deleted');
       }
 
       //stop recroding and save it

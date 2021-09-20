@@ -51,4 +51,6 @@ class LiveStreamingParams {
   static String TAGS = 'tags';
   static String CHANNEL_NAME = 'channelName';
   static String TOKEN = 'Token';
+  static String resouceId = 'resourceId';
+  static String sid = 'sid';
 }

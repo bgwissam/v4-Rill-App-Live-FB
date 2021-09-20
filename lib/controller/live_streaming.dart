@@ -14,6 +14,7 @@ class LiveStreaming extends StatefulWidget {
   final String userId;
   final String userRole;
   final String? resourceId;
+  final String? streamUserId;
   final String? sid;
   final String? mode;
   final Function? loadingStateCallback;
@@ -25,6 +26,7 @@ class LiveStreaming extends StatefulWidget {
     this.mode,
     required this.userId,
     this.resourceId,
+    this.streamUserId,
     this.loadingStateCallback,
     Key? key,
   }) : super(key: key);
@@ -84,7 +86,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
               _infoString.add(info);
             },
           );
-        }, //joinChannel
+        }, //Leave Channel
             leaveChannel: (stats) {
           setState(
             () {
@@ -92,7 +94,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
               _users.clear();
             },
           );
-        }, //leaveChannel
+        }, //Join Channel
             userJoined: (uid, elapsed) {
           setState(
             () {
@@ -123,6 +125,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
             // },
             ),
       );
+      print('the users: $_users - info String: $_infoString');
       //Join the channel
       await _engine.joinChannel(
           widget.token, widget.channelName, null, int.parse(widget.userId));
@@ -318,19 +321,21 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //tool bar functions
   void _onCallEnd(BuildContext context) async {
-    widget.loadingStateCallback!();
+    if (widget.streamUserId == widget.userId) {
+      widget.loadingStateCallback!();
 
-    //Stop the recording and save the stream to the bucket
-    var stopRecordingResult = await recordingController.stopRecordingVideos(
-      channelName: widget.channelName,
-      userId: widget.userId,
-      sid: widget.sid,
-      resouceId: widget.resourceId,
-      mode: widget.mode,
-    );
+      //Stop the recording and save the stream to the bucket
+      var stopRecordingResult = await recordingController.stopRecordingVideos(
+        channelName: widget.channelName,
+        userId: widget.userId,
+        sid: widget.sid,
+        resouceId: widget.resourceId,
+        mode: widget.mode,
+      );
 
-    var stopRecordResponse = await json.decode(stopRecordingResult.body);
-    print('Stop response: $stopRecordResponse');
+      var stopRecordResponse = await json.decode(stopRecordingResult.body);
+      print('Stop response: $stopRecordResponse');
+    }
 
     Navigator.pop(context);
   }

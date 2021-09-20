@@ -25,6 +25,8 @@ class StreamingModel {
   String? channelName;
   String? token;
   String? thumbnailUrl;
+  String? resourceId;
+  String? sid;
   StreamingModel(
       {this.uid,
       this.userId,
@@ -32,5 +34,7 @@ class StreamingModel {
       this.tags,
       this.channelName,
       this.token,
-      this.thumbnailUrl});
+      this.thumbnailUrl,
+      this.resourceId,
+      this.sid});
 }

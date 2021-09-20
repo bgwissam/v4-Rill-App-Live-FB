@@ -125,13 +125,17 @@ class DatabaseService {
       String? token,
       String? userId,
       String? userName,
-      String? thumbnailUrl}) async {
+      String? thumbnailUrl,
+      String? resourceId,
+      String? sid}) async {
     try {
       var result = await liveStreamingCollection.add({
         LiveStreamingParams.USER_ID: userId,
         LiveStreamingParams.CHANNEL_NAME: channelName,
         LiveStreamingParams.TOKEN: token,
         LiveStreamingParams.URL: thumbnailUrl,
+        LiveStreamingParams.resouceId: resourceId,
+        LiveStreamingParams.sid: sid,
       }).then((value) => value.id);
 
       return result;
@@ -160,7 +164,9 @@ class DatabaseService {
           url: (doc.data() as Map)[LiveStreamingParams.URL],
           tags: (doc.data() as Map)[LiveStreamingParams.TAGS],
           token: (doc.data() as Map)[LiveStreamingParams.TOKEN],
-          thumbnailUrl: (doc.data() as Map)[LiveStreamingParams.URL]);
+          thumbnailUrl: (doc.data() as Map)[LiveStreamingParams.URL],
+          resourceId: (doc.data() as Map)[LiveStreamingParams.resouceId],
+          sid: (doc.data() as Map)[LiveStreamingParams.sid]);
     }).toList();
   }
 

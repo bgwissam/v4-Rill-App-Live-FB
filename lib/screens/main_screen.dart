@@ -182,10 +182,16 @@ class _MainScreenState extends State<MainScreen>
                                 channelName: streamingProvider[index]!
                                     .channelName
                                     .toString(),
+                                streamUserId: streamingProvider[index]!.userId,
                                 userRole: 'publisher',
                                 token:
                                     streamingProvider[index]!.token.toString(),
                                 userId: widget.userId.toString(),
+                                resourceId: streamingProvider[index]!
+                                    .resourceId
+                                    .toString(),
+                                sid: streamingProvider[index]!.sid.toString(),
+                                mode: 'mix',
                               );
                             },
                           ),
@@ -459,11 +465,32 @@ class _MainScreenState extends State<MainScreen>
                                                     if (startRecordingResponse[
                                                             'sid'] !=
                                                         null) {
+                                                      //Save stream data to firebase
+                                                      var streamModel = await db
+                                                          .createNewDataStream(
+                                                              channelName:
+                                                                  _channelName,
+                                                              token: token,
+                                                              userId:
+                                                                  widget.userId,
+                                                              userName:
+                                                                  'Example',
+                                                              resourceId:
+                                                                  acquireResponse[
+                                                                      'resourceId'],
+                                                              sid:
+                                                                  startRecordingResponse[
+                                                                      'sid']);
+                                                      print(
+                                                          'the streamModel id: $streamModel');
+
                                                       await Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
                                                           builder: (context) => LiveStreaming(
                                                               token: token,
+                                                              streamUserId:
+                                                                  widget.userId,
                                                               channelName:
                                                                   _channelName,
                                                               userRole:
