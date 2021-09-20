@@ -95,6 +95,11 @@ class _MainScreenState extends State<MainScreen>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     imageVideoProvider = Provider.of<List<ImageVideoModel?>>(context);
     _size = MediaQuery.of(context).size;
@@ -167,15 +172,37 @@ class _MainScreenState extends State<MainScreen>
                   scrollDirection: Axis.horizontal,
                   itemCount: streamingProvider.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      height: 100,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(streamingProvider[index]!.uid.toString()),
-                          Text(streamingProvider[index]!.channelName.toString())
-                        ],
+                    return GestureDetector(
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) {
+                              return LiveStreaming(
+                                channelName: streamingProvider[index]!
+                                    .channelName
+                                    .toString(),
+                                userRole: 'publisher',
+                                token:
+                                    streamingProvider[index]!.token.toString(),
+                                userId: widget.userId.toString(),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        height: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(streamingProvider[index]!.uid.toString()),
+                            Text(streamingProvider[index]!
+                                .channelName
+                                .toString())
+                          ],
+                        ),
                       ),
                     );
                   })
@@ -812,6 +839,9 @@ class _MainScreenState extends State<MainScreen>
                           child: Chewie(
                             controller: snapshot.data,
                           ));
+                    } else if (snapshot.hasError) {
+                      print('Error playing video: ${snapshot.error}');
+                      return Center(child: Text(snapshot.error.toString()));
                     } else {
                       return const Center(
                         child: CircularProgressIndicator(),

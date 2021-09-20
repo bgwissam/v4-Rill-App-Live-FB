@@ -142,7 +142,13 @@ class DatabaseService {
   }
 
   //Delete data stream
-  Future<void> deleteStreamingVideo({String? streamId}) async {}
+  Future<void> deleteStreamingVideo({String? streamId}) async {
+    try {
+      await liveStreamingCollection.doc(streamId).delete();
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+    }
+  }
 
   //Map streaming video
   List<StreamingModel?> _mapStreamsFromSnapshot(QuerySnapshot snapshot) {

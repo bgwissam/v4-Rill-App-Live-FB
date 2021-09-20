@@ -16,6 +16,7 @@ import 'models/user_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
 
   await SentryFlutter.init(
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
         ),
         home: MySplashScreen(),
         routes: <String, WidgetBuilder>{
-          '/home': (BuildContext context) => Wrapper(),
+          '/home': (BuildContext context) => const Wrapper(),
         },
       ),
     );
