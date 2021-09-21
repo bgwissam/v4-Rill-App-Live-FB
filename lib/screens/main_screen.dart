@@ -432,7 +432,6 @@ class _MainScreenState extends State<MainScreen>
                                                                 _channelName,
                                                             role: _userRole,
                                                             userId: _userId);
-
                                                     var acquireResult =
                                                         await recordingController
                                                             .getVideoRecordingRefId(
@@ -459,9 +458,6 @@ class _MainScreenState extends State<MainScreen>
                                                       startRecordingResponse =
                                                           await json.decode(
                                                               startResult.body);
-
-                                                      print(
-                                                          'Start response: ${startResult.body}');
                                                     }
 
                                                     //check if recording could be started
@@ -505,6 +501,8 @@ class _MainScreenState extends State<MainScreen>
                                                                   startRecordingResponse[
                                                                       'sid'],
                                                               mode: 'mix',
+                                                              streamModelId:
+                                                                  streamModel,
                                                               userId: _userId,
                                                               loadingStateCallback:
                                                                   callBackLoadingState),
@@ -983,15 +981,15 @@ class _MainScreenState extends State<MainScreen>
   // }
 
   //Get streaming videos
-  Future<List<dynamic>> _getStreamingVideos() async {
-    List<String> videos = [];
+  // Future<List<dynamic>> _getStreamingVideos() async {
+  //   List<String> videos = [];
 
-    var response = await db.fetchStreamingVideoUrl();
-    Map result = json.decode(response);
-    var liveStreamVideos = result['listStreamingModels'];
+  //   var response = await db.fetchStreamingVideoUrl();
+  //   Map result = json.decode(response);
+  //   var liveStreamVideos = result['listStreamingModels'];
 
-    return liveStreamVideos['items'];
-  }
+  //   return liveStreamVideos['items'];
+  // }
 
   //Get all object from bucket
   Future<List<dynamic>> _getAllObjects() async {

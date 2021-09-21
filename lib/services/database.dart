@@ -175,8 +175,16 @@ class DatabaseService {
   }
 
   //fetch all streaming videos
-  Future<String> fetchStreamingVideoUrl() async {
-    return '';
+  Future<String> fetchStreamingVideoUrl({String? uid}) async {
+    try {
+      return await liveStreamingCollection
+          .doc(uid)
+          .get()
+          .then((value) => (value.data() as Map)[LiveStreamingParams.USER_ID]);
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      return '';
+    }
   }
 
   //This section is to create, update and delete images in the database

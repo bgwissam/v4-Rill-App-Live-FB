@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:io';
+import 'package:rillliveapp/shared/parameters.dart';
 
 class TokenGenerator {
   late String apiToken;
   String baseUrl =
       'https://app.rilllive.com/public/services/agora/rtc-token.php';
-  String appId = 'd480c821a2a946d6a4d29292462a3d6f';
-  String appCertification = '832101fbfa424e358854a936e4c13db8';
+  String appId = Parameters().app_ID;
+  String appCertification = Parameters().app_certificate;
 
   //Api post request to request Audio Video Token
   Future<String> createVideoAudioChannelToken(
@@ -17,21 +17,24 @@ class TokenGenerator {
     try {
       final response = await http.post(
         Uri.parse(baseUrl),
-        headers: <String, String>{'Content-Type': 'application/json'},
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
         body: jsonEncode(
-          <String, String>{
+          <String, dynamic>{
             'appID': appId,
             'appCertificate': appCertification,
             'channelName': channelName,
             'userId': userId,
-            'role': role
+            'role': role,
+            'privilegeExpiredTs': 0
           },
         ),
       );
       String token;
       var rawToken = json.decode(response.body);
       token = rawToken['token'];
-      print('The token generated: $token');
+      print('The token generated: $rawToken');
       print('uid: $userId channel: $channelName');
       if (response.statusCode == 200) {
         return token;

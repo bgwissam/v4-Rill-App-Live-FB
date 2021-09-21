@@ -17,6 +17,7 @@ class LiveStreaming extends StatefulWidget {
   final String? streamUserId;
   final String? sid;
   final String? mode;
+  final String? streamModelId;
   final Function? loadingStateCallback;
   const LiveStreaming({
     required this.channelName,
@@ -28,6 +29,7 @@ class LiveStreaming extends StatefulWidget {
     this.resourceId,
     this.streamUserId,
     this.loadingStateCallback,
+    this.streamModelId,
     Key? key,
   }) : super(key: key);
 
@@ -321,9 +323,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //tool bar functions
   void _onCallEnd(BuildContext context) async {
-    print(
-        'the streamerUserId: ${widget.streamUserId} - userId: ${widget.userId}');
-    if (widget.streamUserId == widget.userId) {
+    String streamingId =
+        await db.fetchStreamingVideoUrl(uid: widget.streamModelId);
+    if (streamingId == widget.streamUserId) {
       widget.loadingStateCallback!();
 
       //Stop the recording and save the stream to the bucket
@@ -334,7 +336,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         resouceId: widget.resourceId,
         mode: widget.mode,
       );
-
+      await db.deleteStreamingVideo(streamId: widget.streamModelId);
       var stopRecordResponse = await json.decode(stopRecordingResult.body);
       print('Stop response: $stopRecordResponse');
     }
