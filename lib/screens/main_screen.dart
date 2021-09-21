@@ -52,6 +52,7 @@ class _MainScreenState extends State<MainScreen>
   var micPermission = false;
   var _userRole;
   final _userId = '45678';
+  final _userId_2 = '34343';
   late String token = '';
   late List<String> videoStreams = [];
   late List<Widget> _bodyWidget = [];
@@ -174,6 +175,8 @@ class _MainScreenState extends State<MainScreen>
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () async {
+                        print(
+                            'the token: ${streamingProvider[index]!.token.toString()}');
                         await Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -186,7 +189,7 @@ class _MainScreenState extends State<MainScreen>
                                 userRole: 'publisher',
                                 token:
                                     streamingProvider[index]!.token.toString(),
-                                userId: widget.userId.toString(),
+                                userId: _userId, //widget.userId.toString(),
                                 resourceId: streamingProvider[index]!
                                     .resourceId
                                     .toString(),

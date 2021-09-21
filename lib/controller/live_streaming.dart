@@ -63,8 +63,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //Will initialize the agora channel, token and app id
   Future<void> initializeAgore() async {
-    print('the token received: ${widget.token}');
-    print('uid: ${widget.userId} channel: ${widget.channelName}');
     if (widget.token.isNotEmpty) {
       await _initializeRtcEngine();
       //The event handler will handle the functions after the Rtc engine has been
@@ -82,10 +80,11 @@ class _LiveStreamingState extends State<LiveStreaming> {
           print('Query response: ${queryResponse.body}');
           setState(
             () {
-              final info = 'channe: $channel, uid: $uid';
+              final info = 'channel: $channel, uid: $uid';
               _infoString.add(info);
             },
           );
+          print('info: $_infoString');
         }, //Leave Channel
             leaveChannel: (stats) {
           setState(
@@ -98,18 +97,18 @@ class _LiveStreamingState extends State<LiveStreaming> {
             userJoined: (uid, elapsed) {
           setState(
             () {
-              print('User joined: $uid, time: $elapsed');
               _users.add(uid);
             },
           );
+          print('Added users: $_users');
         }, //userJoined
             userOffline: (uid, elapsed) {
           setState(
             () {
-              print('User offline: $uid, time: $elapsed');
               _users.remove(uid);
             },
           );
+          print('removed users: $_users');
         }, //userOffline
             streamMessage: (int uid, int streamId, String data) {
           _showMyStreamMessageDialog(uid, streamId, data);
@@ -205,6 +204,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         RtcRemoteView.SurfaceView(uid: uid),
       ),
     );
+    print('the list of users: $list');
     return list;
   }
 
@@ -321,6 +321,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //tool bar functions
   void _onCallEnd(BuildContext context) async {
+    print(
+        'the streamerUserId: ${widget.streamUserId} - userId: ${widget.userId}');
     if (widget.streamUserId == widget.userId) {
       widget.loadingStateCallback!();
 
