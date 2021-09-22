@@ -51,6 +51,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   @override
   void dispose() {
     _users.clear();
+    _engine.leaveChannel();
     _engine.destroy();
     super.dispose();
   }
@@ -58,9 +59,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
   //Initialize the states of the class
   @override
   void initState() {
-    initializeAgore();
-
     super.initState();
+    initializeAgore();
   }
 
   //Will initialize the agora channel, token and app id
@@ -71,27 +71,35 @@ class _LiveStreamingState extends State<LiveStreaming> {
       //initialized
       _engine.setEventHandler(
         RtcEngineEventHandler(warning: (warningCode) {
-          print('Warning codes: $warningCode');
+          setState(() {
+            final info = 'warning: $warningCode';
+            _infoString.add(info);
+          });
         }, error: (errorCode) {
+          setState(() {
+            final info = 'Error: $errorCode';
+            _infoString.add(info);
+          });
           print('Error Code: $errorCode');
         }, joinChannelSuccess: (channel, uid, elapsed) async {
           var queryResponse = await recordingController.queryRecoding(
               resourceId: widget.resourceId,
               sid: widget.sid,
               mode: widget.mode);
-          print('Query response: ${queryResponse.body}');
+          print(
+              'Query response: ${queryResponse.body} Join Success: $channel - $uid - $elapsed');
           setState(
             () {
               final info = 'channel: $channel, uid: $uid';
               _infoString.add(info);
             },
           );
-          print('info: $_infoString');
         }, //Leave Channel
             leaveChannel: (stats) {
           setState(
             () {
-              print('Left channel successfully: $stats');
+              final info = 'Left Channel: $stats';
+              _infoString.add(info);
               _users.clear();
             },
           );
@@ -99,6 +107,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
             userJoined: (uid, elapsed) {
           setState(
             () {
+              final info = 'Joined Channel: $uid - $elapsed';
+              _infoString.add(info);
               _users.add(uid);
             },
           );
@@ -107,18 +117,32 @@ class _LiveStreamingState extends State<LiveStreaming> {
             userOffline: (uid, elapsed) {
           setState(
             () {
+              final info = 'User Offline: $uid - $elapsed';
               _users.remove(uid);
             },
           );
           print('removed users: $_users');
-        }, //userOffline
+        }, firstRemoteVideoFrame: (uid, width, height, elapsed) {
+          setState(() {
+            final info = 'First Remote video: $uid, ${width}x$height';
+            _infoString.add(info);
+          });
+        },
+
+            //userOffline
             streamMessage: (int uid, int streamId, String data) {
+          setState(() {
+            final info = 'Stream Message: $uid, $streamId, $data';
+            _infoString.add(info);
+          });
           _showMyStreamMessageDialog(uid, streamId, data);
-          print('Stream message: $uid, $streamId, $data');
         }, streamMessageError: (int uid, int streamId, ErrorCode error,
                 int missed, int cached) {
-          print(
-              'Stream message error: $uid - $streamId - $error - $missed - $cached');
+          setState(() {
+            final info =
+                'Stream Error: $uid, $streamId, $error, $missed, $cached';
+            _infoString.add(info);
+          });
         }
             // tokenPrivilegeWillExpire: (token) async {
             //   await _getToken();
@@ -126,7 +150,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
             // },
             ),
       );
-      print('the users: $_users - info String: $_infoString');
+
       //Join the channel
       await _engine.joinChannel(
           widget.token, widget.channelName, null, int.parse(widget.userId));
@@ -165,30 +189,34 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //Will initialize the Rtc Engine
   Future<void> _initializeRtcEngine() async {
-    _engine = await RtcEngine.create(param.app_ID);
-    await _engine.enableVideo().catchError((err) {
-      print('Error enableing video: $err');
-    });
-    await _engine
-        .setChannelProfile(ChannelProfile.LiveBroadcasting)
-        .catchError((err) {
-      print('Error setting the channel Profile: $err');
-    });
-    if (widget.userRole == 'publisher') {
-      await _engine.setClientRole(ClientRole.Broadcaster);
-    } else {
-      await _engine.setClientRole(ClientRole.Audience);
+    if (param.app_ID.isNotEmpty) {
+      _engine = await RtcEngine.create(param.app_ID);
+      await _engine.enableVideo().catchError((err) {
+        print('Error enableing video: $err');
+      });
+      await _engine
+          .setChannelProfile(ChannelProfile.LiveBroadcasting)
+          .catchError((err) {
+        print('Error setting the channel Profile: $err');
+      });
+      if (widget.userRole == 'publisher') {
+        await _engine.setClientRole(ClientRole.Broadcaster);
+      } else {
+        await _engine.setClientRole(ClientRole.Audience);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    print('the infoString: $_infoString');
     return Stack(
       children: [
         //Show the video view
         _broadCastView(),
         //show the toolbar to control the view
-        _toolBar()
+        _toolBar(),
+        _infoPannel(),
       ],
     );
   }
@@ -208,6 +236,46 @@ class _LiveStreamingState extends State<LiveStreaming> {
     );
     print('the list of users: $list');
     return list;
+  }
+
+  Widget _infoPannel() {
+    return Positioned(
+      left: 0,
+      top: 0,
+      child: Container(
+          height: 100,
+          decoration: BoxDecoration(
+              color: Colors.grey,
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(20)),
+          padding: EdgeInsets.all(10.0),
+          alignment: Alignment.bottomCenter,
+          child: FractionallySizedBox(
+            heightFactor: 0.5,
+            child: Center(
+              child: Container(
+                padding: EdgeInsets.all(5.0),
+                child: ListView.builder(
+                    itemCount: _infoString.length,
+                    itemBuilder: (context, index) {
+                      print('infoString: $_infoString');
+                      if (_infoString.isEmpty) {
+                        return Text('Empty');
+                      }
+                      return Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(child: Text(_infoString[index].toString()))
+                          ],
+                        ),
+                      );
+                    }),
+              ),
+            ),
+          )),
+    );
   }
 
   Widget _broadCastView() {

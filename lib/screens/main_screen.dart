@@ -137,7 +137,7 @@ class _MainScreenState extends State<MainScreen>
   List<Widget> _buildMainScreenWidget() {
     return _bodyWidget = [
       _mainFeed(),
-      SearchScreen(),
+      const SearchScreen(),
       MessagesScreen(userId: widget.userId),
       AccountScreen(userId: widget.userId),
     ];
@@ -1055,13 +1055,18 @@ class _MainScreenState extends State<MainScreen>
   //if camera and mic permission aren't granted than we will get them here
   _getCameraMicPermission() async {
     await [Permission.camera, Permission.microphone].request();
-    if (await Permission.camera.status == PermissionStatus.granted) {
+
+    var cameraStatus = await Permission.camera.status;
+    var micStatus = await Permission.microphone.status;
+    print('Camera: $cameraStatus - Mic $micStatus');
+    if (cameraStatus == PermissionStatus.granted) {
       cameraPermission = true;
     }
 
-    if (await Permission.microphone.status == PermissionStatus.granted) {
+    if (micStatus == PermissionStatus.granted) {
       micPermission = true;
     }
+
     cameraPermission = true;
     micPermission = true;
   }
