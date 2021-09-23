@@ -66,89 +66,94 @@ class _LiveStreamingState extends State<LiveStreaming> {
   //Will initialize the agora channel, token and app id
   Future<void> initializeAgore() async {
     if (widget.token.isNotEmpty) {
+      _infoString.add('Token: ${widget.token}');
       await _initializeRtcEngine();
       //The event handler will handle the functions after the Rtc engine has been
       //initialized
       _engine.setEventHandler(
-        RtcEngineEventHandler(warning: (warningCode) {
-          setState(() {
-            final info = 'warning: $warningCode';
-            _infoString.add(info);
-          });
-        }, error: (errorCode) {
-          setState(() {
-            final info = 'Error: $errorCode';
-            _infoString.add(info);
-          });
-          print('Error Code: $errorCode');
-        }, joinChannelSuccess: (channel, uid, elapsed) async {
-          var queryResponse = await recordingController.queryRecoding(
-              resourceId: widget.resourceId,
-              sid: widget.sid,
-              mode: widget.mode);
-          print(
-              'Query response: ${queryResponse.body} Join Success: $channel - $uid - $elapsed');
-          setState(
-            () {
-              final info = 'channel: $channel, uid: $uid';
+        RtcEngineEventHandler(
+          warning: (warningCode) {
+            setState(() {
+              final info = 'warning: $warningCode';
               _infoString.add(info);
-            },
-          );
-        }, //Leave Channel
-            leaveChannel: (stats) {
-          setState(
-            () {
-              final info = 'Left Channel: $stats';
+            });
+          },
+          error: (errorCode) {
+            setState(() {
+              final info = 'Error: $errorCode';
               _infoString.add(info);
-              _users.clear();
-            },
-          );
-        }, //Join Channel
-            userJoined: (uid, elapsed) {
-          setState(
-            () {
-              final info = 'Joined Channel: $uid - $elapsed';
+            });
+            print('Error Code: $errorCode');
+          },
+          joinChannelSuccess: (channel, uid, elapsed) async {
+            var queryResponse = await recordingController.queryRecoding(
+                resourceId: widget.resourceId,
+                sid: widget.sid,
+                mode: widget.mode);
+            print(
+                'Query response: ${queryResponse.body} Join Success: $channel - $uid - $elapsed');
+            setState(
+              () {
+                final info = 'channel: $channel, uid: $uid';
+                _infoString.add(info);
+              },
+            );
+          }, //Leave Channel
+          leaveChannel: (stats) {
+            setState(
+              () {
+                final info = 'Left Channel: $stats';
+                _infoString.add(info);
+                _users.clear();
+              },
+            );
+          }, //Join Channel
+          userJoined: (uid, elapsed) {
+            setState(
+              () {
+                final info = 'Joined Channel: $uid';
+                _infoString.add(info);
+                _users.add(uid);
+              },
+            );
+            print('Added users: $_users');
+          }, //userJoined
+          userOffline: (uid, elapsed) {
+            setState(
+              () {
+                final info = 'User Offline: $uid - $elapsed';
+                _users.remove(uid);
+              },
+            );
+            print('removed users: $_users');
+          },
+          firstRemoteVideoFrame: (uid, width, height, elapsed) {
+            setState(() {
+              final info = 'First Remote video: $uid, ${width}x$height';
               _infoString.add(info);
-              _users.add(uid);
-            },
-          );
-          print('Added users: $_users');
-        }, //userJoined
-            userOffline: (uid, elapsed) {
-          setState(
-            () {
-              final info = 'User Offline: $uid - $elapsed';
-              _users.remove(uid);
-            },
-          );
-          print('removed users: $_users');
-        }, firstRemoteVideoFrame: (uid, width, height, elapsed) {
-          setState(() {
-            final info = 'First Remote video: $uid, ${width}x$height';
-            _infoString.add(info);
-          });
-        },
+            });
+          },
 
-            //userOffline
-            streamMessage: (int uid, int streamId, String data) {
-          setState(() {
-            final info = 'Stream Message: $uid, $streamId, $data';
-            _infoString.add(info);
-          });
-          _showMyStreamMessageDialog(uid, streamId, data);
-        }, streamMessageError: (int uid, int streamId, ErrorCode error,
-                int missed, int cached) {
-          setState(() {
-            final info =
-                'Stream Error: $uid, $streamId, $error, $missed, $cached';
-            _infoString.add(info);
-          });
-        }
-            // tokenPrivilegeWillExpire: (token) async {
-            //   await _getToken();
-            //   await _engine.renewToken(token);
-            // },
-            ),
+          //     //userOffline
+          //     streamMessage: (int uid, int streamId, String data) {
+          //   setState(() {
+          //     final info = 'Stream Message: $uid, $streamId, $data';
+          //     _infoString.add(info);
+          //   });
+          //   //_showMyStreamMessageDialog(uid, streamId, data);
+          // }, streamMessageError: (int uid, int streamId, ErrorCode error,
+          //         int missed, int cached) {
+          //   setState(() {
+          //     final info =
+          //         'Stream Error: $uid, $streamId, $error, $missed, $cached';
+          //     _infoString.add(info);
+          //   });
+          // }
+          // tokenPrivilegeWillExpire: (token) async {
+          //   await _getToken();
+          //   await _engine.renewToken(token);
+          // },
+        ),
       );
 
       //Join the channel
@@ -204,6 +209,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
       } else {
         await _engine.setClientRole(ClientRole.Audience);
       }
+    } else {
+      _infoString.add('App Id is empty');
+      return;
     }
   }
 
@@ -216,7 +224,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         _broadCastView(),
         //show the toolbar to control the view
         _toolBar(),
-        _infoPannel(),
+        //_infoPannel(),
       ],
     );
   }
@@ -226,14 +234,16 @@ class _LiveStreamingState extends State<LiveStreaming> {
     final List<StatefulWidget> list = [];
     //the broadcaster will access the local views
     if (widget.userRole == 'publisher') {
+      print('user adding local view');
       list.add(RtcLocalView.SurfaceView());
     }
     //other broadCasters will access the remote view
-    _users.forEach(
-      (int uid) => list.add(
+    _users.forEach((int uid) {
+      print('user adding remote view');
+      list.add(
         RtcRemoteView.SurfaceView(uid: uid),
-      ),
-    );
+      );
+    });
     print('the list of users: $list');
     return list;
   }

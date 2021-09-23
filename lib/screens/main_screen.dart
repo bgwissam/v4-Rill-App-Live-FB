@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -175,8 +176,6 @@ class _MainScreenState extends State<MainScreen>
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () async {
-                        print(
-                            'the token: ${streamingProvider[index]!.token.toString()}');
                         await Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -189,7 +188,7 @@ class _MainScreenState extends State<MainScreen>
                                 userRole: 'publisher',
                                 token:
                                     streamingProvider[index]!.token.toString(),
-                                userId: _userId, //widget.userId.toString(),
+                                userId: _userId_2, //widget.userId.toString(),
                                 resourceId: streamingProvider[index]!
                                     .resourceId
                                     .toString(),
@@ -425,6 +424,8 @@ class _MainScreenState extends State<MainScreen>
                                                     });
                                                     //Get token
                                                     _userRole = 'publisher';
+                                                    print(
+                                                        'the client Role: $_userRole');
 
                                                     token = await tokenGenerator
                                                         .createVideoAudioChannelToken(
