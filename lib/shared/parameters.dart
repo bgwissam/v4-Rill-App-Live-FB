@@ -42,6 +42,7 @@ class ImageVideoParams {
   static String TAGS = 'tags';
   static String NAME = 'imageName';
   static String TYPE = 'type';
+  static String THUMBNAIL = 'thumbnailUrl';
 }
 
 class LiveStreamingParams {

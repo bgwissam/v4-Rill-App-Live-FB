@@ -25,6 +25,7 @@ dependencies:
   file_picker: ^4.0.1
   video_player: ^2.1.15
   chewie: any
+  video_thumbnail: ^0.4.3
   cached_network_image: ^3.1.0
   sentry_flutter: 
   

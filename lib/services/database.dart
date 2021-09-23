@@ -194,7 +194,8 @@ class DatabaseService {
       String? name,
       String? url,
       List<String>? tags,
-      String? type}) async {
+      String? type,
+      String? thumbnailUrl}) async {
     try {
       var result = await imageVideoCollection.add({
         ImageVideoParams.USER_ID: userId,
@@ -202,6 +203,7 @@ class DatabaseService {
         ImageVideoParams.URL: url,
         ImageVideoParams.TAGS: tags,
         ImageVideoParams.TYPE: type,
+        ImageVideoParams.THUMBNAIL: thumbnailUrl,
       }).then((value) => value.id);
       return result;
     } catch (e, stackTrace) {
@@ -216,13 +218,15 @@ class DatabaseService {
       String? userId,
       String? name,
       String? url,
-      List<String>? tags}) async {
+      List<String>? tags,
+      String? thumbnailUrl}) async {
     try {
       await imageVideoCollection.doc(uid).update({
         ImageVideoParams.USER_ID: userId,
         ImageVideoParams.NAME: name,
         ImageVideoParams.URL: url,
         ImageVideoParams.TAGS: tags,
+        ImageVideoParams.THUMBNAIL: thumbnailUrl,
       });
       print('$name has been updated');
       return '$name has been updated';
@@ -236,13 +240,13 @@ class DatabaseService {
   List<ImageVideoModel?> _mapImageFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return ImageVideoModel(
-        uid: doc.id,
-        userId: (doc.data() as Map)[ImageVideoParams.USER_ID],
-        name: (doc.data() as Map)[ImageVideoParams.NAME],
-        url: (doc.data() as Map)[ImageVideoParams.URL],
-        tags: (doc.data() as Map)[ImageVideoParams.TAGS],
-        type: (doc.data() as Map)[ImageVideoParams.TYPE],
-      );
+          uid: doc.id,
+          userId: (doc.data() as Map)[ImageVideoParams.USER_ID],
+          name: (doc.data() as Map)[ImageVideoParams.NAME],
+          url: (doc.data() as Map)[ImageVideoParams.URL],
+          tags: (doc.data() as Map)[ImageVideoParams.TAGS],
+          type: (doc.data() as Map)[ImageVideoParams.TYPE],
+          videoThumbnailurl: (doc.data() as Map)[ImageVideoParams.THUMBNAIL]);
     }).toList();
   }
 

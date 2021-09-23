@@ -1,8 +1,12 @@
+import 'dart:async';
 import 'dart:io';
-
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rillliveapp/models/file_model.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:path/path.dart' as Path;
 import 'package:video_compress/video_compress.dart';
@@ -55,10 +59,11 @@ class StorageData {
   }
 
   //Upload file to firebase storage
-  Future<String> uploadFile(
+  Future<Map<String, dynamic>> uploadFile(
       {MediaInfo? mfile, XFile? xfile, String? folderName}) async {
     String fileUrl = '';
-
+    String thumbnailUrl = '';
+    Map<String, dynamic> result;
     try {
       if (mfile != null) {
         storageReferece = FirebaseStorage.instance;
@@ -68,8 +73,27 @@ class StorageData {
 
         UploadTask uploadTask = ref.putFile(File(mfile.path!));
         var downloadUrl = await (await uploadTask).ref.getDownloadURL();
+
         fileUrl = downloadUrl.toString();
-        return fileUrl;
+        //generate thumnail
+        var thumbnailImage = await generateThumbnailUrl(fileUrl);
+        //upload image and get url
+        if (thumbnailImage != null) {
+          storageReferece = FirebaseStorage.instance;
+          Reference ref = storageReferece
+              .ref()
+              .child('thumbnails/${Path.basename(thumbnailImage.path)}');
+
+          UploadTask uploadTask = ref.putFile(File(thumbnailImage.path));
+          var downloadUrlThumbnail =
+              await (await uploadTask).ref.getDownloadURL();
+          thumbnailUrl = downloadUrlThumbnail.toString();
+        }
+        result = {
+          'videoUrl': fileUrl,
+          'imageUrl': thumbnailUrl,
+        };
+        return result;
       }
       if (xfile != null) {
         storageReferece = FirebaseStorage.instance;
@@ -80,14 +104,36 @@ class StorageData {
         UploadTask uploadTask = ref.putFile(File(xfile.path));
         var downloadUrl = await (await uploadTask).ref.getDownloadURL();
         fileUrl = downloadUrl.toString();
-        return fileUrl;
+
+        result = {'imageUrl': fileUrl};
+        return result;
       }
-      return fileUrl;
+      //In case null value were received
+      result = {
+        'videoUrl': '',
+        'imageUrl': '',
+      };
+
+      return result;
     } catch (e, stackTrace) {
       print('Error uploading file: $e');
       await Sentry.captureException(e, stackTrace: stackTrace);
-      return e.toString();
+      result = {'error': e.toString()};
+      return result;
     }
+  }
+
+  //Generate thumbnail image from a video url
+  Future<File?> generateThumbnailUrl(String videoUrl) async {
+    final fileName = await VideoThumbnail.thumbnailFile(
+        video: videoUrl,
+        thumbnailPath: (await getTemporaryDirectory()).path,
+        imageFormat: ImageFormat.JPEG,
+        maxHeight: 220,
+        quality: 25);
+
+    var file = File(fileName!);
+    return file;
   }
 
   //Query from bucket

@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
+
 class ImageVideoModel {
   String? uid;
   String? userId;
@@ -37,4 +40,32 @@ class StreamingModel {
       this.thumbnailUrl,
       this.resourceId,
       this.sid});
+}
+
+class ThumbnailRequest {
+  String video;
+  String thumbnailPath;
+  ImageFormat imageFormat;
+  int maxHeight;
+  int maxWidth;
+  int timeMs;
+  int quality;
+  ThumbnailRequest({
+    required this.video,
+    required this.thumbnailPath,
+    required this.imageFormat,
+    required this.maxHeight,
+    required this.maxWidth,
+    required this.timeMs,
+    required this.quality,
+  });
+}
+
+class ThumbnailResult {
+  Image? image;
+  int? dataSize;
+  int? height;
+  int? width;
+
+  ThumbnailResult({this.image, this.dataSize, this.height, this.width});
 }

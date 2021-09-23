@@ -608,37 +608,6 @@ class _MainScreenState extends State<MainScreen>
                                   ],
                                 ),
                               ),
-
-                              // DecoratedBox(
-                              //   decoration: buttonStyle5,
-                              //   child: ElevatedButton(
-                              //       onPressed: () async {
-                              //         if (_formKey.currentState!.validate()) {
-                              //           if (_channelName != null) {
-                              //             _userRole = 'subscriber';
-                              //             //await _getToken();
-                              //             await Navigator.push(
-                              //               context,
-                              //               MaterialPageRoute(
-                              //                 builder: (context) => LiveStreaming(
-                              //                   token: token,
-                              //                   channelName: _channelName,
-                              //                   userRole: _userRole,
-                              //                   userId: _userId,
-                              //                 ),
-                              //               ),
-                              //             );
-                              //           }
-                              //         }
-                              //       },
-                              //       style: ElevatedButton.styleFrom(
-                              //         primary: Colors.transparent,
-                              //         shape: RoundedRectangleBorder(
-                              //           borderRadius: BorderRadius.circular(10),
-                              //         ),
-                              //       ),
-                              //       child: const Text('Join')),
-                              // ),
                             ],
                           ),
                         )),
@@ -687,7 +656,7 @@ class _MainScreenState extends State<MainScreen>
                         await db.createImageVideo(
                             name: 'example',
                             userId: widget.userId,
-                            url: result,
+                            url: result['imageUrl'],
                             tags: ['cat', 'cute'],
                             type: 'image');
                       }
@@ -721,49 +690,68 @@ class _MainScreenState extends State<MainScreen>
       showDialog(
           context: context,
           builder: (builder) {
-            return AlertDialog(
-              content: Semantics(
-                child: AspectRatioVideo(_controller),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () async {
-                    //compress selected video
-                    await VideoCompress.setLogLevel(0);
-                    final MediaInfo? info = await VideoCompress.compressVideo(
-                        File(file.path).path,
-                        quality: VideoQuality.MediumQuality,
-                        deleteOrigin: true,
-                        includeAudio: true);
-                    if (info != null) {
-                      print('Info Path: ${info.path}');
-                    }
-                    //upload compressed video
-                    var result = await storageData.uploadFile(
-                        mfile: info, folderName: 'videos', xfile: null);
-                    if (result.isNotEmpty) {
-                      //save video file url
-                      await db.createImageVideo(
-                          name: 'example name',
-                          userId: widget.userId,
-                          url: result,
-                          tags: ['awsome', 'creative'],
-                          type: 'video');
-                    }
-                    Navigator.pop(context);
-                  },
-                  child: Text('Upload', style: textStyle_3),
+            return StatefulBuilder(builder: (context, setState) {
+              return Stack(alignment: Alignment.topCenter, children: [
+                AlertDialog(
+                  content: Semantics(
+                    child: AspectRatioVideo(_controller),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () async {
+                        setState(() {
+                          _isUploadingFile = true;
+                        });
+                        //compress selected video
+                        await VideoCompress.setLogLevel(0);
+                        final MediaInfo? info =
+                            await VideoCompress.compressVideo(
+                                File(file.path).path,
+                                quality: VideoQuality.LowQuality,
+                                deleteOrigin: true,
+                                includeAudio: true);
+                        if (info != null) {
+                          print('Info Path: ${info.path}');
+                        }
+                        //upload compressed video
+                        var result = await storageData.uploadFile(
+                            mfile: info, folderName: 'videos', xfile: null);
+                        if (result.isNotEmpty) {
+                          //save video file url
+                          await db.createImageVideo(
+                              name: 'example name',
+                              userId: widget.userId,
+                              url: result['videoUrl'],
+                              tags: ['awsome', 'creative'],
+                              type: 'video',
+                              thumbnailUrl: result['imageUrl']);
+                        }
+                        setState(() {
+                          _isUploadingFile = false;
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: Text('Upload', style: textStyle_3),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        await _controller!.pause();
+                        // await _controller!.dispose();
+                        Navigator.pop(context);
+                      },
+                      child: Text('Cancel', style: textStyle_3),
+                    )
+                  ],
                 ),
-                TextButton(
-                  onPressed: () async {
-                    await _controller!.pause();
-                    // await _controller!.dispose();
-                    Navigator.pop(context);
-                  },
-                  child: Text('Cancel', style: textStyle_3),
-                )
-              ],
-            );
+                _isUploadingFile
+                    ? const Center(
+                        child: LoadingAmination(
+                          animationType: 'ThreeInOut',
+                        ),
+                      )
+                    : const SizedBox.shrink()
+              ]);
+            });
           });
       return const Center(
         child: Text('Error retreiving Video'),
@@ -845,38 +833,67 @@ class _MainScreenState extends State<MainScreen>
                     borderRadius: BorderRadius.circular(10.0)),
               );
             } else {
-              return FutureBuilder(
-                  future: initializeVideo(
-                      imageVideoProvider[index]!.url.toString()),
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasData) {
-                      return GestureDetector(
-                          onTap: () async {
-                            print('tapping tapping');
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (builder) => VideoPlayerPage(
-                                    videoController:
-                                        VideoPlayerController.network(
-                                            imageVideoProvider[index]!
-                                                .url
-                                                .toString())),
-                              ),
-                            );
-                          },
-                          child: Chewie(
-                            controller: snapshot.data,
-                          ));
-                    } else if (snapshot.hasError) {
-                      print('Error playing video: ${snapshot.error}');
-                      return Center(child: Text(snapshot.error.toString()));
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  });
+              return Container(
+                alignment: Alignment.center,
+                child: InkWell(
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => VideoPlayerPage(
+                            videoController: VideoPlayerController.network(
+                                imageVideoProvider[index]!.url.toString())),
+                      ),
+                    );
+                  },
+                  child: CachedNetworkImage(
+                      imageUrl: imageVideoProvider[index]!.videoThumbnailurl!,
+                      progressIndicatorBuilder: (context, imageUrl, progress) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: LinearProgressIndicator(
+                            minHeight: 12.0,
+                          ),
+                        );
+                      }),
+                ),
+                decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(10.0)),
+              );
+
+              // return FutureBuilder(
+              //     future: initializeVideo(
+              //         imageVideoProvider[index]!.url.toString()),
+              //     builder: (context, AsyncSnapshot snapshot) {
+              //       if (snapshot.hasData) {
+              //         return GestureDetector(
+              //             onTap: () async {
+              //               print('tapping tapping');
+              //               await Navigator.push(
+              //                 context,
+              //                 MaterialPageRoute(
+              //                   builder: (builder) => VideoPlayerPage(
+              //                       videoController:
+              //                           VideoPlayerController.network(
+              //                               imageVideoProvider[index]!
+              //                                   .url
+              //                                   .toString())),
+              //                 ),
+              //               );
+              //             },
+              //             child: Chewie(
+              //               controller: snapshot.data,
+              //             ));
+              //       } else if (snapshot.hasError) {
+              //         print('Error playing video: ${snapshot.error}');
+              //         return Center(child: Text(snapshot.error.toString()));
+              //       } else {
+              //         return const Center(
+              //           child: CircularProgressIndicator(),
+              //         );
+              //       }
+              //     });
             }
           }
           return const Center(
