@@ -9,7 +9,7 @@ class UserModel {
   String? dob;
   String? bioDescription;
   bool? isActive;
-  List<String>? roles;
+  List<dynamic>? roles;
   String? error;
   UserModel(
       {this.userId,

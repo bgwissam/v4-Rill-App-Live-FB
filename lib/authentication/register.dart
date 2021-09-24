@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:rillliveapp/authentication/email_confirmation.dart';
+import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/services/auth.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
@@ -11,8 +12,8 @@ import 'package:rillliveapp/shared/color_styles.dart';
 enum ImageSourceType { gallery, camera }
 
 class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
-
+  const Register({Key? key, this.userModel}) : super(key: key);
+  final UserModel? userModel;
   @override
   RegisterState createState() => RegisterState();
 }
@@ -139,40 +140,47 @@ class RegisterState extends State<Register> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text('Create Account'),
+        title: widget.userModel == null
+            ? Text('Create Account')
+            : Text('Update Account'),
         backgroundColor: color_4,
         actions: [
           TextButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                var result = await as.signUp(
-                    userName: username,
-                    password: password,
-                    firstName: firstname,
-                    lastName: lastname,
-                    emailAddress: emailAddress,
-                    avatarUrl: avatarUrl,
-                    bioDescription: bioDescription,
-                    mobileNumber: mobile,
-                    address: address);
-                print('the result of registering is: $result');
-                if (result.isNotEmpty) {
-                  //Navigatore to verification page in order to enter OTP
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (builder) => EmailConfirmation(),
-                    ),
-                  );
-                } else {
-                  setState(() {
-                    errorMessage = 'Email address already exists';
-                  });
+                //in case it's a new user
+                if (widget.userModel == null) {
+                  var result = await as.signUp(
+                      userName: username,
+                      password: password,
+                      firstName: firstname,
+                      lastName: lastname,
+                      emailAddress: emailAddress,
+                      avatarUrl: avatarUrl,
+                      bioDescription: bioDescription,
+                      mobileNumber: mobile,
+                      address: address);
+                  print('the result of registering is: $result');
+                  if (result.isNotEmpty) {
+                    //Navigatore to verification page in order to enter OTP
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => EmailConfirmation(),
+                      ),
+                    );
+                  } else {
+                    setState(() {
+                      errorMessage = 'Email address already exists';
+                    });
+                  }
                 }
               }
+              //In case we are updating a current user
+              else {}
             },
             child: Text(
-              'Save',
+              widget.userModel == null ? 'Save' : 'Update',
               style: TextStyle(color: color_9),
             ),
           ),
@@ -197,14 +205,12 @@ class RegisterState extends State<Register> {
                         radius: 70,
                         backgroundColor: Colors.black12,
                         child: image == null
-                            ? Icon(
+                            ? const Icon(
                                 Icons.add_a_photo_outlined,
                                 size: 40,
                                 color: Colors.white,
                               )
-                            : Material(
-                                type: MaterialType.circle,
-                                child: Stack(children: [])),
+                            : const Text('Image selected'),
                       ),
                     ),
                   ),
@@ -217,81 +223,89 @@ class RegisterState extends State<Register> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           //Username
-                          TextFormField(
-                            initialValue: '',
-                            decoration: const InputDecoration(
-                                hintText: 'User Name', filled: false),
-                            validator: (val) =>
-                                val != null ? null : 'User name is required',
-                            onChanged: (val) {
-                              setState(() {
-                                username = val;
-                              });
-                            },
-                          ),
+                          widget.userModel == null
+                              ? TextFormField(
+                                  initialValue: '',
+                                  decoration: const InputDecoration(
+                                      hintText: 'User Name', filled: false),
+                                  validator: (val) => val != null
+                                      ? null
+                                      : 'User name is required',
+                                  onChanged: (val) {
+                                    setState(() {
+                                      username = val;
+                                    });
+                                  },
+                                )
+                              : SizedBox.shrink(),
                           //Password
-                          TextFormField(
-                            keyboardType: TextInputType.text,
-                            controller: passwordController,
-                            enableInteractiveSelection: true,
-                            obscureText: !showPassword,
-                            decoration: InputDecoration(
-                              hintText: 'Password',
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  showPassword
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    showPassword = !showPassword;
-                                  });
-                                },
-                              ),
-                            ),
-                            validator: (val) =>
-                                val != null ? null : 'Password is required',
-                            onChanged: (val) {
-                              setState(() {
-                                password = val;
-                              });
-                            },
-                          ),
+                          widget.userModel == null
+                              ? TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  controller: passwordController,
+                                  enableInteractiveSelection: true,
+                                  obscureText: !showPassword,
+                                  decoration: InputDecoration(
+                                    hintText: 'Password',
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        showPassword
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          showPassword = !showPassword;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  validator: (val) => val != null
+                                      ? null
+                                      : 'Password is required',
+                                  onChanged: (val) {
+                                    setState(() {
+                                      password = val;
+                                    });
+                                  },
+                                )
+                              : SizedBox.shrink(),
                           //Email address
-                          TextFormField(
-                            initialValue: '',
-                            decoration: const InputDecoration(
-                                hintText: 'Email Address', filled: false),
-                            validator: (val) => val != null
-                                ? null
-                                : 'Email address is required',
-                            onChanged: (val) {
-                              setState(() {
-                                emailAddress = val;
-                              });
-                            },
-                          ),
-                          SizedBox(
+                          widget.userModel == null
+                              ? TextFormField(
+                                  initialValue: '',
+                                  decoration: const InputDecoration(
+                                      hintText: 'Email Address', filled: false),
+                                  validator: (val) => val != null
+                                      ? null
+                                      : 'Email address is required',
+                                  onChanged: (val) {
+                                    setState(() {
+                                      emailAddress = val;
+                                    });
+                                  },
+                                )
+                              : SizedBox.shrink(),
+                          const SizedBox(
                             height: 15,
                           ),
-                          Divider(
+                          const Divider(
                             height: 5,
                             thickness: 2,
                             color: Colors.transparent,
                           ),
 
-                          Text(
+                          const Text(
                             "Personal Details",
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w500),
                           ),
-                          SizedBox(height: 15),
+                          const SizedBox(height: 15),
                           //FirstName
                           TextFormField(
-                            initialValue: '',
+                            initialValue: widget.userModel?.firstName,
                             decoration: const InputDecoration(
-                                hintText: 'First  Name', filled: false),
+                                hintText: 'First Name', filled: false),
                             validator: (val) =>
                                 val != null ? null : 'First Name is required',
                             onChanged: (val) {
@@ -302,7 +316,7 @@ class RegisterState extends State<Register> {
                           ),
                           //Last name
                           TextFormField(
-                            initialValue: '',
+                            initialValue: widget.userModel?.lastName,
                             decoration: const InputDecoration(
                                 hintText: 'Last Name', filled: false),
                             validator: (val) =>
@@ -330,7 +344,7 @@ class RegisterState extends State<Register> {
                               });
                             },
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
 
@@ -346,21 +360,18 @@ class RegisterState extends State<Register> {
                               mobile = phone.toString();
                             },
                           ),
-
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
-
                           //DateOfBirth
-
                           Row(
                             children: [
-                              Text(
+                              const Text(
                                 'Date Of Birth :',
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 16),
                               ),
-                              SizedBox(height: 18),
+                              const SizedBox(height: 15),
                               TextButton(
                                 child: Text(
                                   _selectedDate ==
@@ -378,7 +389,7 @@ class RegisterState extends State<Register> {
                               ? Expanded(
                                   child: Text(errorMessage, style: errorText),
                                 )
-                              : SizedBox.shrink(),
+                              : const SizedBox.shrink(),
                         ],
                       ),
                     ),

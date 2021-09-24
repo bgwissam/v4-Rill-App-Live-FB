@@ -34,7 +34,6 @@ class _WrapperState extends State<Wrapper> {
   //check if user is verified
   Future<String?> checkSignedInUser() async {
     var userResult = FirebaseAuth.instance.currentUser;
-    print('User verified: $userResult');
     if (userResult != null) {
       if (userResult.emailVerified) {
         _isUserVerified = true;
@@ -45,31 +44,43 @@ class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
     currentUser = Provider.of<UserModel?>(context);
-    print('User signed In: ${currentUser?.userId}');
     if (currentUser?.userId != null) {
       setState(() {
         _isUserSignedIn = true;
       });
     }
     return _isUserSignedIn
-        ? MultiProvider(providers: [
-            StreamProvider<List<ImageVideoModel?>>.value(
-              value: db.getImageList(),
-              initialData: [],
-              catchError: (context, error) {
-                print('Error fetching image stream: $error');
-                return [];
-              },
-            ),
-            StreamProvider<List<StreamingModel?>>.value(
-              value: db.getStreamingVidoes(),
-              initialData: [],
-              catchError: (context, error) {
-                print('Error fetching image stream: $error');
-                return [];
-              },
-            ),
-          ], child: MainScreen(userId: currentUser?.userId))
+        ? MultiProvider(
+            providers: [
+                StreamProvider<UserModel>.value(
+                  value: db.streamUserById(userId: currentUser?.userId),
+                  initialData: UserModel(),
+                  catchError: (context, error) {
+                    print('Error Current User Stream: $error');
+                    return UserModel();
+                  },
+                ),
+                StreamProvider<List<ImageVideoModel?>>.value(
+                  value: db.getImageList(),
+                  initialData: [],
+                  catchError: (context, error) {
+                    print('Error fetching all feed: $error');
+                    return [];
+                  },
+                ),
+                StreamProvider<List<StreamingModel?>>.value(
+                  value: db.getStreamingVidoes(),
+                  initialData: [],
+                  catchError: (context, error) {
+                    print('Error fetching image stream: $error');
+                    return [];
+                  },
+                ),
+              ],
+            child: MainScreen(
+              userId: currentUser?.userId,
+              currenUser: currentUser,
+            ))
         : const SignInSignUp();
   }
 }

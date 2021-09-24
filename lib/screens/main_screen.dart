@@ -12,6 +12,7 @@ import 'package:rillliveapp/controller/live_streaming.dart';
 import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/controller/token_controller.dart';
 import 'package:rillliveapp/models/file_model.dart';
+import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/screens/account_screen.dart';
 import 'package:rillliveapp/screens/message_screen.dart';
 import 'package:rillliveapp/screens/search_screen.dart';
@@ -37,8 +38,10 @@ class MainScreen extends StatefulWidget {
   const MainScreen({
     Key? key,
     this.userId,
+    this.currenUser,
   }) : super(key: key);
   final String? userId;
+  final UserModel? currenUser;
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -140,7 +143,7 @@ class _MainScreenState extends State<MainScreen>
       _mainFeed(),
       const SearchScreen(),
       MessagesScreen(userId: widget.userId),
-      AccountScreen(userId: widget.userId),
+      AccountProvider(userId: widget.userId),
     ];
   }
 

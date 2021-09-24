@@ -1,19 +1,57 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rillliveapp/authentication/register.dart';
 import 'package:rillliveapp/authentication/signin.dart';
+import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/services/auth.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
+import 'package:rillliveapp/shared/followers.dart';
 import 'package:rillliveapp/shared/image_viewer.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
-import 'package:rillliveapp/shared/loading_view.dart';
 import 'package:rillliveapp/shared/video_viewer.dart';
 import 'package:rillliveapp/wrapper.dart';
 import 'package:video_player/video_player.dart';
 import 'package:path/path.dart' as p;
+
+class AccountProvider extends StatelessWidget {
+  const AccountProvider({Key? key, this.userId}) : super(key: key);
+  final String? userId;
+  @override
+  Widget build(BuildContext context) {
+    print('the user id: $userId');
+    DatabaseService db = DatabaseService();
+    return MultiProvider(
+      providers: [
+        //All user feed provider
+        StreamProvider<List<ImageVideoModel?>>.value(
+          value: db.getUserImageVideoList(userId: userId),
+          initialData: [],
+          catchError: (context, error) {
+            print('Error fetching user feed: $error');
+            return [];
+          },
+        ),
+        //All user feed live recording
+        StreamProvider<List<StreamingModel?>>.value(
+          value: db.getUserStreamingList(userId: userId),
+          initialData: [],
+          catchError: (context, error) {
+            print('Error fetching user streaming data: $error');
+            return [];
+          },
+        )
+      ],
+      child: AccountScreen(
+        userId: userId,
+      ),
+    );
+  }
+}
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key, this.userId}) : super(key: key);
@@ -46,19 +84,20 @@ class _AccountScreenState extends State<AccountScreen>
   late String emailAddress = '';
   late String phoneNumber;
   late DateTime dob;
-
+  //Stream provider
+  var userProvider;
+  var feedProvider;
+  var streamProvider;
   @override
   void initState() {
     super.initState();
-
     _tabController = TabController(length: 3, vsync: this);
-    getAllBucketData = _getAllObjects();
-    getSubscriptionFeed = _getSubscriptionChannels();
-    _getCurrentUser();
   }
 
   @override
   Widget build(BuildContext context) {
+    userProvider = Provider.of<UserModel>(context);
+    feedProvider = Provider.of<List<ImageVideoModel?>>(context);
     Size size = MediaQuery.of(context).size;
     return widget.userId != null
         ? SizedBox(
@@ -101,37 +140,94 @@ class _AccountScreenState extends State<AccountScreen>
                               children: <Widget>[
                                 //Followers
                                 SizedBox(
-                                  child: InkWell(
-                                    onTap: () async {},
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text('00', style: textStyle_3),
-                                        Text('Followers', style: textStyle_2)
-                                      ],
+                                  child: StreamProvider<List<UserModel>>.value(
+                                    value: db.getFollowsPerUser(
+                                        userId: userProvider.userId,
+                                        collection: 'followers'),
+                                    initialData: [],
+                                    catchError: (context, error) {
+                                      print('An error fetching user: $error');
+                                      return [];
+                                    },
+                                    child: InkWell(
+                                      onTap: () async {
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (builder) {
+                                              return Followers(
+                                                  followers: true,
+                                                  userModel: userProvider);
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text('00', style: textStyle_3),
+                                          Text('Followers', style: textStyle_2)
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                                 SizedBox(
-                                  child: CircleAvatar(
-                                    radius: 28,
-                                    backgroundImage:
-                                        AssetImage("assets/images/g.png"),
-                                  ),
+                                  child: userProvider.avatarUrl != null
+                                      ? Container(
+                                          child: CachedNetworkImage(
+                                            imageUrl: userProvider.avatarUrl!,
+                                            progressIndicatorBuilder:
+                                                (context, imageUrl, progress) {
+                                              return const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 10.0),
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            },
+                                          ),
+                                        )
+                                      : const CircleAvatar(
+                                          radius: 28,
+                                          backgroundImage:
+                                              AssetImage("assets/images/g.png"),
+                                        ),
                                 ),
                                 SizedBox(
-                                  child: InkWell(
-                                    onTap: () async {},
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text('00', style: textStyle_3),
-                                        Text('Following', style: textStyle_2)
-                                      ],
+                                  child: StreamProvider<List<UserModel>>.value(
+                                    value: db.getFollowsPerUser(
+                                        userId: userProvider.userId,
+                                        collection: 'followers'),
+                                    initialData: [],
+                                    catchError: (context, error) {
+                                      print('An error fetching user: $error');
+                                      return [];
+                                    },
+                                    child: InkWell(
+                                      onTap: () async {
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (builder) {
+                                              return Followers(
+                                                  followers: false,
+                                                  userModel: userProvider);
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text('00', style: textStyle_3),
+                                          Text('Following', style: textStyle_2)
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -142,12 +238,13 @@ class _AccountScreenState extends State<AccountScreen>
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               //User name
-                              firstName != null
+                              userProvider.firstName != null
                                   ? Expanded(
-                                      child: Text('Hey $firstName',
+                                      child: Text(
+                                          'Hey ${userProvider.firstName!}',
                                           style: textStyle_3),
                                     )
-                                  : Text('')
+                                  : Text('Unknown User', style: textStyle_3)
                             ],
                           ),
                           Divider(
@@ -270,11 +367,16 @@ class _AccountScreenState extends State<AccountScreen>
                                       left: 0, right: 0, bottom: 4)),
                               tabs: [
                                 Tab(
-                                  text: 'Feed (42)',
+                                  text: feedProvider != null &&
+                                          feedProvider.length > 0
+                                      ? 'Feed (${feedProvider.length})'
+                                      : 'Feed',
                                 ),
                                 Tab(
-                                  text: 'Live Recordings (42)',
-                                ),
+                                    text: streamProvider != null &&
+                                            streamProvider.length > 0
+                                        ? 'Live Recording (${streamProvider.length})'
+                                        : 'Live Recording'),
                                 Tab(
                                   icon: Icon(
                                     Icons.settings,
@@ -330,159 +432,120 @@ class _AccountScreenState extends State<AccountScreen>
   }
 
   Widget _allFeeds() {
-    return FutureBuilder(
-        future: getAllBucketData,
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData && snapshot.data.isNotEmpty) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              late String extension;
-              _isLoadingStream = false;
-              late ChewieController _chewieController;
-              return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 5,
-                    childAspectRatio: 0.5),
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  if (snapshot.data[index]['type'] == 'image') {
-                    return Container(
-                      alignment: Alignment.center,
-                      child: InkWell(
-                        onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (builder) => ImageViewer(
-                                    imageUrl: snapshot.data[index]['value'])),
-                          );
-                        },
-                        child: CachedNetworkImage(
-                            imageUrl: snapshot.data[index]['value'],
-                            progressIndicatorBuilder:
-                                (context, imageUrl, progress) {
-                              return const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                child: LinearProgressIndicator(
-                                  minHeight: 12.0,
-                                ),
-                              );
-                            }),
+    late String extension;
+    _isLoadingStream = false;
+    late ChewieController _chewieController;
+
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          mainAxisSpacing: 5,
+          crossAxisSpacing: 5,
+          childAspectRatio: 0.5),
+      itemCount: feedProvider.length,
+      itemBuilder: (context, index) {
+        if (feedProvider[index]?.type == 'image') {
+          return Container(
+            alignment: Alignment.center,
+            child: InkWell(
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (builder) =>
+                          ImageViewer(imageUrl: feedProvider[index]!.url!)),
+                );
+              },
+              child: CachedNetworkImage(
+                  imageUrl: feedProvider[index]!.url!,
+                  progressIndicatorBuilder: (context, imageUrl, progress) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      child: LinearProgressIndicator(
+                        minHeight: 12.0,
                       ),
-                      decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(10.0)),
                     );
-                  } else {
-                    _chewieController = ChewieController(
-                      videoPlayerController: snapshot.data[index]['value'],
-                      autoInitialize: false,
-                      autoPlay: false,
-                      looping: false,
-                      showControls: false,
-                      allowMuting: true,
-                    );
-                    return InkWell(
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (builder) => VideoPlayerPage(
-                                videoController: snapshot.data[index]['value']),
+                  }),
+            ),
+            decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(10.0)),
+          );
+        } else {
+          return InkWell(
+            onTap: () async {
+              // await Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (builder) => VideoPlayerPage(
+              //         videoController: feedProvider[index].url!),
+              //   ),
+              // );
+            },
+            child: Container(
+              alignment: Alignment.center,
+              child: feedProvider[index]!.url != null
+                  ? CachedNetworkImage(
+                      imageUrl: feedProvider[index]!.videoThumbnailurl!,
+                      progressIndicatorBuilder: (context, imageUrl, progress) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: LinearProgressIndicator(
+                            minHeight: 12.0,
                           ),
                         );
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: snapshot.data[index]['value'].value.isInitialized
-                            ? Chewie(controller: _chewieController)
-                            : const Text('Not initialized'),
-                      ),
-                    );
-                  }
-                },
-              );
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: LoadingView(),
-              );
-            } else {
-              return const Center(
-                child: Text('Please wait...'),
-              );
-            }
-          } else if (snapshot.hasError) {
-            print('Error getting Stream: ${snapshot.error}');
-            return Center(
-              child: Text(
-                'Error getting Stream: ${snapshot.error}',
-              ),
-            );
-          } else {
-            return const LoadingAmination(
-              animationType: 'ThreeInOut',
-            );
-          }
-        });
+                      })
+                  : const Text('Not initialized'),
+            ),
+          );
+        }
+      },
+    );
   }
 
   //Subscribed feed section
   Widget _liveFeed() {
-    return FutureBuilder(
-        future: getSubscriptionFeed,
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData && snapshot.data.isNotEmpty) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 1),
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    late String extension;
-                    _isLoadingStream = false;
-                    late ChewieController _chewieController;
-                    _chewieController = ChewieController(
-                      videoPlayerController: snapshot.data[index]['value'],
-                      autoInitialize: false,
-                      autoPlay: false,
-                      looping: false,
-                      showControls: false,
-                      allowMuting: true,
-                    );
-                    return InkWell(
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (builder) => VideoPlayerPage(
-                                videoController: snapshot.data[index]['value']),
+    return streamProvider != null
+        ? GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 1),
+            itemCount: streamProvider?.length,
+            itemBuilder: (context, index) {
+              late String extension;
+              _isLoadingStream = false;
+
+              return InkWell(
+                onTap: () async {
+                  // await Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (builder) => VideoPlayerPage(
+                  //         videoController: snapshot.data[index]['value']),
+                  //   ),
+                  // );
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  child: CachedNetworkImage(
+                      imageUrl: streamProvider[index]!.videoThumbnailurl!,
+                      progressIndicatorBuilder: (context, imageUrl, progress) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: LinearProgressIndicator(
+                            minHeight: 12.0,
                           ),
                         );
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: snapshot.data[index]['value'].value.isInitialized
-                            ? Chewie(controller: _chewieController)
-                            : const Text('Not initialized'),
-                      ),
-                    );
-                  });
-            } else {
-              return const LoadingAmination(
-                animationType: 'ThreeInOut',
+                      }),
+                ),
               );
-            }
-          } else {
-            return const SizedBox(
-                child: Center(
-              child: Text('You have not subscribed to any channel'),
-            ));
-          }
-        });
+            })
+        : Center(
+            child:
+                Text('There are no available live streams', style: textStyle_3),
+          );
   }
 
   //Settings widget
@@ -495,21 +558,30 @@ class _AccountScreenState extends State<AccountScreen>
         //Account Settings
         Container(
           width: size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 0.5),
             ),
           ),
           padding: EdgeInsets.all(12),
           child: InkWell(
-            onTap: () async {},
+            onTap: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (builder) => Register(
+                    userModel: userProvider,
+                  ),
+                ),
+              );
+            },
             child: Text('Account Settings', style: textStyle_1),
           ),
         ),
         //Analatics
         Container(
           width: size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 0.5),
             ),
@@ -523,7 +595,7 @@ class _AccountScreenState extends State<AccountScreen>
         //Privacy
         Container(
           width: size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 0.5),
             ),
@@ -538,7 +610,7 @@ class _AccountScreenState extends State<AccountScreen>
         Container(
           width: size.width,
           decoration: BoxDecoration(
-            border: Border(
+            border: const Border(
               bottom: BorderSide(width: 0.5),
             ),
           ),
@@ -580,7 +652,7 @@ class _AccountScreenState extends State<AccountScreen>
         //Sign Out
         Container(
           width: size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 0.5),
             ),
@@ -601,62 +673,6 @@ class _AccountScreenState extends State<AccountScreen>
         ),
       ],
     );
-  }
-
-  //Get all object from bucket
-  Future<List<dynamic>> _getAllObjects() async {
-    late String extension;
-    var listObjects = [];
-    List<Map<String, dynamic>> listUrls = [];
-    var result = await storageData.listAllItems();
-
-    // result.items.forEach((e) {
-    //   listObjects.add(e.key);
-    // });
-    // if (listObjects.isNotEmpty) {
-    //   for (var key in listObjects) {
-    //     var file = await storageData.getFileUrl(key);
-
-    //     extension = p.extension(key, 2);
-
-    //     if (extension == '.mp4' || extension == '.3gp' || extension == '.mkv') {
-    //       _videoPlayerController = VideoPlayerController.network(file!);
-    //       await _videoPlayerController.initialize();
-    //       listUrls.add({'value': _videoPlayerController, 'type': 'video'});
-    //     } else {
-    //       listUrls.add({'value': file, 'type': 'image'});
-    //     }
-    //   }
-    //   return listUrls;
-    // }
-    return listObjects;
-  }
-
-  //Get subscribed feeds
-  Future<List<dynamic>> _getSubscriptionChannels() async {
-    late String extension;
-    var listObjects = [];
-    List<Map<String, dynamic>> listUrls = [];
-    var result = await storageData.listAllItems();
-
-    // result.items.forEach((e) {
-    //   listObjects.add(e.key);
-    // });
-    // if (listObjects.isNotEmpty) {
-    //   for (var key in listObjects) {
-    //     var file = await storageData.getFileUrl(key);
-
-    //     extension = p.extension(key, 2);
-
-    //     if (extension == '.mp4' || extension == '.3gp' || extension == '.mkv') {
-    //       _videoPlayerController = VideoPlayerController.network(file!);
-    //       await _videoPlayerController.initialize();
-    //       listUrls.add({'value': _videoPlayerController, 'type': 'video'});
-    //     }
-    //   }
-    //   return listUrls;
-    // }
-    return listObjects;
   }
 
   //Get user details

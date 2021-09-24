@@ -46,14 +46,6 @@ class MyApp extends StatelessWidget {
             return null;
           },
         ),
-        // StreamProvider<List<ImageModel?>>.value(
-        //   value: db.getImageList(),
-        //   initialData: [],
-        //   catchError: (_, error) {
-        //     print('Error fetching image stream: $error');
-        //     return [];
-        //   },
-        // )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

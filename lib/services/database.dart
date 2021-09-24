@@ -16,6 +16,10 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('live_streaming');
   final CollectionReference imageVideoCollection =
       FirebaseFirestore.instance.collection('images_videos');
+  final CollectionReference followersCollection =
+      FirebaseFirestore.instance.collection('followers');
+  final CollectionReference followingCollection =
+      FirebaseFirestore.instance.collection('following');
 
   //Create a new a user
   Future<String> createUser({
@@ -33,7 +37,7 @@ class DatabaseService {
     List<String>? roles,
   }) async {
     try {
-      return await userModelCollection.add({
+      return await userModelCollection.doc(userId).set({
         UserParams.USER_ID: userId,
         UserParams.EMAIL_ADDRESS: emailAddress,
         UserParams.FIRST_NAME: firstName,
@@ -45,7 +49,7 @@ class DatabaseService {
         UserParams.ADDRESS: address,
         UserParams.IS_ACTIVE: true,
         UserParams.ROLES: ['normalUser']
-      }).then((value) => value.id);
+      }).then((value) => 'user has been saved successfully');
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
       throw e;
@@ -87,7 +91,7 @@ class DatabaseService {
     }
   }
 
-  //Map user data
+  //Map users data
   List<UserModel> _userDataFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return UserModel(
@@ -110,6 +114,24 @@ class DatabaseService {
     return userModelCollection.snapshots().map(_userDataFromSnapshot);
   }
 
+  //Stream user by id
+  Stream<UserModel> streamUserById({String? userId}) {
+    return userModelCollection.doc(userId).snapshots().map((doc) {
+      return UserModel(
+          userId: (doc.data()! as Map)[UserParams.USER_ID],
+          userName: (doc.data()! as Map)[UserParams.USER_NAME],
+          emailAddress: (doc.data()! as Map)[UserParams.EMAIL_ADDRESS],
+          firstName: (doc.data()! as Map)[UserParams.FIRST_NAME],
+          lastName: (doc.data()! as Map)[UserParams.LAST_NAME],
+          dob: (doc.data()! as Map)[UserParams.DOB],
+          avatarUrl: (doc.data()! as Map)[UserParams.AVATAR],
+          bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
+          phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
+          isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
+          roles: (doc.data()! as Map)[UserParams.ROLES]);
+    });
+  }
+
   //get a user by user id
   Future<UserModel> getUserByUserId({String? userId}) async {
     return UserModel();
@@ -117,6 +139,61 @@ class DatabaseService {
 
   //delete a user
   Future<void> deleteUserByUserId({String? userId}) async {}
+
+  //Add followers
+  Future<void> addFollowers(
+      {String? followerId,
+      String? userId,
+      String? followerFirstName,
+      String? followerLastName}) async {
+    try {
+      await userModelCollection.doc(userId).collection('followers').add({
+        UserParams.USER_ID: followerId,
+        UserParams.FIRST_NAME: followerFirstName,
+        UserParams.LAST_NAME: followerLastName,
+      });
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+    }
+  }
+
+  //Stream followers or followers
+  Stream<List<UserModel>> getFollowsPerUser(
+      {String? userId, String? collection}) {
+    return userModelCollection
+        .doc(userId)
+        .collection(collection!)
+        .snapshots()
+        .map(_userDataFromSnapshot
+
+            //       (snapshot) {
+            //   return snapshot.docs.map((doc) {
+            //     return UserModel(
+            //         userId: doc.data()[UserParams.USER_ID],
+            //         firstName: doc.data()[UserParams.FIRST_NAME],
+            //         lastName: doc.data()[UserParams.LAST_NAME]);
+            //   }).toList();
+            // }
+
+            );
+  }
+
+  //Add following
+  Future<void> addFollowing(
+      {String? followerId,
+      String? userId,
+      String? followerFirstName,
+      String? followerLastName}) async {
+    try {
+      await userModelCollection.doc(userId).collection('following').add({
+        UserParams.USER_ID: followerId,
+        UserParams.FIRST_NAME: followerFirstName,
+        UserParams.LAST_NAME: followerLastName,
+      });
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+    }
+  }
 
   //This section will handle uploading and retreiving data streams
   //Create a new data stream
@@ -172,6 +249,15 @@ class DatabaseService {
 
   Stream<List<StreamingModel?>> getStreamingVidoes() {
     return liveStreamingCollection.snapshots().map(_mapStreamsFromSnapshot);
+  }
+
+  //Streaming video per user
+  //stream image video files as per user
+  Stream<List<StreamingModel?>> getUserStreamingList({String? userId}) {
+    return imageVideoCollection
+        .where(UserParams.USER_ID, isEqualTo: userId)
+        .snapshots()
+        .map(_mapStreamsFromSnapshot);
   }
 
   //fetch all streaming videos
@@ -253,6 +339,14 @@ class DatabaseService {
   //Stream image file
   Stream<List<ImageVideoModel?>> getImageList() {
     return imageVideoCollection.snapshots().map(_mapImageFromSnapshot);
+  }
+
+  //stream image video files as per user
+  Stream<List<ImageVideoModel?>> getUserImageVideoList({String? userId}) {
+    return imageVideoCollection
+        .where(UserParams.USER_ID, isEqualTo: userId)
+        .snapshots()
+        .map(_mapImageFromSnapshot);
   }
 
   //Delete Image
