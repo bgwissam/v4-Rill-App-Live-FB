@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:rillliveapp/models/user_model.dart';
+import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 
 class CommentAdd extends StatefulWidget {
-  const CommentAdd({Key? key}) : super(key: key);
-
+  const CommentAdd({Key? key, this.userModel, this.collection, this.fileId})
+      : super(key: key);
+  final UserModel? userModel;
+  final String? collection;
+  final String? fileId;
   @override
   _CommentAddState createState() => _CommentAddState();
 }
 
 class _CommentAddState extends State<CommentAdd> {
   late String _newComment;
+  TextEditingController _commentController = TextEditingController();
+  //services
+  DatabaseService db = DatabaseService();
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -26,7 +34,7 @@ class _CommentAddState extends State<CommentAdd> {
               Expanded(
                 flex: 3,
                 child: TextFormField(
-                  initialValue: '',
+                  controller: _commentController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
@@ -50,7 +58,24 @@ class _CommentAddState extends State<CommentAdd> {
                         borderRadius: BorderRadius.circular(25.0),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      await db.addComment(
+                          uid: widget.fileId,
+                          userId: widget.userModel!.userId,
+                          comment: _newComment,
+                          collection: widget.collection,
+                          dateTime: DateTime.now(),
+                          fullName:
+                              '${widget.userModel!.firstName} ${widget.userModel!.lastName}');
+                      setState(() {
+                        _newComment = '';
+                        _commentController.clear();
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
+                      });
+                    },
                     child: Text(
                       'Send',
                       style: button_1,

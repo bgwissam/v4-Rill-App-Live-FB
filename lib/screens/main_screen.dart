@@ -80,6 +80,7 @@ class _MainScreenState extends State<MainScreen>
   Parameters params = Parameters();
   DatabaseService db = DatabaseService();
   late List<ImageVideoModel?> imageVideoProvider;
+  late UserModel userProvider;
   late bool _isLoadingStream = false;
   late bool _isUploadingFile = false;
   @override
@@ -107,6 +108,7 @@ class _MainScreenState extends State<MainScreen>
   @override
   Widget build(BuildContext context) {
     imageVideoProvider = Provider.of<List<ImageVideoModel?>>(context);
+    userProvider = Provider.of<UserModel>(context);
     _size = MediaQuery.of(context).size;
     _buildMainScreenWidget();
     return Container(
@@ -843,22 +845,38 @@ class _MainScreenState extends State<MainScreen>
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (builder) => VideoPlayerPage(
-                            videoController: VideoPlayerController.network(
-                                imageVideoProvider[index]!.url.toString())),
+                        builder: (builder) => VideoPlayerProvider(
+                          userModel: userProvider,
+                          fileId: imageVideoProvider[index]!.uid,
+                          collection: 'comments',
+                          playerUrl: imageVideoProvider[index]!.url,
+                        ),
                       ),
                     );
                   },
-                  child: CachedNetworkImage(
-                      imageUrl: imageVideoProvider[index]!.videoThumbnailurl!,
-                      progressIndicatorBuilder: (context, imageUrl, progress) {
-                        return const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          child: LinearProgressIndicator(
-                            minHeight: 12.0,
-                          ),
-                        );
-                      }),
+                  child: Stack(children: [
+                    Center(
+                      child: CachedNetworkImage(
+                          imageUrl:
+                              imageVideoProvider[index]!.videoThumbnailurl!,
+                          progressIndicatorBuilder:
+                              (context, imageUrl, progress) {
+                            return const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: LinearProgressIndicator(
+                                minHeight: 12.0,
+                              ),
+                            );
+                          }),
+                    ),
+                    Center(
+                      child: Icon(
+                        Icons.play_arrow_sharp,
+                        size: 50,
+                        color: color_4,
+                      ),
+                    )
+                  ]),
                 ),
                 decoration: BoxDecoration(
                     color: Colors.grey[100],
@@ -960,9 +978,7 @@ class _MainScreenState extends State<MainScreen>
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (builder) => VideoPlayerPage(
-                                  videoController: snapshot.data[index]
-                                      ['value']),
+                              builder: (builder) => VideoPlayerPage(),
                             ),
                           );
                         },

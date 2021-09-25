@@ -70,3 +70,19 @@ class ThumbnailResult {
 
   ThumbnailResult({this.image, this.dataSize, this.height, this.width});
 }
+
+class CommentModel {
+  String? uid;
+  String? userId;
+  String? fullName;
+  String? comment;
+  var dateTime;
+
+  CommentModel({
+    this.uid,
+    this.userId,
+    this.fullName,
+    this.comment,
+    this.dateTime,
+  });
+}

@@ -1,14 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rillliveapp/models/file_model.dart';
+import 'package:rillliveapp/models/user_model.dart';
+import 'package:rillliveapp/services/database.dart';
+import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/comment_add.dart';
 import 'package:rillliveapp/shared/comment_view.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
+import 'package:better_player/better_player.dart';
+
+class VideoPlayerProvider extends StatelessWidget {
+  const VideoPlayerProvider(
+      {Key? key, this.fileId, this.collection, this.playerUrl, this.userModel})
+      : super(key: key);
+  final UserModel? userModel;
+  final String? fileId;
+  final String? collection;
+  final String? playerUrl;
+  @override
+  Widget build(BuildContext context) {
+    DatabaseService db = DatabaseService();
+    return StreamProvider<List<CommentModel?>>.value(
+      initialData: [],
+      value: db.streamCommentForFile(fileId: fileId, collection: collection),
+      catchError: (context, error) {
+        print('an error occured: $error');
+        return [];
+      },
+      child: VideoPlayerPage(
+        videoPlayerUrl: playerUrl,
+        userModel: userModel,
+        fileId: fileId,
+      ),
+    );
+  }
+}
 
 class VideoPlayerPage extends StatefulWidget {
-  const VideoPlayerPage({Key? key, required this.videoController})
+  const VideoPlayerPage(
+      {Key? key, this.videoPlayerUrl, this.userModel, this.fileId})
       : super(key: key);
-  final VideoPlayerController videoController;
-
+  final UserModel? userModel;
+  final String? fileId;
+  final String? videoPlayerUrl;
   @override
   _VideoPlayerPageState createState() => _VideoPlayerPageState();
 }
@@ -16,12 +51,8 @@ class VideoPlayerPage extends StatefulWidget {
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
   late ChewieController chewieController;
   late Future _initializeController;
+  var commentProvider;
 
-  List<Map<String, dynamic>> imageComments = [
-    {'name': 'Paul', 'comment': 'Very beautiful'},
-    {'name': 'Veronica', 'comment': 'Amazing brand'},
-    {'name': 'Tom', 'comment': 'What a nice day'}
-  ];
   @override
   void initState() {
     super.initState();
@@ -30,61 +61,68 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   @override
   void dispose() {
     super.dispose();
-    //widget.videoController.dispose();
-    chewieController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    commentProvider = Provider.of<List<CommentModel?>>(context);
     return Scaffold(
-      body: SingleChildScrollView(
-        physics: ScrollPhysics(),
-        child: Column(
-          children: [
-            //Video player widget
-            _videoPlayerWidget(),
-            //Comements widget
-            CommentsView(immageComments: imageComments)
-          ],
+        body: SingleChildScrollView(
+          physics: ScrollPhysics(),
+          child: Column(
+            children: [
+              //Video player widget
+              _videoPlayerBetter(),
+              //Like, and share
+              _likeShareView(),
+              //Comements widget
+              CommentsView(
+                  immageComments: commentProvider, fileId: widget.fileId)
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: CommentAdd(),
+        bottomNavigationBar: CommentAdd(
+            userModel: widget.userModel,
+            fileId: widget.fileId,
+            collection: 'comments'));
+  }
+
+  Widget _likeShareView() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(border: Border.all(color: color_6)),
+            child: TextButton(
+              child: Text(
+                'Like',
+                style: textStyle_3,
+              ),
+              onPressed: () async {},
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(border: Border.all(color: color_6)),
+            child: TextButton(
+              child: Text(
+                'Share',
+                style: textStyle_3,
+              ),
+              onPressed: () async {},
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _videoPlayerWidget() {
-    return FutureBuilder(
-        future: initializeController(),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Center(child: Chewie(controller: snapshot.data));
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        });
-  }
-
-  Future<ChewieController> initializeController() async {
-    if (widget.videoController.value.isInitialized) {
-      await widget.videoController.initialize();
-    }
-    chewieController = ChewieController(
-        videoPlayerController: widget.videoController,
-        autoPlay: false,
-        allowMuting: true,
-        autoInitialize: false,
-        aspectRatio: widget.videoController.value.aspectRatio,
-        looping: false);
-    return chewieController;
+  Widget _videoPlayerBetter() {
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: BetterPlayer.network(widget.videoPlayerUrl!),
+    );
   }
 }

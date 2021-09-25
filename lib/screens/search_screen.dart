@@ -195,9 +195,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (builder) => VideoPlayerPage(
-                                    videoController: snapshot.data[index]
-                                        ['value']),
+                                builder: (builder) => VideoPlayerPage(),
                               ),
                             );
                           },

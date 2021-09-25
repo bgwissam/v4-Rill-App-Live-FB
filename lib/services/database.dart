@@ -373,4 +373,70 @@ class DatabaseService {
       await Sentry.captureException(e, stackTrace: stackTrace);
     }
   }
+
+  //This section is for adding comment for images and videos
+  //Add comment
+  Future<void> addComment(
+      {String? uid,
+      String? comment,
+      String? userId,
+      String? fullName,
+      String? collection,
+      DateTime? dateTime}) async {
+    try {
+      await imageVideoCollection.doc(uid).collection(collection!).add({
+        CommentParameters.USER_ID: userId,
+        CommentParameters.COMMENT: comment,
+        CommentParameters.FULL_NAME: fullName,
+        CommentParameters.DATE_TIME: dateTime,
+      });
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      print('an error occured trying to add comment: $e, $stackTrace');
+    }
+  }
+
+  //update comment
+  Future<void> updateComment(
+      {String? uid,
+      String? commentId,
+      String? comment,
+      String? userId,
+      DateTime? dateTime}) async {
+    try {
+      await imageVideoCollection
+          .doc(uid)
+          .collection('comments')
+          .doc(commentId)
+          .update({
+        CommentParameters.COMMENT: comment,
+        CommentParameters.DATE_TIME: dateTime,
+      });
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+    }
+  }
+
+  //Map Comments
+  List<CommentModel?> _mapCommentFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return CommentModel(
+        uid: (doc.data() as Map)[CommentParameters.UID],
+        userId: (doc.data() as Map)[CommentParameters.USER_ID],
+        fullName: (doc.data() as Map)[CommentParameters.FULL_NAME],
+        comment: (doc.data() as Map)[CommentParameters.COMMENT],
+        dateTime: (doc.data() as Map)[CommentParameters.DATE_TIME],
+      );
+    }).toList();
+  }
+
+  //Stream comment for a selected file
+  Stream<List<CommentModel?>> streamCommentForFile(
+      {String? fileId, String? collection}) {
+    return imageVideoCollection
+        .doc(fileId)
+        .collection(collection!)
+        .snapshots()
+        .map(_mapCommentFromSnapshot);
+  }
 }

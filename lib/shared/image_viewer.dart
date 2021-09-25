@@ -49,11 +49,45 @@ class _ImageViewerState extends State<ImageViewer> {
           children: [
             //Displays the image
             _imageContainer(),
+            //Like share widget
+            _likeShareView(),
             //Displays the comments
-            CommentsView(immageComments: imageComments)
+            //CommentsView(immageComments: imageComments)
           ],
         ),
       ),
+    );
+  }
+
+  Widget _likeShareView() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(border: Border.all(color: color_6)),
+            child: TextButton(
+              child: Text(
+                'Like',
+                style: textStyle_3,
+              ),
+              onPressed: () async {},
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(border: Border.all(color: color_6)),
+            child: TextButton(
+              child: Text(
+                'Share',
+                style: textStyle_3,
+              ),
+              onPressed: () async {},
+            ),
+          ),
+        ),
+      ],
     );
   }
 

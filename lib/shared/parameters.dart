@@ -57,3 +57,11 @@ class LiveStreamingParams {
   static String resouceId = 'resourceId';
   static String sid = 'sid';
 }
+
+class CommentParameters {
+  static String UID = 'uid';
+  static String USER_ID = 'userId';
+  static String FULL_NAME = 'fullName';
+  static String COMMENT = 'comment';
+  static String DATE_TIME = 'dateTime';
+}
