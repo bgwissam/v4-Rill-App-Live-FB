@@ -817,7 +817,10 @@ class _MainScreenState extends State<MainScreen>
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (builder) => ImageViewer(
+                          builder: (builder) => ImageViewerProvider(
+                              userModel: userProvider,
+                              fileId: imageVideoProvider[index]!.uid,
+                              collection: 'comments',
                               imageUrl:
                                   imageVideoProvider[index]!.url.toString())),
                     );

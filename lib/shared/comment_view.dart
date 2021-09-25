@@ -3,9 +3,9 @@ import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 
 class CommentsView extends StatefulWidget {
-  const CommentsView({Key? key, required this.immageComments, this.fileId})
+  const CommentsView({Key? key, required this.imageComments, this.fileId})
       : super(key: key);
-  final List<CommentModel?> immageComments;
+  final List<CommentModel?> imageComments;
   final String? fileId;
   @override
   _CommentsViewState createState() => _CommentsViewState();
@@ -20,7 +20,7 @@ class _CommentsViewState extends State<CommentsView> {
       child: ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
-          itemCount: widget.immageComments.length,
+          itemCount: widget.imageComments.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.all(12.0),
@@ -29,8 +29,8 @@ class _CommentsViewState extends State<CommentsView> {
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: color_6)),
                 child: ListTile(
-                  title: Text(widget.immageComments[index]!.fullName!),
-                  subtitle: Text(widget.immageComments[index]!.comment!),
+                  title: Text(widget.imageComments[index]!.fullName!),
+                  subtitle: Text(widget.imageComments[index]!.comment!),
                 ),
               ),
             );

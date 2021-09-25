@@ -77,7 +77,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
               _likeShareView(),
               //Comements widget
               CommentsView(
-                  immageComments: commentProvider, fileId: widget.fileId)
+                  imageComments: commentProvider, fileId: widget.fileId)
             ],
           ),
         ),
