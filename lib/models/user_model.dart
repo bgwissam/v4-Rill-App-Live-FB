@@ -6,7 +6,10 @@ class UserModel {
   String? lastName;
   String? avatarUrl;
   String? phoneNumber;
-  String? dob;
+  String? phoneIsoCode;
+  String? phoneFullNumber;
+  var dob;
+  String? address;
   String? bioDescription;
   bool? isActive;
   List<dynamic>? roles;
@@ -19,7 +22,10 @@ class UserModel {
       this.lastName,
       this.avatarUrl,
       this.phoneNumber,
+      this.phoneIsoCode,
+      this.phoneFullNumber,
       this.dob,
+      this.address,
       this.bioDescription,
       this.isActive,
       this.roles,

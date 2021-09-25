@@ -27,6 +27,8 @@ class UserParams {
   static String FIRST_NAME = 'firstName';
   static String LAST_NAME = 'lastName';
   static String PHONE = 'phoneNumber';
+  static String PHONE_ISO = 'phoneIsoCode';
+  static String PHONE_FULL = 'phoneFullNumber';
   static String DOB = 'dob';
   static String IS_ACTIVE = 'isActive';
   static String BIO_DESC = 'bioDescription';

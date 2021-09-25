@@ -3,6 +3,7 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rillliveapp/authentication/register.dart';
+import 'package:rillliveapp/authentication/security.dart';
 import 'package:rillliveapp/authentication/signin.dart';
 import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
@@ -12,8 +13,6 @@ import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/followers.dart';
 import 'package:rillliveapp/shared/image_viewer.dart';
-import 'package:rillliveapp/shared/loading_animation.dart';
-import 'package:rillliveapp/shared/video_viewer.dart';
 import 'package:rillliveapp/wrapper.dart';
 import 'package:video_player/video_player.dart';
 import 'package:path/path.dart' as p;
@@ -23,7 +22,6 @@ class AccountProvider extends StatelessWidget {
   final String? userId;
   @override
   Widget build(BuildContext context) {
-    print('the user id: $userId');
     DatabaseService db = DatabaseService();
     return MultiProvider(
       providers: [
@@ -175,28 +173,8 @@ class _AccountScreenState extends State<AccountScreen>
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  child: userProvider.avatarUrl != null
-                                      ? Container(
-                                          child: CachedNetworkImage(
-                                            imageUrl: userProvider.avatarUrl!,
-                                            progressIndicatorBuilder:
-                                                (context, imageUrl, progress) {
-                                              return const Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10.0),
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            },
-                                          ),
-                                        )
-                                      : const CircleAvatar(
-                                          radius: 28,
-                                          backgroundImage:
-                                              AssetImage("assets/images/g.png"),
-                                        ),
-                                ),
+                                SizedBox(width: 60),
+
                                 SizedBox(
                                   child: StreamProvider<List<UserModel>>.value(
                                     value: db.getFollowsPerUser(
@@ -411,6 +389,18 @@ class _AccountScreenState extends State<AccountScreen>
                     ),
                   ),
                 ),
+                Positioned(
+                  top: size.height / 10,
+                  left: size.width / 2 - 60,
+                  child: userProvider.avatarUrl != null
+                      ? CircleAvatar(
+                          radius: 60,
+                          backgroundImage: NetworkImage(userProvider.avatarUrl))
+                      : const CircleAvatar(
+                          radius: 60,
+                          backgroundImage: AssetImage("assets/images/g.png"),
+                        ),
+                ),
               ],
             ),
           )
@@ -609,14 +599,24 @@ class _AccountScreenState extends State<AccountScreen>
         //Security
         Container(
           width: size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: const Border(
               bottom: BorderSide(width: 0.5),
             ),
           ),
           padding: EdgeInsets.all(12),
           child: InkWell(
-            onTap: () async {},
+            onTap: () async {
+              print('the user model: ${userProvider.emailAddress}');
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (builder) => SecurityPage(
+                    userModel: userProvider,
+                  ),
+                ),
+              );
+            },
             child: Text('Security', style: textStyle_1),
           ),
         ),

@@ -31,7 +31,9 @@ class DatabaseService {
     String? avatarUrl,
     String? bioDescription,
     String? mobileNumber,
-    String? dob,
+    String? phoneIsoCode,
+    String? phoneFullNumber,
+    var dob,
     String? address,
     bool? isActive,
     List<String>? roles,
@@ -45,6 +47,8 @@ class DatabaseService {
         UserParams.AVATAR: avatarUrl,
         UserParams.BIO_DESC: bioDescription,
         UserParams.PHONE: mobileNumber,
+        UserParams.PHONE_ISO: phoneIsoCode,
+        UserParams.PHONE_FULL: phoneFullNumber,
         UserParams.DOB: dob,
         UserParams.ADDRESS: address,
         UserParams.IS_ACTIVE: true,
@@ -66,7 +70,9 @@ class DatabaseService {
     String? avatarUrl,
     String? bioDescription,
     String? mobileNumber,
-    String? dob,
+    String? phoneIsoCode,
+    String? phoneFullNumber,
+    var dob,
     String? address,
     bool? isActive,
     List<String>? roles,
@@ -80,6 +86,8 @@ class DatabaseService {
         UserParams.AVATAR: avatarUrl,
         UserParams.BIO_DESC: bioDescription,
         UserParams.PHONE: mobileNumber,
+        UserParams.PHONE_ISO: phoneIsoCode,
+        UserParams.PHONE_FULL: phoneFullNumber,
         UserParams.DOB: dob,
         UserParams.ADDRESS: address,
         UserParams.IS_ACTIVE: true,
@@ -87,6 +95,7 @@ class DatabaseService {
       }).then((value) => 'user was successfully updated');
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
+      print('Could not update: $e: $stackTrace');
       throw e;
     }
   }
@@ -101,9 +110,12 @@ class DatabaseService {
           firstName: (doc.data()! as Map)[UserParams.FIRST_NAME],
           lastName: (doc.data()! as Map)[UserParams.LAST_NAME],
           dob: (doc.data()! as Map)[UserParams.DOB],
+          address: (doc.data()! as Map)[UserParams.ADDRESS],
           avatarUrl: (doc.data()! as Map)[UserParams.AVATAR],
           bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
           phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
+          phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
+          phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
           isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
           roles: (doc.data()! as Map)[UserParams.ROLES]);
     }).toList();
@@ -124,9 +136,12 @@ class DatabaseService {
           firstName: (doc.data()! as Map)[UserParams.FIRST_NAME],
           lastName: (doc.data()! as Map)[UserParams.LAST_NAME],
           dob: (doc.data()! as Map)[UserParams.DOB],
+          address: (doc.data()! as Map)[UserParams.ADDRESS],
           avatarUrl: (doc.data()! as Map)[UserParams.AVATAR],
           bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
           phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
+          phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
+          phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
           isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
           roles: (doc.data()! as Map)[UserParams.ROLES]);
     });

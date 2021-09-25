@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/services/database.dart';
@@ -93,6 +95,9 @@ class AuthService {
     String? bioDescription,
     bool? isActive,
     String? mobileNumber,
+    String? phoneIsoCode,
+    String? phoneFullNumber,
+    var dob,
     String? address,
   }) async {
     try {
@@ -104,14 +109,17 @@ class AuthService {
         await db
             .createUser(
           userId: user.uid,
-          firstName: firstName,
-          lastName: lastName,
-          emailAddress: emailAddress,
-          mobileNumber: mobileNumber,
+          firstName: firstName!.trim(),
+          lastName: lastName!.trim(),
+          emailAddress: emailAddress.trim(),
+          mobileNumber: mobileNumber!.trim(),
+          phoneIsoCode: phoneIsoCode,
+          phoneFullNumber: phoneFullNumber!.trim(),
           isActive: isActive,
           avatarUrl: avatarUrl,
           bioDescription: bioDescription,
-          address: address,
+          dob: dob,
+          address: address!.trim(),
         )
             .then((value) {
           print('The user creation result: $value');
@@ -152,6 +160,34 @@ class AuthService {
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
       return false;
+    }
+  }
+
+  //Update password
+  Future<StreamSubscription> updatePassword(
+      {String? newPassword,
+      String? currentPassword,
+      String? emailAddress}) async {
+    String message = '';
+    try {
+      //re-authenticate user
+
+      AuthCredential credential = EmailAuthProvider.credential(
+          email: emailAddress!, password: currentPassword!);
+      await _auth.currentUser!.reauthenticateWithCredential(credential);
+      var result = _auth.userChanges().listen((User? user) {
+        if (user != null) {
+          user.updatePassword(newPassword!);
+          message = 'password updated';
+        } else {
+          message = 'user signed out';
+        }
+      });
+      print('the message: $message');
+      return result;
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      rethrow;
     }
   }
 

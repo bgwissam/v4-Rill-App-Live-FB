@@ -63,6 +63,13 @@ var textStyle_6 = TextStyle(
     fontFamily: 'Montserrat-M',
     fontWeight: FontWeight.bold,
     fontSize: 15);
+var textStyle_7 = TextStyle(
+  color: color_10,
+  fontFamily: 'Montserrat-M',
+  fontStyle: FontStyle.italic,
+  fontSize: 14,
+);
+
 var heading_1 = TextStyle(
     color: color_4,
     fontFamily: 'Montserrat-B',
