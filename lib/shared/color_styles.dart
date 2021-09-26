@@ -26,7 +26,7 @@ var color_8 = const Color(0xff0081bc);
 var color_9 = const Color(0xfff2f2f2);
 var color_10 = const Color(0xff566e7e);
 var color_11 = const Color(0xff333333);
-var color_12 = const Color(0xff000000).withOpacity(0.3);
+var color_12 = const Color(0xff000000).withOpacity(0.6);
 
 //Text input colors
 var textStyle_1 = TextStyle(
@@ -63,12 +63,18 @@ var textStyle_6 = TextStyle(
     fontFamily: 'Montserrat-M',
     fontWeight: FontWeight.bold,
     fontSize: 15);
+
 var textStyle_7 = TextStyle(
   color: color_10,
   fontFamily: 'Montserrat-M',
   fontStyle: FontStyle.italic,
   fontSize: 14,
 );
+
+var textStyle_8 =
+    TextStyle(color: color_12, fontFamily: 'Gotham', fontSize: 18);
+var textStyle_9 =
+    TextStyle(color: color_12, fontFamily: 'Gotham', fontSize: 12);
 
 var heading_1 = TextStyle(
     color: color_4,

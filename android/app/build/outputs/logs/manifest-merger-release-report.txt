@@ -13,6 +13,7 @@ MERGED from [:sentry_flutter] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_
 MERGED from [:package_info_plus] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/package_info_plus/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
 MERGED from [:agora_uikit] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_uikit/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
 MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/release/AndroidManifest.xml:2:1-23:12
+MERGED from [:video_thumbnail] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/video_thumbnail/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
 MERGED from [:firebase_auth] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_auth/intermediates/library_manifest/release/AndroidManifest.xml:2:1-15:12
 MERGED from [:video_compress] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/video_compress/intermediates/library_manifest/release/AndroidManifest.xml:2:1-9:12
 MERGED from [:firebase_storage] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_storage/intermediates/library_manifest/release/AndroidManifest.xml:2:1-15:12
@@ -258,6 +259,8 @@ MERGED from [:agora_uikit] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_liv
 MERGED from [:agora_uikit] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_uikit/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
 MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/release/AndroidManifest.xml:6:5-8:41
 MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/release/AndroidManifest.xml:6:5-8:41
+MERGED from [:video_thumbnail] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/video_thumbnail/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:video_thumbnail] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/video_thumbnail/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_auth] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_auth/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_auth] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_auth/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
 MERGED from [:video_compress] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/video_compress/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44

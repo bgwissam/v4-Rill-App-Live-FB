@@ -52,6 +52,22 @@ class _SignInSignUpState extends State<SignInSignUp> {
     var _size = MediaQuery.of(context).size;
     return MultiProvider(
       providers: [
+        StreamProvider<List<ImageVideoModel?>>.value(
+          value: db.getImageList(),
+          initialData: [],
+          catchError: (context, error) {
+            print('Error fetching all feed: $error');
+            return [];
+          },
+        ),
+        StreamProvider<List<StreamingModel?>>.value(
+          value: db.getStreamingVidoes(),
+          initialData: [],
+          catchError: (context, error) {
+            print('Error fetching image stream: $error');
+            return [];
+          },
+        ),
         StreamProvider<UserModel?>.value(
           value: AuthService().user,
           initialData: null,

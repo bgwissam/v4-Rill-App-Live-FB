@@ -261,42 +261,46 @@ class RegisterState extends State<Register> {
               child: !_isSavingUpdating
                   ? Column(
                       children: [
-                        Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              _showPicker(context);
-                            },
-                            child: CircleAvatar(
-                              radius: 70,
-                              backgroundColor: Colors.black12,
-                              child: image == null &&
-                                      widget.userModel?.avatarUrl == null
-                                  ? const Icon(
-                                      Icons.add_a_photo_outlined,
-                                      size: 40,
-                                      color: Colors.white,
-                                    )
-                                  : image != null
-                                      ? CircleAvatar(
-                                          radius: 68,
-                                          backgroundImage: FileImage(image!),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                          ),
-                                        )
-                                      : CircleAvatar(
-                                          radius: 68,
-                                          backgroundImage: NetworkImage(
-                                              widget.userModel!.avatarUrl!),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                          ),
-                                        ),
-                            ),
-                          ),
-                        ),
+                        widget.userModel != null
+                            ? Center(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _showPicker(context);
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 70,
+                                    backgroundColor: Colors.black12,
+                                    child: image == null &&
+                                            widget.userModel?.avatarUrl == null
+                                        ? const Icon(
+                                            Icons.add_a_photo_outlined,
+                                            size: 40,
+                                            color: Colors.white,
+                                          )
+                                        : image != null
+                                            ? CircleAvatar(
+                                                radius: 68,
+                                                backgroundImage:
+                                                    FileImage(image!),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                ),
+                                              )
+                                            : CircleAvatar(
+                                                radius: 68,
+                                                backgroundImage: NetworkImage(
+                                                    widget
+                                                        .userModel!.avatarUrl!),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                ),
+                                              ),
+                                  ),
+                                ),
+                              )
+                            : SizedBox.shrink(),
                         Form(
                           key: _formKey,
                           child: Padding(

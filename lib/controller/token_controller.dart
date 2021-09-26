@@ -40,7 +40,7 @@ class TokenGenerator {
 
       var rawToken = json.decode(response.body);
       token =
-          '006d480c821a2a946d6a4d29292462a3d6fIABb2uf++rfbA4aVyMrCp09FtFll4wDxkkN1d0b3rmVvWwx+f9gAAAAAIgCTNRpOQQ1PYQQAAQBBDU9hAgBBDU9hAwBBDU9hBABBDU9h';
+          '006d480c821a2a946d6a4d29292462a3d6fIAAAbqdVWGFOQOa0wiix1+pekSX9/KpdzGNMh6r/98GEHwx+f9gAAAAAIgAoMHytazxQYQQAAQBrPFBhAgBrPFBhAwBrPFBhBABrPFBh';
       //rawToken['token'];
       print('The token generated: $rawToken');
       print('uid: $userId channel: $channelName');

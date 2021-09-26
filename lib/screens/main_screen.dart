@@ -87,11 +87,8 @@ class _MainScreenState extends State<MainScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    //listenToStreamingVideos();
-    // getStreamingVideos = _getStreamingVideos();
-    // getAllBucketData = _getAllObjects();
+
     getSubscriptionFeed = _getSubscriptionChannels();
-    _getCameraMicPermission();
   }
 
   @override
@@ -625,8 +622,8 @@ class _MainScreenState extends State<MainScreen>
               content: const Text('You need to enable camera and mic'),
               action: SnackBarAction(
                 label: 'Grant',
-                onPressed: () {
-                  _getCameraMicPermission();
+                onPressed: () async {
+                  await _getCameraMicPermission();
                 },
               ),
             ),
