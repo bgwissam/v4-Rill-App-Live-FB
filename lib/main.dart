@@ -55,7 +55,9 @@ class MyApp extends StatelessWidget {
         ),
         home: MySplashScreen(),
         routes: <String, WidgetBuilder>{
-          '/home': (BuildContext context) => const Wrapper(),
+          '/home': (BuildContext context) => const Wrapper(
+                guestUser: false,
+              ),
         },
       ),
     );
@@ -91,7 +93,9 @@ class _MySplashScreenState extends State<MySplashScreen> {
       Duration(seconds: 4),
       () => Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (builder) => Wrapper()),
+        MaterialPageRoute(
+          builder: (builder) => const Wrapper(guestUser: false),
+        ),
         ModalRoute.withName('/home'),
       ),
     );

@@ -13,8 +13,8 @@ import 'package:rillliveapp/shared/video_viewer.dart';
 import 'package:video_player/video_player.dart';
 
 class SearchScreenProviders extends StatelessWidget {
-  const SearchScreenProviders({Key? key}) : super(key: key);
-
+  const SearchScreenProviders({Key? key, this.userId}) : super(key: key);
+  final String? userId;
   @override
   Widget build(BuildContext context) {
     DatabaseService db = DatabaseService();
@@ -25,14 +25,16 @@ class SearchScreenProviders extends StatelessWidget {
             initialData: [],
             catchError: (context, error) => []),
       ],
-      child: SearchScreen(),
+      child: SearchScreen(
+        userId: userId,
+      ),
     );
   }
 }
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
-
+  const SearchScreen({Key? key, this.userId}) : super(key: key);
+  final String? userId;
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -60,6 +62,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   //Controller
   StorageData storageData = StorageData();
+  DatabaseService db = DatabaseService();
   late VideoPlayerController _videoPlayerController;
   late ChewieController _chewieController;
   //Providers
@@ -334,42 +337,61 @@ class _SearchScreenState extends State<SearchScreen> {
         child: ListView.builder(
           itemCount: userListProvider.length,
           itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: InkWell(
-                onTap: () async {
-                  print('userProvider $index');
-                },
-                child: Container(
-                  height: 80,
-                  alignment: Alignment.center,
-                  child: ListTile(
-                    leading: userListProvider[index].avatarUrl != null
-                        ? SizedBox(
-                            height: 50,
-                            width: 75,
-                            child: FittedBox(
-                              child: Image.network(
-                                  userListProvider[index].avatarUrl),
-                              fit: BoxFit.fill,
-                            ),
-                          )
-                        : Container(
-                            height: 50,
-                            width: 75,
-                            decoration: BoxDecoration(
-                                border: Border.all(),
-                                borderRadius: BorderRadius.circular(10)),
+            return userListProvider[index].userId != widget.userId
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: InkWell(
+                      onTap: () async {
+                        print('userProvider $index');
+                      },
+                      child: Container(
+                        height: 80,
+                        alignment: Alignment.center,
+                        child: ListTile(
+                          leading: userListProvider[index].avatarUrl != null
+                              ? SizedBox(
+                                  height: 50,
+                                  width: 75,
+                                  child: FittedBox(
+                                    child: Image.network(
+                                        userListProvider[index].avatarUrl),
+                                    fit: BoxFit.fill,
+                                  ),
+                                )
+                              : Container(
+                                  height: 50,
+                                  width: 75,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.circular(10)),
+                                ),
+                          title: Text(
+                              '${userListProvider[index].firstName} ${userListProvider[index].lastName}'),
+                          subtitle: Row(
+                            children: [
+                              Text('Client details'),
+                              TextButton(
+                                child: Text('Follow'),
+                                onPressed: () async {
+                                  await db.addFollowers(
+                                      followerId: widget.userId,
+                                      userId: userListProvider[index].userId,
+                                      followerFirstName:
+                                          userListProvider[index].firstName,
+                                      followerLastName:
+                                          userListProvider[index].lastName);
+                                },
+                              ),
+                            ],
                           ),
-                    title: Text(
-                        '${userListProvider[index].firstName} ${userListProvider[index].lastName}'),
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(10.0)),
-                ),
-              ),
-            );
+                        ),
+                        decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(10.0)),
+                      ),
+                    ),
+                  )
+                : SizedBox.shrink();
           },
         ),
       ),

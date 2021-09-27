@@ -140,7 +140,7 @@ class _MainScreenState extends State<MainScreen>
   List<Widget> _buildMainScreenWidget() {
     return _bodyWidget = [
       _mainFeed(),
-      SearchScreenProviders(),
+      SearchScreenProviders(userId: widget.userId),
       MessagesScreen(userId: widget.userId),
       AccountProvider(userId: widget.userId),
     ];

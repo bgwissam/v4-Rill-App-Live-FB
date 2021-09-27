@@ -14,7 +14,8 @@ import 'package:rillliveapp/services/database.dart';
 import 'models/user_model.dart';
 
 class Wrapper extends StatefulWidget {
-  const Wrapper({Key? key}) : super(key: key);
+  final bool? guestUser;
+  const Wrapper({Key? key, this.guestUser}) : super(key: key);
 
   @override
   _WrapperState createState() => _WrapperState();
@@ -23,11 +24,13 @@ class Wrapper extends StatefulWidget {
 class _WrapperState extends State<Wrapper> {
   var _isUserVerified = false;
   var _isUserSignedIn = false;
+  var _guestUser = false;
   late UserModel? currentUser;
   DatabaseService db = DatabaseService();
   @override
   void initState() {
     super.initState();
+    _guestUser = widget.guestUser!;
     //Initiate a future to check user verification
   }
 
@@ -49,7 +52,7 @@ class _WrapperState extends State<Wrapper> {
         _isUserSignedIn = true;
       });
     }
-    return _isUserSignedIn
+    return _isUserSignedIn || _guestUser
         ? MultiProvider(
             providers: [
                 StreamProvider<UserModel>.value(

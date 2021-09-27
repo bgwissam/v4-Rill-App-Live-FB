@@ -172,7 +172,9 @@ class _SignInSignUpState extends State<SignInSignUp> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (builder) => Wrapper(),
+                                              builder: (builder) => Wrapper(
+                                                guestUser: false,
+                                              ),
                                             ),
                                           );
                                         }
@@ -243,7 +245,9 @@ class _SignInSignUpState extends State<SignInSignUp> {
                                 await Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (builder) => const MainScreen()),
+                                    builder: (builder) =>
+                                        const Wrapper(guestUser: true),
+                                  ),
                                 );
                               },
                               child: const Text(
