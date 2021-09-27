@@ -140,7 +140,7 @@ class _MainScreenState extends State<MainScreen>
   List<Widget> _buildMainScreenWidget() {
     return _bodyWidget = [
       _mainFeed(),
-      const SearchScreen(),
+      SearchScreenProviders(),
       MessagesScreen(userId: widget.userId),
       AccountProvider(userId: widget.userId),
     ];
@@ -790,9 +790,7 @@ class _MainScreenState extends State<MainScreen>
 
   //All Feed section
   Widget _allFeeds() {
-    late String extension;
     _isLoadingStream = false;
-    late ChewieController _chewieController;
 
     return RefreshIndicator(
       onRefresh: _pullRefresh,

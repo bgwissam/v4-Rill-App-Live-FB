@@ -1,12 +1,34 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rillliveapp/models/file_model.dart';
+import 'package:rillliveapp/models/user_model.dart';
+import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/image_viewer.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/video_viewer.dart';
 import 'package:video_player/video_player.dart';
+
+class SearchScreenProviders extends StatelessWidget {
+  const SearchScreenProviders({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    DatabaseService db = DatabaseService();
+    return MultiProvider(
+      providers: [
+        StreamProvider<List<UserModel>>.value(
+            value: db.userData,
+            initialData: [],
+            catchError: (context, error) => []),
+      ],
+      child: SearchScreen(),
+    );
+  }
+}
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -23,9 +45,16 @@ class _SearchScreenState extends State<SearchScreen> {
     {'category': 'Nearby', 'isPressed': false},
     {'category': 'Fashion', 'isPressed': false}
   ];
+  //Controllers
+  FocusNode _focus = FocusNode();
+  TextEditingController _searchController = TextEditingController();
 
+  //Booleans
   late bool loadingComplete = false;
+  late bool _isLoadingStream = false;
+  late bool _searchSelected = false;
   late String searchWord;
+  var _size;
   //Futures
   late Future getAllBucketData;
 
@@ -33,18 +62,38 @@ class _SearchScreenState extends State<SearchScreen> {
   StorageData storageData = StorageData();
   late VideoPlayerController _videoPlayerController;
   late ChewieController _chewieController;
+  //Providers
+  var imageVideoProvider;
+  var userListProvider;
+  var userProvider;
 
   @override
   void initState() {
     super.initState();
+    _focus.addListener(_onFocusChanged);
     getAllBucketData = _getAllObjects();
   }
 
   @override
+  void dispose() {
+    _focus.dispose();
+    super.dispose();
+  }
+
+  void _onFocusChanged() {
+    setState(() {
+      _searchSelected = !_searchSelected;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var _size = MediaQuery.of(context).size;
-    return Container(
-      height: _size.height,
+    _size = MediaQuery.of(context).size;
+    imageVideoProvider = Provider.of<List<ImageVideoModel?>>(context);
+    userListProvider = Provider.of<List<UserModel>>(context);
+    userProvider = Provider.of<UserModel?>(context);
+    return SizedBox(
+      height: _size.height - 105,
       width: _size.width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -57,7 +106,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 height: 140, width: _size.width, child: _buildFilterListView()),
           ),
           //Grid view for search result
-          _buildGridView(),
+          _searchSelected ? _buildUsersGridView() : _buildFeedGridView(),
         ],
       ),
     );
@@ -112,6 +161,7 @@ class _SearchScreenState extends State<SearchScreen> {
           height: 70,
           padding: EdgeInsets.symmetric(vertical: 10),
           child: TextFormField(
+            focusNode: _focus,
             decoration: const InputDecoration(
               prefixIcon: Icon(Icons.search),
               border: OutlineInputBorder(
@@ -130,111 +180,199 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  //Build Grid View
-  Widget _buildGridView() {
-    var _size = MediaQuery.of(context).size;
+  //Build feed grid view
+  Widget _buildFeedGridView() {
+    _size = MediaQuery.of(context).size;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: FutureBuilder(
-          future: getAllBucketData,
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return SizedBox(
-                  height: _size.height - 200,
-                  child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 0.5),
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) {
-                      if (snapshot.data[index]['type'] == 'image') {
-                        return Container(
-                          alignment: Alignment.center,
-                          child: InkWell(
-                            onTap: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (builder) => ImageViewer(
-                                        imageUrl: snapshot.data[index]
-                                            ['value'])),
-                              );
-                            },
-                            child: CachedNetworkImage(
-                                imageUrl: snapshot.data[index]['value'],
-                                progressIndicatorBuilder:
-                                    (context, imageUrl, progress) {
-                                  return const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.0),
-                                    child: LinearProgressIndicator(
-                                      minHeight: 12.0,
-                                    ),
-                                  );
-                                }),
-                          ),
-                          decoration: BoxDecoration(
-                              color: Colors.grey[100],
-                              borderRadius: BorderRadius.circular(10.0)),
-                        );
-                      } else {
-                        _chewieController = ChewieController(
-                          videoPlayerController: snapshot.data[index]['value'],
-                          autoInitialize: false,
-                          autoPlay: false,
-                          looping: false,
-                          showControls: false,
-                          allowMuting: true,
-                        );
-                        return InkWell(
-                          onTap: () async {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (builder) => VideoPlayerPage(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: snapshot
-                                    .data[index]['value'].value.isInitialized
-                                ? Chewie(controller: _chewieController)
-                                : const Text('Not initialized'),
-                          ),
-                        );
-                      }
+      height: _size.height - 275,
+      child: RefreshIndicator(
+        onRefresh: _pullRefresh,
+        child: GridView.builder(
+          cacheExtent: 1000,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 2,
+              crossAxisSpacing: 2,
+              childAspectRatio: 0.5),
+          itemCount: imageVideoProvider.length,
+          itemBuilder: (context, index) {
+            if (imageVideoProvider[index]!.uid != null) {
+              if (imageVideoProvider[index]!.type == 'image') {
+                return Container(
+                  alignment: Alignment.center,
+                  child: InkWell(
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (builder) => ImageViewerProvider(
+                                userModel: userProvider,
+                                fileId: imageVideoProvider[index]!.uid,
+                                collection: 'comments',
+                                imageUrl:
+                                    imageVideoProvider[index]!.url.toString())),
+                      );
                     },
+                    child: CachedNetworkImage(
+                        imageUrl: imageVideoProvider[index]!.url!,
+                        progressIndicatorBuilder:
+                            (context, imageUrl, progress) {
+                          return const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10.0),
+                            child: LinearProgressIndicator(
+                              minHeight: 12.0,
+                            ),
+                          );
+                        }),
                   ),
-                );
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return SizedBox(
-                  height: _size.height - 200,
-                  child: const Center(
-                      child: LoadingAmination(
-                    animationType: 'ThreeInOut',
-                  )),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(10.0)),
                 );
               } else {
-                return SizedBox(
-                    height: _size.height - 200,
-                    child: Center(
-                        child: Text('No data was found', style: textStyle_5)));
+                return Container(
+                  alignment: Alignment.center,
+                  child: InkWell(
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (builder) => VideoPlayerProvider(
+                            userModel: userProvider,
+                            fileId: imageVideoProvider[index]!.uid,
+                            collection: 'comments',
+                            playerUrl: imageVideoProvider[index]!.url,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Stack(children: [
+                      Center(
+                        child: CachedNetworkImage(
+                            imageUrl:
+                                imageVideoProvider[index]!.videoThumbnailurl!,
+                            progressIndicatorBuilder:
+                                (context, imageUrl, progress) {
+                              return const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                child: LinearProgressIndicator(
+                                  minHeight: 12.0,
+                                ),
+                              );
+                            }),
+                      ),
+                      Center(
+                        child: Icon(
+                          Icons.play_arrow_sharp,
+                          size: 50,
+                          color: color_4,
+                        ),
+                      )
+                    ]),
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(10.0)),
+                );
+
+                // return FutureBuilder(
+                //     future: initializeVideo(
+                //         imageVideoProvider[index]!.url.toString()),
+                //     builder: (context, AsyncSnapshot snapshot) {
+                //       if (snapshot.hasData) {
+                //         return GestureDetector(
+                //             onTap: () async {
+                //               print('tapping tapping');
+                //               await Navigator.push(
+                //                 context,
+                //                 MaterialPageRoute(
+                //                   builder: (builder) => VideoPlayerPage(
+                //                       videoController:
+                //                           VideoPlayerController.network(
+                //                               imageVideoProvider[index]!
+                //                                   .url
+                //                                   .toString())),
+                //                 ),
+                //               );
+                //             },
+                //             child: Chewie(
+                //               controller: snapshot.data,
+                //             ));
+                //       } else if (snapshot.hasError) {
+                //         print('Error playing video: ${snapshot.error}');
+                //         return Center(child: Text(snapshot.error.toString()));
+                //       } else {
+                //         return const Center(
+                //           child: CircularProgressIndicator(),
+                //         );
+                //       }
+                //     });
               }
-            } else {
-              return SizedBox(
-                height: _size.height - 200,
-                child: const Center(
-                    child: LoadingAmination(
-                  animationType: 'ThreeInOut',
-                )),
-              );
             }
-          }),
+            return const Center(
+              child: LoadingAmination(
+                animationType: 'ThreeInOut',
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  //Pull refresh
+  Future<void> _pullRefresh() async {}
+
+  //Build Grid View
+  Widget _buildUsersGridView() {
+    _size = MediaQuery.of(context).size;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: SizedBox(
+        width: _size.width,
+        height: _size.height - 275,
+        child: ListView.builder(
+          itemCount: userListProvider.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: InkWell(
+                onTap: () async {
+                  print('userProvider $index');
+                },
+                child: Container(
+                  height: 80,
+                  alignment: Alignment.center,
+                  child: ListTile(
+                    leading: userListProvider[index].avatarUrl != null
+                        ? SizedBox(
+                            height: 50,
+                            width: 75,
+                            child: FittedBox(
+                              child: Image.network(
+                                  userListProvider[index].avatarUrl),
+                              fit: BoxFit.fill,
+                            ),
+                          )
+                        : Container(
+                            height: 50,
+                            width: 75,
+                            decoration: BoxDecoration(
+                                border: Border.all(),
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                    title: Text(
+                        '${userListProvider[index].firstName} ${userListProvider[index].lastName}'),
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(10.0)),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 
