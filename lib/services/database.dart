@@ -121,6 +121,18 @@ class DatabaseService {
     }).toList();
   }
 
+  //Map follower data
+  List<UsersFollowed> _followedDataFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return UsersFollowed(
+        userId: doc.id,
+        followerId: (doc.data()! as Map)[UserParams.USER_ID],
+        firstName: (doc.data()! as Map)[UserParams.FIRST_NAME],
+        lastName: (doc.data()! as Map)[UserParams.LAST_NAME],
+      );
+    }).toList();
+  }
+
   //Stream data
   Stream<List<UserModel>> get userData {
     return userModelCollection.snapshots().map(_userDataFromSnapshot);
@@ -162,8 +174,11 @@ class DatabaseService {
       String? followerFirstName,
       String? followerLastName}) async {
     try {
-      await userModelCollection.doc(userId).collection('followers').add({
-        UserParams.USER_ID: followerId,
+      await userModelCollection
+          .doc(userId)
+          .collection('followers')
+          .doc(followerId)
+          .set({
         UserParams.FIRST_NAME: followerFirstName,
         UserParams.LAST_NAME: followerLastName,
       });
@@ -179,18 +194,37 @@ class DatabaseService {
         .doc(userId)
         .collection(collection!)
         .snapshots()
-        .map(_userDataFromSnapshot
+        .map(_userDataFromSnapshot);
+  }
 
-            //       (snapshot) {
-            //   return snapshot.docs.map((doc) {
-            //     return UserModel(
-            //         userId: doc.data()[UserParams.USER_ID],
-            //         firstName: doc.data()[UserParams.FIRST_NAME],
-            //         lastName: doc.data()[UserParams.LAST_NAME]);
-            //   }).toList();
-            // }
+  //Stream users being followed by a certain user
+  Stream<List<UsersFollowed>> getUsersBeingFollowed(
+      {String? userId, String? collection}) {
+    return userModelCollection
+        .doc(userId)
+        .collection(collection!)
+        .snapshots()
+        .map(_followedDataFromSnapshot);
+  }
 
-            );
+  //Fetch followed users
+  Future<bool> checkUserFollowed(
+      {String? userId, String? followedId, String? collection}) async {
+    try {
+      var result = await userModelCollection
+          .doc(userId)
+          .collection(collection!)
+          .doc(followedId)
+          .get()
+          .then((value) => value.id);
+      if (result.isNotEmpty) {
+        return true;
+      }
+      return false;
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      return false;
+    }
   }
 
   //Add following
@@ -200,11 +234,28 @@ class DatabaseService {
       String? followerFirstName,
       String? followerLastName}) async {
     try {
-      await userModelCollection.doc(userId).collection('following').add({
-        UserParams.USER_ID: followerId,
+      await userModelCollection
+          .doc(userId)
+          .collection('following')
+          .doc(followerId)
+          .set({
         UserParams.FIRST_NAME: followerFirstName,
         UserParams.LAST_NAME: followerLastName,
       });
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+    }
+  }
+
+  //delete follower
+  Future<void> deleteFollowing(
+      {String? userId, String? followerId, String? collection}) async {
+    try {
+      await userModelCollection
+          .doc(userId)
+          .collection(collection!)
+          .doc(followerId)
+          .delete();
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
     }

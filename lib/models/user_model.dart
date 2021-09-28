@@ -31,3 +31,12 @@ class UserModel {
       this.roles,
       this.error});
 }
+
+class UsersFollowed {
+  String? userId;
+  String? followerId;
+  String? firstName;
+  String? lastName;
+
+  UsersFollowed({this.userId, this.followerId, this.firstName, this.lastName});
+}
