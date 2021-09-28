@@ -45,13 +45,14 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  //Filter items List
+  //Lists
   List<Map<String, dynamic>> filterItems = [
     {'category': 'Popular', 'isPressed': false},
     {'category': 'Free', 'isPressed': false},
     {'category': 'Nearby', 'isPressed': false},
     {'category': 'Fashion', 'isPressed': false}
   ];
+  late List<String> followed;
   //Controllers
   FocusNode _focus = FocusNode();
   TextEditingController _searchController = TextEditingController();
@@ -80,6 +81,7 @@ class _SearchScreenState extends State<SearchScreen> {
     super.initState();
     _focus.addListener(_onFocusChanged);
     getAllBucketData = _getAllObjects();
+    _checkUsersFollowed();
   }
 
   @override
@@ -345,92 +347,82 @@ class _SearchScreenState extends State<SearchScreen> {
           itemCount: userListProvider.length,
           itemBuilder: (context, index) {
             return userListProvider[index].userId != widget.userId
-                ? FutureBuilder(
-                    future: _checkUsersFollowed(
-                        followed: userListProvider[index].userId),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: InkWell(
-                            onTap: () async {
-                              print('userProvider $index');
-                            },
-                            child: Container(
-                              height: 80,
-                              alignment: Alignment.center,
-                              child: ListTile(
-                                leading:
-                                    userListProvider[index].avatarUrl != null
-                                        ? SizedBox(
-                                            height: 50,
-                                            width: 75,
-                                            child: FittedBox(
-                                              child: Image.network(
-                                                  userListProvider[index]
-                                                      .avatarUrl),
-                                              fit: BoxFit.fill,
-                                            ),
-                                          )
-                                        : Container(
-                                            height: 50,
-                                            width: 75,
-                                            decoration: BoxDecoration(
-                                                border: Border.all(),
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                          ),
-                                title: Text(
-                                    '${userListProvider[index].firstName} ${userListProvider[index].lastName}'),
-                                subtitle: Row(
-                                  children: [
-                                    Text('Client details'),
-                                    TextButton(
-                                      child: snapshot.data != null &&
-                                              snapshot.data == true
-                                          ? Text('Following',
-                                              style: textStyle_7)
-                                          : Text('Follow', style: textStyle_1),
-                                      onPressed: () async {
-                                        snapshot.data != null &&
-                                                snapshot.data == false
-                                            ? await db.addFollowing(
-                                                userId: widget.userId,
-                                                followerId:
-                                                    userListProvider[index]
-                                                        .userId,
-                                                followerFirstName:
-                                                    userListProvider[index]
-                                                        .firstName,
-                                                followerLastName:
-                                                    userListProvider[index]
-                                                        .lastName)
-                                            : await db.deleteFollowing(
-                                                userId: widget.userId,
-                                                followerId:
-                                                    userListProvider[index]
-                                                        .userId,
-                                                collection: 'followers');
-                                      },
-                                    ),
-                                  ],
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: InkWell(
+                      onTap: () async {
+                        print('userProvider $index');
+                      },
+                      child: Container(
+                        height: 80,
+                        alignment: Alignment.center,
+                        child: ListTile(
+                          leading: userListProvider[index].avatarUrl != null
+                              ? SizedBox(
+                                  height: 50,
+                                  width: 75,
+                                  child: FittedBox(
+                                    child: Image.network(
+                                        userListProvider[index].avatarUrl),
+                                    fit: BoxFit.fill,
+                                  ),
+                                )
+                              : Container(
+                                  height: 50,
+                                  width: 75,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.circular(10)),
                                 ),
+                          title: Text(
+                              '${userListProvider[index].firstName} ${userListProvider[index].lastName}'),
+                          subtitle: Row(
+                            children: [
+                              Text('Client details'),
+                              TextButton(
+                                child: followed.isNotEmpty &&
+                                        followed.contains(
+                                            userListProvider[index].userId)
+                                    ? Text('Followed', style: textStyle_10)
+                                    : Text('Follow', style: textStyle_1),
+                                onPressed: () async {
+                                  if (followed.isNotEmpty &&
+                                      followed.contains(
+                                          userListProvider[index].userId)) {
+                                    await db.deleteFollowing(
+                                      userId: widget.userId,
+                                      followerId:
+                                          userListProvider[index].userId,
+                                    );
+                                    setState(() {
+                                      followed.remove(
+                                          userListProvider[index].userId);
+                                    });
+                                  } else {
+                                    await db.addFollowing(
+                                        userId: widget.userId,
+                                        followerId:
+                                            userListProvider[index].userId,
+                                        followerFirstName:
+                                            userListProvider[index].firstName,
+                                        followerLastName:
+                                            userListProvider[index].lastName);
+
+                                    setState(() {
+                                      followed
+                                          .add(userListProvider[index].userId);
+                                    });
+                                  }
+                                },
                               ),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[100],
-                                  borderRadius: BorderRadius.circular(10.0)),
-                            ),
+                            ],
                           ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Container(
-                          child: Text('Error: ${snapshot.error}'),
-                        );
-                      } else {
-                        return Container(child: Text('Unknown error'));
-                      }
-                      return Container(child: CircularProgressIndicator());
-                    },
+                        ),
+                        decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(10.0)),
+                      ),
+                    ),
                   )
                 : SizedBox.shrink();
           },
@@ -439,11 +431,12 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Future<bool> _checkUsersFollowed({String? followed}) async {
+  Future<void> _checkUsersFollowed() async {
     var result = await db.checkUserFollowed(
-        userId: widget.userId, followedId: followed, collection: 'following');
-    print('the result: $result');
-    return result;
+        userId: widget.userId, collection: 'following');
+    setState(() {
+      followed = result;
+    });
   }
 
   //Get all object from bucket

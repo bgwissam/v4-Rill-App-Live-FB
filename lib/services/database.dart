@@ -208,22 +208,19 @@ class DatabaseService {
   }
 
   //Fetch followed users
-  Future<bool> checkUserFollowed(
+  Future<List<String>> checkUserFollowed(
       {String? userId, String? followedId, String? collection}) async {
     try {
       var result = await userModelCollection
           .doc(userId)
           .collection(collection!)
-          .doc(followedId)
           .get()
-          .then((value) => value.id);
-      if (result.isNotEmpty) {
-        return true;
-      }
-      return false;
+          .then((value) => value.docs.map((e) => e.id).toList());
+
+      return result;
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
-      return false;
+      return [];
     }
   }
 
@@ -234,10 +231,21 @@ class DatabaseService {
       String? followerFirstName,
       String? followerLastName}) async {
     try {
+      //add following
       await userModelCollection
           .doc(userId)
-          .collection('following')
+          .collection(FollowParameters.following!)
           .doc(followerId)
+          .set({
+        UserParams.FIRST_NAME: followerFirstName,
+        UserParams.LAST_NAME: followerLastName,
+      });
+
+      //add followers
+      await userModelCollection
+          .doc(followerId)
+          .collection(FollowParameters.followers!)
+          .doc(userId)
           .set({
         UserParams.FIRST_NAME: followerFirstName,
         UserParams.LAST_NAME: followerLastName,
@@ -248,16 +256,25 @@ class DatabaseService {
   }
 
   //delete follower
-  Future<void> deleteFollowing(
-      {String? userId, String? followerId, String? collection}) async {
+  Future<void> deleteFollowing({String? userId, String? followerId}) async {
+    print('deleting follower: $userId : $followerId');
     try {
+      //delete following
       await userModelCollection
           .doc(userId)
-          .collection(collection!)
+          .collection(FollowParameters.following!)
           .doc(followerId)
           .delete();
+      //delete follower
+      await userModelCollection
+          .doc(followerId)
+          .collection(FollowParameters.followers!)
+          .doc(userId)
+          .delete();
+      print('deleting follower was successfull');
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
+      print('an error occured trying to delete: $e');
     }
   }
 

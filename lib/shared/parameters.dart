@@ -65,3 +65,8 @@ class CommentParameters {
   static String COMMENT = 'comment';
   static String DATE_TIME = 'dateTime';
 }
+
+class FollowParameters {
+  static String? followers = 'followers';
+  static String? following = 'following';
+}

@@ -76,6 +76,12 @@ var textStyle_8 =
 var textStyle_9 =
     TextStyle(color: color_12, fontFamily: 'Gotham', fontSize: 12);
 
+var textStyle_10 = TextStyle(
+    color: color_8,
+    fontFamily: 'Montserrat-SB',
+    fontWeight: FontWeight.bold,
+    fontSize: 15);
+
 var heading_1 = TextStyle(
     color: color_4,
     fontFamily: 'Montserrat-B',

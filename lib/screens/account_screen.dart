@@ -13,6 +13,7 @@ import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/followers.dart';
 import 'package:rillliveapp/shared/image_viewer.dart';
+import 'package:rillliveapp/shared/parameters.dart';
 import 'package:rillliveapp/wrapper.dart';
 import 'package:video_player/video_player.dart';
 import 'package:path/path.dart' as p;
@@ -44,7 +45,8 @@ class AccountProvider extends StatelessWidget {
           },
         ),
         StreamProvider<List<UserModel>>.value(
-          value: db.getFollowsPerUser(userId: userId, collection: 'followers'),
+          value: db.getFollowsPerUser(
+              userId: userId, collection: FollowParameters.following!),
           initialData: [],
           catchError: (context, error) {
             print('An error fetching user: $error');
@@ -106,6 +108,7 @@ class _AccountScreenState extends State<AccountScreen>
     userProvider = Provider.of<UserModel>(context);
     feedProvider = Provider.of<List<ImageVideoModel?>>(context);
     followersProvider = Provider.of<List<UserModel>>(context);
+    print('the followers per user: ${followersProvider.length}');
     Size size = MediaQuery.of(context).size;
     return widget.userId != null
         ? SingleChildScrollView(
