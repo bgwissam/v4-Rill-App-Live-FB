@@ -5,8 +5,8 @@ import 'package:rillliveapp/shared/parameters.dart';
 
 class TokenGenerator {
   late String apiToken;
-  String baseUrl =
-      'https://app.rilllive.com/public/services/agora/rtc-token.php';
+  String baseUrl = 'https://10.0.0.2:8080/access-token/';
+  // 'https://app.rilllive.com/public/services/agora/rtc-token.php';
   String appId = Parameters().app_ID;
   String appCertification = Parameters().app_certificate;
   late String token;
@@ -40,8 +40,9 @@ class TokenGenerator {
 
       var rawToken = json.decode(response.body);
       token =
-          '006d480c821a2a946d6a4d29292462a3d6fIAAAbqdVWGFOQOa0wiix1+pekSX9/KpdzGNMh6r/98GEHwx+f9gAAAAAIgAoMHytazxQYQQAAQBrPFBhAgBrPFBhAwBrPFBhBABrPFBh';
-      //rawToken['token'];
+          //'006d480c821a2a946d6a4d29292462a3d6fIAAAbqdVWGFOQOa0wiix1+pekSX9/KpdzGNMh6r/98GEHwx+f9gAAAAAIgAoMHytazxQYQQAAQBrPFBhAgBrPFBhAwBrPFBhBABrPFBh';
+          rawToken['token'];
+
       print('The token generated: $rawToken');
       print('uid: $userId channel: $channelName');
       if (response.statusCode == 200) {
