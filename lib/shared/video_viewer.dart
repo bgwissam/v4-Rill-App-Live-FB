@@ -55,6 +55,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
 
   @override
   void initState() {
+    print('the user model: ${widget.userModel!.firstName}');
     super.initState();
   }
 
@@ -67,6 +68,18 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   Widget build(BuildContext context) {
     commentProvider = Provider.of<List<CommentModel?>>(context);
     return Scaffold(
+        appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Image.network(widget.userModel!.avatarUrl!),
+            ),
+          ),
+          title: Text(
+              '${widget.userModel!.firstName} ${widget.userModel!.lastName}'),
+          backgroundColor: color_4,
+        ),
         body: SingleChildScrollView(
           physics: ScrollPhysics(),
           child: Column(

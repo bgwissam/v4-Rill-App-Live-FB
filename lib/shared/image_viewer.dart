@@ -62,7 +62,16 @@ class _ImageViewerState extends State<ImageViewer> {
     _size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image'),
+        leading: Padding(
+          padding: const EdgeInsets.all(3.0),
+          child: FittedBox(
+            fit: BoxFit.fill,
+            child: Image.network(widget.userModel!.avatarUrl!),
+          ),
+        ),
+        title: Text(
+            '${widget.userModel!.firstName} ${widget.userModel!.lastName}'),
+        backgroundColor: color_4,
       ),
       resizeToAvoidBottomInset: true,
       body: SizedBox(height: _size.height, child: _buildImageViewer()),

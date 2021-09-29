@@ -190,10 +190,7 @@ class _AccountScreenState extends State<AccountScreen>
                                         );
                                       },
                                       child: Text(
-                                        followersProvider != null &&
-                                                followersProvider.length > 0
-                                            ? '${followersProvider.length}'
-                                            : '00',
+                                        '00',
                                         style: textStyle_3,
                                         textAlign: TextAlign.center,
                                       ),
@@ -221,14 +218,17 @@ class _AccountScreenState extends State<AccountScreen>
                                           MaterialPageRoute(
                                             builder: (builder) {
                                               return Followers(
-                                                  followers: true,
+                                                  followers: false,
                                                   userModel: userProvider);
                                             },
                                           ),
                                         );
                                       },
                                       child: Text(
-                                        '00',
+                                        followersProvider != null &&
+                                                followersProvider.length > 0
+                                            ? '${followersProvider.length}'
+                                            : '00',
                                         style: textStyle_3,
                                         textAlign: TextAlign.center,
                                       ),

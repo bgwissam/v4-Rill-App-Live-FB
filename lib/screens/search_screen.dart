@@ -13,8 +13,10 @@ import 'package:rillliveapp/shared/video_viewer.dart';
 import 'package:video_player/video_player.dart';
 
 class SearchScreenProviders extends StatelessWidget {
-  const SearchScreenProviders({Key? key, this.userId}) : super(key: key);
+  const SearchScreenProviders({Key? key, this.userId, this.userModel})
+      : super(key: key);
   final String? userId;
+  final UserModel? userModel;
   @override
   Widget build(BuildContext context) {
     DatabaseService db = DatabaseService();
@@ -30,16 +32,15 @@ class SearchScreenProviders extends StatelessWidget {
             initialData: [],
             catchError: (context, error) => []),
       ],
-      child: SearchScreen(
-        userId: userId,
-      ),
+      child: SearchScreen(userId: userId, userModel: userModel),
     );
   }
 }
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key, this.userId}) : super(key: key);
+  const SearchScreen({Key? key, this.userId, this.userModel}) : super(key: key);
   final String? userId;
+  final UserModel? userModel;
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -217,7 +218,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (builder) => ImageViewerProvider(
-                                userModel: userProvider,
+                                userModel: widget.userModel,
                                 fileId: imageVideoProvider[index]!.uid,
                                 collection: 'comments',
                                 imageUrl:
@@ -249,7 +250,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (builder) => VideoPlayerProvider(
-                            userModel: userProvider,
+                            userModel: widget.userModel,
                             fileId: imageVideoProvider[index]!.uid,
                             collection: 'comments',
                             playerUrl: imageVideoProvider[index]!.url,
