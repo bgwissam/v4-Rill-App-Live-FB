@@ -37,6 +37,27 @@ class UsersFollowed {
   String? followerId;
   String? firstName;
   String? lastName;
+  String? avatarUrl;
 
-  UsersFollowed({this.userId, this.followerId, this.firstName, this.lastName});
+  UsersFollowed(
+      {this.userId,
+      this.followerId,
+      this.firstName,
+      this.lastName,
+      this.avatarUrl});
+}
+
+class UsersFollowing {
+  String? userId;
+  String? followerId;
+  String? firstName;
+  String? lastName;
+  String? avatarUrl;
+
+  UsersFollowing(
+      {this.userId,
+      this.followerId,
+      this.firstName,
+      this.lastName,
+      this.avatarUrl});
 }

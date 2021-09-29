@@ -122,13 +122,27 @@ class DatabaseService {
   }
 
   //Map follower data
-  List<UsersFollowed> _followedDataFromSnapshot(QuerySnapshot snapshot) {
+  List<UsersFollowing?> _followedDataFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return UsersFollowing(
+        userId: doc.id,
+        followerId: (doc.data()! as Map)[UserParams.USER_ID],
+        firstName: (doc.data()! as Map)[UserParams.FIRST_NAME],
+        lastName: (doc.data()! as Map)[UserParams.LAST_NAME],
+        avatarUrl: (doc.data()! as Map)[UserParams.AVATAR],
+      );
+    }).toList();
+  }
+
+  //map following data
+  List<UsersFollowed?> _followingDataFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return UsersFollowed(
         userId: doc.id,
         followerId: (doc.data()! as Map)[UserParams.USER_ID],
         firstName: (doc.data()! as Map)[UserParams.FIRST_NAME],
         lastName: (doc.data()! as Map)[UserParams.LAST_NAME],
+        avatarUrl: (doc.data()! as Map)[UserParams.AVATAR],
       );
     }).toList();
   }
@@ -172,7 +186,8 @@ class DatabaseService {
       {String? followerId,
       String? userId,
       String? followerFirstName,
-      String? followerLastName}) async {
+      String? followerLastName,
+      String? avatarUrl}) async {
     try {
       await userModelCollection
           .doc(userId)
@@ -181,6 +196,7 @@ class DatabaseService {
           .set({
         UserParams.FIRST_NAME: followerFirstName,
         UserParams.LAST_NAME: followerLastName,
+        UserParams.AVATAR: avatarUrl
       });
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
@@ -197,14 +213,24 @@ class DatabaseService {
         .map(_userDataFromSnapshot);
   }
 
-  //Stream users being followed by a certain user
-  Stream<List<UsersFollowed>> getUsersBeingFollowed(
+  //will stream the users followed by a certain user
+  Stream<List<UsersFollowing?>> getUsersBeingFollowed(
       {String? userId, String? collection}) {
     return userModelCollection
         .doc(userId)
         .collection(collection!)
         .snapshots()
         .map(_followedDataFromSnapshot);
+  }
+
+  //will stream the user following a certain user
+  Stream<List<UsersFollowed?>> getUsersFollowingUser(
+      {String? userId, String? collection}) {
+    return userModelCollection
+        .doc(userId)
+        .collection(collection!)
+        .snapshots()
+        .map(_followingDataFromSnapshot);
   }
 
   //Fetch followed users
@@ -229,7 +255,8 @@ class DatabaseService {
       {String? followerId,
       String? userId,
       String? followerFirstName,
-      String? followerLastName}) async {
+      String? followerLastName,
+      String? avatarUrl}) async {
     try {
       //add following
       await userModelCollection
@@ -239,6 +266,7 @@ class DatabaseService {
           .set({
         UserParams.FIRST_NAME: followerFirstName,
         UserParams.LAST_NAME: followerLastName,
+        UserParams.AVATAR: avatarUrl,
       });
 
       //add followers

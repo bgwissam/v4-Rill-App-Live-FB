@@ -53,6 +53,24 @@ class AccountProvider extends StatelessWidget {
             return [];
           },
         ),
+        StreamProvider<List<UsersFollowing?>>.value(
+          value: db.getUsersBeingFollowed(
+              userId: userId, collection: FollowParameters.followers!),
+          initialData: [],
+          catchError: (context, error) {
+            print('An error fetching user: $error');
+            return [];
+          },
+        ),
+        StreamProvider<List<UsersFollowed?>>.value(
+          value: db.getUsersFollowingUser(
+              userId: userId, collection: FollowParameters.following!),
+          initialData: [],
+          catchError: (context, error) {
+            print('An error fetching user: $error');
+            return [];
+          },
+        ),
       ],
       child: AccountScreen(
         userId: userId,
@@ -97,6 +115,9 @@ class _AccountScreenState extends State<AccountScreen>
   var feedProvider;
   var streamProvider;
   var followersProvider;
+  var followers;
+  var following;
+
   @override
   void initState() {
     super.initState();
@@ -107,8 +128,9 @@ class _AccountScreenState extends State<AccountScreen>
   Widget build(BuildContext context) {
     userProvider = Provider.of<UserModel>(context);
     feedProvider = Provider.of<List<ImageVideoModel?>>(context);
-    followersProvider = Provider.of<List<UserModel>>(context);
-    print('the followers per user: ${followersProvider.length}');
+    //followersProvider = Provider.of<List<UserModel>>(context);
+    following = Provider.of<List<UsersFollowing?>>(context);
+    followers = Provider.of<List<UsersFollowed?>>(context);
     Size size = MediaQuery.of(context).size;
     return widget.userId != null
         ? SingleChildScrollView(
@@ -183,14 +205,20 @@ class _AccountScreenState extends State<AccountScreen>
                                           MaterialPageRoute(
                                             builder: (builder) {
                                               return Followers(
-                                                  followers: true,
-                                                  userModel: userProvider);
+                                                followers: true,
+                                                userModel: userProvider,
+                                                userFollowed: [],
+                                                usersFollowing: following,
+                                              );
                                             },
                                           ),
                                         );
                                       },
                                       child: Text(
-                                        '00',
+                                        following != null &&
+                                                following.length > 0
+                                            ? '${following.length}'
+                                            : '00',
                                         style: textStyle_3,
                                         textAlign: TextAlign.center,
                                       ),
@@ -218,16 +246,19 @@ class _AccountScreenState extends State<AccountScreen>
                                           MaterialPageRoute(
                                             builder: (builder) {
                                               return Followers(
-                                                  followers: false,
-                                                  userModel: userProvider);
+                                                followers: false,
+                                                userModel: userProvider,
+                                                userFollowed: followers,
+                                                usersFollowing: [],
+                                              );
                                             },
                                           ),
                                         );
                                       },
                                       child: Text(
-                                        followersProvider != null &&
-                                                followersProvider.length > 0
-                                            ? '${followersProvider.length}'
+                                        followers != null &&
+                                                followers.length > 0
+                                            ? '${followers.length}'
                                             : '00',
                                         style: textStyle_3,
                                         textAlign: TextAlign.center,

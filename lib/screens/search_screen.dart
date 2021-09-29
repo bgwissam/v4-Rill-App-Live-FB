@@ -26,8 +26,8 @@ class SearchScreenProviders extends StatelessWidget {
             value: db.userData,
             initialData: [],
             catchError: (context, error) => []),
-        StreamProvider<List<UsersFollowed>>.value(
-            value: db.getUsersBeingFollowed(
+        StreamProvider<List<UsersFollowed?>>.value(
+            value: db.getUsersFollowingUser(
                 userId: userId, collection: 'followers'),
             initialData: [],
             catchError: (context, error) => []),
@@ -103,7 +103,7 @@ class _SearchScreenState extends State<SearchScreen> {
     imageVideoProvider = Provider.of<List<ImageVideoModel?>>(context);
     userListProvider = Provider.of<List<UserModel>>(context);
     userProvider = Provider.of<UserModel?>(context);
-    followedUsers = Provider.of<List<UsersFollowed>>(context);
+    followedUsers = Provider.of<List<UsersFollowed?>>(context);
     return SizedBox(
       height: _size.height - 105,
       width: _size.width,
@@ -407,7 +407,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                         followerFirstName:
                                             userListProvider[index].firstName,
                                         followerLastName:
-                                            userListProvider[index].lastName);
+                                            userListProvider[index].lastName,
+                                        avatarUrl:
+                                            userListProvider[index].avatarUrl);
 
                                     setState(() {
                                       followed
