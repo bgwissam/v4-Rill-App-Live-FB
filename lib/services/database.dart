@@ -100,6 +100,32 @@ class DatabaseService {
     }
   }
 
+  //Future to get users details
+  Future<UserModel> getSelectedUserById({String? uid}) async {
+    try {
+      return await userModelCollection.doc(uid).get().then((doc) {
+        return UserModel(
+            userId: (doc.data()! as Map)[UserParams.USER_ID],
+            userName: (doc.data()! as Map)[UserParams.USER_NAME],
+            emailAddress: (doc.data()! as Map)[UserParams.EMAIL_ADDRESS],
+            firstName: (doc.data()! as Map)[UserParams.FIRST_NAME],
+            lastName: (doc.data()! as Map)[UserParams.LAST_NAME],
+            dob: (doc.data()! as Map)[UserParams.DOB],
+            address: (doc.data()! as Map)[UserParams.ADDRESS],
+            avatarUrl: (doc.data()! as Map)[UserParams.AVATAR],
+            bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
+            phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
+            phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
+            phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
+            isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
+            roles: (doc.data()! as Map)[UserParams.ROLES]);
+      });
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      return UserModel();
+    }
+  }
+
   //Map users data
   List<UserModel> _userDataFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {

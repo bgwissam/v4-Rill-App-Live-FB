@@ -7,12 +7,19 @@ import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/comment_add.dart';
 import 'package:rillliveapp/shared/comment_view.dart';
+import 'package:rillliveapp/shared/loading_animation.dart';
 
 class ImageViewerProvider extends StatelessWidget {
   const ImageViewerProvider(
-      {Key? key, this.userModel, this.fileId, this.collection, this.imageUrl})
+      {Key? key,
+      this.userModel,
+      this.fileId,
+      this.collection,
+      this.imageUrl,
+      this.imageOwnerId})
       : super(key: key);
   final UserModel? userModel;
+  final String? imageOwnerId;
   final String? fileId;
   final String? collection;
   final String? imageUrl;
@@ -31,6 +38,7 @@ class ImageViewerProvider extends StatelessWidget {
         userModel: userModel,
         fileId: fileId,
         imageUrl: imageUrl!,
+        imageOwnerId: imageOwnerId,
       ),
     );
   }
@@ -38,9 +46,14 @@ class ImageViewerProvider extends StatelessWidget {
 
 class ImageViewer extends StatefulWidget {
   const ImageViewer(
-      {Key? key, required this.imageUrl, this.userModel, this.fileId})
+      {Key? key,
+      required this.imageUrl,
+      this.userModel,
+      this.fileId,
+      this.imageOwnerId})
       : super(key: key);
   final String imageUrl;
+  final String? imageOwnerId;
   final UserModel? userModel;
   final String? fileId;
   @override
@@ -51,35 +64,56 @@ class _ImageViewerState extends State<ImageViewer> {
   late var _size;
   late String _newComment;
   var commentProvider;
+  DatabaseService db = DatabaseService();
+  var getUser;
   @override
   void initState() {
     super.initState();
+    getUser = _detailsForImageOwner(uid: widget.imageOwnerId);
   }
 
   @override
   Widget build(BuildContext context) {
     commentProvider = Provider.of<List<CommentModel?>>(context);
     _size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(3.0),
-          child: FittedBox(
-            fit: BoxFit.fill,
-            child: Image.network(widget.userModel!.avatarUrl!),
-          ),
-        ),
-        title: Text(
-            '${widget.userModel!.firstName} ${widget.userModel!.lastName}'),
-        backgroundColor: color_4,
-      ),
-      resizeToAvoidBottomInset: true,
-      body: SizedBox(height: _size.height, child: _buildImageViewer()),
-      bottomNavigationBar: CommentAdd(
-          userModel: widget.userModel,
-          fileId: widget.fileId,
-          collection: 'comments'),
-    );
+    return FutureBuilder(
+        future: getUser,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            print('the data obtained: ${snapshot.data.firstName}');
+            return Scaffold(
+              appBar: AppBar(
+                leading: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: Image.network(snapshot.data.avatarUrl),
+                  ),
+                ),
+                title: Text(
+                    '${snapshot.data.firstName} ${snapshot.data.lastName}'),
+                backgroundColor: color_4,
+              ),
+              resizeToAvoidBottomInset: true,
+              body: SizedBox(height: _size.height, child: _buildImageViewer()),
+              bottomNavigationBar: CommentAdd(
+                  userModel: widget.userModel,
+                  fileId: widget.fileId,
+                  collection: 'comments'),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error retreiving user\'s data!: ${snapshot.error}'),
+            );
+          } else {
+            return const Scaffold(
+                body: Center(
+              child: LoadingAmination(
+                animationType: 'ThreeInOut',
+              ),
+            ));
+          }
+        });
   }
 
   Widget _buildImageViewer() {
@@ -145,5 +179,10 @@ class _ImageViewerState extends State<ImageViewer> {
             );
           }),
     );
+  }
+
+  //get the details for the image owner
+  Future<UserModel> _detailsForImageOwner({String? uid}) async {
+    return db.getSelectedUserById(uid: uid);
   }
 }

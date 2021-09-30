@@ -121,7 +121,7 @@ class _AccountScreenState extends State<AccountScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -133,317 +133,323 @@ class _AccountScreenState extends State<AccountScreen>
     followers = Provider.of<List<UsersFollowed?>>(context);
     Size size = MediaQuery.of(context).size;
     return widget.userId != null
-        ? SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //Profile photo, followers, and name
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                  child: Row(children: [
-                    userProvider.avatarUrl != null
-                        ? Container(
-                            height: size.width / 3,
-                            width: size.width / 3,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all()),
-                            child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: Image.network(userProvider.avatarUrl)),
-                          )
-                        : Container(
-                            height: size.width / 3,
-                            width: size.width / 3,
-                            decoration: BoxDecoration(
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //Profile photo, followers, and name
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                child: Row(children: [
+                  userProvider.avatarUrl != null
+                      ? Container(
+                          height: size.width / 3,
+                          width: size.width / 3,
+                          decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: Image.asset("assets/images/g.png")),
+                              border: Border.all()),
+                          child: FittedBox(
+                              fit: BoxFit.fill,
+                              child: Image.network(userProvider.avatarUrl)),
+                        )
+                      : Container(
+                          height: size.width / 3,
+                          width: size.width / 3,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      height: size.width / 3,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Text('UserName', style: textStyle_3),
-                          ),
-                          // userProvider.firstName != null
-                          //     ? Expanded(
-                          //         child: Text('${userProvider.userName!}',
-                          //             style: textStyle_3),
-                          //       )
-                          //     : Text('Unknown User', style: textStyle_3),
-                          userProvider.firstName != null
-                              ? Expanded(
-                                  child: Text(
-                                      '${userProvider.firstName!} ${userProvider.lastName!}',
-                                      style: textStyle_8),
-                                )
-                              : Text('Unknown User', style: textStyle_8),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(children: [
-                                  Container(
-                                    width: size.width / 4,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: color_9),
-                                    child: InkWell(
-                                      onTap: () async {
-                                        await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (builder) {
-                                              return Followers(
-                                                followers: true,
-                                                userModel: userProvider,
-                                                userFollowed: [],
-                                                usersFollowing: following,
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      },
-                                      child: Text(
-                                        following != null &&
-                                                following.length > 0
-                                            ? '${following.length}'
-                                            : '00',
-                                        style: textStyle_3,
-                                        textAlign: TextAlign.center,
-                                      ),
+                          child: FittedBox(
+                              fit: BoxFit.fill,
+                              child: Image.asset("assets/images/g.png")),
+                        ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    height: size.width / 3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text('UserName', style: textStyle_3),
+                        ),
+                        // userProvider.firstName != null
+                        //     ? Expanded(
+                        //         child: Text('${userProvider.userName!}',
+                        //             style: textStyle_3),
+                        //       )
+                        //     : Text('Unknown User', style: textStyle_3),
+                        userProvider.firstName != null
+                            ? Expanded(
+                                child: Text(
+                                    '${userProvider.firstName!} ${userProvider.lastName!}',
+                                    style: textStyle_8),
+                              )
+                            : Text('Unknown User', style: textStyle_8),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(children: [
+                                Container(
+                                  width: size.width / 4,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: color_9),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (builder) {
+                                            return Followers(
+                                              followers: true,
+                                              userModel: userProvider,
+                                              userFollowed: [],
+                                              usersFollowing: following,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      following != null && following.length > 0
+                                          ? '${following.length}'
+                                          : '00',
+                                      style: textStyle_3,
+                                      textAlign: TextAlign.center,
                                     ),
                                   ),
-                                  SizedBox(
-                                    child: Text('Followers',
-                                        style: textStyle_9,
-                                        textAlign: TextAlign.center),
-                                  )
-                                ]),
-                                SizedBox(
-                                  width: 5,
                                 ),
-                                Column(children: [
-                                  Container(
-                                    width: size.width / 4,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: color_9),
-                                    child: InkWell(
-                                      onTap: () async {
-                                        await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (builder) {
-                                              return Followers(
-                                                followers: false,
-                                                userModel: userProvider,
-                                                userFollowed: followers,
-                                                usersFollowing: [],
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      },
-                                      child: Text(
-                                        followers != null &&
-                                                followers.length > 0
-                                            ? '${followers.length}'
-                                            : '00',
-                                        style: textStyle_3,
-                                        textAlign: TextAlign.center,
-                                      ),
+                                SizedBox(
+                                  child: Text('Followers',
+                                      style: textStyle_9,
+                                      textAlign: TextAlign.center),
+                                )
+                              ]),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Column(children: [
+                                Container(
+                                  width: size.width / 4,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: color_9),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (builder) {
+                                            return Followers(
+                                              followers: false,
+                                              userModel: userProvider,
+                                              userFollowed: followers,
+                                              usersFollowing: [],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      followers != null && followers.length > 0
+                                          ? '${followers.length}'
+                                          : '00',
+                                      style: textStyle_3,
+                                      textAlign: TextAlign.center,
                                     ),
                                   ),
-                                  SizedBox(
-                                    child: Text('Following',
-                                        style: textStyle_9,
-                                        textAlign: TextAlign.center),
-                                  )
-                                ])
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ]),
-                ),
-                //bio section
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  height: size.height / 4,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'bio section here...',
-                        style: textStyle_8,
-                      ),
-                      Text(
-                        'Hobbies | Music | Sport',
-                        style: textStyle_8,
-                      ),
-                      Text(
-                        'A message from the user to the followers',
-                        style: textStyle_8,
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // //Follow button
-                    // Expanded(
-                    //   flex: 1,
-                    //   child: ElevatedButton(
-                    //     onPressed: () async {
-                    //       setState(() {
-                    //         _buttonPressed[0] = true;
-                    //         _buttonPressed[1] = false;
-                    //         _buttonPressed[2] = false;
-                    //       });
-                    //     },
-                    //     child: Text(
-                    //       "Follow",
-                    //       style: TextStyle(
-                    //         fontSize: 14,
-                    //         color: _buttonPressed[0] ? Colors.white : color_4,
-                    //       ),
-                    //     ),
-                    //     style: ElevatedButton.styleFrom(
-                    //       primary: _buttonPressed[0] ? color_4 : Colors.white,
-                    //       shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(25.0),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    //Subscribe button
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            setState(() {
-                              _buttonPressed[0] = false;
-                              _buttonPressed[1] = true;
-                              _buttonPressed[2] = false;
-                            });
-                            _subscribeToPlan(context);
-                          },
-                          child: Text(
-                            "Subscribe",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: _buttonPressed[1] ? Colors.white : color_4,
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: _buttonPressed[1] ? color_4 : Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
+                                ),
+                                SizedBox(
+                                  child: Text('Following',
+                                      style: textStyle_9,
+                                      textAlign: TextAlign.center),
+                                )
+                              ])
+                            ],
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                    //Message button
-                    Expanded(
+                  )
+                ]),
+              ),
+              //bio section
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                height: size.height / 4,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'bio section here...',
+                      style: textStyle_8,
+                    ),
+                    Text(
+                      'Hobbies | Music | Sport',
+                      style: textStyle_8,
+                    ),
+                    Text(
+                      'A message from the user to the followers',
+                      style: textStyle_8,
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // //Follow button
+                  // Expanded(
+                  //   flex: 1,
+                  //   child: ElevatedButton(
+                  //     onPressed: () async {
+                  //       setState(() {
+                  //         _buttonPressed[0] = true;
+                  //         _buttonPressed[1] = false;
+                  //         _buttonPressed[2] = false;
+                  //       });
+                  //     },
+                  //     child: Text(
+                  //       "Follow",
+                  //       style: TextStyle(
+                  //         fontSize: 14,
+                  //         color: _buttonPressed[0] ? Colors.white : color_4,
+                  //       ),
+                  //     ),
+                  //     style: ElevatedButton.styleFrom(
+                  //       primary: _buttonPressed[0] ? color_4 : Colors.white,
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(25.0),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  //Subscribe button
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             _buttonPressed[0] = false;
-                            _buttonPressed[1] = false;
-                            _buttonPressed[2] = true;
+                            _buttonPressed[1] = true;
+                            _buttonPressed[2] = false;
                           });
+                          _subscribeToPlan(context);
                         },
                         child: Text(
-                          "Message",
+                          "Subscribe",
                           style: TextStyle(
                             fontSize: 14,
-                            color: _buttonPressed[2] ? Colors.white : color_4,
+                            color: _buttonPressed[1] ? Colors.white : color_4,
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: _buttonPressed[2] ? color_4 : Colors.white,
+                          primary: _buttonPressed[1] ? color_4 : Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-                //feeds and live streaming
-                Container(
-                  padding:
-                      const EdgeInsets.only(left: 10, top: 10.0, bottom: 10.0),
-                  child: TabBar(
-                    controller: _tabController,
-                    labelColor: color_4,
-                    unselectedLabelColor: color_12,
-                    isScrollable: true,
-                    indicator: const UnderlineTabIndicator(
-                        insets: EdgeInsets.only(left: 0, right: 0, bottom: 4)),
-                    tabs: [
-                      Tab(
-                        text: feedProvider != null && feedProvider.length > 0
-                            ? 'Feed (${feedProvider.length})'
-                            : 'Feed',
+                  ),
+                  //Message button
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _buttonPressed[0] = false;
+                          _buttonPressed[1] = false;
+                          _buttonPressed[2] = true;
+                        });
+                      },
+                      child: Text(
+                        "Message",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: _buttonPressed[2] ? Colors.white : color_4,
+                        ),
                       ),
-                      Tab(
-                          text: streamProvider != null &&
-                                  streamProvider.length > 0
-                              ? 'Live Recording (${streamProvider.length})'
-                              : 'Live Recording'),
-                      Tab(
-                        icon: Container(
-                          width: size.width / 3,
-                          alignment: Alignment.centerRight,
-                          child: Icon(
+                      style: ElevatedButton.styleFrom(
+                        primary: _buttonPressed[2] ? color_4 : Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              //feeds and live streaming
+              Container(
+                padding:
+                    const EdgeInsets.only(left: 10, top: 10.0, bottom: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                          icon: Icon(
                             Icons.settings,
                             color: color_10,
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                //All feed and subscribed channels
-                SizedBox(
-                  height: 120,
-                  width: size.width,
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      //All Feed channels list
-                      Container(
-                        child: _allFeeds(),
+                          onPressed: () {
+                            Scaffold.of(context).openEndDrawer();
+                          }),
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: TabBar(
+                        controller: _tabController,
+                        labelColor: color_4,
+                        unselectedLabelColor: color_12,
+                        isScrollable: true,
+                        indicator: const UnderlineTabIndicator(
+                            insets:
+                                EdgeInsets.only(left: 0, right: 0, bottom: 4)),
+                        tabs: [
+                          Tab(
+                            text:
+                                feedProvider != null && feedProvider.length > 0
+                                    ? 'Feed (${feedProvider.length})'
+                                    : 'Feed',
+                          ),
+                          Tab(
+                              text: streamProvider != null &&
+                                      streamProvider.length > 0
+                                  ? 'Live Recording (${streamProvider.length})'
+                                  : 'Live Recording'),
+                        ],
                       ),
-                      //Subscribed channels
-                      Container(
-                        child: _liveFeed(),
-                      ),
-                      //settings button
-                      Container(child: _settings()),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              //All feed and subscribed channels
+              SizedBox(
+                height: 140,
+                width: size.width,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    //All Feed channels list
+                    Container(
+                      child: _allFeeds(),
+                    ),
+                    //Subscribed channels
+                    Container(
+                      child: _liveFeed(),
+                    ),
+                    //settings button
+                    // Container(child: _settings()),
+                  ],
+                ),
+              ),
+            ],
           )
         : SizedBox(
             height: size.height - 100,
@@ -483,8 +489,13 @@ class _AccountScreenState extends State<AccountScreen>
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (builder) =>
-                          ImageViewer(imageUrl: feedProvider[index]!.url!)),
+                    builder: (builder) => ImageViewerProvider(
+                      imageUrl: feedProvider[index]!.url!,
+                      collection: 'comments',
+                      fileId: feedProvider[index]!.uid,
+                      imageOwnerId: feedProvider[index]!.userId,
+                    ),
+                  ),
                 );
               },
               child: CachedNetworkImage(

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:rillliveapp/authentication/register.dart';
+import 'package:rillliveapp/authentication/security.dart';
 import 'package:rillliveapp/controller/live_streaming.dart';
 import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/controller/token_controller.dart';
@@ -27,6 +29,8 @@ import 'package:rillliveapp/shared/parameters.dart';
 import 'package:rillliveapp/shared/video_viewer.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
+
+import '../wrapper.dart';
 
 /*
  * Main Screen will be the first screen loaded after authentication
@@ -83,6 +87,8 @@ class _MainScreenState extends State<MainScreen>
   late UserModel userProvider;
   late bool _isLoadingStream = false;
   late bool _isUploadingFile = false;
+
+  get as => null;
   @override
   void initState() {
     super.initState();
@@ -119,19 +125,99 @@ class _MainScreenState extends State<MainScreen>
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           bottomNavigationBar: _bottomNavigationWidget(),
-          body: Column(
-            children: [
-              Padding(
-                  padding: const EdgeInsets.only(top: 40.0),
-                  child: _bodyWidget[_selectedIndex]),
-              _isLoadingStream
-                  ? Container(
-                      height: 100,
-                      width: 100,
-                      child: LoadingView(),
-                    )
-                  : SizedBox.shrink(),
-            ],
+          endDrawer: Drawer(
+            child: ListView(
+              children: [
+                UserAccountsDrawerHeader(
+                  decoration: const BoxDecoration(
+                    color: Color(0xffdf1266),
+                  ),
+                  accountName: Text(
+                      '${userProvider.firstName} ${userProvider.lastName}'),
+                  accountEmail: Text('${userProvider.emailAddress}'),
+                ),
+                ListTile(
+                  title: Text('Analytics', style: textStyle_1),
+                  onTap: () async {},
+                  trailing:
+                      const Icon(Icons.analytics, color: Color(0xffdf1266)),
+                ),
+                ListTile(
+                  title: Text('Privacy', style: textStyle_1),
+                  onTap: () async {},
+                  trailing: Icon(Icons.privacy_tip, color: Color(0xffdf1266)),
+                ),
+                ListTile(
+                  title: Text('Settings', style: textStyle_1),
+                  trailing: Icon(Icons.security, color: Color(0xffdf1266)),
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => Register(
+                          userModel: userProvider,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: Text('Security', style: textStyle_1),
+                  trailing: Icon(Icons.security, color: Color(0xffdf1266)),
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => SecurityPage(
+                          userModel: userProvider,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: Text('Payment', style: textStyle_1),
+                  onTap: () async {},
+                  trailing: Icon(Icons.payment, color: Color(0xffdf1266)),
+                ),
+                ListTile(
+                  title: Text('Ads', style: textStyle_1),
+                  onTap: () async {},
+                  trailing: Icon(Icons.ad_units, color: Color(0xffdf1266)),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text('Sign Out', style: textStyle_1),
+                  trailing: Icon(Icons.logout, color: Color(0xffdf1266)),
+                  onTap: () async {
+                    await as.signOut();
+                    await Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (builder) => const Wrapper(),
+                        ),
+                        (route) => false);
+                  },
+                ),
+              ],
+            ),
+          ),
+          body: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.only(top: 40.0),
+                    child: _bodyWidget[_selectedIndex]),
+                _isLoadingStream
+                    ? Container(
+                        height: 100,
+                        width: 100,
+                        child: LoadingView(),
+                      )
+                    : SizedBox.shrink(),
+              ],
+            ),
           )),
     );
   }
@@ -816,6 +902,7 @@ class _MainScreenState extends State<MainScreen>
                               userModel: userProvider,
                               fileId: imageVideoProvider[index]!.uid,
                               collection: 'comments',
+                              imageOwnerId: imageVideoProvider[index]!.userId,
                               imageUrl:
                                   imageVideoProvider[index]!.url.toString())),
                     );
@@ -848,6 +935,7 @@ class _MainScreenState extends State<MainScreen>
                           fileId: imageVideoProvider[index]!.uid,
                           collection: 'comments',
                           playerUrl: imageVideoProvider[index]!.url,
+                          videoOwnerId: imageVideoProvider[index]!.userId,
                         ),
                       ),
                     );
