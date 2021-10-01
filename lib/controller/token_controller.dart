@@ -5,7 +5,7 @@ import 'package:rillliveapp/shared/parameters.dart';
 
 class TokenGenerator {
   late String apiToken;
-  String baseUrl = 'https://192.168.8.117:8080/access-token/';
+  String baseUrl = 'https://192.168.8.117:8080/access-token';
   //'https://app.rilllive.com/public/services/agora/rtc-token.php';
   String appId = Parameters().app_ID;
   String appCertification = Parameters().app_certificate;
@@ -41,7 +41,7 @@ class TokenGenerator {
       var rawToken = json.decode(response.body);
       print('raw token: $rawToken}');
       token =
-          '006d480c821a2a946d6a4d29292462a3d6fIAC+7zA8SK186C4Ch1aajBpu0Jm3CdHns+6u0VFt7glOKwxzvIMAAAAAEAAGfYJFW/5XYQEAAQDrulZh';
+          '006d480c821a2a946d6a4d29292462a3d6fIABHpVa9d5kPZ7tWrg1UoVb0r10VuVmCwn2vuVjPWMpLRwxzvIMAAAAAEAAsJrPhWD9YYQEAAQDo';
       //rawToken['token'];
 
       // print('The token generated: $rawToken');
@@ -54,7 +54,7 @@ class TokenGenerator {
       return token;
     } catch (e, stackTrace) {
       print('An error occured: $e, Stack: $stackTrace');
-      return 'failed';
+      return '006d480c821a2a946d6a4d29292462a3d6fIABHpVa9d5kPZ7tWrg1UoVb0r10VuVmCwn2vuVjPWMpLRwxzvIMAAAAAEAAsJrPhWD9YYQEAAQDo+1Zh';
     }
   } //End of post function
 

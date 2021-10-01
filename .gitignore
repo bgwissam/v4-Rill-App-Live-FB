@@ -4,6 +4,7 @@
 *.pyc
 *.swp
 *.apk
+*.bin
 *.ipa
 .DS_Store
 .atom/

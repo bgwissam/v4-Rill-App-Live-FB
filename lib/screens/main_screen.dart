@@ -210,22 +210,19 @@ class _MainScreenState extends State<MainScreen>
               ],
             ),
           ),
-          body: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(top: 40.0),
-                    child: _bodyWidget[_selectedIndex]),
-                _isLoadingStream
-                    ? Container(
-                        height: 100,
-                        width: 100,
-                        child: LoadingView(),
-                      )
-                    : SizedBox.shrink(),
-              ],
-            ),
+          body: Column(
+            children: [
+              Padding(
+                  padding: const EdgeInsets.only(top: 40.0),
+                  child: _bodyWidget[_selectedIndex]),
+              _isLoadingStream
+                  ? Container(
+                      height: 100,
+                      width: 100,
+                      child: LoadingView(),
+                    )
+                  : SizedBox.shrink(),
+            ],
           )),
     );
   }

@@ -2,6 +2,7 @@
     package="com.oxy.rillliveapp">
    <application
         android:label="rill_live_app_fb_v4"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

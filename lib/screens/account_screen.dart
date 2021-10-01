@@ -133,11 +133,10 @@ class _AccountScreenState extends State<AccountScreen>
     followers = Provider.of<List<UsersFollowed?>>(context);
     Size size = MediaQuery.of(context).size;
     return widget.userId != null
-        ? Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //Profile photo, followers, and name
+        ? SizedBox(
+            height: size.height - 100,
+            width: size.width,
+            child: ListView(children: [
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -391,17 +390,6 @@ class _AccountScreenState extends State<AccountScreen>
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
-                      flex: 1,
-                      child: IconButton(
-                          icon: Icon(
-                            Icons.settings,
-                            color: color_10,
-                          ),
-                          onPressed: () {
-                            Scaffold.of(context).openEndDrawer();
-                          }),
-                    ),
-                    Expanded(
                       flex: 6,
                       child: TabBar(
                         controller: _tabController,
@@ -426,12 +414,23 @@ class _AccountScreenState extends State<AccountScreen>
                         ],
                       ),
                     ),
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.settings,
+                            color: color_10,
+                          ),
+                          onPressed: () {
+                            Scaffold.of(context).openEndDrawer();
+                          }),
+                    ),
                   ],
                 ),
               ),
               //All feed and subscribed channels
               SizedBox(
-                height: 140,
+                height: size.height - 200,
                 width: size.width,
                 child: TabBarView(
                   controller: _tabController,
@@ -449,7 +448,7 @@ class _AccountScreenState extends State<AccountScreen>
                   ],
                 ),
               ),
-            ],
+            ]),
           )
         : SizedBox(
             height: size.height - 100,
