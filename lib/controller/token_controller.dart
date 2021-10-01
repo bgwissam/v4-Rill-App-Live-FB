@@ -5,8 +5,8 @@ import 'package:rillliveapp/shared/parameters.dart';
 
 class TokenGenerator {
   late String apiToken;
-  String baseUrl = //'https://10.0.0.2:8080/access-token/';
-      'https://app.rilllive.com/public/services/agora/rtc-token.php';
+  String baseUrl = 'https://192.168.8.117:8080/access-token/';
+  //'https://app.rilllive.com/public/services/agora/rtc-token.php';
   String appId = Parameters().app_ID;
   String appCertification = Parameters().app_certificate;
   late String token;
@@ -16,31 +16,32 @@ class TokenGenerator {
       required String userId,
       required String role}) async {
     try {
-      // String credentials =
-      //     '${Parameters().Customer_ID}:${Parameters().Customer_secret}';
-      // Codec<String, String> stringToBase64 = utf8.fuse(base64);
-      // String encoded = stringToBase64.encode(credentials);
-      // final response = await http.post(
-      //   Uri.parse(baseUrl),
-      //   headers: <String, String>{
-      //     'Content-Type': 'application/json',
-      //     'Authorization': 'Basic $encoded'
-      //   },
-      //   body: jsonEncode(
-      //     <String, dynamic>{
-      //       'appID': appId,
-      //       'appCertificate': appCertification,
-      //       'channelName': channelName,
-      //       'userId': userId,
-      //       'role': role,
-      //       'privilegeExpiredTs': 24
-      //     },
-      //   ),
-      // );
+      String credentials =
+          '${Parameters().Customer_ID}:${Parameters().Customer_secret}';
+      Codec<String, String> stringToBase64 = utf8.fuse(base64);
+      String encoded = stringToBase64.encode(credentials);
+      final response = await http.post(
+        Uri.parse(baseUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          //'Authorization': 'Basic $encoded'
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'appID': appId,
+            'appCertificate': appCertification,
+            'channelName': channelName,
+            'uid': userId,
+            'role': role,
+            'expireTime': 24
+          },
+        ),
+      );
 
-      // var rawToken = json.decode(response.body);
+      var rawToken = json.decode(response.body);
+      print('raw token: $rawToken}');
       token =
-          '006d480c821a2a946d6a4d29292462a3d6fIACcCUVs9MsJRpf+3jy5ygxkF7yAXgjUOznLWiF0SMYxTAxzvIMAAAAAEADOLjj8H3lWYQEAAQCvNVVh';
+          '006d480c821a2a946d6a4d29292462a3d6fIAC+7zA8SK186C4Ch1aajBpu0Jm3CdHns+6u0VFt7glOKwxzvIMAAAAAEAAGfYJFW/5XYQEAAQDrulZh';
       //rawToken['token'];
 
       // print('The token generated: $rawToken');

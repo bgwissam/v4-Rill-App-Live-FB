@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:camera/camera.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -87,13 +89,19 @@ class _MainScreenState extends State<MainScreen>
   late UserModel userProvider;
   late bool _isLoadingStream = false;
   late bool _isUploadingFile = false;
-
+  late CameraController controller;
+  List<CameraDescription> cameras = [
+    CameraDescription(
+        name: 'front',
+        lensDirection: CameraLensDirection.front,
+        sensorOrientation: 1)
+  ];
   get as => null;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-
+    controller = CameraController(cameras[0], ResolutionPreset.max);
     getSubscriptionFeed = _getSubscriptionChannels();
   }
 
@@ -262,45 +270,104 @@ class _MainScreenState extends State<MainScreen>
                   scrollDirection: Axis.horizontal,
                   itemCount: streamingProvider.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (builder) {
-                              return LiveStreaming(
-                                channelName: streamingProvider[index]!
-                                    .channelName
-                                    .toString(),
-                                streamUserId: streamingProvider[index]!.userId,
-                                userRole: 'publisher',
-                                token:
-                                    streamingProvider[index]!.token.toString(),
-                                userId: _userId_2, //widget.userId.toString(),
-                                resourceId: streamingProvider[index]!
-                                    .resourceId
-                                    .toString(),
-                                sid: streamingProvider[index]!.sid.toString(),
-                                mode: 'mix',
-                              );
-                            },
-                          ),
-                        );
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        height: 100,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(streamingProvider[index]!.uid.toString()),
-                            Text(streamingProvider[index]!
-                                .channelName
-                                .toString())
-                          ],
-                        ),
-                      ),
-                    );
+                    return FutureBuilder(
+                        future: getStreamerDetails(
+                            userId: streamingProvider[index]!.userId),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            return GestureDetector(
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (builder) {
+                                      return LiveStreaming(
+                                        channelName: streamingProvider[index]!
+                                            .channelName
+                                            .toString(),
+                                        streamUserId:
+                                            streamingProvider[index]!.userId,
+                                        userRole: 'publisher',
+                                        token: streamingProvider[index]!
+                                            .token
+                                            .toString(),
+                                        userId:
+                                            _userId_2, //widget.userId.toString(),
+                                        resourceId: streamingProvider[index]!
+                                            .resourceId
+                                            .toString(),
+                                        sid: streamingProvider[index]!
+                                            .sid
+                                            .toString(),
+                                        mode: 'mix',
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                height: 100,
+                                child: Container(
+                                  width: _size.width / 2,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.center,
+                                    children: [
+                                      Positioned.fill(
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Image.network(
+                                              snapshot.data.avatarUrl,
+                                              fit: BoxFit.fill),
+                                        ),
+                                      ),
+                                      Positioned.fill(
+                                        child: Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 15, vertical: 5),
+                                            child: Text(
+                                                streamingProvider[index]!
+                                                    .channelName
+                                                    .toString(),
+                                                style: textStyle_1),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned.fill(
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 15, vertical: 5),
+                                            child: Text('Live...',
+                                                style: textStyle_1),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            print(
+                                'Error establishing stream: ${snapshot.error}');
+                            return Center(
+                                child: Text('Error: ${snapshot.error}'));
+                          } else {
+                            return const Center(
+                                child: LoadingAmination(
+                              animationType: 'ThreeInOut',
+                            ));
+                          }
+                        });
                   })
               : Center(
                   child: Text('No Streams available'),
@@ -349,6 +416,11 @@ class _MainScreenState extends State<MainScreen>
     );
   }
 
+  //Get streamer details
+  Future<UserModel> getStreamerDetails({String? userId}) async {
+    return db.getUserByUserId(userId: userId);
+  }
+
   //Pull refresh
   Future<void> _pullRefresh() async {}
 
@@ -368,7 +440,7 @@ class _MainScreenState extends State<MainScreen>
             child: FloatingActionButton(
               onPressed: () {
                 widget.userId != null
-                    ? showBottomNavigationMenu()
+                    ? showBottomNavigationMenu() // showCameraModeNavigation()
                     : errorDialog('Guest Account',
                         'You need to login in order to use this feature');
               },
@@ -429,6 +501,28 @@ class _MainScreenState extends State<MainScreen>
               ))
         ],
       ),
+    );
+  }
+
+  //different style button navigation
+  showCameraModeNavigation() async {
+    await _getCameraMicPermission();
+    return Stack(
+      alignment: FractionalOffset.center,
+      children: [
+        Positioned.fill(
+          child: AspectRatio(
+            aspectRatio: controller.value.aspectRatio,
+            child: CameraPreview(controller),
+          ),
+        ),
+        Positioned.fill(
+          child: Opacity(
+            opacity: 0.3,
+            child: Text('Live'),
+          ),
+        ),
+      ],
     );
   }
 
@@ -1014,22 +1108,22 @@ class _MainScreenState extends State<MainScreen>
   }
 
   //Initialize video player
-  Future<ChewieController> initializeVideo(
-      String _videoPlayerController) async {
-    VideoPlayerController _controller =
-        VideoPlayerController.network(_videoPlayerController);
-    await _controller.initialize();
-    return ChewieController(
-      videoPlayerController: _controller,
-      autoPlay: false,
-      // aspectRatio: _controller.value.aspectRatio,
-      allowMuting: true,
-      looping: false,
-      showControlsOnInitialize: false,
-      showOptions: false,
-      showControls: false,
-    );
-  }
+  // Future<ChewieController> initializeVideo(
+  //     String _videoPlayerController) async {
+  //   VideoPlayerController _controller =
+  //       VideoPlayerController.network(_videoPlayerController);
+  //   await _controller.initialize();
+  //   return ChewieController(
+  //     videoPlayerController: _controller,
+  //     autoPlay: false,
+  //     // aspectRatio: _controller.value.aspectRatio,
+  //     allowMuting: true,
+  //     looping: false,
+  //     showControlsOnInitialize: false,
+  //     showOptions: false,
+  //     showControls: false,
+  //   );
+  // }
 
   //Subscribed feed section
   Widget _subscribedFeed() {

@@ -220,6 +220,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             builder: (builder) => ImageViewerProvider(
                                 userModel: widget.userModel,
                                 fileId: imageVideoProvider[index]!.uid,
+                                imageOwnerId: imageVideoProvider[index]!.userId,
                                 collection: 'comments',
                                 imageUrl:
                                     imageVideoProvider[index]!.url.toString())),
@@ -253,6 +254,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             userModel: widget.userModel,
                             fileId: imageVideoProvider[index]!.uid,
                             collection: 'comments',
+                            videoOwnerId: imageVideoProvider[index]!.userId,
                             playerUrl: imageVideoProvider[index]!.url,
                           ),
                         ),
