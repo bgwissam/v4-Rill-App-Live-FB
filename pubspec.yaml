@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   agora_rtc_engine: 4.0.5
+  agora_rtm: ^1.0.1
   agora_uikit: ^0.0.3
   permission_handler: ^8.1.4+2
   device_info: ^2.0.2

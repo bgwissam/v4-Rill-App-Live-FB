@@ -36,7 +36,8 @@
     <application
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:icon="@mipmap/ic_launcher"
-        android:label="rill_live_app_fb_v4" >
+        android:label="rill_live_app_fb_v4"
+        android:usesCleartextTraffic="true" >
         <activity
             android:name="com.oxy.rillliveapp.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

@@ -138,8 +138,7 @@ class _AccountScreenState extends State<AccountScreen>
             width: size.width,
             child: ListView(children: [
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(children: [
                   userProvider.avatarUrl != null
                       ? Container(

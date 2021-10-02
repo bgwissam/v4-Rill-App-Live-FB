@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rillliveapp/authentication/signin.dart';
-import 'package:rillliveapp/screens/main_screen.dart';
 import 'package:rillliveapp/services/auth.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
@@ -63,25 +62,26 @@ class _EmailConfirmationState extends State<EmailConfirmation> {
               //   },
               // ),
               Container(
-                padding: EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Text(
                     'A verification link has been sent to your email, kinldy verify your email before proceeding',
                     style: textStyle_1),
               ),
               Container(
-                padding: EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Text(
                     'If you cannot find the email in your inbox, please check junk of spam folder',
                     style: textStyle_6),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 35,
               ),
               InkWell(
                 onTap: () async {
                   await Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (builder) => SignInSignUp()),
+                      MaterialPageRoute(
+                          builder: (builder) => const SignInSignUp()),
                       (route) => false);
                 },
                 child: Text('Go back to Login Page', style: textStyle_1),

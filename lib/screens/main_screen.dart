@@ -12,6 +12,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rillliveapp/authentication/register.dart';
 import 'package:rillliveapp/authentication/security.dart';
+import 'package:rillliveapp/controller/live_messaging.dart';
 import 'package:rillliveapp/controller/live_streaming.dart';
 import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/controller/token_controller.dart';
@@ -213,7 +214,7 @@ class _MainScreenState extends State<MainScreen>
           body: Column(
             children: [
               Padding(
-                  padding: const EdgeInsets.only(top: 40.0),
+                  padding: const EdgeInsets.only(top: 15.0),
                   child: _bodyWidget[_selectedIndex]),
               _isLoadingStream
                   ? Container(
@@ -696,6 +697,23 @@ class _MainScreenState extends State<MainScreen>
                                                 }
                                               },
                                         icon: const Icon(Icons.stream),
+                                      ),
+                                    ),
+
+                                    //Temp message testing
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: TextButton.icon(
+                                        label: const Text('Messaging'),
+                                        style: TextButton.styleFrom(
+                                          primary: color_4,
+                                        ),
+                                        onPressed: () async {
+                                          if (_formKey.currentState!
+                                              .validate()) {}
+                                        },
+                                        icon: const Icon(Icons.message_sharp),
                                       ),
                                     ),
                                     //Image Gallery

@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:agora_rtm/agora_rtm.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:rillliveapp/controller/live_messaging.dart';
 import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/parameters.dart';
@@ -40,13 +42,19 @@ class LiveStreaming extends StatefulWidget {
 class _LiveStreamingState extends State<LiveStreaming> {
   final _users = <int>[];
   final _infoString = <String>[];
+  //Agora Live and Video streaming
   late RtcEngine _engine;
+  //Agora Messaging
+  late AgoraRtmClient _client;
+  late AgoraRtmChannel _channel;
+
   bool _muted = false;
   late String userRole;
   Parameters param = Parameters();
   //Controllers
   DatabaseService db = DatabaseService();
   RecordingController recordingController = RecordingController();
+  LiveMessaging liveMessaging = LiveMessaging();
   //To dispose the agora engin and clear the user list
   @override
   void dispose() {
@@ -61,6 +69,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   void initState() {
     super.initState();
     initializeAgore();
+    liveMessaging.createClient();
   }
 
   //Will initialize the agora channel, token and app id

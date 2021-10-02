@@ -1,14 +1,15 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-32:12
-INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-32:12
-INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-32:12
-INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-32:12
-MERGED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-32:12
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-33:12
+INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-33:12
+INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-33:12
+INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-33:12
+MERGED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-33:12
 MERGED from [:file_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-17:12
 MERGED from [:image_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-19:12
 MERGED from [:camera] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/camera/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-10:12
 MERGED from [:flutter_plugin_android_lifecycle] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
+MERGED from [:agora_rtm] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtm/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-13:12
 MERGED from [:cloud_firestore] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [:sentry_flutter] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/sentry_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-18:12
 MERGED from [:package_info_plus] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/package_info_plus/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
@@ -102,6 +103,7 @@ MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/wissamboughannam/.
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c018edfd99f1478d35e8458dedc3c5a7/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e0deaf555724e25493155e38bce2f539/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/03819cfeeeef77e31024e507042fcb72/jetified-firebase-encoders-json-18.0.0/AndroidManifest.xml:15:1-23:12
+MERGED from [com.github.agorabuilder:rtm-sdk:1.4.7] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/693d36ce5dc168c6e1052251cac043a4/jetified-rtm-sdk-1.4.7/AndroidManifest.xml:2:1-11:12
 MERGED from [com.github.agorabuilder:native-full-sdk:3.4.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/525c2745eadf113038db61e4e41c12cf/jetified-native-full-sdk-3.4.5/AndroidManifest.xml:2:1-11:12
 MERGED from [io.grpc:grpc-android:1.28.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1c5aaf1a342a82fe816777bb66d09ad9/jetified-grpc-android-1.28.0/AndroidManifest.xml:2:1-13:12
 MERGED from [com.google.firebase:protolite-well-known-types:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d29c5efb4a3bfa33b7c9aa98f739b1d4/jetified-protolite-well-known-types-18.0.0/AndroidManifest.xml:2:1-11:12
@@ -114,16 +116,16 @@ INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebas
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml
 	android:versionName
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-32:12
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-33:12
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml
 	android:versionCode
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-32:12
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-33:12
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml
 	xmlns:android
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:11-69
 application
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:3:4-31:19
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:3:4-32:19
 MERGED from [:image_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-17:19
 MERGED from [:image_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-17:19
 MERGED from [:cloud_firestore] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
@@ -195,49 +197,51 @@ MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wi
 	android:label
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:4:9-44
 	android:icon
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:5:9-43
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:6:9-43
+	android:usesCleartextTraffic
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:5:9-44
 activity#com.oxy.rillliveapp.MainActivity
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:6:9-26:20
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:7:9-27:20
 	android:launchMode
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:8:13-43
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:9:13-43
 	android:hardwareAccelerated
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:11:13-47
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:12:13-47
 	android:windowSoftInputMode
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:12:13-55
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:13:13-55
 	android:configChanges
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:10:13-163
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:11:13-163
 	android:theme
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:9:13-47
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:10:13-47
 	android:name
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:7:13-41
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:8:13-41
 meta-data#io.flutter.embedding.android.NormalTheme
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:13:13-16:17
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:14:13-17:17
 	android:resource
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:15:15-52
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:16:15-52
 	android:name
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:14:15-70
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:15:15-70
 meta-data#io.flutter.embedding.android.SplashScreenDrawable
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:18:13-21:17
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:19:13-22:17
 	android:resource
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:20:15-61
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:21:15-61
 	android:name
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:19:15-79
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:20:15-79
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:22:13-25:29
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:23:13-26:29
 action#android.intent.action.MAIN
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:23:17-68
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:24:17-68
 	android:name
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:23:25-66
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:24:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:24:17-76
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:25:17-76
 	android:name
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:24:27-74
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:25:27-74
 meta-data#flutterEmbedding
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:28:9-30:33
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:29:9-31:33
 	android:value
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:30:13-30
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:31:13-30
 	android:name
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:29:13-44
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:30:13-44
 uses-sdk
 INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml
@@ -250,6 +254,8 @@ MERGED from [:camera] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app
 MERGED from [:camera] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/camera/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:flutter_plugin_android_lifecycle] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:flutter_plugin_android_lifecycle] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:agora_rtm] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtm/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:agora_rtm] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtm/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:cloud_firestore] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:cloud_firestore] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:sentry_flutter] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/sentry_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:6:5-8:41
@@ -436,6 +442,8 @@ MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/wissamboughann
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e0deaf555724e25493155e38bce2f539/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/03819cfeeeef77e31024e507042fcb72/jetified-firebase-encoders-json-18.0.0/AndroidManifest.xml:19:5-21:41
 MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/03819cfeeeef77e31024e507042fcb72/jetified-firebase-encoders-json-18.0.0/AndroidManifest.xml:19:5-21:41
+MERGED from [com.github.agorabuilder:rtm-sdk:1.4.7] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/693d36ce5dc168c6e1052251cac043a4/jetified-rtm-sdk-1.4.7/AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.agorabuilder:rtm-sdk:1.4.7] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/693d36ce5dc168c6e1052251cac043a4/jetified-rtm-sdk-1.4.7/AndroidManifest.xml:7:5-9:41
 MERGED from [com.github.agorabuilder:native-full-sdk:3.4.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/525c2745eadf113038db61e4e41c12cf/jetified-native-full-sdk-3.4.5/AndroidManifest.xml:7:5-9:41
 MERGED from [com.github.agorabuilder:native-full-sdk:3.4.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/525c2745eadf113038db61e4e41c12cf/jetified-native-full-sdk-3.4.5/AndroidManifest.xml:7:5-9:41
 MERGED from [io.grpc:grpc-android:1.28.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1c5aaf1a342a82fe816777bb66d09ad9/jetified-grpc-android-1.28.0/AndroidManifest.xml:7:5-9:41
@@ -454,6 +462,8 @@ INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebas
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml
 uses-permission#android.permission.INTERNET
 ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml:6:5-66
+MERGED from [:agora_rtm] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtm/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-67
+MERGED from [:agora_rtm] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtm/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-67
 MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-67
 MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-67
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-67
@@ -520,6 +530,46 @@ MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Ril
 MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:12:5-71
 	android:name
 		ADDED from [:camera] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/camera/intermediates/library_manifest/debug/AndroidManifest.xml:8:22-68
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [:agora_rtm] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtm/intermediates/library_manifest/debug/AndroidManifest.xml:10:5-79
+MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:15:5-79
+MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:15:5-79
+MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-79
+MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-79
+MERGED from [:connectivity] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/connectivity/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
+MERGED from [:connectivity] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/connectivity/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/983fcccaaf39eda3c572c95f0818dccf/jetified-exoplayer-core-2.14.2/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/983fcccaaf39eda3c572c95f0818dccf/jetified-exoplayer-core-2.14.2/AndroidManifest.xml:24:5-79
+MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
+MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
+MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:22:5-79
+MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:22:5-79
+MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:26:5-79
+MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:26:5-79
+MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:13:5-79
+MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:13:5-79
+MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
+MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
+MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
+MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
+MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:7:5-79
+MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:7:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ce684050ff3341c6f4791ee86de5335c/jetified-exoplayer-common-2.14.2/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ce684050ff3341c6f4791ee86de5335c/jetified-exoplayer-common-2.14.2/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:25:5-79
+MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:25:5-79
+MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/09411377c961036dd60a36e40ebd7c4e/jetified-transport-runtime-3.0.0/AndroidManifest.xml:22:5-79
+MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/09411377c961036dd60a36e40ebd7c4e/jetified-transport-runtime-3.0.0/AndroidManifest.xml:22:5-79
+MERGED from [io.grpc:grpc-android:1.28.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1c5aaf1a342a82fe816777bb66d09ad9/jetified-grpc-android-1.28.0/AndroidManifest.xml:11:5-79
+MERGED from [io.grpc:grpc-android:1.28.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1c5aaf1a342a82fe816777bb66d09ad9/jetified-grpc-android-1.28.0/AndroidManifest.xml:11:5-79
+	android:name
+		ADDED from [:agora_rtm] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtm/intermediates/library_manifest/debug/AndroidManifest.xml:10:22-76
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from [:agora_rtm] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtm/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-81
+MERGED from [:video_compress] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/video_compress/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-81
+MERGED from [:video_compress] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/video_compress/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-81
+	android:name
+		ADDED from [:agora_rtm] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtm/intermediates/library_manifest/debug/AndroidManifest.xml:11:22-78
 service#com.google.firebase.components.ComponentDiscoveryService
 ADDED from [:cloud_firestore] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
 MERGED from [:firebase_auth] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
@@ -577,38 +627,6 @@ uses-permission#android.permission.MODIFY_AUDIO_SETTINGS
 ADDED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:14:5-80
 	android:name
 		ADDED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:14:22-77
-uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:15:5-79
-MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-79
-MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-79
-MERGED from [:connectivity] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/connectivity/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
-MERGED from [:connectivity] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/connectivity/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
-MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/983fcccaaf39eda3c572c95f0818dccf/jetified-exoplayer-core-2.14.2/AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/983fcccaaf39eda3c572c95f0818dccf/jetified-exoplayer-core-2.14.2/AndroidManifest.xml:24:5-79
-MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
-MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
-MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:22:5-79
-MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:22:5-79
-MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:26:5-79
-MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06aba52eb0d13d924681c08e44a6900e/work-runtime-2.5.0/AndroidManifest.xml:26:5-79
-MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:13:5-79
-MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:13:5-79
-MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
-MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
-MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
-MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
-MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:7:5-79
-MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:7:5-79
-MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ce684050ff3341c6f4791ee86de5335c/jetified-exoplayer-common-2.14.2/AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ce684050ff3341c6f4791ee86de5335c/jetified-exoplayer-common-2.14.2/AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:25:5-79
-MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:25:5-79
-MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/09411377c961036dd60a36e40ebd7c4e/jetified-transport-runtime-3.0.0/AndroidManifest.xml:22:5-79
-MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/09411377c961036dd60a36e40ebd7c4e/jetified-transport-runtime-3.0.0/AndroidManifest.xml:22:5-79
-MERGED from [io.grpc:grpc-android:1.28.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1c5aaf1a342a82fe816777bb66d09ad9/jetified-grpc-android-1.28.0/AndroidManifest.xml:11:5-79
-MERGED from [io.grpc:grpc-android:1.28.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1c5aaf1a342a82fe816777bb66d09ad9/jetified-grpc-android-1.28.0/AndroidManifest.xml:11:5-79
-	android:name
-		ADDED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:15:22-76
 uses-permission#android.permission.BLUETOOTH
 ADDED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:16:5-68
 	android:name
@@ -629,10 +647,6 @@ ADDED from [:firebase_auth] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_li
 		ADDED from [:firebase_auth] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:11:17-82
 	android:name
 		ADDED from [:firebase_auth] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:10:17-124
-uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from [:video_compress] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/video_compress/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-81
-	android:name
-		ADDED from [:video_compress] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/video_compress/intermediates/library_manifest/debug/AndroidManifest.xml:7:22-78
 meta-data#com.google.firebase.components:io.flutter.plugins.firebase.storage.FlutterFirebaseAppRegistrar
 ADDED from [:firebase_storage] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-11:85
 	android:value
