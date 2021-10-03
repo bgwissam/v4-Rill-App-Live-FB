@@ -319,9 +319,13 @@ class _MainScreenState extends State<MainScreen>
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          child: Image.network(
-                                              snapshot.data.avatarUrl,
-                                              fit: BoxFit.fill),
+                                          child: snapshot.data.avatarUrl != null
+                                              ? Image.network(
+                                                  snapshot.data.avatarUrl,
+                                                  fit: BoxFit.fill)
+                                              : Image.asset(
+                                                  'assets/images/logo_type.png',
+                                                  fit: BoxFit.contain),
                                         ),
                                       ),
                                       Positioned.fill(
@@ -700,22 +704,6 @@ class _MainScreenState extends State<MainScreen>
                                       ),
                                     ),
 
-                                    //Temp message testing
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: TextButton.icon(
-                                        label: const Text('Messaging'),
-                                        style: TextButton.styleFrom(
-                                          primary: color_4,
-                                        ),
-                                        onPressed: () async {
-                                          if (_formKey.currentState!
-                                              .validate()) {}
-                                        },
-                                        icon: const Icon(Icons.message_sharp),
-                                      ),
-                                    ),
                                     //Image Gallery
                                     Container(
                                       padding: const EdgeInsets.symmetric(

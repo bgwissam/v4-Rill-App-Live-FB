@@ -20,28 +20,28 @@ class TokenGenerator {
           '${Parameters().Customer_ID}:${Parameters().Customer_secret}';
       Codec<String, String> stringToBase64 = utf8.fuse(base64);
       String encoded = stringToBase64.encode(credentials);
-      final response = await http.post(
-        Uri.parse(baseUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          //'Authorization': 'Basic $encoded'
-        },
-        body: jsonEncode(
-          <String, dynamic>{
-            'appID': appId,
-            'appCertificate': appCertification,
-            'channelName': channelName,
-            'uid': userId,
-            'role': role,
-            'expireTime': 24
-          },
-        ),
-      );
+      // final response = await http.post(
+      //   Uri.parse(baseUrl),
+      //   headers: <String, String>{
+      //     'Content-Type': 'application/json',
+      //     //'Authorization': 'Basic $encoded'
+      //   },
+      //   body: jsonEncode(
+      //     <String, dynamic>{
+      //       'appID': appId,
+      //       'appCertificate': appCertification,
+      //       'channelName': channelName,
+      //       'uid': userId,
+      //       'role': role,
+      //       'expireTime': 24
+      //     },
+      //   ),
+      // );
 
-      var rawToken = json.decode(response.body);
-      print('raw token: $rawToken}');
+      //var rawToken = json.decode(response.body);
+      //print('raw token: $rawToken}');
       token =
-          '006d480c821a2a946d6a4d29292462a3d6fIABHpVa9d5kPZ7tWrg1UoVb0r10VuVmCwn2vuVjPWMpLRwxzvIMAAAAAEAAsJrPhWD9YYQEAAQDo';
+          '006d480c821a2a946d6a4d29292462a3d6fIACmVvx02d81nPDfcQI+7u/jZ+bXCXfQHH4cYIErG9gc/Qx+f9gAAAAAEAC+Mu48JnRaYQEAAQC2MFlh';
       //rawToken['token'];
 
       // print('The token generated: $rawToken');
@@ -54,7 +54,7 @@ class TokenGenerator {
       return token;
     } catch (e, stackTrace) {
       print('An error occured: $e, Stack: $stackTrace');
-      return '006d480c821a2a946d6a4d29292462a3d6fIABHpVa9d5kPZ7tWrg1UoVb0r10VuVmCwn2vuVjPWMpLRwxzvIMAAAAAEAAsJrPhWD9YYQEAAQDo+1Zh';
+      return '006d480c821a2a946d6a4d29292462a3d6fIACmVvx02d81nPDfcQI+7u/jZ+bXCXfQHH4cYIErG9gc/Qx+f9gAAAAAEAC+Mu48JnRaYQEAAQC2MFlh';
     }
   } //End of post function
 
