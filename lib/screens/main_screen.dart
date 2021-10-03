@@ -12,7 +12,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rillliveapp/authentication/register.dart';
 import 'package:rillliveapp/authentication/security.dart';
-import 'package:rillliveapp/controller/live_messaging.dart';
 import 'package:rillliveapp/controller/live_streaming.dart';
 import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/controller/token_controller.dart';
@@ -249,7 +248,7 @@ class _MainScreenState extends State<MainScreen>
       //and a horizontal list view for live streaming videos
       children: [
         Container(
-          padding: const EdgeInsets.only(left: 20, top: 10.0, bottom: 10),
+          padding: const EdgeInsets.only(left: 20, top: 20.0, bottom: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,11 +1,9 @@
 import 'dart:convert';
-
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
-import 'package:rillliveapp/controller/live_messaging.dart';
 import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/services/database.dart';
@@ -44,6 +42,7 @@ class LiveStreaming extends StatefulWidget {
 class _LiveStreamingState extends State<LiveStreaming> {
   final _users = <int>[];
   final _infoString = <String>[];
+  final _messageList = <String>[];
   List<UserModel> _userList = [];
   //Agora Live and Video streaming
   late RtcEngine _engine;
@@ -67,7 +66,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
   //Controllers
   DatabaseService db = DatabaseService();
   RecordingController recordingController = RecordingController();
-  LiveMessaging liveMessaging = LiveMessaging();
   final TextEditingController _channelMessageController =
       TextEditingController();
   //To dispose the agora engin and clear the user list
@@ -84,7 +82,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   void initState() {
     super.initState();
     initializeAgore();
-    liveMessaging.createClient();
+    createClient();
   }
 
   //Will initialize the agora channel, token and app id
@@ -254,7 +252,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
           //Show the video view
           widget.userRole == 'publisher' ? _broadCastView() : _audienceView(),
           //show the toolbar to control the view
-          _toolBar(),
+          widget.userRole == 'publisher' ? _toolBar() : SizedBox.shrink(),
           //show messaging bar
           _bottomBar(),
           messageList(),
@@ -407,15 +405,15 @@ class _LiveStreamingState extends State<LiveStreaming> {
             padding: EdgeInsets.symmetric(vertical: 48),
             child: ListView.builder(
                 reverse: true,
-                itemCount: _infoString.length,
+                itemCount: _messageList.length,
                 itemBuilder: (context, index) {
-                  if (_infoString.isEmpty) {
+                  if (_messageList.isEmpty) {
                     return Container();
                   }
                   return Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-                      child: Text('${_infoString[index]}'));
+                      child: Text('${_messageList[index]}'));
                 }),
           )),
     );
@@ -514,7 +512,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
         height: 100,
         alignment: Alignment.bottomRight,
         child: Container(
-          color: Colors.black,
           child: Padding(
             padding: EdgeInsets.only(left: 8, top: 5, right: 8, bottom: 5),
             child: Row(
@@ -553,32 +550,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
                     padding: EdgeInsets.all(10),
                   ),
                 ),
-                !accepted
-                    ? Padding(
-                        padding: EdgeInsets.only(left: 4.0),
-                        child: MaterialButton(
-                          minWidth: 0,
-                          onPressed: _addPerson,
-                          child: Icon(Icons.person_add,
-                              color: color_9, size: 20.0),
-                          shape: CircleBorder(),
-                          elevation: 2.0,
-                          color: color_7,
-                          padding: EdgeInsets.all(10),
-                        ),
-                      )
-                    : Padding(
-                        padding: EdgeInsets.only(left: 4.0),
-                        child: MaterialButton(
-                          minWidth: 0,
-                          onPressed: () {},
-                          child: Icon(Icons.switch_camera,
-                              color: color_9, size: 20.0),
-                          shape: CircleBorder(),
-                          elevation: 2.0,
-                          color: color_7,
-                          padding: EdgeInsets.all(10),
-                        ))
               ],
             ),
           ),
@@ -624,12 +595,11 @@ class _LiveStreamingState extends State<LiveStreaming> {
       _channelMessageController.clear();
       await _channel.sendMessage(AgoraRtmMessage.fromText(text));
       setState(() {
-        _infoString
-            .add('user: ${widget.channelName} info: $text type: message');
+        _log(info: text, type: 'message', user: widget.userId);
       });
     } catch (e) {
       setState(() {
-        _infoString.add('Send channel message error: $e type: send Message');
+        _log(info: e.toString(), type: 'message', user: widget.userId);
       });
     }
   }
@@ -642,12 +612,11 @@ class _LiveStreamingState extends State<LiveStreaming> {
       _channelMessageController.clear();
       await _channel.sendMessage(AgoraRtmMessage.fromText(text));
       setState(() {
-        _infoString
-            .add('user: ${widget.channelName} info: $text type: message');
+        _log(info: text, type: 'message', user: widget.userId);
       });
     } catch (e) {
       setState(() {
-        _infoString.add('Send channel message error: $e type: send Message');
+        _log(info: e.toString(), type: 'message', user: widget.userId);
       });
     }
   }
@@ -716,5 +685,12 @@ class _LiveStreamingState extends State<LiveStreaming> {
           .add('user: ${member.userId} message: ${message.text} type: message');
     };
     return channel;
+  }
+
+  //show message chat
+  void _log({String? info, String? type, String? user}) {
+    if (type == 'message') {
+      _messageList.add('$user: $info');
+    }
   }
 }
