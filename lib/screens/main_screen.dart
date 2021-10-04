@@ -284,7 +284,7 @@ class _MainScreenState extends State<MainScreen>
                                             .toString(),
                                         streamUserId:
                                             streamingProvider[index]!.userId,
-                                        userRole: 'publisher',
+                                        userRole: 'audience',
                                         token: streamingProvider[index]!
                                             .token
                                             .toString(),

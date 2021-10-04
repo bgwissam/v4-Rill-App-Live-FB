@@ -94,8 +94,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
       await _engine.setParameters(
           '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}} ''');
       //Join the channel
-      await _engine.joinChannel(
-          widget.token, widget.channelName, null, int.parse(widget.userId));
+      await _engine.joinChannel(widget.token, widget.channelName, null, 0);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Failed to connect')));
@@ -252,9 +251,12 @@ class _LiveStreamingState extends State<LiveStreaming> {
           //Show the video view
           widget.userRole == 'publisher' ? _broadCastView() : _audienceView(),
           //show the toolbar to control the view
-          widget.userRole == 'publisher' ? _toolBar() : SizedBox.shrink(),
+          widget.userRole == 'publisher' ? _toolBar() : const SizedBox.shrink(),
           //show messaging bar
-          _bottomBar(),
+          widget.userRole == 'publisher'
+              ? const SizedBox.shrink()
+              : _bottomBar(),
+          //will list the messages for this stream
           messageList(),
         ],
       ),
@@ -300,7 +302,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
                 child: ListView.builder(
                     itemCount: _infoString.length,
                     itemBuilder: (context, index) {
-                      print('infoString: $_infoString');
                       if (_infoString.isEmpty) {
                         return Text('Empty');
                       }
@@ -394,10 +395,10 @@ class _LiveStreamingState extends State<LiveStreaming> {
     );
   }
 
-  //Info list
+  //Info panel to show logs
   Widget messageList() {
     return Container(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 15),
       alignment: Alignment.bottomCenter,
       child: FractionallySizedBox(
           heightFactor: 0.5,
@@ -405,15 +406,15 @@ class _LiveStreamingState extends State<LiveStreaming> {
             padding: EdgeInsets.symmetric(vertical: 48),
             child: ListView.builder(
                 reverse: true,
-                itemCount: _messageList.length,
+                itemCount: _infoString.length,
                 itemBuilder: (context, index) {
-                  if (_messageList.isEmpty) {
+                  if (_infoString.isEmpty) {
                     return Container();
                   }
                   return Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-                      child: Text('${_messageList[index]}'));
+                      child: Text('${_infoString[index]}'));
                 }),
           )),
     );
@@ -510,48 +511,46 @@ class _LiveStreamingState extends State<LiveStreaming> {
     // }
     return Container(
         height: 100,
-        alignment: Alignment.bottomRight,
-        child: Container(
-          child: Padding(
-            padding: EdgeInsets.only(left: 8, top: 5, right: 8, bottom: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: TextField(
-                    cursorColor: Colors.blue,
-                    textInputAction: TextInputAction.send,
-                    onSubmitted: _sendMessage,
-                    style: textStyle_4,
-                    controller: _channelMessageController,
-                    textCapitalization: TextCapitalization.sentences,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      hintText: 'Comment',
-                      hintStyle: textStyle_4,
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(color: Colors.white)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                          borderSide: BorderSide(color: Colors.white)),
-                    ),
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8, top: 5, right: 8, bottom: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: TextField(
+                  cursorColor: Colors.blue,
+                  textInputAction: TextInputAction.send,
+                  onSubmitted: _sendMessage,
+                  style: textStyle_4,
+                  controller: _channelMessageController,
+                  textCapitalization: TextCapitalization.sentences,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintText: 'Comment',
+                    hintStyle: textStyle_4,
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                        borderSide: const BorderSide(color: Colors.white)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                        borderSide: const BorderSide(color: Colors.white)),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(4.0, 0, 0, 0),
-                  child: MaterialButton(
-                    minWidth: 0,
-                    onPressed: _toggleSendChannelMessage,
-                    child: Icon(Icons.send, color: color_12, size: 20),
-                    shape: CircleBorder(),
-                    elevation: 2.0,
-                    color: color_7,
-                    padding: EdgeInsets.all(10),
-                  ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(4.0, 0, 0, 0),
+                child: MaterialButton(
+                  minWidth: 0,
+                  onPressed: _toggleSendChannelMessage,
+                  child: Icon(Icons.send, color: color_12, size: 20),
+                  shape: const CircleBorder(),
+                  elevation: 2.0,
+                  color: color_7,
+                  padding: const EdgeInsets.all(10),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ));
   }
@@ -595,6 +594,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
       _channelMessageController.clear();
       await _channel.sendMessage(AgoraRtmMessage.fromText(text));
       setState(() {
+        _infoString.add('${widget.userId}: $text');
         _log(info: text, type: 'message', user: widget.userId);
       });
     } catch (e) {
@@ -612,6 +612,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
       _channelMessageController.clear();
       await _channel.sendMessage(AgoraRtmMessage.fromText(text));
       setState(() {
+        _infoString.add('${widget.userId}: $text');
         _log(info: text, type: 'message', user: widget.userId);
       });
     } catch (e) {
@@ -624,6 +625,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   void createClient() async {
     _client = await AgoraRtmClient.createInstance(Parameters().app_ID);
     _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
+      print('message received: ${message.text}');
       _infoString.add('user: $peerId message: ${message.text}');
     };
 
