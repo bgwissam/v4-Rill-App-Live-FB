@@ -66,18 +66,41 @@ fonts:
   - family: Montserrat-B
     fonts:
       - asset: fonts/Montserrat-Bold.ttf
+      - asset: assets/fonts/Montserrat-Bold.ttf
         weight: 700
   - family: Montserrat-M
     fonts:
       - asset: fonts/Montserrat-Medium.ttf
+      - asset: assets/fonts/Montserrat-Medium.ttf
   - family: Montserrat-R
     fonts:
       - asset: fonts/Montserrat-Regular.ttf
+      - asset: assets/fonts/Montserrat-Regular.ttf
   - family: Montserrat-SB
     fonts:
       - asset: fonts/Montserrat-SemiBold.ttf
+      - asset: assets/fonts/Montserrat-SemiBold.ttf
         weight: 400
 
   - family: Gotham
     fonts:
       - asset: fonts/GothamMedium_0.ttf
+      - asset: assets/fonts/GothamMedium_0.ttf
+  - family: OpenSans
+    fonts:
+      - asset: assets/fonts/OpenSans-Bold.ttf
+        weight: 700
+      - asset: assets/fonts/OpenSans-BoldItalic.ttf
+        weight: 700
+        style: italic
+      - asset: assets/fonts/OpenSans-Italic.ttf
+        style: italic
+      - asset: assets/fonts/OpenSans-Regular.ttf
+        weight: 400
+      - asset: assets/fonts/OpenSans-SemiBold.ttf
+        weight: 600
+
+  - family: Poppins
+    fonts:
+      - asset: assets/fonts/Poppins-Bold.ttf
+        weight: 700

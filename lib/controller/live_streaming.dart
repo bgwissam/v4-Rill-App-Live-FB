@@ -8,6 +8,7 @@ import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
+import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/parameters.dart';
 
 class LiveStreaming extends StatefulWidget {
@@ -56,7 +57,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   bool _muted = false;
   bool anyPerson = false;
   bool tryingToEnd = false;
-  bool _isInChannel = true;
+  bool _isInChannel = false;
   bool personBool = false;
   bool accepted = false;
 
@@ -242,25 +243,44 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
   }
 
+  Future<List<Widget>> _futureRenderViews() async {
+    return _getRenderViews();
+  }
+
   @override
   Widget build(BuildContext context) {
     print('the infoString: $_infoString');
     return Scaffold(
-      body: Stack(
-        children: [
-          //Show the video view
-          widget.userRole == 'publisher' ? _broadCastView() : _audienceView(),
-          //show the toolbar to control the view
-          widget.userRole == 'publisher' ? _toolBar() : const SizedBox.shrink(),
-          //show messaging bar
-          widget.userRole == 'publisher'
-              ? const SizedBox.shrink()
-              : _bottomBar(),
-          //will list the messages for this stream
-          messageList(),
-        ],
-      ),
-    );
+        body: FutureBuilder(
+            future: _futureRenderViews(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return Stack(
+                  children: [
+                    //Show the video view
+                    widget.userRole == 'publisher'
+                        ? _broadCastView()
+                        : _audienceView(),
+                    //show the toolbar to control the view
+                    widget.userRole == 'publisher'
+                        ? _toolBar()
+                        : const SizedBox.shrink(),
+                    //show messaging bar
+                    widget.userRole == 'publisher'
+                        ? const SizedBox.shrink()
+                        : _bottomBar(),
+                    //will list the messages for this stream
+                    messageList(),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: LoadingAmination(
+                    animationType: 'ThreeInOut',
+                  ),
+                );
+              }
+            }));
   }
 
   //this function will help the list of native views
@@ -324,6 +344,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   Widget _broadCastView() {
     final views = _getRenderViews();
     print('the total views are: ${views.length}');
+
     switch (views.length) {
       case 1:
         return Container(
@@ -379,7 +400,19 @@ class _LiveStreamingState extends State<LiveStreaming> {
   //Create view for audience
   Widget _audienceView() {
     final views = _getRenderViews();
-    return Container(child: _expandedViewWidget([views[0]]));
+
+    if (views.isNotEmpty) {
+      return Container(
+        child: _expandedViewWidget(
+          [views[0]],
+        ),
+      );
+    }
+    return const Center(
+      child: LoadingAmination(
+        animationType: 'ThreeInOut',
+      ),
+    );
   }
 
   //Video view widget

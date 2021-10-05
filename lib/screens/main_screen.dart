@@ -60,7 +60,7 @@ class _MainScreenState extends State<MainScreen>
   var _size;
   var cameraPermission = false;
   var micPermission = false;
-  var _userRole;
+  var _userRole = 'subscriber';
   final _userId = '45678';
   final _userId_2 = '34343';
   late String token = '';
@@ -210,7 +210,7 @@ class _MainScreenState extends State<MainScreen>
               ],
             ),
           ),
-          body: Column(
+          body: ListView(
             children: [
               Padding(
                   padding: const EdgeInsets.only(top: 15.0),
@@ -235,6 +235,40 @@ class _MainScreenState extends State<MainScreen>
       MessagesScreen(userId: widget.userId),
       AccountProvider(userId: widget.userId),
     ];
+  }
+
+  Future<String> _joiningStreamAlertDialog(BuildContext context) async {
+    await showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+              title: Text('Join as?'),
+              content: Text('Choose to join as a streamer or viewer'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    _userRole = 'publisher';
+                    Navigator.pop(context, _userRole);
+                  },
+                  child: Text(
+                    'Streamer',
+                    style: textStyle_1,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    _userRole = 'subscriber';
+                    Navigator.pop(context, _userRole);
+                  },
+                  child: Text(
+                    'Viewer',
+                    style: textStyle_1,
+                  ),
+                ),
+              ]);
+        });
+    return _userRole;
   }
 
   //Main feed widget
@@ -274,6 +308,9 @@ class _MainScreenState extends State<MainScreen>
                           if (snapshot.hasData) {
                             return GestureDetector(
                               onTap: () async {
+                                var userType =
+                                    await _joiningStreamAlertDialog(context);
+                                print('the selected user type is: $userType');
                                 await Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -284,7 +321,7 @@ class _MainScreenState extends State<MainScreen>
                                             .toString(),
                                         streamUserId:
                                             streamingProvider[index]!.userId,
-                                        userRole: 'audience',
+                                        userRole: userType,
                                         token: streamingProvider[index]!
                                             .token
                                             .toString(),
@@ -396,8 +433,8 @@ class _MainScreenState extends State<MainScreen>
           ),
         ),
         //All feed and subscribed channels
-        SizedBox(
-          height: _size.height / 2,
+        Container(
+          height: 2 * _size.height / 3,
           width: _size.width,
           child: TabBarView(
             controller: _tabController,

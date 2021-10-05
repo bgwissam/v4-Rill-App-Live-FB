@@ -52,6 +52,17 @@ class MyApp extends StatelessWidget {
         title: 'Rill Live Streaming',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          fontFamily: 'Poppins',
+          textTheme: const TextTheme(
+            headline1: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Color(0xffdf1266)),
+            headline6: TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+                color: Color(0xffdf1266)),
+          ),
         ),
         home: MySplashScreen(),
         routes: <String, WidgetBuilder>{

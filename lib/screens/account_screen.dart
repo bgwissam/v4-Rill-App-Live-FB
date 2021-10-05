@@ -162,14 +162,19 @@ class _AccountScreenState extends State<AccountScreen>
                               child: Image.asset("assets/images/g.png")),
                         ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
                     height: size.width / 3,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: Text('UserName', style: textStyle_3),
+                          flex: 1,
+                          child: Text(
+                            'UserName',
+                            style: Theme.of(context).textTheme.headline1,
+                          ),
                         ),
                         // userProvider.firstName != null
                         //     ? Expanded(
@@ -214,19 +219,21 @@ class _AccountScreenState extends State<AccountScreen>
                                       following != null && following.length > 0
                                           ? '${following.length}'
                                           : '00',
-                                      style: textStyle_3,
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                 ),
                                 SizedBox(
                                   child: Text('Followers',
-                                      style: textStyle_9,
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
                                       textAlign: TextAlign.center),
                                 )
                               ]),
                               SizedBox(
-                                width: 5,
+                                width: 4,
                               ),
                               Column(children: [
                                 Container(
@@ -254,14 +261,16 @@ class _AccountScreenState extends State<AccountScreen>
                                       followers != null && followers.length > 0
                                           ? '${followers.length}'
                                           : '00',
-                                      style: textStyle_3,
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                 ),
                                 SizedBox(
                                   child: Text('Following',
-                                      style: textStyle_9,
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
                                       textAlign: TextAlign.center),
                                 )
                               ])
@@ -276,22 +285,36 @@ class _AccountScreenState extends State<AccountScreen>
               //bio section
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                height: size.height / 4,
+                height: size.height / 5,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'bio section here...',
-                      style: textStyle_8,
+                      'Bio section here...',
+                      style: TextStyle(
+                        fontFamily: 'OpenSans',
+                        fontSize: 17,
+                        // italic
+                      ),
                     ),
                     Text(
                       'Hobbies | Music | Sport',
-                      style: textStyle_8,
+                      style: TextStyle(
+                        fontFamily: 'OpenSans',
+                        fontSize: 17,
+                        // italic
+                      ),
                     ),
                     Text(
-                      'A message from the user to the followers',
-                      style: textStyle_8,
+                      '"A message from the user to the followers"',
+                      style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          //fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                          fontStyle: FontStyle.italic
+                          // italic
+                          ),
                     ),
                   ],
                 ),
@@ -338,13 +361,13 @@ class _AccountScreenState extends State<AccountScreen>
                           });
                           _subscribeToPlan(context);
                         },
-                        child: Text(
-                          "Subscribe",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: _buttonPressed[1] ? Colors.white : color_4,
-                          ),
-                        ),
+                        child: Text("Subscribe",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "Poppins",
+                              color: _buttonPressed[1] ? Colors.white : color_4,
+                            )),
                         style: ElevatedButton.styleFrom(
                           primary: _buttonPressed[1] ? color_4 : Colors.white,
                           shape: RoundedRectangleBorder(
@@ -367,7 +390,9 @@ class _AccountScreenState extends State<AccountScreen>
                       child: Text(
                         "Message",
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Poppins",
                           color: _buttonPressed[2] ? Colors.white : color_4,
                         ),
                       ),
@@ -395,6 +420,9 @@ class _AccountScreenState extends State<AccountScreen>
                         labelColor: color_4,
                         unselectedLabelColor: color_12,
                         isScrollable: true,
+                        unselectedLabelStyle:
+                            Theme.of(context).textTheme.headline6,
+                        labelStyle: Theme.of(context).textTheme.headline6,
                         indicator: const UnderlineTabIndicator(
                             insets:
                                 EdgeInsets.only(left: 0, right: 0, bottom: 4)),

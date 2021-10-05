@@ -41,7 +41,7 @@ class TokenGenerator {
       //var rawToken = json.decode(response.body);
       //print('raw token: $rawToken}');
       token =
-          '006d480c821a2a946d6a4d29292462a3d6fIAB66CYj1iNgLu9e5ABsjt6m3BVLyyHoFxI4v1FNhPimKwx+f9gAAAAAEAC63o3/zc5bYQEAAQBdi1ph';
+          '006d480c821a2a946d6a4d29292462a3d6fIAC7+thsby5UajCcDv4cFa7h7N3lu/hOgaIAsj4qb30Hbgx+f9gAAAAAEAAEylysABBdYQEAAQCQzFth';
       //rawToken['token'];
 
       // print('The token generated: $rawToken');
@@ -54,7 +54,7 @@ class TokenGenerator {
       return token;
     } catch (e, stackTrace) {
       print('An error occured: $e, Stack: $stackTrace');
-      return '006d480c821a2a946d6a4d29292462a3d6fIAB66CYj1iNgLu9e5ABsjt6m3BVLyyHoFxI4v1FNhPimKwx+f9gAAAAAEAC63o3/zc5bYQEAAQBdi1ph';
+      return '006d480c821a2a946d6a4d29292462a3d6fIAC7+thsby5UajCcDv4cFa7h7N3lu/hOgaIAsj4qb30Hbgx+f9gAAAAAEAAEylysABBdYQEAAQCQzFth';
     }
   } //End of post function
 
