@@ -1,6 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:rillliveapp/messaging/chat_room.dart';
+import 'package:rillliveapp/messaging/conversation_screen.dart';
+import 'package:rillliveapp/models/message_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
+import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 
 class Followers extends StatefulWidget {
@@ -23,6 +27,14 @@ class _FollowersState extends State<Followers> {
   late Size _size;
   //Providers
   var provider;
+  DatabaseService db = DatabaseService();
+  ChatRoomModel chatRoomMap = ChatRoomModel();
+
+  @override
+  void initState() {
+    super.initState();
+    chatRoomMap = ChatRoomModel(userId: '', users: []);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +93,52 @@ class _FollowersState extends State<Followers> {
                               border: Border.all(),
                               borderRadius: BorderRadius.circular(10)),
                         ),
-                  title: Text(
-                      '${widget.userFollowed[index]!.firstName} ${widget.userFollowed[index]!.lastName}'),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '${widget.userFollowed[index]!.firstName} ${widget.userFollowed[index]!.lastName}',
+                          style: textStyle_1,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                                (states) => color_4),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25))),
+                          ),
+                          child: Text('Message', style: textStyle_4),
+                          onPressed: () async {
+                            var chatRoomId =
+                                '${widget.userModel!.userId}${widget.userFollowed[index]!.userId}';
+                            chatRoomMap.users!.add(widget.userModel!.userId!);
+                            chatRoomMap.users!
+                                .add(widget.userFollowed[index]!.userId!);
+
+                            //create a chat room if it doesn't exist
+                            await db.createChatRoom(
+                                chatRoomId: chatRoomId,
+                                chatRoomMap: chatRoomMap);
+
+                            await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (builder) => ConversationScreen(
+                                          currentUser: widget.userModel,
+                                          chatRoomId: chatRoomId,
+                                        )));
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             }),
@@ -94,9 +150,6 @@ class _FollowersState extends State<Followers> {
         child: ListView.builder(
             itemCount: widget.usersFollowing.length,
             itemBuilder: (context, index) {
-              print(
-                  'users followed: ${widget.usersFollowing[index]!.firstName}');
-
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
@@ -119,6 +172,33 @@ class _FollowersState extends State<Followers> {
                         ),
                   title: Text(
                       '${widget.usersFollowing[index]!.firstName} ${widget.usersFollowing[index]!.lastName}'),
+                  subtitle: Container(
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateColor.resolveWith((states) => color_4),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25))),
+                      ),
+                      child: Text('Message', style: textStyle_4),
+                      onPressed: () async {
+                        var chatRoomId =
+                            '${widget.userModel!.userId}${widget.usersFollowing[index]!.userId}';
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (builder) => ConversationScreen(
+                                      currentUser: widget.userModel,
+                                      chatRoomId: chatRoomId,
+                                    )));
+                      },
+                    ),
+                  ),
                 ),
               );
             }),

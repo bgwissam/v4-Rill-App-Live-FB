@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rillliveapp/models/file_model.dart';
+import 'package:rillliveapp/models/message_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/shared/parameters.dart';
 import 'package:rillliveapp/shared/video_viewer.dart';
@@ -20,6 +21,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('followers');
   final CollectionReference followingCollection =
       FirebaseFirestore.instance.collection('following');
+  final CollectionReference messagesCollection =
+      FirebaseFirestore.instance.collection('messages');
 
   //Create a new a user
   Future<String> createUser({
@@ -201,8 +204,6 @@ class DatabaseService {
 
   //get a user by user id
   Future<UserModel> getUserByUserId({String? userId}) async {
-    print('the user id: $userId');
-
     var result = await userModelCollection.doc(userId).get().then(
           (doc) => UserModel(
               userId: (doc.data()! as Map)[UserParams.USER_ID],
@@ -580,5 +581,32 @@ class DatabaseService {
         .collection(collection!)
         .snapshots()
         .map(_mapCommentFromSnapshot);
+  }
+
+  //This section will handle the chat option
+  //create a chat room
+  Future<void> createChatRoom(
+      {String? chatRoomId, ChatRoomModel? chatRoomMap}) async {
+    await messagesCollection.doc(chatRoomId).set({
+      ChatRoomParameters.users: chatRoomMap!.users,
+    }).catchError((e, stackTrace) async {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      print('An error creating chat room: $e');
+    });
+  }
+
+  //Create a conversation
+
+  //get converstaion messages
+  Future<void> getConversationMessage(
+      {String? chatRoomId, MessageMap? messageMap}) async {
+    try {
+      await messagesCollection.doc(chatRoomId).collection('chats').add({
+        ConversationRoomParam.senderId: messageMap!.senderId,
+        ConversationRoomParam.message: messageMap.message
+      });
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+    }
   }
 }

@@ -82,6 +82,12 @@ var textStyle_10 = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 15);
 
+var textStyle_11 = TextStyle(
+    color: color_9,
+    fontFamily: 'Montserrat-SB',
+    fontStyle: FontStyle.italic,
+    fontSize: 13);
+
 var heading_1 = TextStyle(
     color: color_4,
     fontFamily: 'Montserrat-B',

@@ -70,3 +70,13 @@ class FollowParameters {
   static String? followers = 'followers';
   static String? following = 'following';
 }
+
+class ChatRoomParameters {
+  static String userId = 'uid';
+  static String users = 'users';
+}
+
+class ConversationRoomParam {
+  static String senderId = 'senderId';
+  static String message = 'message';
+}
