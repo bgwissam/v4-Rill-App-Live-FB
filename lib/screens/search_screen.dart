@@ -159,7 +159,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: Text(
                         '${filterItems[index]['category']}',
                         style: filterItems[index]['isPressed']
-                            ? textStyle_4
+                            ? textStyle_14
                             : errorText,
                       ),
                     ),
@@ -174,12 +174,13 @@ class _SearchScreenState extends State<SearchScreen> {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: TextFormField(
             focusNode: _focus,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.search),
+              border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(25.0)),
               ),
               hintText: 'search...',
+              hintStyle: textStyle_13,
             ),
             onChanged: (val) {
               setState(() {
@@ -387,7 +388,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                         followed.contains(
                                             userListProvider[index].userId)
                                     ? Text('Followed', style: textStyle_10)
-                                    : Text('Follow', style: textStyle_1),
+                                    : Text('Follow',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6),
                                 onPressed: () async {
                                   if (followed.isNotEmpty &&
                                       followed.contains(

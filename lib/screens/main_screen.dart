@@ -141,22 +141,27 @@ class _MainScreenState extends State<MainScreen>
                     color: Color(0xffdf1266),
                   ),
                   accountName: Text(
-                      '${userProvider.firstName} ${userProvider.lastName}'),
-                  accountEmail: Text('${userProvider.emailAddress}'),
+                      '${userProvider.firstName} ${userProvider.lastName}',
+                      style: textStyle_12),
+                  accountEmail:
+                      Text('${userProvider.emailAddress}', style: textStyle_12),
                 ),
                 ListTile(
-                  title: Text('Analytics', style: textStyle_1),
+                  title: Text('Analytics',
+                      style: Theme.of(context).textTheme.headline6),
                   onTap: () async {},
                   trailing:
                       const Icon(Icons.analytics, color: Color(0xffdf1266)),
                 ),
                 ListTile(
-                  title: Text('Privacy', style: textStyle_1),
+                  title: Text('Privacy',
+                      style: Theme.of(context).textTheme.headline6),
                   onTap: () async {},
                   trailing: Icon(Icons.privacy_tip, color: Color(0xffdf1266)),
                 ),
                 ListTile(
-                  title: Text('Settings', style: textStyle_1),
+                  title: Text('Settings',
+                      style: Theme.of(context).textTheme.headline6),
                   trailing: Icon(Icons.security, color: Color(0xffdf1266)),
                   onTap: () async {
                     await Navigator.push(
@@ -170,7 +175,8 @@ class _MainScreenState extends State<MainScreen>
                   },
                 ),
                 ListTile(
-                  title: Text('Security', style: textStyle_1),
+                  title: Text('Security',
+                      style: Theme.of(context).textTheme.headline6),
                   trailing: Icon(Icons.security, color: Color(0xffdf1266)),
                   onTap: () async {
                     await Navigator.push(
@@ -184,18 +190,21 @@ class _MainScreenState extends State<MainScreen>
                   },
                 ),
                 ListTile(
-                  title: Text('Payment', style: textStyle_1),
+                  title: Text('Payment',
+                      style: Theme.of(context).textTheme.headline6),
                   onTap: () async {},
                   trailing: Icon(Icons.payment, color: Color(0xffdf1266)),
                 ),
                 ListTile(
-                  title: Text('Ads', style: textStyle_1),
+                  title:
+                      Text('Ads', style: Theme.of(context).textTheme.headline6),
                   onTap: () async {},
                   trailing: Icon(Icons.ad_units, color: Color(0xffdf1266)),
                 ),
                 Divider(),
                 ListTile(
-                  title: Text('Sign Out', style: textStyle_1),
+                  title: Text('Sign Out',
+                      style: Theme.of(context).textTheme.headline6),
                   trailing: Icon(Icons.logout, color: Color(0xffdf1266)),
                   onTap: () async {
                     await as.signOut();
@@ -287,8 +296,8 @@ class _MainScreenState extends State<MainScreen>
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Latest', style: textStyle_1),
-              Text('Live Stream', style: textStyle_1)
+              Text('Latest', style: Theme.of(context).textTheme.headline6),
+              Text('Live Stream', style: Theme.of(context).textTheme.headline6)
             ],
           ),
         ),
@@ -385,7 +394,7 @@ class _MainScreenState extends State<MainScreen>
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 15, vertical: 5),
                                             child: Text('Live...',
-                                                style: textStyle_1),
+                                                style: textStyle_12),
                                           ),
                                         ),
                                       ),
@@ -408,7 +417,7 @@ class _MainScreenState extends State<MainScreen>
                         });
                   })
               : Center(
-                  child: Text('No Streams available'),
+                  child: Text('No Streams available', style: textStyle_12),
                 ),
         ),
         //end of live streaming section view
@@ -419,6 +428,8 @@ class _MainScreenState extends State<MainScreen>
             controller: _tabController,
             labelColor: color_4,
             unselectedLabelColor: color_12,
+            unselectedLabelStyle: Theme.of(context).textTheme.headline6,
+            labelStyle: Theme.of(context).textTheme.headline6,
             isScrollable: true,
             indicator: const UnderlineTabIndicator(
                 insets: EdgeInsets.only(left: 0, right: 0, bottom: 4)),
@@ -557,7 +568,10 @@ class _MainScreenState extends State<MainScreen>
         Positioned.fill(
           child: Opacity(
             opacity: 0.3,
-            child: Text('Live'),
+            child: Text(
+              'Live',
+              style: textStyle_12,
+            ),
           ),
         ),
       ],
@@ -1221,9 +1235,10 @@ class _MainScreenState extends State<MainScreen>
               );
             }
           } else {
-            return const SizedBox(
+            return SizedBox(
                 child: Center(
-              child: Text('You have not subscribed to any channel'),
+              child: Text('You have not subscribed to any channel',
+                  style: textStyle_12),
             ));
           }
         });

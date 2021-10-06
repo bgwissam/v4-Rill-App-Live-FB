@@ -30,7 +30,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 15),
-                      child: Text('Messages', style: textStyle_3),
+                      child: Text('Messages',
+                          style: Theme.of(context).textTheme.headline6),
                     ),
                     //Build messages List
                     _messageList(_size),
@@ -58,7 +59,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
   //Search Box
   Widget _searchBox() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
           border: Border.all(color: color_7)),
@@ -96,7 +97,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
           : Center(
               child: Text(
                 'No Messages were found',
-                style: textStyle_3,
+                style: textStyle_13,
               ),
             ),
     );

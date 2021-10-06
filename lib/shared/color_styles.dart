@@ -88,6 +88,20 @@ var textStyle_11 = TextStyle(
     fontStyle: FontStyle.italic,
     fontSize: 13);
 
+var textStyle_12 = const TextStyle(
+  fontFamily: 'OpenSans',
+  fontSize: 17,
+);
+
+var textStyle_13 = const TextStyle(fontSize: 16, fontFamily: "OpenSans");
+
+var textStyle_14 = const TextStyle(
+  fontSize: 15,
+  fontWeight: FontWeight.bold,
+  fontFamily: "Poppins",
+  color: Colors.white,
+);
+
 var heading_1 = TextStyle(
     color: color_4,
     fontFamily: 'Montserrat-B',
