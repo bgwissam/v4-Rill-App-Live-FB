@@ -586,19 +586,32 @@ class DatabaseService {
   //This section will handle the chat option
   //create a chat room
   Future<void> createChatRoom(
-      {String? chatRoomId, ChatRoomModel? chatRoomMap}) async {
-    await messagesCollection.doc(chatRoomId).set({
-      ChatRoomParameters.users: chatRoomMap!.users,
-    }).catchError((e, stackTrace) async {
+      {String? userOneId,
+      String? userTwoId,
+      String? chatRoomId,
+      ChatRoomModel? chatRoomMap}) async {
+    try {
+      messagesCollection.doc(chatRoomId).set({
+        ChatRoomParameters.users: chatRoomMap!.users,
+      });
+      userModelCollection
+          .doc(userOneId)
+          .collection('chats')
+          .doc(chatRoomId)
+          .set({ChatRoomParameters.chattingWith: userTwoId});
+      userModelCollection
+          .doc(userTwoId)
+          .collection('chats')
+          .doc(chatRoomId)
+          .set({ChatRoomParameters.chattingWith: userOneId});
+    } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
       print('An error creating chat room: $e');
-    });
+    }
   }
 
   //Create a conversation
-
-  //get converstaion messages
-  Future<void> getConversationMessage(
+  Future<void> addConversationMessage(
       {String? chatRoomId, MessageMap? messageMap}) async {
     try {
       await messagesCollection.doc(chatRoomId).collection('chats').add({
@@ -607,6 +620,15 @@ class DatabaseService {
       });
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
+    }
+  }
+
+  //get conversation message
+  getConversationMessages({String? chatRoomId}) {
+    try {
+      return messagesCollection.doc(chatRoomId).snapshots();
+    } catch (e, stackTrace) {
+      Sentry.captureException(e, stackTrace: stackTrace);
     }
   }
 }

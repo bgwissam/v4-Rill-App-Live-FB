@@ -74,6 +74,7 @@ class FollowParameters {
 class ChatRoomParameters {
   static String userId = 'uid';
   static String users = 'users';
+  static String chattingWith = 'chattingWith';
 }
 
 class ConversationRoomParam {

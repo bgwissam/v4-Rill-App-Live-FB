@@ -102,6 +102,13 @@ var textStyle_14 = const TextStyle(
   color: Colors.white,
 );
 
+var textStyle_15 = TextStyle(
+  fontSize: 15,
+  fontWeight: FontWeight.bold,
+  fontFamily: "Poppins",
+  color: color_12,
+);
+
 var heading_1 = TextStyle(
     color: color_4,
     fontFamily: 'Montserrat-B',

@@ -29,7 +29,6 @@ class _FollowersState extends State<Followers> {
   var provider;
   DatabaseService db = DatabaseService();
   ChatRoomModel chatRoomMap = ChatRoomModel();
-
   @override
   void initState() {
     super.initState();
@@ -116,14 +115,22 @@ class _FollowersState extends State<Followers> {
                           ),
                           child: Text('Message', style: textStyle_4),
                           onPressed: () async {
+                            if (chatRoomMap.users!.isNotEmpty) {
+                              chatRoomMap.users!.clear();
+                            }
+
                             var chatRoomId =
                                 '${widget.userModel!.userId}${widget.userFollowed[index]!.userId}';
+                            print('Chat room map: ${chatRoomMap.users}');
+
                             chatRoomMap.users!.add(widget.userModel!.userId!);
                             chatRoomMap.users!
                                 .add(widget.userFollowed[index]!.userId!);
 
                             //create a chat room if it doesn't exist
                             await db.createChatRoom(
+                                userOneId: widget.userModel!.userId,
+                                userTwoId: widget.userFollowed[index]!.userId,
                                 chatRoomId: chatRoomId,
                                 chatRoomMap: chatRoomMap);
 
