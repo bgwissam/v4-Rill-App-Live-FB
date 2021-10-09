@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
@@ -31,7 +30,6 @@ import 'package:rillliveapp/shared/parameters.dart';
 import 'package:rillliveapp/shared/video_viewer.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
-
 import '../wrapper.dart';
 
 /*
@@ -241,7 +239,10 @@ class _MainScreenState extends State<MainScreen>
     return _bodyWidget = [
       _mainFeed(),
       SearchScreenProviders(userId: widget.userId, userModel: userProvider),
-      MessagesScreen(userId: widget.userId),
+      MessagesScreen(
+        userId: widget.userId,
+        userModel: userProvider,
+      ),
       AccountProvider(userId: widget.userId),
     ];
   }

@@ -63,8 +63,6 @@ class _FollowersState extends State<Followers> {
         child: ListView.builder(
             itemCount: widget.userFollowed.length,
             itemBuilder: (context, index) {
-              print('users followed: ${widget.userFollowed[index]!.avatarUrl}');
-
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
@@ -121,25 +119,47 @@ class _FollowersState extends State<Followers> {
 
                             var chatRoomId =
                                 '${widget.userModel!.userId}${widget.userFollowed[index]!.userId}';
-                            print('Chat room map: ${chatRoomMap.users}');
 
                             chatRoomMap.users!.add(widget.userModel!.userId!);
                             chatRoomMap.users!
                                 .add(widget.userFollowed[index]!.userId!);
 
-                            //create a chat room if it doesn't exist
-                            await db.createChatRoom(
-                                userOneId: widget.userModel!.userId,
-                                userTwoId: widget.userFollowed[index]!.userId,
-                                chatRoomId: chatRoomId,
-                                chatRoomMap: chatRoomMap);
+                            //check if chatroom exists
+                            var result = await db.getChatRoom(
+                                chattingWith:
+                                    widget.userFollowed[index]!.userId!,
+                                userId: widget.userModel!.userId);
+                            print('the result of getting room: $result');
+                            if (result.isEmpty) {
+                              //create a chat room if it doesn't exist
+                              await db.createChatRoom(
+                                  userOneId: widget.userModel!.userId,
+                                  // userNameOne: widget.userModel!.userName ?? '',
+                                  firstNameOne: widget.userModel!.firstName,
+                                  lastNameOne: widget.userModel!.lastName,
+                                  avatarUrlOne: widget.userModel!.avatarUrl,
+                                  userTwoId: widget.userFollowed[index]!.userId,
+                                  userNameTwo:
+                                      widget.userFollowed[index]!.userName ??
+                                          '',
+                                  firstNameTwo:
+                                      widget.userFollowed[index]!.firstName,
+                                  lastNameTwo:
+                                      widget.userFollowed[index]!.lastName,
+                                  avatarUrlTwo:
+                                      widget.userFollowed[index]!.avatarUrl,
+                                  chatRoomId: chatRoomId,
+                                  chatRoomMap: chatRoomMap);
+                            }
 
                             await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (builder) => ConversationScreen(
                                           currentUser: widget.userModel,
-                                          chatRoomId: chatRoomId,
+                                          chatRoomId: result.isEmpty
+                                              ? chatRoomId
+                                              : result,
                                         )));
                           },
                         ),
@@ -194,15 +214,51 @@ class _FollowersState extends State<Followers> {
                       ),
                       child: Text('Message', style: textStyle_4),
                       onPressed: () async {
+                        if (chatRoomMap.users!.isNotEmpty) {
+                          chatRoomMap.users!.clear();
+                        }
+
                         var chatRoomId =
                             '${widget.userModel!.userId}${widget.usersFollowing[index]!.userId}';
+
+                        chatRoomMap.users!.add(widget.userModel!.userId!);
+                        chatRoomMap.users!
+                            .add(widget.usersFollowing[index]!.userId!);
+                        //check if chatroom exists
+                        var result = await db.getChatRoom(
+                            chattingWith: widget.usersFollowing[index]!.userId!,
+                            userId: widget.userModel!.userId);
+                        print('the result of getting room: $result');
+
+                        if (result.isEmpty) {
+                          await db.createChatRoom(
+                              userOneId: widget.userModel!.userId,
+                              // userNameOne: widget.userModel!.userName ?? '',
+                              firstNameOne: widget.userModel!.firstName,
+                              lastNameOne: widget.userModel!.lastName,
+                              avatarUrlOne: widget.userModel!.avatarUrl,
+                              userTwoId: widget.usersFollowing[index]!.userId,
+                              userNameTwo:
+                                  widget.usersFollowing[index]!.userName ?? '',
+                              firstNameTwo:
+                                  widget.usersFollowing[index]!.firstName,
+                              lastNameTwo:
+                                  widget.usersFollowing[index]!.lastName,
+                              avatarUrlTwo:
+                                  widget.usersFollowing[index]!.avatarUrl,
+                              chatRoomId: chatRoomId,
+                              chatRoomMap: chatRoomMap);
+                        }
+
                         await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (builder) => ConversationScreen(
-                                      currentUser: widget.userModel,
-                                      chatRoomId: chatRoomId,
-                                    )));
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) => ConversationScreen(
+                              currentUser: widget.userModel,
+                              chatRoomId: result.isEmpty ? chatRoomId : result,
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ),

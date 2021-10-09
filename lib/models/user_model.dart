@@ -34,6 +34,7 @@ class UserModel {
 
 class UsersFollowed {
   String? userId;
+  String? userName;
   String? followerId;
   String? firstName;
   String? lastName;
@@ -41,6 +42,7 @@ class UsersFollowed {
 
   UsersFollowed(
       {this.userId,
+      this.userName,
       this.followerId,
       this.firstName,
       this.lastName,
@@ -49,6 +51,7 @@ class UsersFollowed {
 
 class UsersFollowing {
   String? userId;
+  String? userName;
   String? followerId;
   String? firstName;
   String? lastName;
@@ -56,6 +59,7 @@ class UsersFollowing {
 
   UsersFollowing(
       {this.userId,
+      this.userName,
       this.followerId,
       this.firstName,
       this.lastName,

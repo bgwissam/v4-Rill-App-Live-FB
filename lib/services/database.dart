@@ -584,11 +584,54 @@ class DatabaseService {
   }
 
   //This section will handle the chat option
+
+  //Get all chat rooms
+  getChatRoomPerUser({String? userId}) {
+    try {
+      return userModelCollection.doc(userId).collection('chats').snapshots();
+    } catch (e, stackTrace) {
+      Sentry.captureException(e, stackTrace: stackTrace);
+      print('An error fetching user chats');
+    }
+  }
+
+  //Get chat room
+  Future<String> getChatRoom({
+    String? chattingWith,
+    String? userId,
+  }) async {
+    try {
+      return await userModelCollection
+          .doc(userId)
+          .collection('chats')
+          .where(ChatRoomParameters.chattingWith, isEqualTo: chattingWith)
+          .get()
+          .then((value) {
+        return value.docs.map((e) {
+          print('the value: ${e.id}');
+          return e.id;
+        }).first;
+      });
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      print('An error creating chat room: $e');
+      return '';
+    }
+  }
+
   //create a chat room
   Future<void> createChatRoom(
       {String? userOneId,
       String? userTwoId,
       String? chatRoomId,
+      String? userNameOne,
+      String? userNameTwo,
+      String? firstNameOne,
+      String? lastNameOne,
+      String? firstNameTwo,
+      String? lastNameTwo,
+      String? avatarUrlOne,
+      String? avatarUrlTwo,
       ChatRoomModel? chatRoomMap}) async {
     try {
       messagesCollection.doc(chatRoomId).set({
@@ -598,12 +641,26 @@ class DatabaseService {
           .doc(userOneId)
           .collection('chats')
           .doc(chatRoomId)
-          .set({ChatRoomParameters.chattingWith: userTwoId});
+          .set({
+        ChatRoomParameters.userId: userId,
+        ChatRoomParameters.chattingWith: userTwoId,
+        UserParams.USER_NAME: userNameTwo,
+        UserParams.FIRST_NAME: firstNameTwo,
+        UserParams.LAST_NAME: lastNameTwo,
+        UserParams.AVATAR: avatarUrlTwo
+      });
       userModelCollection
           .doc(userTwoId)
           .collection('chats')
           .doc(chatRoomId)
-          .set({ChatRoomParameters.chattingWith: userOneId});
+          .set({
+        ChatRoomParameters.userId: userId,
+        ChatRoomParameters.chattingWith: userOneId,
+        UserParams.USER_NAME: userNameOne,
+        UserParams.FIRST_NAME: firstNameOne,
+        UserParams.LAST_NAME: lastNameOne,
+        UserParams.AVATAR: avatarUrlOne
+      });
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
       print('An error creating chat room: $e');
@@ -616,7 +673,8 @@ class DatabaseService {
     try {
       await messagesCollection.doc(chatRoomId).collection('chats').add({
         ConversationRoomParam.senderId: messageMap!.senderId,
-        ConversationRoomParam.message: messageMap.message
+        ConversationRoomParam.message: messageMap.message,
+        ConversationRoomParam.time: messageMap.time,
       });
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);

@@ -80,4 +80,5 @@ class ChatRoomParameters {
 class ConversationRoomParam {
   static String senderId = 'senderId';
   static String message = 'message';
+  static String time = 'time';
 }
