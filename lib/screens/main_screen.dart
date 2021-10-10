@@ -4,8 +4,10 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:chewie/chewie.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +32,7 @@ import 'package:rillliveapp/shared/parameters.dart';
 import 'package:rillliveapp/shared/video_viewer.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
+import '../main.dart';
 import '../wrapper.dart';
 
 /*
@@ -75,7 +78,6 @@ class _MainScreenState extends State<MainScreen>
   VideoPlayerController? _controller;
   VideoPlayerController? _toBeDisposed;
   //Futures
-
   late Future getSubscriptionFeed;
   //Define controller
   RecordingController recordingController = RecordingController();
@@ -95,6 +97,10 @@ class _MainScreenState extends State<MainScreen>
         sensorOrientation: 1)
   ];
   get as => null;
+
+  //Services
+  FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  NotificationSettings? notSettings;
   @override
   void initState() {
     super.initState();
@@ -120,6 +126,7 @@ class _MainScreenState extends State<MainScreen>
     userProvider = Provider.of<UserModel>(context);
     _size = MediaQuery.of(context).size;
     _buildMainScreenWidget();
+    userProvider.userId != null ? _getFcmToken() : null;
     return Container(
       height: _size.height,
       width: _size.width,
@@ -232,6 +239,101 @@ class _MainScreenState extends State<MainScreen>
             ],
           )),
     );
+  }
+
+  //Get firebase messaging token and save it to the user
+  _getFcmToken() async {
+// await FirebaseMessaging.instance
+//         .getInitialMessage()
+//         .then((RemoteMessage message) {
+//       if (message != null) {
+//         Navigator.push(
+//           context,
+//           MaterialPageRoute(
+//             builder: (builder) => MessageView(
+//                 title: message.notification.title,
+//                 body: message.notification.body),
+//           ),
+//         );
+//       }
+//     });
+
+    notSettings = await _fcm.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (notSettings!.authorizationStatus == AuthorizationStatus.authorized ||
+        Platform.isAndroid) {
+      await _fcm.getToken().then((token) {
+        return token;
+      });
+
+      //Handle the received notification
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        var notification = message.notification;
+        var androidNotification = message.notification!.android;
+
+        if (notification != null && androidNotification != null) {
+          flutterLocalNotificationsPlugin!.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel!.id,
+                channel!.name,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ),
+          );
+        }
+      });
+
+      FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
+        print('A background message exists');
+        // await Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (builder) => MessageView(
+        //         title: message.notification.title,
+        //         body: message.notification.body),
+        //   ),
+        // );
+        // return message;
+      });
+
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (builder) => MessageView(
+        //         title: message.notification.title,
+        //         body: message.notification.body),
+        //   ),
+        // );
+      });
+    } else {
+      return showDialog(
+          context: context,
+          builder: (builder) => AlertDialog(
+                title: Text('Notification Permission'),
+                content: Text(
+                    'Notification permission is needed to provide you with necessary updates'),
+                actions: [
+                  TextButton(
+                      onPressed: () async {
+                        //await _requestNotficationPermission();
+                      },
+                      child: Text('Grant Permission'))
+                ],
+              ));
+    }
   }
 
   //Main screen widgets
@@ -519,7 +621,7 @@ class _MainScreenState extends State<MainScreen>
                         _selectedIndex = 1;
                       });
                     },
-                    icon: const Icon(Icons.search),
+                    icon: Image.asset('assets/icons/search_rill.png'),
                   ),
                   SizedBox(
                     width: _size.width * 0.2,

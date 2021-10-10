@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'dart:io' as io;
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:rillliveapp/push/push_notification.dart';
 import 'package:rillliveapp/screens/message_screen.dart';
@@ -15,10 +18,42 @@ import 'package:rillliveapp/wrapper.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'models/user_model.dart';
 
+//A top level named handler to handle background/terminated messages will call
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  //make sure firebase is initialized bofore using this service
+  print('Id: ${message.messageId}');
+  await Firebase.initializeApp();
+  print('Handling a background message: ${message.messageId}');
+}
+
+//Create an android notification channel for head up notification
+AndroidNotificationChannel? channel;
+//Initialize flutter notification channel
+FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp();
+  //Set the background message handler
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  if (Platform.isAndroid || Platform.isIOS) {
+    channel = const AndroidNotificationChannel(
+        'High_Importance', 'High importance notifications',
+        importance: Importance.high);
+
+    print('the channel is: $channel');
+  }
+
+  flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  //Create an android notification channel to overrid the default FCM channel
+  await flutterLocalNotificationsPlugin!
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel!);
+
+  //Update ios foreground notification presentation options
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true, badge: true, sound: true);
 
   await SentryFlutter.init(
     (options) {

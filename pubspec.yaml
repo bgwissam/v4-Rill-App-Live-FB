@@ -46,6 +46,7 @@ dependencies:
   firebase_storage: any
   cloud_firestore: any
   firebase_messaging: any
+  flutter_local_notifications: any
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +62,7 @@ flutter:
  
   assets:
       - assets/images/
+      - assets/icons/
    
 fonts: 
   - family: Montserrat-B
