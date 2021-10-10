@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rillliveapp/models/message_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/services/database.dart';
+import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/parameters.dart';
@@ -22,10 +27,13 @@ class _ConversationScreenState extends State<ConversationScreen> {
   final FocusNode _focus = FocusNode();
   final ScrollController listScrollController = ScrollController();
   DatabaseService db = DatabaseService();
+  StorageData sd = StorageData();
   MessageMap messageMap = MessageMap();
   late Stream<QuerySnapshot> chatStream;
   var _size;
   late double _listSize;
+
+  late File imagePicked;
   //int variables
   int _limit = 20;
   int _limitIncrement = 20;
@@ -152,9 +160,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
     );
   }
 
-  _sendMessage() async {
-    if (_inputMessageController.text.isNotEmpty) {
-      messageMap.message = _inputMessageController.text;
+  _sendMessage({String? messageString, String? messageType}) async {
+    if (messageString!.isNotEmpty) {
+      messageMap.message = messageString;
+      messageMap.type = messageType;
       messageMap.senderId = widget.currentUser?.userId;
       messageMap.time = DateTime.now().millisecondsSinceEpoch;
       db.addConversationMessage(
@@ -185,8 +194,37 @@ class _ConversationScreenState extends State<ConversationScreen> {
       return MessageTile(
         message: document[ConversationRoomParam.message],
         currentUser: widget.currentUser?.userId,
+        type: document[ConversationRoomParam.type],
         sentBy: document[ConversationRoomParam.senderId],
       );
+    }
+  }
+
+  Future getImage() async {
+    ImagePicker imagePicker = ImagePicker();
+    XFile? pickedFile;
+
+    pickedFile = await imagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 25);
+    if (pickedFile != null) {
+      imagePicked = File(pickedFile.path);
+
+      setState(() {
+        _isLoading = true;
+      });
+      uploadFile(pickedFile);
+    }
+  }
+
+  Future uploadFile(XFile? imageFile) async {
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    var result = await sd.uploadFile(xfile: imageFile, folderName: 'chatImage');
+    if (result['imageUrl'] != null) {
+      _sendMessage(messageType: 'image', messageString: result['imageUrl']);
+
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -199,7 +237,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 1),
               child: IconButton(
-                  icon: Icon(Icons.image), onPressed: () {}, color: color_7),
+                  icon: Icon(Icons.image),
+                  onPressed: () async {
+                    //build image picker
+                    await getImage();
+                  },
+                  color: color_7),
             ),
             color: Colors.white,
           ),
@@ -215,7 +258,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
             child: Container(
               child: TextField(
                 onSubmitted: (val) async {
-                  await _sendMessage();
+                  await _sendMessage(
+                      messageString: _inputMessageController.text,
+                      messageType: 'text');
                 },
                 focusNode: _focus,
                 controller: _inputMessageController,
@@ -235,7 +280,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
                   icon: IconButton(
                       icon: Icon(Icons.send),
                       onPressed: () {
-                        _sendMessage();
+                        _sendMessage(
+                            messageString: _inputMessageController.text,
+                            messageType: 'text');
                       },
                       color: color_7),
                   onPressed: () {},
@@ -265,36 +312,104 @@ class _ConversationScreenState extends State<ConversationScreen> {
 }
 
 class MessageTile extends StatelessWidget {
-  const MessageTile({Key? key, this.message, this.sentBy, this.currentUser})
+  const MessageTile(
+      {Key? key, this.message, this.sentBy, this.currentUser, this.type})
       : super(key: key);
   final String? sentBy;
   final String? currentUser;
   final String? message;
+  final String? type;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      alignment:
-          sentBy == currentUser ? Alignment.centerRight : Alignment.centerLeft,
-      padding: EdgeInsets.only(
-          left: sentBy == currentUser ? 0 : 15,
-          right: sentBy == currentUser ? 15 : 0),
-      child: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: sentBy == currentUser ? color_8 : color_10,
-              borderRadius: sentBy == currentUser
-                  ? const BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25),
-                      bottomLeft: Radius.circular(25))
-                  : const BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25),
-                      bottomRight: Radius.circular(25))),
-          child: Text(message.toString())),
-    );
+        width: MediaQuery.of(context).size.width,
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        alignment: sentBy == currentUser
+            ? Alignment.centerRight
+            : Alignment.centerLeft,
+        padding: EdgeInsets.only(
+            left: sentBy == currentUser ? 0 : 15,
+            right: sentBy == currentUser ? 15 : 0),
+        child: _buildRow(message, type));
+  }
+
+  _buildRow(var message, String? type) {
+    switch (type) {
+      case 'text':
+        return Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: sentBy == currentUser ? color_8 : color_10,
+                borderRadius: sentBy == currentUser
+                    ? const BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25),
+                        bottomLeft: Radius.circular(25))
+                    : const BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25),
+                        bottomRight: Radius.circular(25))),
+            child: Text(
+              message.toString(),
+            ));
+      case 'image':
+        return Material(
+          child: Image.network(
+            message.toString(),
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Container(
+                decoration: BoxDecoration(
+                  color: color_10,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(8),
+                  ),
+                ),
+                width: 200,
+                height: 200,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: color_7,
+                    value: loadingProgress.expectedTotalBytes != null &&
+                            loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                  ),
+                ),
+              );
+            },
+            errorBuilder: (context, object, stackTrace) {
+              return Material(
+                child: Image.asset(
+                  'images/img_not_available.jpeg',
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(8),
+                ),
+                clipBehavior: Clip.hardEdge,
+              );
+            },
+            width: 200,
+            height: 200,
+            fit: BoxFit.cover,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10),
+          ),
+          clipBehavior: Clip.hardEdge,
+        );
+      case 'video':
+        break;
+      case 'sticker':
+        break;
+      default:
+        return const Text('Error: check admin');
+    }
   }
 }

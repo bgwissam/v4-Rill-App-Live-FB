@@ -28,7 +28,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
     return widget.userId != null
-        ? Container(
+        ? SizedBox(
             height: _size.height - 100,
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -57,7 +57,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 onPressed: () async {
                   Navigator.pushAndRemoveUntil(context,
                       MaterialPageRoute(builder: (builder) {
-                    return SignInSignUp();
+                    return const SignInSignUp();
                   }), (route) => false);
                 },
                 child: Text('Sign In', style: button_1),
@@ -75,7 +75,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
   //Search Box
   Widget _searchBox() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
           border: Border.all(color: color_7)),
@@ -122,16 +122,17 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       },
                       child: ListTile(
                         leading: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(),
-                          ),
-                          height: 50,
-                          width: 50,
+                          height: 60,
+                          width: 60,
                           child: FittedBox(
                             fit: BoxFit.fill,
-                            child: Image.network(
-                              snapshot.data?.docs[index][UserParams.AVATAR],
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                snapshot.data?.docs[index][UserParams.AVATAR],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
                             ),
                           ),
                         ),

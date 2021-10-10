@@ -1,17 +1,18 @@
 import 'package:device_info/device_info.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' as io;
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:rillliveapp/push/push_notification.dart';
+import 'package:rillliveapp/screens/message_screen.dart';
 import 'package:rillliveapp/services/auth.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/wrapper.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-
-import 'models/file_model.dart';
 import 'models/user_model.dart';
 
 void main() async {
@@ -88,7 +89,9 @@ class _MySplashScreenState extends State<MySplashScreen> {
   late Future _checkSignedIn;
   late UserModel currentUser;
   late bool userSignedIn = false;
+
   //Controllers
+  PushNotificationsManager pNotif = PushNotificationsManager();
   AuthService as = AuthService();
   @override
   Widget build(BuildContext context) {
@@ -98,6 +101,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   @override
   void initState() {
     super.initState();
+    pNotif.init();
     //_checkSignedIn = checkSignedInUser();
     //_getDeviceInfo();
     Timer(

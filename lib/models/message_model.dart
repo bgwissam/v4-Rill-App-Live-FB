@@ -27,7 +27,8 @@ class ChatModel {
 class MessageMap {
   String? senderId;
   String? message;
+  String? type;
   int? time;
 
-  MessageMap({this.senderId, this.message, this.time});
+  MessageMap({this.senderId, this.message, this.time, this.type});
 }

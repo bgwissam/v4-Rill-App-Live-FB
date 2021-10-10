@@ -674,6 +674,7 @@ class DatabaseService {
       await messagesCollection.doc(chatRoomId).collection('chats').add({
         ConversationRoomParam.senderId: messageMap!.senderId,
         ConversationRoomParam.message: messageMap.message,
+        ConversationRoomParam.type: messageMap.type,
         ConversationRoomParam.time: messageMap.time,
       });
     } catch (e, stackTrace) {
