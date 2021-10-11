@@ -4,12 +4,14 @@
  */
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rillliveapp/authentication/signin.dart';
 import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/screens/main_screen.dart';
 import 'package:rillliveapp/services/database.dart';
+import 'package:rillliveapp/shared/parameters.dart';
 
 import 'models/user_model.dart';
 
@@ -27,11 +29,31 @@ class _WrapperState extends State<Wrapper> {
   var _guestUser = false;
   late UserModel? currentUser;
   DatabaseService db = DatabaseService();
+  FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  String? token;
   @override
   void initState() {
     super.initState();
     _guestUser = widget.guestUser!;
+    _getFcmToken();
+
     //Initiate a future to check user verification
+  }
+
+  _getFcmToken() async {
+    token = await _fcm.getToken();
+  }
+
+  _addFcmToken() async {
+    if (currentUser?.userId != null && currentUser?.fcmToken != null) {
+      if (currentUser?.fcmToken != token) {
+        print(
+            'the fcm token should be added: ${currentUser?.userId}\n - $token }');
+        await db.userModelCollection
+            .doc(currentUser?.userId)
+            .update({UserParams.FCM_TOKEN: token});
+      }
+    }
   }
 
   //check if user is verified
@@ -48,6 +70,7 @@ class _WrapperState extends State<Wrapper> {
   Widget build(BuildContext context) {
     currentUser = Provider.of<UserModel?>(context);
     if (currentUser?.userId != null) {
+      _addFcmToken();
       setState(() {
         _isUserSignedIn = true;
       });

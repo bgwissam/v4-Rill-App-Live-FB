@@ -13,6 +13,7 @@ class UserModel {
   String? bioDescription;
   bool? isActive;
   List<dynamic>? roles;
+  String? fcmToken;
   String? error;
   UserModel(
       {this.userId,
@@ -29,6 +30,7 @@ class UserModel {
       this.bioDescription,
       this.isActive,
       this.roles,
+      this.fcmToken,
       this.error});
 }
 

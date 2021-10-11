@@ -20,6 +20,7 @@ import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/screens/account_screen.dart';
 import 'package:rillliveapp/screens/message_screen.dart';
+import 'package:rillliveapp/screens/notification_screen.dart';
 import 'package:rillliveapp/screens/search_screen.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
@@ -107,6 +108,7 @@ class _MainScreenState extends State<MainScreen>
     _tabController = TabController(length: 2, vsync: this);
     controller = CameraController(cameras[0], ResolutionPreset.max);
     getSubscriptionFeed = _getSubscriptionChannels();
+    _getFcmToken();
   }
 
   @override
@@ -126,7 +128,7 @@ class _MainScreenState extends State<MainScreen>
     userProvider = Provider.of<UserModel>(context);
     _size = MediaQuery.of(context).size;
     _buildMainScreenWidget();
-    userProvider.userId != null ? _getFcmToken() : null;
+
     return Container(
       height: _size.height,
       width: _size.width,
@@ -206,7 +208,7 @@ class _MainScreenState extends State<MainScreen>
                   onTap: () async {},
                   trailing: Icon(Icons.ad_units, color: Color(0xffdf1266)),
                 ),
-                Divider(),
+                const Divider(),
                 ListTile(
                   title: Text('Sign Out',
                       style: Theme.of(context).textTheme.headline6),
@@ -230,12 +232,12 @@ class _MainScreenState extends State<MainScreen>
                   padding: const EdgeInsets.only(top: 15.0),
                   child: _bodyWidget[_selectedIndex]),
               _isLoadingStream
-                  ? Container(
+                  ? const SizedBox(
                       height: 100,
                       width: 100,
                       child: LoadingView(),
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
             ],
           )),
     );
@@ -243,20 +245,18 @@ class _MainScreenState extends State<MainScreen>
 
   //Get firebase messaging token and save it to the user
   _getFcmToken() async {
-// await FirebaseMessaging.instance
-//         .getInitialMessage()
-//         .then((RemoteMessage message) {
-//       if (message != null) {
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(
-//             builder: (builder) => MessageView(
-//                 title: message.notification.title,
-//                 body: message.notification.body),
-//           ),
-//         );
-//       }
-//     });
+    await _fcm.getInitialMessage().then((message) async {
+      if (message != null) {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (builder) => NotificationScreen(
+                title: message.notification!.title,
+                content: message.notification!.body),
+          ),
+        );
+      }
+    });
 
     notSettings = await _fcm.requestPermission(
       alert: true,
@@ -271,6 +271,7 @@ class _MainScreenState extends State<MainScreen>
     if (notSettings!.authorizationStatus == AuthorizationStatus.authorized ||
         Platform.isAndroid) {
       await _fcm.getToken().then((token) {
+        print('FCM token: $token');
         return token;
       });
 
@@ -295,7 +296,7 @@ class _MainScreenState extends State<MainScreen>
         }
       });
 
-      FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
+      FirebaseMessaging.onBackgroundMessage((message) async {
         print('A background message exists');
         // await Navigator.push(
         //   context,
@@ -309,14 +310,14 @@ class _MainScreenState extends State<MainScreen>
       });
 
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (builder) => MessageView(
-        //         title: message.notification.title,
-        //         body: message.notification.body),
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (builder) => NotificationScreen(
+                title: message.notification!.title,
+                content: message.notification!.body),
+          ),
+        );
       });
     } else {
       return showDialog(
@@ -328,7 +329,7 @@ class _MainScreenState extends State<MainScreen>
                 actions: [
                   TextButton(
                       onPressed: () async {
-                        //await _requestNotficationPermission();
+                        await _getFcmToken();
                       },
                       child: Text('Grant Permission'))
                 ],
@@ -1218,39 +1219,6 @@ class _MainScreenState extends State<MainScreen>
                     color: Colors.grey[100],
                     borderRadius: BorderRadius.circular(10.0)),
               );
-
-              // return FutureBuilder(
-              //     future: initializeVideo(
-              //         imageVideoProvider[index]!.url.toString()),
-              //     builder: (context, AsyncSnapshot snapshot) {
-              //       if (snapshot.hasData) {
-              //         return GestureDetector(
-              //             onTap: () async {
-              //               print('tapping tapping');
-              //               await Navigator.push(
-              //                 context,
-              //                 MaterialPageRoute(
-              //                   builder: (builder) => VideoPlayerPage(
-              //                       videoController:
-              //                           VideoPlayerController.network(
-              //                               imageVideoProvider[index]!
-              //                                   .url
-              //                                   .toString())),
-              //                 ),
-              //               );
-              //             },
-              //             child: Chewie(
-              //               controller: snapshot.data,
-              //             ));
-              //       } else if (snapshot.hasError) {
-              //         print('Error playing video: ${snapshot.error}');
-              //         return Center(child: Text(snapshot.error.toString()));
-              //       } else {
-              //         return const Center(
-              //           child: CircularProgressIndicator(),
-              //         );
-              //       }
-              //     });
             }
           }
           return const Center(
@@ -1262,24 +1230,6 @@ class _MainScreenState extends State<MainScreen>
       ),
     );
   }
-
-  //Initialize video player
-  // Future<ChewieController> initializeVideo(
-  //     String _videoPlayerController) async {
-  //   VideoPlayerController _controller =
-  //       VideoPlayerController.network(_videoPlayerController);
-  //   await _controller.initialize();
-  //   return ChewieController(
-  //     videoPlayerController: _controller,
-  //     autoPlay: false,
-  //     // aspectRatio: _controller.value.aspectRatio,
-  //     allowMuting: true,
-  //     looping: false,
-  //     showControlsOnInitialize: false,
-  //     showOptions: false,
-  //     showControls: false,
-  //   );
-  // }
 
   //Subscribed feed section
   Widget _subscribedFeed() {
@@ -1372,30 +1322,6 @@ class _MainScreenState extends State<MainScreen>
     List<Map<String, dynamic>> listUrls = [];
     var result = await storageData.listAllItems();
 
-    // result.items.forEach((e) {
-    //   listObjects.add(e.key);
-    // });
-
-    // if (listObjects.isNotEmpty) {
-    //   for (var key in listObjects) {
-    //     print('the keys: $key');
-    //     var file = await storageData.getFileUrl(key);
-
-    //     extension = p.extension(key, 2);
-
-    //     if (extension == '.mp4' || extension == '.3gp' || extension == '.mkv') {
-    //       _videoPlayerController = VideoPlayerController.network(file!);
-    //       await _videoPlayerController.initialize();
-    //       listUrls.add({'value': _videoPlayerController, 'type': 'video'});
-    //     } else {
-    //       listUrls.add({'value': file, 'type': 'image'});
-    //       print('list url: $listUrls');
-    //     }
-    //   }
-
-    //   return listUrls;
-    // }
-    // print('the List of objects: $listObjects');
     return listObjects;
   }
 
@@ -1406,23 +1332,6 @@ class _MainScreenState extends State<MainScreen>
     List<Map<String, dynamic>> listUrls = [];
     var result = await storageData.listAllItems();
 
-    // result.items.forEach((e) {
-    //   listObjects.add(e.key);
-    // });
-    // if (listObjects.isNotEmpty) {
-    //   for (var key in listObjects) {
-    //     var file = await storageData.getFileUrl(key);
-
-    //     extension = p.extension(key, 2);
-
-    //     if (extension == '.mp4' || extension == '.3gp' || extension == '.mkv') {
-    //       _videoPlayerController = VideoPlayerController.network(file!);
-    //       await _videoPlayerController.initialize();
-    //       listUrls.add({'value': _videoPlayerController, 'type': 'video'});
-    //     }
-    //   }
-    //   return listUrls;
-    // }
     return listObjects;
   }
 

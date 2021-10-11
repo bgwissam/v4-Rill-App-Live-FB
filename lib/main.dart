@@ -11,6 +11,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:rillliveapp/push/push_notification.dart';
 import 'package:rillliveapp/screens/message_screen.dart';
+import 'package:rillliveapp/screens/notification_screen.dart';
 import 'package:rillliveapp/services/auth.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
@@ -105,6 +106,7 @@ class MyApp extends StatelessWidget {
           '/home': (BuildContext context) => const Wrapper(
                 guestUser: false,
               ),
+          '/notifications': (BuildContext context) => const NotificationScreen()
         },
       ),
     );

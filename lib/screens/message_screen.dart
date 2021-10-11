@@ -37,7 +37,21 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //Build Search box
-                    _searchBox(),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: _searchBox(),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: IconButton(
+                            icon: Image.asset('assets/icons/add_rill.png'),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ],
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 15),
@@ -109,35 +123,43 @@ class _MessagesScreenState extends State<MessagesScreen> {
               ? ListView.builder(
                   itemCount: snapshot.data?.docs.length,
                   itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (builder) => ConversationScreen(
-                                currentUser: widget.userModel,
-                                chatRoomId: snapshot.data?.docs[index].id),
-                          ),
-                        );
-                      },
-                      child: ListTile(
-                        leading: Container(
-                          height: 60,
-                          width: 60,
-                          child: FittedBox(
-                            fit: BoxFit.fill,
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                snapshot.data?.docs[index][UserParams.AVATAR],
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: InkWell(
+                        onTap: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (builder) => ConversationScreen(
+                                  currentUser: widget.userModel,
+                                  chatRoomId: snapshot.data?.docs[index].id),
+                            ),
+                          );
+                        },
+                        child: ListTile(
+                          leading: Container(
+                            height: 60,
+                            width: 60,
+                            child: FittedBox(
+                              fit: BoxFit.fill,
+                              child: CircleAvatar(
+                                backgroundImage: snapshot.data?.docs[index]
+                                            [UserParams.AVATAR] !=
+                                        null
+                                    ? NetworkImage(
+                                        snapshot.data?.docs[index]
+                                            [UserParams.AVATAR],
+                                      )
+                                    : Image.asset('assets/images/g.png').image,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
                               ),
                             ),
                           ),
+                          title: Text(
+                              '${snapshot.data?.docs[index][UserParams.FIRST_NAME]} ${snapshot.data?.docs[index][UserParams.LAST_NAME]}'),
                         ),
-                        title: Text(
-                            '${snapshot.data?.docs[index][UserParams.FIRST_NAME]} ${snapshot.data?.docs[index][UserParams.LAST_NAME]}'),
                       ),
                     );
                   })

@@ -9,6 +9,7 @@ import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/image_viewer.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
+import 'package:rillliveapp/shared/message_service.dart';
 import 'package:rillliveapp/shared/video_viewer.dart';
 import 'package:video_player/video_player.dart';
 
@@ -70,6 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
   //Controller
   StorageData storageData = StorageData();
   DatabaseService db = DatabaseService();
+  MessaginService ms = MessaginService();
   late VideoPlayerController _videoPlayerController;
   late ChewieController _chewieController;
   //Providers
@@ -382,7 +384,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               '${userListProvider[index].firstName} ${userListProvider[index].lastName}'),
                           subtitle: Row(
                             children: [
-                              Text('Client details'),
+                              Text('User details'),
                               TextButton(
                                 child: followed.isNotEmpty &&
                                         followed.contains(
@@ -416,6 +418,22 @@ class _SearchScreenState extends State<SearchScreen> {
                                             userListProvider[index].lastName,
                                         avatarUrl:
                                             userListProvider[index].avatarUrl);
+                                    //Notify the person being followed of the user following
+                                    try {
+                                      ms.token = widget.userModel?.fcmToken;
+                                      ms.senderId = widget.userModel?.userId;
+                                      ms.senderName =
+                                          '${widget.userModel?.firstName} ${widget.userModel?.lastName}';
+                                      ms.receiverId =
+                                          userListProvider[index]?.userId;
+                                      ms.messageType = 'follow';
+                                      ms.messageTitle = 'New Follower';
+                                      ms.messageBody = 'started following you';
+                                      ms.sendPushMessage();
+                                    } catch (e) {
+                                      print(
+                                          'an error occured try to send push message');
+                                    }
 
                                     setState(() {
                                       followed
