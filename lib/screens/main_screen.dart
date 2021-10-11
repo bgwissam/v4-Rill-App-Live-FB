@@ -19,6 +19,7 @@ import 'package:rillliveapp/controller/token_controller.dart';
 import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/screens/account_screen.dart';
+import 'package:rillliveapp/screens/camera_screen.dart';
 import 'package:rillliveapp/screens/message_screen.dart';
 import 'package:rillliveapp/screens/notification_screen.dart';
 import 'package:rillliveapp/screens/search_screen.dart';
@@ -593,7 +594,12 @@ class _MainScreenState extends State<MainScreen>
             child: FloatingActionButton(
               onPressed: () {
                 widget.userId != null
-                    ? showBottomNavigationMenu() // showCameraModeNavigation()
+                    ? Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (builder) =>
+                                CameraScreen(userId: widget.userId)),
+                      ) // showCameraModeNavigation()
                     : errorDialog('Guest Account',
                         'You need to login in order to use this feature');
               },

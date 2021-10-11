@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:camera/camera.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +27,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message: ${message.messageId}');
 }
 
+List<CameraDescription> cameras = [];
 //Create an android notification channel for head up notification
 AndroidNotificationChannel? channel;
 //Initialize flutter notification channel
@@ -35,14 +36,13 @@ FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  cameras = await availableCameras();
   //Set the background message handler
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   if (Platform.isAndroid || Platform.isIOS) {
     channel = const AndroidNotificationChannel(
         'High_Importance', 'High importance notifications',
         importance: Importance.high);
-
-    print('the channel is: $channel');
   }
 
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
