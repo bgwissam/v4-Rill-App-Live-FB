@@ -119,6 +119,7 @@ class DatabaseService {
             bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
             phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
             phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
+            fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
             phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
             isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
             roles: (doc.data()! as Map)[UserParams.ROLES]);
@@ -144,6 +145,7 @@ class DatabaseService {
           bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
           phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
           phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
+          fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
           phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
           isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
           roles: (doc.data()! as Map)[UserParams.ROLES]);
@@ -196,6 +198,7 @@ class DatabaseService {
           bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
           phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
           phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
+          fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
           phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
           isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
           roles: (doc.data()! as Map)[UserParams.ROLES]);
@@ -217,6 +220,7 @@ class DatabaseService {
               bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
               phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
               phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
+              fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
               phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
               isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
               roles: (doc.data()! as Map)[UserParams.ROLES]),

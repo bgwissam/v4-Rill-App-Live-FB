@@ -363,7 +363,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           MaterialPageRoute(
                             builder: (builder) => Scaffold(
                               body: AccountProvider(
-                                userId: userListProvider[index].userId,
+                                userId: widget
+                                    .userId, //userListProvider[index].userId,
                                 myProfile: false,
                                 userModel: userListProvider[index],
                               ),
@@ -432,6 +433,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                             userListProvider[index].avatarUrl);
                                     //Notify the person being followed of the user following
                                     try {
+                                      print(
+                                          'the token: ${userListProvider[index]?.fcmToken}');
                                       ms.token =
                                           userListProvider[index]?.fcmToken;
                                       ms.senderId = widget.userModel?.userId;

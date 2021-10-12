@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:rillliveapp/authentication/register.dart';
 import 'package:rillliveapp/authentication/security.dart';
 import 'package:rillliveapp/authentication/signin.dart';
+import 'package:rillliveapp/messaging/conversation_screen.dart';
 import 'package:rillliveapp/models/file_model.dart';
+import 'package:rillliveapp/models/message_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/services/auth.dart';
 import 'package:rillliveapp/services/database.dart';
@@ -100,6 +102,7 @@ class _AccountScreenState extends State<AccountScreen>
   DatabaseService db = DatabaseService();
   AuthService as = AuthService();
   StorageData storageData = StorageData();
+  ChatRoomModel chatRoomMap = ChatRoomModel();
   //Controllers
   late TabController _tabController;
   late VideoPlayerController _videoPlayerController;
@@ -116,6 +119,7 @@ class _AccountScreenState extends State<AccountScreen>
   late String lastName = '';
   late String emailAddress = '';
   late String phoneNumber;
+  late String avatarUrl;
   late DateTime dob;
   //Stream provider
   var userProvider;
@@ -129,6 +133,8 @@ class _AccountScreenState extends State<AccountScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    chatRoomMap = ChatRoomModel(userId: '', users: []);
+    _getCurrentUser();
   }
 
   @override
@@ -293,12 +299,13 @@ class _AccountScreenState extends State<AccountScreen>
               ),
               //bio section
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 height: size.height / 5,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       'Bio section here...',
                       style: TextStyle(
@@ -328,93 +335,122 @@ class _AccountScreenState extends State<AccountScreen>
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // //Follow button
-                  // Expanded(
-                  //   flex: 1,
-                  //   child: ElevatedButton(
-                  //     onPressed: () async {
-                  //       setState(() {
-                  //         _buttonPressed[0] = true;
-                  //         _buttonPressed[1] = false;
-                  //         _buttonPressed[2] = false;
-                  //       });
-                  //     },
-                  //     child: Text(
-                  //       "Follow",
-                  //       style: TextStyle(
-                  //         fontSize: 14,
-                  //         color: _buttonPressed[0] ? Colors.white : color_4,
-                  //       ),
-                  //     ),
-                  //     style: ElevatedButton.styleFrom(
-                  //       primary: _buttonPressed[0] ? color_4 : Colors.white,
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(25.0),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  //Subscribe button
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          setState(() {
-                            _buttonPressed[0] = false;
-                            _buttonPressed[1] = true;
-                            _buttonPressed[2] = false;
-                          });
-                          _subscribeToPlan(context);
-                        },
-                        child: Text("Subscribe",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Poppins",
-                              color: _buttonPressed[1] ? Colors.white : color_4,
-                            )),
-                        style: ElevatedButton.styleFrom(
-                          primary: _buttonPressed[1] ? color_4 : Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+              widget.myProfile == false
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        //Subscribe button
+                        Container(
+                          width: (size.width / 2) - 12,
+                          decoration: BoxDecoration(
+                              color: _buttonPressed[1] ? color_4 : Colors.white,
+                              border: Border.all(
+                                color: color_4,
+                              ),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: TextButton(
+                              onPressed: () async {
+                                setState(() {
+                                  _buttonPressed[0] = false;
+                                  _buttonPressed[1] = true;
+                                  _buttonPressed[2] = false;
+                                });
+                                _subscribeToPlan(context);
+                              },
+                              child: Text("Subscribe",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Poppins",
+                                    color: _buttonPressed[1]
+                                        ? Colors.white
+                                        : color_4,
+                                  )),
+                            ),
                           ),
                         ),
+                        //Message button
+                        Container(
+                          width: (size.width / 2) - 12,
+                          decoration: BoxDecoration(
+                              color: _buttonPressed[2] ? color_4 : Colors.white,
+                              border: Border.all(
+                                color: color_4,
+                              ),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: TextButton(
+                            onPressed: () async {
+                              setState(() {
+                                _buttonPressed[0] = false;
+                                _buttonPressed[1] = false;
+                                _buttonPressed[2] = true;
+                              });
+                              await _openMessageConversation();
+                            },
+                            child: Text(
+                              "Message",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Poppins",
+                                color:
+                                    _buttonPressed[2] ? Colors.white : color_4,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //Edit profile
+                          Container(
+                            width: size.width - 25,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: color_4,
+                                ),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: TextButton(
+                              onPressed: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (builder) => Register(
+                                      userModel: userProvider,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "Edit Profile",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Poppins",
+                                  color: _buttonPressed[2]
+                                      ? Colors.white
+                                      : color_4,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary:
+                                    _buttonPressed[2] ? color_4 : Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  //Message button
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _buttonPressed[0] = false;
-                          _buttonPressed[1] = false;
-                          _buttonPressed[2] = true;
-                        });
-                      },
-                      child: Text(
-                        "Message",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Poppins",
-                          color: _buttonPressed[2] ? Colors.white : color_4,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: _buttonPressed[2] ? color_4 : Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               //feeds and live streaming
               Container(
                 padding:
@@ -501,6 +537,47 @@ class _AccountScreenState extends State<AccountScreen>
               ),
             ),
           );
+  }
+
+  Future _openMessageConversation() async {
+    if (chatRoomMap.users!.isNotEmpty) {
+      chatRoomMap.users!.clear();
+    }
+
+    var chatRoomId = '${widget.userId}${widget.userModel?.userId}';
+
+    chatRoomMap.users!.add(widget.userId!);
+    chatRoomMap.users!.add(widget.userModel!.userId!);
+    //check if chatroom exists
+    var result = await db.getChatRoom(
+        chattingWith: widget.userModel!.userId!, userId: widget.userId);
+    print('the result of getting room: $result');
+    print('the current user: $currentUser');
+    if (result.isEmpty) {
+      await db.createChatRoom(
+          userOneId: widget.userModel!.userId,
+          // userNameOne: widget.userModel!.userName ?? '',
+          firstNameOne: currentUser.firstName,
+          lastNameOne: currentUser.lastName,
+          avatarUrlOne: currentUser.avatarUrl,
+          userTwoId: widget.userModel!.userId,
+          userNameTwo: widget.userModel!.userName ?? '',
+          firstNameTwo: widget.userModel!.firstName,
+          lastNameTwo: widget.userModel!.lastName,
+          avatarUrlTwo: widget.userModel!.avatarUrl,
+          chatRoomId: chatRoomId,
+          chatRoomMap: chatRoomMap);
+    }
+
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (builder) => ConversationScreen(
+          currentUser: currentUser,
+          chatRoomId: result.isEmpty ? chatRoomId : result,
+        ),
+      ),
+    );
   }
 
   Widget _allFeeds() {
@@ -773,6 +850,7 @@ class _AccountScreenState extends State<AccountScreen>
       firstName = currentUser.firstName!;
       lastName = currentUser.lastName!;
       emailAddress = currentUser.emailAddress!;
+      avatarUrl = currentUser.avatarUrl!;
     });
 
     return currentUser;

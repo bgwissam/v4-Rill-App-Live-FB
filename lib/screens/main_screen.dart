@@ -129,7 +129,6 @@ class _MainScreenState extends State<MainScreen>
     userProvider = Provider.of<UserModel>(context);
     _size = MediaQuery.of(context).size;
     _buildMainScreenWidget();
-
     return Container(
       height: _size.height,
       width: _size.width,
@@ -347,7 +346,11 @@ class _MainScreenState extends State<MainScreen>
         userId: widget.userId,
         userModel: userProvider,
       ),
-      AccountProvider(userId: widget.userId, myProfile: true),
+      AccountProvider(
+        userId: widget.userId,
+        myProfile: true,
+        userModel: userProvider,
+      ),
     ];
   }
 

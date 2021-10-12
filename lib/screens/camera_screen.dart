@@ -87,7 +87,6 @@ class _CameraScreenState extends State<CameraScreen> {
     );
 
     await previousCameraController?.dispose();
-
     if (mounted) {
       setState(() {
         _controller = cameraController;
@@ -169,43 +168,37 @@ class _CameraScreenState extends State<CameraScreen> {
                             if (selectedButton == 1)
                               GestureDetector(
                                 onTap: () async {
-                                  if (_controller!.value.isInitialized) {
-                                    setState(() {
-                                      _isRecordingVideo == !_isRecordingVideo;
-                                    });
+                                  if (mounted) {
+                                    setState(() {});
                                   }
-                                  if (_controller!.value.isRecordingVideo) {
-                                    setState(() {
-                                      _isRecordingVideo = true;
-                                    });
+                                  final CameraController? cameraController_2 =
+                                      _controller;
+
+                                  if (cameraController_2 == null ||
+                                      !cameraController_2.value.isInitialized) {
+                                    print('error select camera first');
                                   }
-                                  // //get storage path
-                                  // final Directory appDirectory =
-                                  //     await getApplicationDocumentsDirectory();
-                                  // final String videoDirectory =
-                                  //     '${appDirectory.path}/Videos';
-                                  // await Directory(videoDirectory)
-                                  //     .create(recursive: true);
-                                  // final String currentTime = DateTime.now()
-                                  //     .millisecondsSinceEpoch
-                                  //     .toString();
-                                  // final String filePath =
-                                  //     '$videoDirectory/${currentTime}.mp4';
+                                  if (cameraController_2!
+                                      .value.isRecordingVideo) {
+                                    return;
+                                  }
 
                                   try {
-                                    if (!_isRecordingVideo) {
-                                      await _controller!.startVideoRecording();
-                                    } else {
-                                      var result = await _controller!
-                                          .stopVideoRecording();
+                                    await cameraController_2
+                                        .startVideoRecording();
+                                    // if (!_isRecordingVideo) {
+                                    //   await _controller?.startVideoRecording();
+                                    // } else {
+                                    //   var result = await _controller!
+                                    //       .stopVideoRecording();
 
-                                      setState(() {
-                                        _previewVideo(result);
-                                      });
-                                    }
-                                  } on CameraException catch (e) {
+                                    //   setState(() {
+                                    //     _previewVideo(result);
+                                    //   });
+                                    // }
+                                  } on CameraException catch (e, stackTrace) {
                                     print(
-                                        'An exception with the camera occured: $e');
+                                        'An exception with the camera occured: $e - $stackTrace');
                                   }
                                 },
                                 child: Padding(
@@ -305,6 +298,7 @@ class _CameraScreenState extends State<CameraScreen> {
                           () {
                             setState(() {
                               selectedButton = 1;
+                              _vcontroller?.initialize();
                             });
                           },
                           selectedButton == 1 ? Colors.yellow : Colors.white,
