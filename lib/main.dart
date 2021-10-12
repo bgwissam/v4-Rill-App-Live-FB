@@ -61,7 +61,7 @@ void main() async {
       options.dsn =
           'https://59a95067f678454ab288e638cd9d9774@o994278.ingest.sentry.io/5952729';
     },
-    appRunner: () => runApp(MyApp()),
+    appRunner: () => runApp(const MyApp()),
   );
 }
 

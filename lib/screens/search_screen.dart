@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
+import 'package:rillliveapp/screens/account_screen.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
@@ -357,7 +358,18 @@ class _SearchScreenState extends State<SearchScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: InkWell(
                       onTap: () async {
-                        print('userProvider $index');
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) => Scaffold(
+                              body: AccountProvider(
+                                userId: userListProvider[index].userId,
+                                myProfile: false,
+                                userModel: userListProvider[index],
+                              ),
+                            ),
+                          ),
+                        );
                       },
                       child: Container(
                         height: 80,
@@ -420,7 +432,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                             userListProvider[index].avatarUrl);
                                     //Notify the person being followed of the user following
                                     try {
-                                      ms.token = widget.userModel?.fcmToken;
+                                      ms.token =
+                                          userListProvider[index]?.fcmToken;
                                       ms.senderId = widget.userModel?.userId;
                                       ms.senderName =
                                           '${widget.userModel?.firstName} ${widget.userModel?.lastName}';

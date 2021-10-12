@@ -280,7 +280,7 @@ class _MainScreenState extends State<MainScreen>
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         var notification = message.notification;
         var androidNotification = message.notification!.android;
-
+        print('Notification: $notification - Android: $androidNotification');
         if (notification != null && androidNotification != null) {
           flutterLocalNotificationsPlugin!.show(
             notification.hashCode,
@@ -347,7 +347,7 @@ class _MainScreenState extends State<MainScreen>
         userId: widget.userId,
         userModel: userProvider,
       ),
-      AccountProvider(userId: widget.userId),
+      AccountProvider(userId: widget.userId, myProfile: true),
     ];
   }
 

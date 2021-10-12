@@ -30,6 +30,7 @@ class MessaginService {
   }
 
   _sendFollowNotification() async {
+    print('sending notification for user followed');
     var msg = jsonEncode({
       'data': {
         // 'from': senderName,

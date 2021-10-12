@@ -19,8 +19,11 @@ import 'package:video_player/video_player.dart';
 import 'package:path/path.dart' as p;
 
 class AccountProvider extends StatelessWidget {
-  const AccountProvider({Key? key, this.userId}) : super(key: key);
+  const AccountProvider({Key? key, this.userId, this.myProfile, this.userModel})
+      : super(key: key);
   final String? userId;
+  final UserModel? userModel;
+  final bool? myProfile;
   @override
   Widget build(BuildContext context) {
     DatabaseService db = DatabaseService();
@@ -74,15 +77,19 @@ class AccountProvider extends StatelessWidget {
       ],
       child: AccountScreen(
         userId: userId,
+        myProfile: myProfile,
+        userModel: userModel,
       ),
     );
   }
 }
 
 class AccountScreen extends StatefulWidget {
-  const AccountScreen({Key? key, this.userId}) : super(key: key);
+  const AccountScreen({Key? key, this.userId, this.myProfile, this.userModel})
+      : super(key: key);
   final String? userId;
-
+  final bool? myProfile;
+  final UserModel? userModel;
   @override
   _AccountScreenState createState() => _AccountScreenState();
 }
@@ -126,12 +133,14 @@ class _AccountScreenState extends State<AccountScreen>
 
   @override
   Widget build(BuildContext context) {
-    userProvider = Provider.of<UserModel>(context);
+    userProvider =
+        widget.myProfile! ? Provider.of<UserModel>(context) : widget.userModel;
     feedProvider = Provider.of<List<ImageVideoModel?>>(context);
     //followersProvider = Provider.of<List<UserModel>>(context);
     following = Provider.of<List<UsersFollowing?>>(context);
     followers = Provider.of<List<UsersFollowed?>>(context);
     Size size = MediaQuery.of(context).size;
+
     return widget.userId != null
         ? SizedBox(
             height: size.height - 100,
