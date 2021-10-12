@@ -1039,7 +1039,7 @@ class _MainScreenState extends State<MainScreen>
               return Stack(alignment: Alignment.topCenter, children: [
                 AlertDialog(
                   content: Semantics(
-                    child: AspectRatioVideo(_controller),
+                    child: AspectRatioVideo(_controller, null),
                   ),
                   actions: [
                     TextButton(

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rillliveapp/main.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
@@ -168,23 +169,61 @@ class _CameraScreenState extends State<CameraScreen> {
                             if (selectedButton == 1)
                               GestureDetector(
                                 onTap: () async {
-                                  var result;
-                                  if (!_isRecordingVideo) {
-                                    await _controller?.startVideoRecording();
-                                    _isRecordingVideo = !_isRecordingVideo;
+                                  if (_controller!.value.isInitialized) {
+                                    setState(() {
+                                      _isRecordingVideo == !_isRecordingVideo;
+                                    });
+                                  }
+                                  if (_controller!.value.isRecordingVideo) {
+                                    setState(() {
+                                      _isRecordingVideo = true;
+                                    });
+                                  }
+                                  // //get storage path
+                                  // final Directory appDirectory =
+                                  //     await getApplicationDocumentsDirectory();
+                                  // final String videoDirectory =
+                                  //     '${appDirectory.path}/Videos';
+                                  // await Directory(videoDirectory)
+                                  //     .create(recursive: true);
+                                  // final String currentTime = DateTime.now()
+                                  //     .millisecondsSinceEpoch
+                                  //     .toString();
+                                  // final String filePath =
+                                  //     '$videoDirectory/${currentTime}.mp4';
+
+                                  try {
+                                    if (!_isRecordingVideo) {
+                                      await _controller!.startVideoRecording();
+                                    } else {
+                                      var result = await _controller!
+                                          .stopVideoRecording();
+
+                                      setState(() {
+                                        _previewVideo(result);
+                                      });
+                                    }
+                                  } on CameraException catch (e) {
+                                    print(
+                                        'An exception with the camera occured: $e');
                                   }
                                 },
-                                child: const Padding(
-                                  padding: EdgeInsets.only(bottom: 20),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 20),
                                   child: Align(
                                     alignment: Alignment.bottomCenter,
                                     child: CircleAvatar(
                                       radius: 30,
                                       backgroundColor: Colors.grey,
-                                      child: CircleAvatar(
-                                        radius: 25,
-                                        backgroundColor: Colors.red,
-                                      ),
+                                      child: !_isRecordingVideo
+                                          ? const CircleAvatar(
+                                              radius: 25,
+                                              backgroundColor: Colors.red,
+                                            )
+                                          : const CircleAvatar(
+                                              radius: 15,
+                                              backgroundColor: Colors.redAccent,
+                                            ),
                                     ),
                                   ),
                                 ),
@@ -356,7 +395,7 @@ class _CameraScreenState extends State<CameraScreen> {
               return Stack(alignment: Alignment.topCenter, children: [
                 AlertDialog(
                   content: Semantics(
-                    child: AspectRatioVideo(_vcontroller),
+                    child: AspectRatioVideo(null, _controller),
                   ),
                   actions: [
                     TextButton(
@@ -397,7 +436,7 @@ class _CameraScreenState extends State<CameraScreen> {
                     ),
                     TextButton(
                       onPressed: () async {
-                        await _vcontroller!.pause();
+                        await _controller!.pausePreview();
                         // await _controller!.dispose();
                         Navigator.pop(context);
                       },
