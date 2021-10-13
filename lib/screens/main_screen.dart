@@ -624,7 +624,8 @@ class _MainScreenState extends State<MainScreen>
                         MaterialPageRoute(
                             builder: (builder) =>
                                 CameraScreen(userId: widget.userId)),
-                      ) // showCameraModeNavigation()
+                      )
+                    //showBottomNavigationMenu()
                     : errorDialog('Guest Account',
                         'You need to login in order to use this feature');
               },
@@ -966,6 +967,7 @@ class _MainScreenState extends State<MainScreen>
                                           var result =
                                               await storageData.uploadImageFile(
                                                   fileType: 'videoCamera');
+
                                           await _playVideo(result);
 
                                           setState(() {

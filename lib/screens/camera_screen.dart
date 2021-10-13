@@ -23,6 +23,7 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   CameraController? _controller;
   VideoPlayerController? _vcontroller;
+  VideoPlayerController? _toBeDisposed;
   ResolutionPreset currentResolutionPreset = ResolutionPreset.high;
   double _minAvailableExposureOffset = 0.0;
   double _maxAvailableExposureOffset = 0.0;
@@ -171,8 +172,6 @@ class _CameraScreenState extends State<CameraScreen> {
                                   if (mounted) {
                                     setState(() {});
                                   }
-                                  final CameraController? cameraController_2 =
-                                      _controller;
 
                                   if (_controller == null ||
                                       !_controller!.value.isInitialized) {
@@ -194,13 +193,21 @@ class _CameraScreenState extends State<CameraScreen> {
                                       });
                                     } else {
                                       var result = await _controller!
-                                          .stopVideoRecording();
+                                          .stopVideoRecording()
+                                          .then((file) async {
+                                        print(
+                                            'video: ${file.path} - ${file.name} - ${file.length}');
+                                        if (mounted) {
+                                          setState(() {});
+                                        }
+
+                                        if (file != null) {
+                                          _previewVideo(file);
+                                        }
+                                      });
 
                                       setState(() {
                                         _isRecordingVideo = false;
-                                        print(
-                                            'is recordinging $_isRecordingVideo');
-                                        _previewVideo(result);
                                       });
                                     }
                                   } on CameraException catch (e, stackTrace) {
@@ -389,6 +396,8 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Widget _previewVideo(XFile? file) {
     if (file != null) {
+      VideoPlayerController vController =
+          VideoPlayerController.file(File(file.path));
       showDialog(
           context: context,
           builder: (builder) {
@@ -396,7 +405,7 @@ class _CameraScreenState extends State<CameraScreen> {
               return Stack(alignment: Alignment.topCenter, children: [
                 AlertDialog(
                   content: Semantics(
-                    child: AspectRatioVideo(null, _controller),
+                    child: AspectRatioVideo(vController, null),
                   ),
                   actions: [
                     TextButton(
@@ -438,7 +447,9 @@ class _CameraScreenState extends State<CameraScreen> {
                     TextButton(
                       onPressed: () async {
                         await _controller!.pausePreview();
+                        // await vController.dispose();
                         // await _controller!.dispose();
+                        Navigator.pop(context);
                         Navigator.pop(context);
                       },
                       child: Text('Cancel', style: textStyle_3),
@@ -461,5 +472,30 @@ class _CameraScreenState extends State<CameraScreen> {
     } else {
       return const Center(child: Text('No video was selected'));
     }
+  }
+
+  //Play picked video
+  Future<void> _playVideo(XFile? file) async {
+    if (file != null) {
+      await _disposeVideoController();
+      late VideoPlayerController controller;
+
+      controller = VideoPlayerController.file(File(file.path));
+
+      _vcontroller = controller;
+      await controller.setVolume(10);
+      await controller.initialize();
+      await controller.setLooping(false);
+      await controller.play();
+    }
+  }
+
+  Future<void> _disposeVideoController() async {
+    if (_toBeDisposed != null) {
+      await _toBeDisposed!.dispose();
+    }
+    _toBeDisposed = _vcontroller;
+    // _controller!.dispose();
+    //_controller = null;
   }
 }

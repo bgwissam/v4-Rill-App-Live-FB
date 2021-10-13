@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class AspectRatioVideo extends StatefulWidget {
-  AspectRatioVideo(this.controller, this.cameraController);
+  const AspectRatioVideo(this.controller, this.cameraController, {Key? key})
+      : super(key: key);
 
   final VideoPlayerController? controller;
   final CameraController? cameraController;
@@ -17,10 +18,29 @@ class AspectRatioVideoState extends State<AspectRatioVideo> {
   CameraController? get _cameraController => widget.cameraController;
   bool initialized = false;
 
+  @override
+  void initState() {
+    super.initState();
+    if (controller != null) {
+      controller?.addListener(_onVideoControllerUpdate);
+    } else {
+      _cameraController?.addListener(_onVideoControllerUpdate);
+    }
+  }
+
+  @override
+  void dispose() {
+    controller != null
+        ? controller!.removeListener(_onVideoControllerUpdate)
+        : _cameraController!.removeListener(_onVideoControllerUpdate);
+    super.dispose();
+  }
+
   void _onVideoControllerUpdate() {
     if (!mounted) {
       return;
     }
+    print('the controller: $controller');
     if (controller != null) {
       if (initialized != controller!.value.isInitialized) {
         initialized = controller!.value.isInitialized;
@@ -33,22 +53,6 @@ class AspectRatioVideoState extends State<AspectRatioVideo> {
         setState(() {});
       }
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    controller != null
-        ? controller!.addListener(_onVideoControllerUpdate)
-        : _cameraController!.addListener(_onVideoControllerUpdate);
-  }
-
-  @override
-  void dispose() {
-    controller != null
-        ? controller!.removeListener(_onVideoControllerUpdate)
-        : _cameraController!.removeListener(_onVideoControllerUpdate);
-    super.dispose();
   }
 
   @override
