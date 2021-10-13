@@ -576,7 +576,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
                 child: MaterialButton(
                   minWidth: 0,
                   onPressed: _toggleSendChannelMessage,
-                  child: Icon(Icons.send, color: color_12, size: 20),
+                  child: ImageIcon(AssetImage("assets/icons/send_rill.png"),
+                      color: color_12, size: 20),
                   shape: const CircleBorder(),
                   elevation: 2.0,
                   color: color_7,

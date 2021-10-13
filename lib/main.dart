@@ -106,7 +106,8 @@ class MyApp extends StatelessWidget {
           '/home': (BuildContext context) => const Wrapper(
                 guestUser: false,
               ),
-          '/notifications': (BuildContext context) => const NotificationScreen()
+          '/notifications': (BuildContext context) =>
+              const NotificationScreen(),
         },
       ),
     );

@@ -10,12 +10,15 @@ import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
+import 'package:rillliveapp/shared/message_service.dart';
 import 'package:rillliveapp/shared/parameters.dart';
 
 class ConversationScreen extends StatefulWidget {
   final String? chatRoomId;
   final UserModel? currentUser;
-  const ConversationScreen({Key? key, this.chatRoomId, this.currentUser})
+  final String? otherUser;
+  const ConversationScreen(
+      {Key? key, this.chatRoomId, this.currentUser, this.otherUser})
       : super(key: key);
 
   @override
@@ -26,13 +29,13 @@ class _ConversationScreenState extends State<ConversationScreen> {
   final TextEditingController _inputMessageController = TextEditingController();
   final FocusNode _focus = FocusNode();
   final ScrollController listScrollController = ScrollController();
+  MessaginService ms = MessaginService();
   DatabaseService db = DatabaseService();
   StorageData sd = StorageData();
   MessageMap messageMap = MessageMap();
   late Stream<QuerySnapshot> chatStream;
   var _size;
   late double _listSize;
-
   late File imagePicked;
   //int variables
   int _limit = 20;
@@ -41,6 +44,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
   //bool variable
   bool _isShowSticker = false;
   bool _isLoading = false;
+  //Models
+  UserModel? otherUser;
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
@@ -74,7 +79,13 @@ class _ConversationScreenState extends State<ConversationScreen> {
   void initState() {
     super.initState();
     _getMessageStream();
+    _getOtherUser();
     _focus.addListener(_onFocusChanged);
+  }
+
+  //Future to get user details we are chatting with
+  Future _getOtherUser() async {
+    otherUser = await db.getUserByUserId(userId: widget.otherUser);
   }
 
   _scrollListener() {
@@ -170,6 +181,18 @@ class _ConversationScreenState extends State<ConversationScreen> {
           chatRoomId: widget.chatRoomId, messageMap: messageMap);
 
       _inputMessageController.clear();
+
+      //Notify the other user of the message being sent
+      ms.token = otherUser?.fcmToken;
+      print('other user Token: ${ms.token}');
+      ms.senderId = widget.currentUser?.userId;
+      ms.senderName =
+          '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}';
+      ms.receiverId = otherUser?.userId;
+      ms.messageType = 'message';
+      ms.messageTitle = 'New Message';
+      ms.messageBody = messageString;
+      ms.sendPushMessage();
     }
   }
 
@@ -275,10 +298,11 @@ class _ConversationScreenState extends State<ConversationScreen> {
           //Send button
           Material(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 8),
+                margin: EdgeInsets.symmetric(horizontal: 2),
                 child: IconButton(
                   icon: IconButton(
-                      icon: Icon(Icons.send),
+                      icon: ImageIcon(AssetImage("assets/icons/send_rill.png"),
+                          color: color_12, size: 30),
                       onPressed: () {
                         _sendMessage(
                             messageString: _inputMessageController.text,

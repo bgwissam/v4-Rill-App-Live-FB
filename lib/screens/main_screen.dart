@@ -102,6 +102,7 @@ class _MainScreenState extends State<MainScreen>
 
   //Services
   FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  late String fcmToken;
   NotificationSettings? notSettings;
   @override
   void initState() {
@@ -109,6 +110,7 @@ class _MainScreenState extends State<MainScreen>
     _tabController = TabController(length: 2, vsync: this);
     controller = CameraController(cameras[0], ResolutionPreset.max);
     getSubscriptionFeed = _getSubscriptionChannels();
+    _getCurrentUser(userId: widget.currenUser?.userId);
     _getFcmToken();
   }
 
@@ -166,21 +168,21 @@ class _MainScreenState extends State<MainScreen>
                   onTap: () async {},
                   trailing: Icon(Icons.privacy_tip, color: Color(0xffdf1266)),
                 ),
-                ListTile(
-                  title: Text('Settings',
-                      style: Theme.of(context).textTheme.headline6),
-                  trailing: Icon(Icons.security, color: Color(0xffdf1266)),
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (builder) => Register(
-                          userModel: userProvider,
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                // ListTile(
+                //   title: Text('Settings',
+                //       style: Theme.of(context).textTheme.headline6),
+                //   trailing: Icon(Icons.security, color: Color(0xffdf1266)),
+                //   onTap: () async {
+                //     await Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (builder) => Register(
+                //           userModel: userProvider,
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // ),
                 ListTile(
                   title: Text('Security',
                       style: Theme.of(context).textTheme.headline6),
@@ -271,7 +273,7 @@ class _MainScreenState extends State<MainScreen>
     if (notSettings!.authorizationStatus == AuthorizationStatus.authorized ||
         Platform.isAndroid) {
       await _fcm.getToken().then((token) {
-        print('FCM token: $token');
+        fcmToken = token.toString();
         return token;
       });
 
@@ -427,7 +429,7 @@ class _MainScreenState extends State<MainScreen>
                               onTap: () async {
                                 var userType =
                                     await _joiningStreamAlertDialog(context);
-                                print('the selected user type is: $userType');
+
                                 await Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -575,7 +577,27 @@ class _MainScreenState extends State<MainScreen>
 
   //Get streamer details
   Future<UserModel> getStreamerDetails({String? userId}) async {
-    return db.getUserByUserId(userId: userId);
+    var result = await db.getUserByUserId(userId: userId);
+
+    return result;
+  }
+
+  //Get current user
+  Future<UserModel> _getCurrentUser({String? userId}) async {
+    var result = await db.getUserByUserId(userId: userId);
+    print('the fcm token: ${result.fcmToken}');
+    if (result.fcmToken != null) {
+      if (result.fcmToken != fcmToken) {
+        await db.userModelCollection
+            .doc(userId)
+            .update({UserParams.FCM_TOKEN: fcmToken});
+      }
+    } else {
+      await db.userModelCollection
+          .doc(userId)
+          .update({UserParams.FCM_TOKEN: fcmToken});
+    }
+    return result;
   }
 
   //Pull refresh

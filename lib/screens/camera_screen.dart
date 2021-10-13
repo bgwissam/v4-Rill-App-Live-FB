@@ -174,28 +174,35 @@ class _CameraScreenState extends State<CameraScreen> {
                                   final CameraController? cameraController_2 =
                                       _controller;
 
-                                  if (cameraController_2 == null ||
-                                      !cameraController_2.value.isInitialized) {
+                                  if (_controller == null ||
+                                      !_controller!.value.isInitialized) {
                                     print('error select camera first');
                                   }
-                                  if (cameraController_2!
-                                      .value.isRecordingVideo) {
-                                    return;
+
+                                  if (_controller!.value.isRecordingVideo) {
+                                    setState(() {
+                                      _isRecordingVideo = true;
+                                    });
                                   }
-
                                   try {
-                                    await cameraController_2
-                                        .startVideoRecording();
-                                    // if (!_isRecordingVideo) {
-                                    //   await _controller?.startVideoRecording();
-                                    // } else {
-                                    //   var result = await _controller!
-                                    //       .stopVideoRecording();
+                                    if (!_isRecordingVideo) {
+                                      await _controller!.startVideoRecording();
+                                      setState(() {
+                                        _isRecordingVideo = true;
+                                        print(
+                                            'is recordinging $_isRecordingVideo');
+                                      });
+                                    } else {
+                                      var result = await _controller!
+                                          .stopVideoRecording();
 
-                                    //   setState(() {
-                                    //     _previewVideo(result);
-                                    //   });
-                                    // }
+                                      setState(() {
+                                        _isRecordingVideo = false;
+                                        print(
+                                            'is recordinging $_isRecordingVideo');
+                                        _previewVideo(result);
+                                      });
+                                    }
                                   } on CameraException catch (e, stackTrace) {
                                     print(
                                         'An exception with the camera occured: $e - $stackTrace');

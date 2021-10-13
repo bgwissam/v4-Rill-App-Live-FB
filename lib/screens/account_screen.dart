@@ -489,10 +489,7 @@ class _AccountScreenState extends State<AccountScreen>
                     Expanded(
                       flex: 1,
                       child: IconButton(
-                          icon: Icon(
-                            Icons.settings,
-                            color: color_10,
-                          ),
+                          icon: Image.asset('assets/icons/settings_rill.png'),
                           onPressed: () {
                             Scaffold.of(context).openEndDrawer();
                           }),
@@ -573,6 +570,7 @@ class _AccountScreenState extends State<AccountScreen>
       context,
       MaterialPageRoute(
         builder: (builder) => ConversationScreen(
+          otherUser: widget.userModel?.userId,
           currentUser: currentUser,
           chatRoomId: result.isEmpty ? chatRoomId : result,
         ),

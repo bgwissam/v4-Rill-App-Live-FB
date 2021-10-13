@@ -20,6 +20,9 @@ class MessaginService {
         case 'follow':
           _sendFollowNotification();
           break;
+        case 'message':
+          _sendMessageNotification();
+          break;
         default:
           print('unable to process notification');
           break;
@@ -30,7 +33,6 @@ class MessaginService {
   }
 
   _sendFollowNotification() async {
-    print('sending notification for user followed');
     var msg = jsonEncode({
       'data': {
         // 'from': senderName,
@@ -44,6 +46,37 @@ class MessaginService {
         'title': messageTitle,
         'body': '$senderName $messageBody',
         'click_action': '/notifications'
+      },
+    });
+    var response = await http.post(
+      Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      headers: {
+        'content-type': 'application/json',
+        'Authorization':
+            'key=AAAAHU02sbg:APA91bE-eLuEktG3pkC3KzvObDc7pGgtPKMwRPXkxjcdrFbQFEEJUSMZSp7aDHYLrGPtHwv-vhkxyEG_YKj3IsrdL12m7PB7sgo1BwAiNoyLwlTz848ilsULqpkex-sEY0gKWEmBXAh3'
+      },
+      encoding: Encoding.getByName('utf-8'),
+      body: msg,
+    );
+    print('FCM send status: ${response.statusCode}');
+    return response.statusCode.toString();
+  }
+
+  _sendMessageNotification() async {
+    print('a message is being sent: $senderName - $messageBody');
+    var msg = jsonEncode({
+      'data': {
+        // 'from': senderName,
+        'title': messageTitle,
+        'body': '$senderName $messageBody',
+        'click_action': 'FLUTTER_NOTIFICATION_CLICK'
+      },
+      'to': token,
+      'notification': {
+        // 'from': senderName,
+        'title': messageTitle,
+        'body': '$senderName $messageBody',
+        'click_action': '/message_screen'
       },
     });
     var response = await http.post(

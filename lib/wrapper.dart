@@ -47,8 +47,6 @@ class _WrapperState extends State<Wrapper> {
   _addFcmToken() async {
     if (currentUser?.userId != null && currentUser?.fcmToken != null) {
       if (currentUser?.fcmToken != token) {
-        print(
-            'the fcm token should be added: ${currentUser?.userId}\n - $token }');
         await db.userModelCollection
             .doc(currentUser?.userId)
             .update({UserParams.FCM_TOKEN: token});

@@ -131,6 +131,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (builder) => ConversationScreen(
+                                  otherUser: snapshot.data?.docs[index]
+                                      [ChatRoomParameters.chattingWith],
                                   currentUser: widget.userModel,
                                   chatRoomId: snapshot.data?.docs[index].id),
                             ),
