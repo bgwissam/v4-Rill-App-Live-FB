@@ -142,90 +142,104 @@ class _MainScreenState extends State<MainScreen>
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           bottomNavigationBar: _bottomNavigationWidget(),
-          endDrawer: Drawer(
-            child: ListView(
-              children: [
-                UserAccountsDrawerHeader(
-                  decoration: const BoxDecoration(
-                    color: Color(0xffdf1266),
+          endDrawer: SizedBox(
+            width: 2 * _size.width / 3,
+            child: Drawer(
+              child: ListView(
+                children: [
+                  SizedBox(
+                    height: 120,
+                    child: ListTile(
+                      title: Text('Settings', style: heading_1),
+                    ),
                   ),
-                  accountName: Text(
-                      '${userProvider.firstName} ${userProvider.lastName}',
-                      style: textStyle_12),
-                  accountEmail:
-                      Text('${userProvider.emailAddress}', style: textStyle_12),
-                ),
-                ListTile(
-                  title: Text('Analytics',
-                      style: Theme.of(context).textTheme.headline6),
-                  onTap: () async {},
-                  trailing:
-                      const Icon(Icons.analytics, color: Color(0xffdf1266)),
-                ),
-                ListTile(
-                  title: Text('Privacy',
-                      style: Theme.of(context).textTheme.headline6),
-                  onTap: () async {},
-                  trailing: Icon(Icons.privacy_tip, color: Color(0xffdf1266)),
-                ),
-                // ListTile(
-                //   title: Text('Settings',
-                //       style: Theme.of(context).textTheme.headline6),
-                //   trailing: Icon(Icons.security, color: Color(0xffdf1266)),
-                //   onTap: () async {
-                //     await Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //         builder: (builder) => Register(
-                //           userModel: userProvider,
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // ),
-                ListTile(
-                  title: Text('Security',
-                      style: Theme.of(context).textTheme.headline6),
-                  trailing: Icon(Icons.security, color: Color(0xffdf1266)),
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (builder) => SecurityPage(
-                          userModel: userProvider,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  title: Text('Payment',
-                      style: Theme.of(context).textTheme.headline6),
-                  onTap: () async {},
-                  trailing: Icon(Icons.payment, color: Color(0xffdf1266)),
-                ),
-                ListTile(
-                  title:
-                      Text('Ads', style: Theme.of(context).textTheme.headline6),
-                  onTap: () async {},
-                  trailing: Icon(Icons.ad_units, color: Color(0xffdf1266)),
-                ),
-                const Divider(),
-                ListTile(
-                  title: Text('Sign Out',
-                      style: Theme.of(context).textTheme.headline6),
-                  trailing: Icon(Icons.logout, color: Color(0xffdf1266)),
-                  onTap: () async {
-                    await as.signOut();
-                    await Navigator.pushAndRemoveUntil(
+                  ListTile(
+                    title: Text('Settings',
+                        style: Theme.of(context).textTheme.headline6),
+                    leading: ImageIcon(
+                      AssetImage('assets/icons/settings_rill.png'),
+                      color: color_4,
+                    ),
+                    onTap: () async {
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (builder) => const Wrapper(),
+                          builder: (builder) => Register(
+                            userModel: userProvider,
+                          ),
                         ),
-                        (route) => false);
-                  },
-                ),
-              ],
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Text('Analytics',
+                        style: Theme.of(context).textTheme.headline6),
+                    onTap: () async {},
+                    leading: ImageIcon(
+                      AssetImage("assets/icons/Graphs_Rill_Icon.png"),
+                      color: color_4,
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Privacy',
+                        style: Theme.of(context).textTheme.headline6),
+                    onTap: () async {},
+                    leading: ImageIcon(
+                        AssetImage('assets/icons/Lock_Rill_Icon.png'),
+                        color: color_4),
+                  ),
+                  ListTile(
+                    title: Text('Security',
+                        style: Theme.of(context).textTheme.headline6),
+                    leading: ImageIcon(
+                      AssetImage("assets/icons/Notice_Rill_Icon.png"),
+                      color: color_4,
+                    ),
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (builder) => SecurityPage(
+                            userModel: userProvider,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Text('Payment',
+                        style: Theme.of(context).textTheme.headline6),
+                    onTap: () async {},
+                    leading: ImageIcon(
+                      AssetImage("assets/icons/Square_Money_Rill.png"),
+                      color: color_4,
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Ads',
+                        style: Theme.of(context).textTheme.headline6),
+                    onTap: () async {},
+                    leading: ImageIcon(
+                        AssetImage('assets/icons/Grid_Rill_Icon.png'),
+                        color: color_4),
+                  ),
+                  const Divider(),
+                  ListTile(
+                    title: Text('Sign Out',
+                        style: Theme.of(context).textTheme.headline6),
+                    leading: Icon(Icons.logout, color: color_4),
+                    onTap: () async {
+                      await as.signOut();
+                      await Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) => const Wrapper(),
+                          ),
+                          (route) => false);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           body: ListView(
@@ -615,7 +629,7 @@ class _MainScreenState extends State<MainScreen>
             painter: BottomNavigatorPainter(),
           ),
           Center(
-            heightFactor: 0.6,
+            heightFactor: 0.5,
             child: FloatingActionButton(
               onPressed: () {
                 widget.userId != null
@@ -629,9 +643,17 @@ class _MainScreenState extends State<MainScreen>
                     : errorDialog('Guest Account',
                         'You need to login in order to use this feature');
               },
-              backgroundColor: Colors.orange,
-              child: const Icon(Icons.video_call),
-              elevation: 0.1,
+              backgroundColor: color_3,
+              child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = 1;
+                  });
+                },
+                icon: Image.asset(
+                    'assets/icons/Rill_Small_Transparent_Grad@2x.png'),
+              ),
+              elevation: 0.2,
             ),
           ),
           SizedBox(
@@ -646,7 +668,7 @@ class _MainScreenState extends State<MainScreen>
                         _selectedIndex = 0;
                       });
                     },
-                    icon: const Icon(Icons.home),
+                    icon: Image.asset('assets/icons/Home_Light_Rill.png'),
                   ),
                   IconButton(
                     onPressed: () {
@@ -654,7 +676,7 @@ class _MainScreenState extends State<MainScreen>
                         _selectedIndex = 1;
                       });
                     },
-                    icon: Image.asset('assets/icons/search_rill.png'),
+                    icon: Image.asset('assets/icons/Search_rill_icon.png'),
                   ),
                   SizedBox(
                     width: _size.width * 0.2,
@@ -665,7 +687,7 @@ class _MainScreenState extends State<MainScreen>
                         _selectedIndex = 2;
                       });
                     },
-                    icon: const Icon(Icons.message),
+                    icon: Image.asset('assets/icons/Messages_Rill_light.png'),
                   ),
                   IconButton(
                     onPressed: () {
@@ -680,7 +702,8 @@ class _MainScreenState extends State<MainScreen>
                       //   ),
                       // );
                     },
-                    icon: const Icon(Icons.person),
+                    icon:
+                        Image.asset('assets/icons/Person_Rill_Icon_light.png'),
                   ),
                 ],
               ))

@@ -81,6 +81,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
     _getMessageStream();
     _getOtherUser();
     _focus.addListener(_onFocusChanged);
+    //listScrollController.addListener(_scrollListener());
   }
 
   //Future to get user details we are chatting with
@@ -158,6 +159,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 return ListView.builder(
                   padding: const EdgeInsets.all(10),
                   itemCount: snapshot.data?.docs.length,
+                  reverse: false,
                   itemBuilder: (context, index) =>
                       _buildItem(index, snapshot.data?.docs[index]),
                   controller: listScrollController,
@@ -301,8 +303,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 margin: EdgeInsets.symmetric(horizontal: 2),
                 child: IconButton(
                   icon: IconButton(
-                      icon: ImageIcon(AssetImage("assets/icons/send_rill.png"),
-                          color: color_12, size: 30),
+                      icon: ImageIcon(
+                        AssetImage("assets/icons/send_rill.png"),
+                      ),
                       onPressed: () {
                         _sendMessage(
                             messageString: _inputMessageController.text,

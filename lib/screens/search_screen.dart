@@ -178,7 +178,10 @@ class _SearchScreenState extends State<SearchScreen> {
           child: TextFormField(
             focusNode: _focus,
             decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.search),
+              prefixIcon: ImageIcon(
+                AssetImage("assets/icons/search_rill.png"),
+                //  color: Color(0xffdf1266),
+              ),
               border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(25.0)),
               ),
@@ -280,8 +283,8 @@ class _SearchScreenState extends State<SearchScreen> {
                             }),
                       ),
                       Center(
-                        child: Icon(
-                          Icons.play_arrow_sharp,
+                        child: ImageIcon(
+                          AssetImage("assets/icons/Play_Dark_rill.png"),
                           size: 50,
                           color: color_4,
                         ),
