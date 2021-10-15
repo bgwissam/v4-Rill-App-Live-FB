@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +8,13 @@ import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
+import 'package:rillliveapp/shared/full_page_file.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/message_service.dart';
 import 'package:rillliveapp/shared/parameters.dart';
+import 'package:rillliveapp/shared/video_viewer.dart';
+import 'package:video_compress/video_compress.dart';
+import 'package:video_player/video_player.dart';
 
 class ConversationScreen extends StatefulWidget {
   final String? chatRoomId;
@@ -28,7 +31,7 @@ class ConversationScreen extends StatefulWidget {
 class _ConversationScreenState extends State<ConversationScreen> {
   final TextEditingController _inputMessageController = TextEditingController();
   final FocusNode _focus = FocusNode();
-  final ScrollController listScrollController = ScrollController();
+  ScrollController listScrollController = ScrollController();
   MessaginService ms = MessaginService();
   DatabaseService db = DatabaseService();
   StorageData sd = StorageData();
@@ -81,7 +84,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
     _getMessageStream();
     _getOtherUser();
     _focus.addListener(_onFocusChanged);
-    //listScrollController.addListener(_scrollListener());
+    listScrollController.addListener(_scrollListener);
   }
 
   //Future to get user details we are chatting with
@@ -100,7 +103,6 @@ class _ConversationScreenState extends State<ConversationScreen> {
   }
 
   //Check for text field focus changes
-  @override
   void _onFocusChanged() {
     if (_focus.hasFocus) {
       setState(() {
@@ -130,7 +132,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
     chatStream = db.messagesCollection
         .doc(widget.chatRoomId)
         .collection('chats')
-        .orderBy(ConversationRoomParam.time, descending: false)
+        .orderBy(ConversationRoomParam.time, descending: true)
         .snapshots();
   }
 
@@ -159,7 +161,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 return ListView.builder(
                   padding: const EdgeInsets.all(10),
                   itemCount: snapshot.data?.docs.length,
-                  reverse: false,
+                  reverse: true,
                   itemBuilder: (context, index) =>
                       _buildItem(index, snapshot.data?.docs[index]),
                   controller: listScrollController,
@@ -174,7 +176,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   }
 
   _sendMessage({String? messageString, String? messageType}) async {
-    if (messageString!.isNotEmpty) {
+    if (messageString!.trim().isNotEmpty) {
       messageMap.message = messageString;
       messageMap.type = messageType;
       messageMap.senderId = widget.currentUser?.userId;
@@ -183,7 +185,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
           chatRoomId: widget.chatRoomId, messageMap: messageMap);
 
       _inputMessageController.clear();
-
+      //Move the message position
+      listScrollController.animateTo(0,
+          duration: Duration(milliseconds: 300), curve: Curves.easeOut);
       //Notify the other user of the message being sent
       ms.token = otherUser?.fcmToken;
       print('other user Token: ${ms.token}');
@@ -205,6 +209,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
         Column(
           children: [
             chatMessageList(),
+            //builder sticker
+            _isShowSticker ? buildSticker() : SizedBox.shrink(),
             //Build a container for text input
             _buildInput(),
           ],
@@ -225,6 +231,62 @@ class _ConversationScreenState extends State<ConversationScreen> {
     }
   }
 
+  //show upload options
+  _showUploadOptions() {
+    showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            content: SizedBox(
+              height: _size.height / 6,
+              width: _size.width / 3,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      await getVideo();
+                    },
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 60),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: color_4),
+                      ),
+                      child: Text(
+                        'Video',
+                        style: textStyle_1,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      await getImage();
+                    },
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 60),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: color_4),
+                      ),
+                      child: Text(
+                        'Image',
+                        style: textStyle_1,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   Future getImage() async {
     ImagePicker imagePicker = ImagePicker();
     XFile? pickedFile;
@@ -237,19 +299,61 @@ class _ConversationScreenState extends State<ConversationScreen> {
       setState(() {
         _isLoading = true;
       });
-      uploadFile(pickedFile);
+
+      uploadFile(imageFile: pickedFile);
+      Navigator.pop(context);
     }
   }
 
-  Future uploadFile(XFile? imageFile) async {
-    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    var result = await sd.uploadFile(xfile: imageFile, folderName: 'chatImage');
-    if (result['imageUrl'] != null) {
-      _sendMessage(messageType: 'image', messageString: result['imageUrl']);
+  Future getVideo() async {
+    ImagePicker videPicker = ImagePicker();
+    XFile? pickedFile;
+    MediaInfo? mInfo;
+    pickedFile = await videPicker.pickVideo(source: ImageSource.gallery);
 
-      setState(() {
-        _isLoading = false;
-      });
+    if (pickedFile != null) {
+      imagePicked = File(pickedFile.path);
+      await VideoCompress.setLogLevel(0);
+      mInfo = await VideoCompress.compressVideo(File(pickedFile.path).path,
+          quality: VideoQuality.LowQuality,
+          deleteOrigin: true,
+          includeAudio: true);
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+    uploadFile(mfile: mInfo);
+    Navigator.pop(context);
+  }
+
+  Future uploadFile({XFile? imageFile, MediaInfo? mfile}) async {
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+
+    if (imageFile != null) {
+      var result =
+          await sd.uploadFile(xfile: imageFile, folderName: 'chatImage');
+
+      if (result['imageUrl'] != null) {
+        _sendMessage(messageType: 'image', messageString: result['imageUrl']);
+
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+    if (mfile != null) {
+      String fileUrl = '';
+      String thumbnailUrl = '';
+      var result = await sd.uploadFile(mfile: mfile, folderName: 'chatVideo');
+
+      if (result['videoUrl'] != null) {
+        _sendMessage(messageType: 'video', messageString: result['videoUrl']);
+
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -265,7 +369,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                   icon: Icon(Icons.image),
                   onPressed: () async {
                     //build image picker
-                    await getImage();
+                    _showUploadOptions();
                   },
                   color: color_7),
             ),
@@ -275,7 +379,11 @@ class _ConversationScreenState extends State<ConversationScreen> {
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 1),
               child: IconButton(
-                  icon: Icon(Icons.face), onPressed: () {}, color: color_7),
+                  icon: Icon(Icons.face),
+                  onPressed: () {
+                    getSticker();
+                  },
+                  color: color_7),
             ),
             color: Colors.white,
           ),
@@ -303,7 +411,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 margin: EdgeInsets.symmetric(horizontal: 2),
                 child: IconButton(
                   icon: IconButton(
-                      icon: ImageIcon(
+                      icon: const ImageIcon(
                         AssetImage("assets/icons/send_rill.png"),
                       ),
                       onPressed: () {
@@ -326,9 +434,51 @@ class _ConversationScreenState extends State<ConversationScreen> {
     );
   }
 
+  Widget buildSticker() {
+    return Expanded(
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                TextButton(
+                  onPressed: () => _sendMessage(
+                      messageString: 'mime1', messageType: 'sticker'),
+                  child: Image.asset(
+                    'assets/stickers/mime1.gif',
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => _sendMessage(
+                      messageString: 'mime2', messageType: 'sticker'),
+                  child: Image.asset(
+                    'assets/stickers/mime2.gif',
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            ),
+          ],
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        ),
+        decoration: BoxDecoration(
+            border: Border(top: BorderSide(color: color_10, width: 0.5)),
+            color: Colors.white),
+        padding: EdgeInsets.all(5),
+        height: 180,
+      ),
+    );
+  }
+
   //build loading screen
   _buildLoading() {
-    return Positioned(
+    return Center(
       child: _isLoading
           ? const LoadingAmination(
               animationType: 'ThreeInOut',
@@ -358,10 +508,10 @@ class MessageTile extends StatelessWidget {
         padding: EdgeInsets.only(
             left: sentBy == currentUser ? 0 : 15,
             right: sentBy == currentUser ? 15 : 0),
-        child: _buildRow(message, type));
+        child: _buildRow(context, message, type));
   }
 
-  _buildRow(var message, String? type) {
+  _buildRow(BuildContext context, var message, String? type) {
     switch (type) {
       case 'text':
         return Container(
@@ -382,49 +532,60 @@ class MessageTile extends StatelessWidget {
             ));
       case 'image':
         return Material(
-          child: Image.network(
-            message.toString(),
-            loadingBuilder: (BuildContext context, Widget child,
-                ImageChunkEvent? loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Container(
-                decoration: BoxDecoration(
-                  color: color_10,
+          child: GestureDetector(
+            onTap: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (builder) =>
+                      FullPageFile(isImage: true, file: message),
+                ),
+              );
+            },
+            child: Image.network(
+              message.toString(),
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Container(
+                  decoration: BoxDecoration(
+                    color: color_10,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                  ),
+                  width: 200,
+                  height: 200,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: color_7,
+                      value: loadingProgress.expectedTotalBytes != null &&
+                              loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  ),
+                );
+              },
+              errorBuilder: (context, object, stackTrace) {
+                return Material(
+                  child: Image.asset(
+                    'images/img_not_available.jpeg',
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
                   borderRadius: const BorderRadius.all(
                     Radius.circular(8),
                   ),
-                ),
-                width: 200,
-                height: 200,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: color_7,
-                    value: loadingProgress.expectedTotalBytes != null &&
-                            loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                        : null,
-                  ),
-                ),
-              );
-            },
-            errorBuilder: (context, object, stackTrace) {
-              return Material(
-                child: Image.asset(
-                  'images/img_not_available.jpeg',
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(8),
-                ),
-                clipBehavior: Clip.hardEdge,
-              );
-            },
-            width: 200,
-            height: 200,
-            fit: BoxFit.cover,
+                  clipBehavior: Clip.hardEdge,
+                );
+              },
+              width: 200,
+              height: 200,
+              fit: BoxFit.cover,
+            ),
           ),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
@@ -432,11 +593,67 @@ class MessageTile extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
         );
       case 'video':
-        break;
+        VideoPlayerController _videoController =
+            VideoPlayerController.network(message);
+        return Material(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(8),
+          ),
+          clipBehavior: Clip.hardEdge,
+          child: SizedBox(
+            width: 200,
+            height: 200,
+            child: FutureBuilder(
+                future: _initizalizeVideoPlayer(_videoController),
+                builder: (context, AsyncSnapshot snapshot) {
+                  print('the video snapshot: ${snapshot.data}');
+                  if (snapshot.hasData) {
+                    return GestureDetector(
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) =>
+                                FullPageFile(isImage: false, file: message),
+                          ),
+                        );
+                      },
+                      child: AspectRatio(
+                        aspectRatio: _videoController.value.aspectRatio,
+                        child: VideoPlayer(
+                          snapshot.data,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                }),
+          ),
+        );
       case 'sticker':
-        break;
+        return Material(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(8),
+          ),
+          clipBehavior: Clip.hardEdge,
+          child: Image.asset(
+            'assets/stickers/$message.gif',
+            width: 200,
+            height: 200,
+          ),
+        );
+
       default:
         return const Text('Error: check admin');
     }
+  }
+
+  //Initialize video player
+  Future _initizalizeVideoPlayer(VideoPlayerController _controller) async {
+    await _controller.initialize();
+    return _controller;
   }
 }

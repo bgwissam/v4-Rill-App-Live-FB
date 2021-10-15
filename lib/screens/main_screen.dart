@@ -629,31 +629,36 @@ class _MainScreenState extends State<MainScreen>
             painter: BottomNavigatorPainter(),
           ),
           Center(
-            heightFactor: 0.5,
-            child: FloatingActionButton(
-              onPressed: () {
-                widget.userId != null
-                    ? Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (builder) =>
-                                CameraScreen(userId: widget.userId)),
-                      )
-                    //showBottomNavigationMenu()
-                    : errorDialog('Guest Account',
-                        'You need to login in order to use this feature');
-              },
-              backgroundColor: color_3,
-              child: IconButton(
+            heightFactor: 0.4,
+            child: SizedBox(
+              height: 150,
+              width: 150,
+              child: FloatingActionButton(
                 onPressed: () {
-                  setState(() {
-                    _selectedIndex = 1;
-                  });
+                  widget.userId != null
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (builder) =>
+                                  CameraScreen(userId: widget.userId)),
+                        )
+                      //showBottomNavigationMenu()
+                      : errorDialog('Guest Account',
+                          'You need to login in order to use this feature');
                 },
-                icon: Image.asset(
-                    'assets/icons/Rill_Small_Transparent_Grad@2x.png'),
+                backgroundColor: color_3,
+                child: IconButton(
+                  iconSize: 48,
+                  onPressed: () {
+                    setState(() {
+                      _selectedIndex = 1;
+                    });
+                  },
+                  icon: Image.asset(
+                      'assets/icons/Rill_Small_Transparent_W@2x.png'),
+                ),
+                elevation: 0.5,
               ),
-              elevation: 0.2,
             ),
           ),
           SizedBox(
@@ -694,13 +699,6 @@ class _MainScreenState extends State<MainScreen>
                       setState(() {
                         _selectedIndex = 3;
                       });
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (builder) =>
-                      //         AccountScreen(userId: widget.userId),
-                      //   ),
-                      // );
                     },
                     icon:
                         Image.asset('assets/icons/Person_Rill_Icon_light.png'),

@@ -166,9 +166,11 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   }
 
   Widget _videoPlayerBetter() {
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: BetterPlayer.network(widget.videoPlayerUrl!),
+    return BetterPlayer.network(
+      widget.videoPlayerUrl!,
+      betterPlayerConfiguration: BetterPlayerConfiguration(
+        aspectRatio: 9 / 16,
+      ),
     );
   }
 
