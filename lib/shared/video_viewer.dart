@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
@@ -64,18 +65,20 @@ class VideoPlayerPage extends StatefulWidget {
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
   late ChewieController chewieController;
   DatabaseService db = DatabaseService();
-
+  late ScrollController _scrollController;
   late Future _initializeController;
   var commentProvider;
   var getUser;
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     getUser = _detailsForImageOwner(uid: widget.videoOwnerId);
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -99,24 +102,25 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                     '${snapshot.data.firstName} ${snapshot.data.lastName}'),
                 backgroundColor: color_4,
               ),
-              body: SingleChildScrollView(
-                physics: ScrollPhysics(),
-                child: Column(
-                  children: [
-                    //Video player widget
-                    _videoPlayerBetter(),
-                    //Like, and share
-                    _likeShareView(),
-                    //Comements widget
-                    CommentsView(
-                        imageComments: commentProvider, fileId: widget.fileId)
-                  ],
-                ),
+              body: ListView(
+                controller: _scrollController,
+                children: [
+                  //Video player widget
+                  _videoPlayerBetter(),
+                  //Like, and share
+                  _likeShareView(),
+                  //Comements widget
+                  CommentsView(
+                      imageComments: commentProvider, fileId: widget.fileId)
+                ],
               ),
-              bottomNavigationBar: CommentAdd(
-                  userModel: widget.userModel,
-                  fileId: widget.fileId,
-                  collection: 'comments'),
+              bottomNavigationBar: ScrollToHideWidget(
+                controller: _scrollController,
+                child: CommentAdd(
+                    userModel: widget.userModel,
+                    fileId: widget.fileId,
+                    collection: 'comments'),
+              ),
             );
           } else if (snapshot.hasError) {
             return Center(
@@ -166,10 +170,14 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   }
 
   Widget _videoPlayerBetter() {
-    return BetterPlayer.network(
-      widget.videoPlayerUrl!,
-      betterPlayerConfiguration: BetterPlayerConfiguration(
-        aspectRatio: 9 / 16,
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: BetterPlayer.network(
+        widget.videoPlayerUrl!,
+        betterPlayerConfiguration: const BetterPlayerConfiguration(
+          autoPlay: true,
+          aspectRatio: 9 / 16,
+        ),
       ),
     );
   }
@@ -177,5 +185,65 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   //get the details for the image owner
   Future<UserModel> _detailsForImageOwner({String? uid}) async {
     return db.getSelectedUserById(uid: uid);
+  }
+}
+
+class ScrollToHideWidget extends StatefulWidget {
+  const ScrollToHideWidget(
+      {Key? key,
+      this.child,
+      this.controller,
+      this.duration = const Duration(milliseconds: 300)})
+      : super(key: key);
+  final Widget? child;
+  final ScrollController? controller;
+  final Duration? duration;
+  @override
+  _ScrollToHideWidgetState createState() => _ScrollToHideWidgetState();
+}
+
+class _ScrollToHideWidgetState extends State<ScrollToHideWidget> {
+  bool _isVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller?.addListener(listen);
+  }
+
+  void listen() {
+    final direction = widget.controller?.position.userScrollDirection;
+    if (direction == ScrollDirection.forward) {
+      hide();
+    } else {
+      show();
+    }
+  }
+
+  void show() {
+    setState(() {
+      _isVisible = true;
+    });
+  }
+
+  void hide() {
+    setState(() {
+      _isVisible = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.controller?.removeListener(listen);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: widget.duration!,
+      height: _isVisible ? 90 : 0,
+      child: Wrap(children: [widget.child!]),
+    );
   }
 }

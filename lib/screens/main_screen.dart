@@ -631,8 +631,8 @@ class _MainScreenState extends State<MainScreen>
           Center(
             heightFactor: 0.4,
             child: SizedBox(
-              height: 150,
-              width: 150,
+              height: 100,
+              width: 100,
               child: FloatingActionButton(
                 onPressed: () {
                   widget.userId != null
@@ -649,10 +649,17 @@ class _MainScreenState extends State<MainScreen>
                 backgroundColor: color_3,
                 child: IconButton(
                   iconSize: 48,
-                  onPressed: () {
-                    setState(() {
-                      _selectedIndex = 1;
-                    });
+                  onPressed: () async {
+                    widget.userId != null
+                        ? await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (builder) =>
+                                    CameraScreen(userId: widget.userId)),
+                          )
+                        //showBottomNavigationMenu()
+                        : errorDialog('Guest Account',
+                            'You need to login in order to use this feature');
                   },
                   icon: Image.asset(
                       'assets/icons/Rill_Small_Transparent_W@2x.png'),
