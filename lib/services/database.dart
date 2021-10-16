@@ -44,6 +44,7 @@ class DatabaseService {
     try {
       return await userModelCollection.doc(userId).set({
         UserParams.USER_ID: userId,
+        UserParams.USER_NAME: userName,
         UserParams.EMAIL_ADDRESS: emailAddress,
         UserParams.FIRST_NAME: firstName,
         UserParams.LAST_NAME: lastName,

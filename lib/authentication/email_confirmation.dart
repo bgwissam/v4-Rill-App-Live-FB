@@ -22,6 +22,7 @@ class _EmailConfirmationState extends State<EmailConfirmation> {
   @override
   void initState() {
     super.initState();
+    as.signOut();
   }
 
   @override

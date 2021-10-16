@@ -105,6 +105,7 @@ class AuthService {
           email: emailAddress!.trim(), password: password!.trim());
 
       var user = result.user;
+      print('the user: $user');
       if (user != null) {
         await db
             .createUser(
@@ -131,14 +132,14 @@ class AuthService {
           return user.uid;
         } catch (e, stackTrace) {
           await Sentry.captureException(e, stackTrace: stackTrace);
-          print('Could not send verification: $e');
-          rethrow;
+
+          return e.toString();
         }
       }
       return '';
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
-      rethrow;
+      return e.toString();
     }
   }
 

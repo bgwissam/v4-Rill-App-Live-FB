@@ -40,6 +40,7 @@ dependencies:
   provider:
   video_compress: ^3.1.0
   better_player: ^0.0.73
+  email_validator: ^2.0.1
 
   firebase_core: any
   firebase_auth: any

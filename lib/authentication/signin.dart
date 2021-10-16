@@ -169,14 +169,14 @@ class _SignInSignUpState extends State<SignInSignUp> {
                                                       EmailConfirmation()),
                                               (route) => false);
                                         } else {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (builder) => Wrapper(
-                                                guestUser: false,
+                                          Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (builder) => Wrapper(
+                                                  guestUser: false,
+                                                ),
                                               ),
-                                            ),
-                                          );
+                                              (route) => false);
                                         }
                                       } else {
                                         setState(() {

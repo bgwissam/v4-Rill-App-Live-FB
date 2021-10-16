@@ -23,6 +23,7 @@ import 'package:rillliveapp/screens/camera_screen.dart';
 import 'package:rillliveapp/screens/message_screen.dart';
 import 'package:rillliveapp/screens/notification_screen.dart';
 import 'package:rillliveapp/screens/search_screen.dart';
+import 'package:rillliveapp/services/auth.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/aspect_ration_video.dart';
@@ -87,6 +88,7 @@ class _MainScreenState extends State<MainScreen>
   StorageData storageData = StorageData();
   Parameters params = Parameters();
   DatabaseService db = DatabaseService();
+  AuthService as = AuthService();
   late List<ImageVideoModel?> imageVideoProvider;
   late UserModel userProvider;
   late bool _isLoadingStream = false;
@@ -98,7 +100,7 @@ class _MainScreenState extends State<MainScreen>
         lensDirection: CameraLensDirection.front,
         sensorOrientation: 1)
   ];
-  get as => null;
+  //get as => null;
 
   //Services
   FirebaseMessaging _fcm = FirebaseMessaging.instance;
@@ -138,124 +140,129 @@ class _MainScreenState extends State<MainScreen>
         image: DecorationImage(
             image: AssetImage('assets/images/bg1.png'), fit: BoxFit.cover),
       ),
-      child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.transparent,
-          bottomNavigationBar: _bottomNavigationWidget(),
-          endDrawer: SizedBox(
-            width: 2 * _size.width / 3,
-            child: Drawer(
-              child: ListView(
-                children: [
-                  SizedBox(
-                    height: 120,
-                    child: ListTile(
-                      title: Text('Settings', style: heading_1),
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Colors.transparent,
+            bottomNavigationBar: _bottomNavigationWidget(),
+            endDrawer: SizedBox(
+              width: 2 * _size.width / 3,
+              child: Drawer(
+                child: ListView(
+                  children: [
+                    SizedBox(
+                      height: 120,
+                      child: ListTile(
+                        title: Text('Settings', style: heading_1),
+                      ),
                     ),
-                  ),
-                  ListTile(
-                    title: Text('Settings',
-                        style: Theme.of(context).textTheme.headline6),
-                    leading: ImageIcon(
-                      AssetImage('assets/icons/settings_rill.png'),
-                      color: color_4,
-                    ),
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (builder) => Register(
-                            userModel: userProvider,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  ListTile(
-                    title: Text('Analytics',
-                        style: Theme.of(context).textTheme.headline6),
-                    onTap: () async {},
-                    leading: ImageIcon(
-                      AssetImage("assets/icons/Graphs_Rill_Icon.png"),
-                      color: color_4,
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('Privacy',
-                        style: Theme.of(context).textTheme.headline6),
-                    onTap: () async {},
-                    leading: ImageIcon(
-                        AssetImage('assets/icons/Lock_Rill_Icon.png'),
-                        color: color_4),
-                  ),
-                  ListTile(
-                    title: Text('Security',
-                        style: Theme.of(context).textTheme.headline6),
-                    leading: ImageIcon(
-                      AssetImage("assets/icons/Notice_Rill_Icon.png"),
-                      color: color_4,
-                    ),
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (builder) => SecurityPage(
-                            userModel: userProvider,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  ListTile(
-                    title: Text('Payment',
-                        style: Theme.of(context).textTheme.headline6),
-                    onTap: () async {},
-                    leading: ImageIcon(
-                      AssetImage("assets/icons/Square_Money_Rill.png"),
-                      color: color_4,
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('Ads',
-                        style: Theme.of(context).textTheme.headline6),
-                    onTap: () async {},
-                    leading: ImageIcon(
-                        AssetImage('assets/icons/Grid_Rill_Icon.png'),
-                        color: color_4),
-                  ),
-                  const Divider(),
-                  ListTile(
-                    title: Text('Sign Out',
-                        style: Theme.of(context).textTheme.headline6),
-                    leading: Icon(Icons.logout, color: color_4),
-                    onTap: () async {
-                      await as.signOut();
-                      await Navigator.pushAndRemoveUntil(
+                    ListTile(
+                      title: Text('Settings',
+                          style: Theme.of(context).textTheme.headline6),
+                      leading: ImageIcon(
+                        AssetImage('assets/icons/settings_rill.png'),
+                        color: color_4,
+                      ),
+                      onTap: () async {
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (builder) => const Wrapper(),
+                            builder: (builder) => Register(
+                              userModel: userProvider,
+                            ),
                           ),
-                          (route) => false);
-                    },
-                  ),
-                ],
+                        );
+                      },
+                    ),
+                    ListTile(
+                      title: Text('Analytics',
+                          style: Theme.of(context).textTheme.headline6),
+                      onTap: () async {},
+                      leading: ImageIcon(
+                        AssetImage("assets/icons/Graphs_Rill_Icon.png"),
+                        color: color_4,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('Privacy',
+                          style: Theme.of(context).textTheme.headline6),
+                      onTap: () async {},
+                      leading: ImageIcon(
+                          AssetImage('assets/icons/Lock_Rill_Icon.png'),
+                          color: color_4),
+                    ),
+                    ListTile(
+                      title: Text('Security',
+                          style: Theme.of(context).textTheme.headline6),
+                      leading: ImageIcon(
+                        AssetImage("assets/icons/Notice_Rill_Icon.png"),
+                        color: color_4,
+                      ),
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) => SecurityPage(
+                              userModel: userProvider,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      title: Text('Payment',
+                          style: Theme.of(context).textTheme.headline6),
+                      onTap: () async {},
+                      leading: ImageIcon(
+                        AssetImage("assets/icons/Square_Money_Rill.png"),
+                        color: color_4,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('Ads',
+                          style: Theme.of(context).textTheme.headline6),
+                      onTap: () async {},
+                      leading: ImageIcon(
+                          AssetImage('assets/icons/Grid_Rill_Icon.png'),
+                          color: color_4),
+                    ),
+                    const Divider(),
+                    ListTile(
+                      title: Text('Sign Out',
+                          style: Theme.of(context).textTheme.headline6),
+                      leading: Icon(Icons.logout, color: color_4),
+                      onTap: () async {
+                        await as.signOut();
+                        await Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (builder) => const Wrapper(
+                                guestUser: false,
+                              ),
+                            ),
+                            (route) => false);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          body: ListView(
-            children: [
-              Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: _bodyWidget[_selectedIndex]),
-              _isLoadingStream
-                  ? const SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: LoadingView(),
-                    )
-                  : const SizedBox.shrink(),
-            ],
-          )),
+            body: ListView(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: _bodyWidget[_selectedIndex]),
+                _isLoadingStream
+                    ? const SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: LoadingView(),
+                      )
+                    : const SizedBox.shrink(),
+              ],
+            )),
+      ),
     );
   }
 

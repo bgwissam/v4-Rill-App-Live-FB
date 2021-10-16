@@ -96,7 +96,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _onFocusChanged() {
     setState(() {
-      _searchSelected = !_searchSelected;
+      _searchSelected = true;
     });
   }
 
@@ -354,6 +354,7 @@ class _SearchScreenState extends State<SearchScreen> {
         width: _size.width,
         height: _size.height - 275,
         child: ListView.builder(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           itemCount: userListProvider.length,
           itemBuilder: (context, index) {
             return userListProvider[index].userId != widget.userId

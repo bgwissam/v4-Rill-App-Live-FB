@@ -178,7 +178,7 @@ class _AccountScreenState extends State<AccountScreen>
                         ),
                   Container(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
                     height: size.width / 3,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -186,115 +186,156 @@ class _AccountScreenState extends State<AccountScreen>
                       children: [
                         Expanded(
                           flex: 1,
-                          child: Text(
-                            'UserName',
-                            style: Theme.of(context).textTheme.headline1,
-                          ),
+                          child: userProvider.userName != null
+                              ? Text(
+                                  userProvider.userName,
+                                  style: Theme.of(context).textTheme.headline1,
+                                )
+                              : Text('Invalid User', style: textStyle_8),
                         ),
-                        // userProvider.firstName != null
-                        //     ? Expanded(
-                        //         child: Text('${userProvider.userName!}',
-                        //             style: textStyle_3),
-                        //       )
-                        //     : Text('Unknown User', style: textStyle_3),
-                        userProvider.firstName != null
-                            ? Expanded(
-                                child: Text(
-                                    '${userProvider.firstName!} ${userProvider.lastName!}',
-                                    style: textStyle_8),
-                              )
-                            : Text('Unknown User', style: textStyle_8),
                         Expanded(
+                          flex: 1,
+                          child: userProvider.firstName != null
+                              ? Text(
+                                  '${userProvider.firstName!} ${userProvider.lastName!}',
+                                  style: textStyle_8)
+                              : Text('Unknown User', style: textStyle_8),
+                        ),
+                        Expanded(
+                          flex: 2,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Column(children: [
-                                Container(
-                                  width: size.width / 4,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: color_9),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (builder) {
-                                            return Followers(
-                                              followers: true,
-                                              userModel: userProvider,
-                                              userFollowed: [],
-                                              usersFollowing: following,
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      following != null && following.length > 0
-                                          ? '${following.length}'
-                                          : '00',
-                                      style:
-                                          Theme.of(context).textTheme.headline6,
-                                      textAlign: TextAlign.center,
+                              //Column follower for this current user
+                              Padding(
+                                padding: const EdgeInsets.only(right: 4),
+                                child: Column(children: [
+                                  Container(
+                                    width: size.width / 6,
+                                    height: 30,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: color_9),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (builder) {
+                                              return Followers(
+                                                followers: true,
+                                                userModel: userProvider,
+                                                userFollowed: [],
+                                                usersFollowing: following,
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        following != null &&
+                                                following.length > 0
+                                            ? '${following.length}'
+                                            : '00',
+                                        style: heading_3,
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  child: Text('Followers',
-                                      style:
-                                          Theme.of(context).textTheme.headline6,
-                                      textAlign: TextAlign.center),
-                                )
-                              ]),
-                              SizedBox(
-                                width: 4,
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: SizedBox(
+                                      child: Text('Followers',
+                                          style: heading_2,
+                                          textAlign: TextAlign.center),
+                                    ),
+                                  )
+                                ]),
                               ),
-                              Column(children: [
-                                Container(
-                                  width: size.width / 4,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: color_9),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (builder) {
-                                            return Followers(
-                                              followers: false,
-                                              userModel: userProvider,
-                                              userFollowed: followers,
-                                              usersFollowing: [],
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      followers != null && followers.length > 0
-                                          ? '${followers.length}'
-                                          : '00',
-                                      style:
-                                          Theme.of(context).textTheme.headline6,
-                                      textAlign: TextAlign.center,
+                              //Column for users being followed by this user
+                              Padding(
+                                padding: const EdgeInsets.only(right: 4),
+                                child: Column(children: [
+                                  Container(
+                                    width: size.width / 6,
+                                    height: 30,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: color_9),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (builder) {
+                                              return Followers(
+                                                followers: false,
+                                                userModel: userProvider,
+                                                userFollowed: followers,
+                                                usersFollowing: [],
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        followers != null &&
+                                                followers.length > 0
+                                            ? '${followers.length}'
+                                            : '00',
+                                        style: heading_3,
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  child: Text('Following',
-                                      style:
-                                          Theme.of(context).textTheme.headline6,
-                                      textAlign: TextAlign.center),
-                                )
-                              ])
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: SizedBox(
+                                      child: Text('Following',
+                                          style: heading_2,
+                                          textAlign: TextAlign.center),
+                                    ),
+                                  )
+                                ]),
+                              ),
+                              //Column for coins sections
+                              Padding(
+                                padding: const EdgeInsets.only(right: 4),
+                                child: Column(children: [
+                                  Container(
+                                    width: size.width / 6,
+                                    height: 30,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: color_9),
+                                    child: InkWell(
+                                      onTap: () async {},
+                                      child: Text(
+                                        '100',
+                                        style: heading_3,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: SizedBox(
+                                      child: Text('Coins balance',
+                                          style: heading_2,
+                                          textAlign: TextAlign.center),
+                                    ),
+                                  )
+                                ]),
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ]),
               ),
               //bio section
@@ -489,7 +530,8 @@ class _AccountScreenState extends State<AccountScreen>
                     Expanded(
                       flex: 1,
                       child: IconButton(
-                          icon: Image.asset('assets/icons/settings_rill.png'),
+                          icon: Image.asset('assets/icons/settings_rill.png',
+                              color: color_4),
                           onPressed: () {
                             Scaffold.of(context).openEndDrawer();
                           }),

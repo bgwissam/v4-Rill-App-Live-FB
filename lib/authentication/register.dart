@@ -11,6 +11,7 @@ import 'package:path/path.dart' as Path;
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
+import 'package:email_validator/email_validator.dart';
 
 enum ImageSourceType { gallery, camera }
 
@@ -164,6 +165,7 @@ class RegisterState extends State<Register> {
                 });
                 //in case it's a new user
                 if (widget.userModel == null) {
+                  print('the current user image: $image');
                   if (image != null) {
                     storageReferece = FirebaseStorage.instance;
                     Reference ref = storageReferece
@@ -190,17 +192,28 @@ class RegisterState extends State<Register> {
                       address: address);
                   print('the result of registering is: $result');
                   if (result.isNotEmpty) {
+                    if (result.contains(' ')) {
+                      if (result.contains('email address is already in use')) {
+                        setState(() {
+                          _isSavingUpdating = false;
+                          errorMessage = 'Email address already exists';
+                        });
+                      } else {
+                        setState(() {
+                          _isSavingUpdating = false;
+
+                          errorMessage = result.split(']')[1];
+                        });
+                      }
+                      return;
+                    }
                     //Navigatore to verification page in order to enter OTP
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (builder) => EmailConfirmation(),
+                        builder: (builder) => const EmailConfirmation(),
                       ),
                     );
-                  } else {
-                    setState(() {
-                      errorMessage = 'Email address already exists';
-                    });
                   }
                 }
                 //In case you are updating the user
@@ -317,12 +330,19 @@ class RegisterState extends State<Register> {
                                         decoration: const InputDecoration(
                                             hintText: 'User Name',
                                             filled: false),
-                                        validator: (val) => val != null
-                                            ? null
-                                            : 'User name is required',
+                                        validator: (val) {
+                                          if (val != null) {
+                                            if (val.length > 6) {
+                                              return null;
+                                            } else {
+                                              return 'user name should more than 6 letters';
+                                            }
+                                          }
+                                          return 'user name is required';
+                                        },
                                         onChanged: (val) {
                                           setState(() {
-                                            username = val;
+                                            username = val.trim();
                                           });
                                         },
                                       )
@@ -349,12 +369,19 @@ class RegisterState extends State<Register> {
                                             },
                                           ),
                                         ),
-                                        validator: (val) => val != null
-                                            ? null
-                                            : 'Password is required',
+                                        validator: (val) {
+                                          if (val != null) {
+                                            if (val.length > 6) {
+                                              return null;
+                                            } else {
+                                              return 'password should be more than 6 letters';
+                                            }
+                                          }
+                                          return 'password is required';
+                                        },
                                         onChanged: (val) {
                                           setState(() {
-                                            password = val;
+                                            password = val.trim();
                                           });
                                         },
                                       )
@@ -366,12 +393,19 @@ class RegisterState extends State<Register> {
                                         decoration: const InputDecoration(
                                             hintText: 'Email Address',
                                             filled: false),
-                                        validator: (val) => val != null
-                                            ? null
-                                            : 'Email address is required',
+                                        validator: (val) {
+                                          if (val != null) {
+                                            if (EmailValidator.validate(val)) {
+                                              return null;
+                                            } else {
+                                              return 'email is not valid';
+                                            }
+                                          }
+                                          return 'EmailAddress is required';
+                                        },
                                         onChanged: (val) {
                                           setState(() {
-                                            emailAddress = val;
+                                            emailAddress = val.trim();
                                           });
                                         },
                                       )
@@ -402,7 +436,7 @@ class RegisterState extends State<Register> {
                                       : 'First Name is required',
                                   onChanged: (val) {
                                     setState(() {
-                                      firstname = val;
+                                      firstname = val.trim();
                                     });
                                   },
                                 ),
@@ -434,7 +468,7 @@ class RegisterState extends State<Register> {
                                       : 'Address is required',
                                   onChanged: (val) {
                                     setState(() {
-                                      address = val;
+                                      address = val.trim();
                                     });
                                   },
                                 ),
@@ -486,9 +520,13 @@ class RegisterState extends State<Register> {
                                 ),
 
                                 errorMessage.isNotEmpty
-                                    ? Expanded(
-                                        child: Text(errorMessage,
-                                            style: errorText),
+                                    ? Center(
+                                        child: SizedBox(
+                                          height: 100.0,
+                                          width: _size.width - 10,
+                                          child: Text(errorMessage,
+                                              style: errorText),
+                                        ),
                                       )
                                     : const SizedBox.shrink(),
                               ],

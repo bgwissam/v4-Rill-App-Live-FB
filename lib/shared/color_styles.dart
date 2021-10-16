@@ -115,8 +115,20 @@ var heading_1 = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 28);
 
+var heading_2 = TextStyle(
+    color: Colors.black,
+    fontFamily: 'Montserrat-B',
+    fontWeight: FontWeight.bold,
+    fontSize: 9);
+
+var heading_3 = TextStyle(
+    color: color_4,
+    fontFamily: 'Montserrat-B',
+    fontWeight: FontWeight.bold,
+    fontSize: 18);
+
 var errorText = TextStyle(
-    color: color_12,
+    color: color_3,
     fontFamily: 'Montserrat-B',
     fontWeight: FontWeight.bold,
     fontSize: 20);
