@@ -591,11 +591,11 @@ class _AccountScreenState extends State<AccountScreen>
     var result = await db.getChatRoom(
         chattingWith: widget.userModel!.userId!, userId: widget.userId);
     print('the result of getting room: $result');
-    print('the current user: $currentUser');
+
     if (result.isEmpty) {
       await db.createChatRoom(
-          userOneId: widget.userModel!.userId,
-          // userNameOne: widget.userModel!.userName ?? '',
+          userOneId: currentUser.userId,
+          userNameOne: currentUser.userName ?? '',
           firstNameOne: currentUser.firstName,
           lastNameOne: currentUser.lastName,
           avatarUrlOne: currentUser.avatarUrl,

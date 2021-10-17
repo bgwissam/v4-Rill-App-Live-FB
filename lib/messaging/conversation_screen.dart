@@ -89,6 +89,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   //Future to get user details we are chatting with
   Future _getOtherUser() async {
+    print('other user id: ${widget.otherUser} - ${widget.currentUser?.userId}');
     otherUser = await db.getUserByUserId(userId: widget.otherUser);
   }
 
@@ -189,6 +190,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       listScrollController.animateTo(0,
           duration: Duration(milliseconds: 300), curve: Curves.easeOut);
       //Notify the other user of the message being sent
+      print('other user token: ${otherUser?.fcmToken}');
       ms.token = otherUser?.fcmToken;
       print('other user Token: ${ms.token}');
       ms.senderId = widget.currentUser?.userId;

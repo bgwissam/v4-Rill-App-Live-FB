@@ -15,6 +15,7 @@ import 'package:rillliveapp/screens/notification_screen.dart';
 import 'package:rillliveapp/services/auth.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
+import 'package:rillliveapp/shared/error_screen.dart';
 import 'package:rillliveapp/wrapper.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'models/user_model.dart';
@@ -32,11 +33,15 @@ List<CameraDescription> cameras = [];
 AndroidNotificationChannel? channel;
 //Initialize flutter notification channel
 FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
-
+String errorMessage = '';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+
+  await Firebase.initializeApp().catchError((error) {
+    errorMessage = error.toString();
+  });
   cameras = await availableCameras();
+
   //Set the background message handler
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   if (Platform.isAndroid || Platform.isIOS) {
@@ -101,7 +106,7 @@ class MyApp extends StatelessWidget {
                 color: Color(0xffdf1266)),
           ),
         ),
-        home: MySplashScreen(),
+        home: errorMessage != null ? MySplashScreen() : ErrorScreen(),
         routes: <String, WidgetBuilder>{
           '/home': (BuildContext context) => const Wrapper(
                 guestUser: false,
