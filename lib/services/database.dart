@@ -681,6 +681,23 @@ class DatabaseService {
         ConversationRoomParam.message: messageMap.message,
         ConversationRoomParam.type: messageMap.type,
         ConversationRoomParam.time: messageMap.time,
+        ChatRoomParameters.read: false,
+      });
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+    }
+  }
+
+  //update conversation
+  Future<void> updateConversationRead(
+      {String? docId, String? chatRoomId, bool? read}) async {
+    try {
+      await messagesCollection
+          .doc(chatRoomId)
+          .collection('chats')
+          .doc(docId)
+          .update({
+        ChatRoomParameters.read: read,
       });
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);

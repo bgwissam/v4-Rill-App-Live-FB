@@ -1,10 +1,10 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
-INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
-INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
-INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
-MERGED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
+INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
+INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
+INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
+MERGED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
 MERGED from [:file_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-17:12
 MERGED from [:image_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-19:12
 MERGED from [:camera] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/camera/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-10:12
@@ -34,6 +34,9 @@ MERGED from [com.otaliastudios:transcoder:0.9.1] /Users/wissamboughannam/.gradle
 MERGED from [com.otaliastudios.opengl:egloo:0.4.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7387e2ca0602fe958ef2b48f6c1e1b68/jetified-egloo-0.4.0/AndroidManifest.xml:2:1-12:12
 MERGED from [com.github.agorabuilder:rtm-sdk:1.4.7] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/693d36ce5dc168c6e1052251cac043a4/jetified-rtm-sdk-1.4.7/AndroidManifest.xml:2:1-11:12
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:17:1-58:12
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:2:1-32:12
+MERGED from [androidx.multidex:multidex:2.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/44712e0a962db0d083f3408fe6e4f85b/multidex-2.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.squareup.picasso:picasso:2.71828] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9e56827201df934ed2481f436217cc56/jetified-picasso-2.71828/AndroidManifest.xml:2:1-14:12
 MERGED from [androidx.exifinterface:exifinterface:1.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6cbe1b875e8051e34086dedfa62610e6/exifinterface-1.3.0/AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4ab29d5d04ea42bc4f90dcab64efeada/jetified-exoplayer-hls-2.14.2/AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/22b5fefbd1d10dca23910ee234763c17/jetified-exoplayer-dash-2.14.2/AndroidManifest.xml:17:1-24:12
@@ -59,16 +62,19 @@ MERGED from [com.google.android.gms:play-services-safetynet:17.0.0] /Users/wissa
 MERGED from [com.google.firebase:firebase-database-collection:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/723e6c14115d1350061a20d466c69bdf/jetified-firebase-database-collection-18.0.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.firebase:firebase-appcheck-interop:16.0.0-beta01] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7c12576841c5bd2939e33bfb3f828bab/jetified-firebase-appcheck-interop-16.0.0-beta01/AndroidManifest.xml:15:1-26:12
 MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/90a5b4cb2fd9ac819652dcd9e531b5b9/jetified-play-services-base-17.1.0/AndroidManifest.xml:17:1-29:12
+MERGED from [androidx.appcompat:appcompat:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/68cbf05ef64f840c0c537cebd9ec9095/appcompat-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/8a17714d0371823a74e9f8ffae63022d/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:2:1-10:12
+MERGED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:2:1-23:12
 MERGED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcf94273fc7775d4f9b3c8a25ca6df28/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:15:1-34:12
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:2:1-24:12
+MERGED from [com.google.firebase:firebase-abt:21.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f942f2e18e008ad15fa3737c0e352ebb/jetified-firebase-abt-21.0.0/AndroidManifest.xml:2:1-19:12
 MERGED from [com.google.firebase:firebase-common:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4303f81154cde13901efa2a4e1548246/jetified-firebase-common-20.0.0/AndroidManifest.xml:15:1-40:12
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:2:1-13:12
 MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d68d3b4a010f7ced000cc63fa2a9778a/jetified-firebase-iid-interop-17.1.0/AndroidManifest.xml:2:1-10:12
 MERGED from [com.google.firebase:firebase-installations-interop:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/69824633d3bd278a8002fa43c62c2791/jetified-firebase-installations-interop-17.0.0/AndroidManifest.xml:15:1-23:12
-MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88059be9ebcb88774940ba5bdd2cc036/jetified-play-services-tasks-17.0.0/AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-tasks:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9f8ba635917516b4a8d519ab3d22b47c/jetified-play-services-tasks-17.1.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6c730579034a17512b25dfcbdcf08f6e/jetified-firebase-measurement-connector-19.0.0/AndroidManifest.xml:17:1-25:12
-MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:17:1-28:12
+MERGED from [com.google.android.gms:play-services-basement:17.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/98bf82924a5ff931cbd2d50653de7c33/jetified-play-services-basement-17.3.0/AndroidManifest.xml:17:1-28:12
 MERGED from [androidx.fragment:fragment:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a0489aae6ca691b5067ca0d0b2e7fa2f/fragment-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.activity:activity:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/19e393f4a078a3efe449ac529f3ce068/jetified-activity-1.0.0/AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.android.exoplayer:extension-mediasession:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/71261792e718dbf597d827c89faaef29/jetified-extension-mediasession-2.14.2/AndroidManifest.xml:17:1-24:12
@@ -82,6 +88,9 @@ MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/wissambo
 MERGED from [androidx.customview:customview:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/64ff70dd1e01eaad0f5c5eb173dedf14/customview-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/0edfcc1f7a9a0d5d24ab936151684294/swiperefreshlayout-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88ca545a367f3801d2642602fb6c9dc4/asynclayoutinflater-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/350deb4cd05d5df15ff3e34d7329b852/jetified-appcompat-resources-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/50e6ba1ea4e16d9a4a966ba06b6f0ca6/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b5ebeba83bce45ada16b528388ea12fa/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.core:core:1.3.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/649e0c0efc915ed729b494f3417970c7/core-1.3.2/AndroidManifest.xml:17:1-26:12
 MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6afdc73a770cb262193a944db55e76a5/jetified-lifecycle-process-2.2.0/AndroidManifest.xml:17:1-32:12
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/965ba026b5f55ad4676d92bf1d9b71ff/lifecycle-runtime-2.2.0/AndroidManifest.xml:17:1-24:12
@@ -96,6 +105,7 @@ MERGED from [androidx.sqlite:sqlite:2.1.0] /Users/wissamboughannam/.gradle/cache
 MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/77ba7eea6c797d43e471ae4e2bfbd7c7/core-runtime-2.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16e2a6158b1a242faa89e1f77ae6d807/versionedparcelable-1.1.0/AndroidManifest.xml:17:1-27:12
 MERGED from [com.google.firebase:firebase-components:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7929dff8581cf5142e456918f8a8cb54/jetified-firebase-components-17.0.0/AndroidManifest.xml:15:1-23:12
+MERGED from [androidx.cardview:cardview:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4f912c795344ebd1c2b3d77a6f1ed47a/cardview-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:15:1-38:12
 MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/09411377c961036dd60a36e40ebd7c4e/jetified-transport-runtime-3.0.0/AndroidManifest.xml:15:1-41:12
 MERGED from [com.google.android.datatransport:transport-api:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/26314e09324df5d69d589db1a8e6d149/jetified-transport-api-3.0.0/AndroidManifest.xml:15:1-22:12
@@ -108,7 +118,9 @@ MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /Users/wissambou
 MERGED from [io.grpc:grpc-android:1.28.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1c5aaf1a342a82fe816777bb66d09ad9/jetified-grpc-android-1.28.0/AndroidManifest.xml:2:1-13:12
 MERGED from [com.jakewharton.threetenabp:threetenabp:1.2.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/aa08ac1a19ee43db2e2eed35aaf82d9d/jetified-threetenabp-1.2.3/AndroidManifest.xml:2:1-9:12
 MERGED from [com.github.agorabuilder:native-full-sdk:3.4.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/525c2745eadf113038db61e4e41c12cf/jetified-native-full-sdk-3.4.5/AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/36ff59c5ff196cd8b589304834de5b38/constraintlayout-1.1.3/AndroidManifest.xml:2:1-11:12
 MERGED from [com.google.firebase:protolite-well-known-types:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d29c5efb4a3bfa33b7c9aa98f739b1d4/jetified-protolite-well-known-types-18.0.0/AndroidManifest.xml:2:1-11:12
+MERGED from [io.reactivex.rxjava2:rxandroid:2.0.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/fec13ec0aaeb48d1cc64fd3a165e23d5/jetified-rxandroid-2.0.2/AndroidManifest.xml:15:1-21:12
 INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml:1:1-7:12
@@ -118,11 +130,11 @@ INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebas
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml
 	android:versionName
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml
 	android:versionCode
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml
 	xmlns:android
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:11-69
@@ -136,6 +148,8 @@ MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Ril
 MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-67
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-67
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-67
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:12:5-67
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:12:5-67
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:23:5-67
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:23:5-67
 MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/766e0d3dbbbca8e482443243126fabd3/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:9:5-67
@@ -144,6 +158,8 @@ MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughan
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:14:5-67
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:27:5-67
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:27:5-67
+MERGED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:11:5-67
+MERGED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:11:5-67
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:11:5-67
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:11:5-67
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:8:5-67
@@ -179,7 +195,7 @@ ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/r
 	android:name
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:7:22-76
 application
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:8:4-41:19
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:8:4-44:19
 MERGED from [:image_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-17:19
 MERGED from [:image_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-17:19
 MERGED from [:cloud_firestore] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
@@ -202,6 +218,10 @@ MERGED from [com.otaliastudios.opengl:egloo:0.4.0] /Users/wissamboughannam/.grad
 MERGED from [com.otaliastudios.opengl:egloo:0.4.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7387e2ca0602fe958ef2b48f6c1e1b68/jetified-egloo-0.4.0/AndroidManifest.xml:10:5-20
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:27:5-56:19
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:27:5-56:19
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:22:5-30:19
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:22:5-30:19
+MERGED from [com.squareup.picasso:picasso:2.71828] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9e56827201df934ed2481f436217cc56/jetified-picasso-2.71828/AndroidManifest.xml:7:5-12:19
+MERGED from [com.squareup.picasso:picasso:2.71828] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9e56827201df934ed2481f436217cc56/jetified-picasso-2.71828/AndroidManifest.xml:7:5-12:19
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:26:5-81:19
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:26:5-81:19
 MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ccb096213b2316f144e74f28718170b1/jetified-play-services-stats-17.0.0/AndroidManifest.xml:7:5-20
@@ -222,20 +242,24 @@ MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboug
 MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/90a5b4cb2fd9ac819652dcd9e531b5b9/jetified-play-services-base-17.1.0/AndroidManifest.xml:22:5-27:19
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/8a17714d0371823a74e9f8ffae63022d/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:7:5-8:19
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/8a17714d0371823a74e9f8ffae63022d/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:7:5-8:19
+MERGED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:13:5-21:19
+MERGED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:13:5-21:19
 MERGED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcf94273fc7775d4f9b3c8a25ca6df28/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:24:5-32:19
 MERGED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcf94273fc7775d4f9b3c8a25ca6df28/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:24:5-32:19
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:14:5-22:19
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:14:5-22:19
+MERGED from [com.google.firebase:firebase-abt:21.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f942f2e18e008ad15fa3737c0e352ebb/jetified-firebase-abt-21.0.0/AndroidManifest.xml:11:5-17:19
+MERGED from [com.google.firebase:firebase-abt:21.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f942f2e18e008ad15fa3737c0e352ebb/jetified-firebase-abt-21.0.0/AndroidManifest.xml:11:5-17:19
 MERGED from [com.google.firebase:firebase-common:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4303f81154cde13901efa2a4e1548246/jetified-firebase-common-20.0.0/AndroidManifest.xml:25:5-38:19
 MERGED from [com.google.firebase:firebase-common:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4303f81154cde13901efa2a4e1548246/jetified-firebase-common-20.0.0/AndroidManifest.xml:25:5-38:19
 MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d68d3b4a010f7ced000cc63fa2a9778a/jetified-firebase-iid-interop-17.1.0/AndroidManifest.xml:7:5-8:19
 MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d68d3b4a010f7ced000cc63fa2a9778a/jetified-firebase-iid-interop-17.1.0/AndroidManifest.xml:7:5-8:19
-MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88059be9ebcb88774940ba5bdd2cc036/jetified-play-services-tasks-17.0.0/AndroidManifest.xml:7:5-20
-MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88059be9ebcb88774940ba5bdd2cc036/jetified-play-services-tasks-17.0.0/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-tasks:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9f8ba635917516b4a8d519ab3d22b47c/jetified-play-services-tasks-17.1.0/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-tasks:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9f8ba635917516b4a8d519ab3d22b47c/jetified-play-services-tasks-17.1.0/AndroidManifest.xml:7:5-20
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6c730579034a17512b25dfcbdcf08f6e/jetified-firebase-measurement-connector-19.0.0/AndroidManifest.xml:22:5-23:19
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6c730579034a17512b25dfcbdcf08f6e/jetified-firebase-measurement-connector-19.0.0/AndroidManifest.xml:22:5-23:19
-MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:22:5-26:19
-MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.android.gms:play-services-basement:17.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/98bf82924a5ff931cbd2d50653de7c33/jetified-play-services-basement-17.3.0/AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.android.gms:play-services-basement:17.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/98bf82924a5ff931cbd2d50653de7c33/jetified-play-services-basement-17.3.0/AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.core:core:1.3.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/649e0c0efc915ed729b494f3417970c7/core-1.3.2/AndroidManifest.xml:24:5-89
 MERGED from [androidx.core:core:1.3.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/649e0c0efc915ed729b494f3417970c7/core-1.3.2/AndroidManifest.xml:24:5-89
 MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6afdc73a770cb262193a944db55e76a5/jetified-lifecycle-process-2.2.0/AndroidManifest.xml:24:5-30:19
@@ -250,6 +274,8 @@ MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wi
 MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/09411377c961036dd60a36e40ebd7c4e/jetified-transport-runtime-3.0.0/AndroidManifest.xml:25:5-39:19
 MERGED from [com.jakewharton.threetenabp:threetenabp:1.2.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/aa08ac1a19ee43db2e2eed35aaf82d9d/jetified-threetenabp-1.2.3/AndroidManifest.xml:7:5-20
 MERGED from [com.jakewharton.threetenabp:threetenabp:1.2.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/aa08ac1a19ee43db2e2eed35aaf82d9d/jetified-threetenabp-1.2.3/AndroidManifest.xml:7:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/36ff59c5ff196cd8b589304834de5b38/constraintlayout-1.1.3/AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/36ff59c5ff196cd8b589304834de5b38/constraintlayout-1.1.3/AndroidManifest.xml:9:5-20
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.3.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/649e0c0efc915ed729b494f3417970c7/core-1.3.2/AndroidManifest.xml:24:18-86
 	android:label
@@ -259,7 +285,7 @@ MERGED from [com.jakewharton.threetenabp:threetenabp:1.2.3] /Users/wissamboughan
 	android:usesCleartextTraffic
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:10:9-44
 activity#com.oxy.rillliveapp.MainActivity
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:12:9-36:20
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:12:9-37:20
 	android:launchMode
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:14:13-43
 	android:hardwareAccelerated
@@ -305,11 +331,11 @@ ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/r
 	android:name
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:34:25-71
 meta-data#flutterEmbedding
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:38:9-40:33
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:41:9-43:33
 	android:value
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:40:13-30
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:43:13-30
 	android:name
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:39:13-44
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:42:13-44
 uses-sdk
 INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml
@@ -372,6 +398,12 @@ MERGED from [com.github.agorabuilder:rtm-sdk:1.4.7] /Users/wissamboughannam/.gra
 MERGED from [com.github.agorabuilder:rtm-sdk:1.4.7] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/693d36ce5dc168c6e1052251cac043a4/jetified-rtm-sdk-1.4.7/AndroidManifest.xml:7:5-9:41
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:7:5-9:41
+MERGED from [androidx.multidex:multidex:2.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/44712e0a962db0d083f3408fe6e4f85b/multidex-2.0.0/AndroidManifest.xml:20:5-43
+MERGED from [androidx.multidex:multidex:2.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/44712e0a962db0d083f3408fe6e4f85b/multidex-2.0.0/AndroidManifest.xml:20:5-43
+MERGED from [com.squareup.picasso:picasso:2.71828] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9e56827201df934ed2481f436217cc56/jetified-picasso-2.71828/AndroidManifest.xml:5:5-44
+MERGED from [com.squareup.picasso:picasso:2.71828] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9e56827201df934ed2481f436217cc56/jetified-picasso-2.71828/AndroidManifest.xml:5:5-44
 MERGED from [androidx.exifinterface:exifinterface:1.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6cbe1b875e8051e34086dedfa62610e6/exifinterface-1.3.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.exifinterface:exifinterface:1.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6cbe1b875e8051e34086dedfa62610e6/exifinterface-1.3.0/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4ab29d5d04ea42bc4f90dcab64efeada/jetified-exoplayer-hls-2.14.2/AndroidManifest.xml:20:5-22:41
@@ -422,12 +454,18 @@ MERGED from [com.google.firebase:firebase-appcheck-interop:16.0.0-beta01] /Users
 MERGED from [com.google.firebase:firebase-appcheck-interop:16.0.0-beta01] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7c12576841c5bd2939e33bfb3f828bab/jetified-firebase-appcheck-interop-16.0.0-beta01/AndroidManifest.xml:19:5-21:41
 MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/90a5b4cb2fd9ac819652dcd9e531b5b9/jetified-play-services-base-17.1.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/90a5b4cb2fd9ac819652dcd9e531b5b9/jetified-play-services-base-17.1.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/68cbf05ef64f840c0c537cebd9ec9095/appcompat-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/68cbf05ef64f840c0c537cebd9ec9095/appcompat-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/8a17714d0371823a74e9f8ffae63022d/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/8a17714d0371823a74e9f8ffae63022d/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:6:5-8:41
+MERGED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:6:5-8:41
 MERGED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcf94273fc7775d4f9b3c8a25ca6df28/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:19:5-21:41
 MERGED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcf94273fc7775d4f9b3c8a25ca6df28/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:19:5-21:41
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:6:5-8:41
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:6:5-8:41
+MERGED from [com.google.firebase:firebase-abt:21.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f942f2e18e008ad15fa3737c0e352ebb/jetified-firebase-abt-21.0.0/AndroidManifest.xml:6:5-8:41
+MERGED from [com.google.firebase:firebase-abt:21.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f942f2e18e008ad15fa3737c0e352ebb/jetified-firebase-abt-21.0.0/AndroidManifest.xml:6:5-8:41
 MERGED from [com.google.firebase:firebase-common:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4303f81154cde13901efa2a4e1548246/jetified-firebase-common-20.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.firebase:firebase-common:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4303f81154cde13901efa2a4e1548246/jetified-firebase-common-20.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:5:5-44
@@ -436,12 +474,12 @@ MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] /Users/wissambough
 MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d68d3b4a010f7ced000cc63fa2a9778a/jetified-firebase-iid-interop-17.1.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-installations-interop:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/69824633d3bd278a8002fa43c62c2791/jetified-firebase-installations-interop-17.0.0/AndroidManifest.xml:19:5-21:41
 MERGED from [com.google.firebase:firebase-installations-interop:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/69824633d3bd278a8002fa43c62c2791/jetified-firebase-installations-interop-17.0.0/AndroidManifest.xml:19:5-21:41
-MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88059be9ebcb88774940ba5bdd2cc036/jetified-play-services-tasks-17.0.0/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88059be9ebcb88774940ba5bdd2cc036/jetified-play-services-tasks-17.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-tasks:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9f8ba635917516b4a8d519ab3d22b47c/jetified-play-services-tasks-17.1.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-tasks:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9f8ba635917516b4a8d519ab3d22b47c/jetified-play-services-tasks-17.1.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6c730579034a17512b25dfcbdcf08f6e/jetified-firebase-measurement-connector-19.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6c730579034a17512b25dfcbdcf08f6e/jetified-firebase-measurement-connector-19.0.0/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-basement:17.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/98bf82924a5ff931cbd2d50653de7c33/jetified-play-services-basement-17.3.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-basement:17.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/98bf82924a5ff931cbd2d50653de7c33/jetified-play-services-basement-17.3.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.fragment:fragment:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a0489aae6ca691b5067ca0d0b2e7fa2f/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.fragment:fragment:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a0489aae6ca691b5067ca0d0b2e7fa2f/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.activity:activity:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/19e393f4a078a3efe449ac529f3ce068/jetified-activity-1.0.0/AndroidManifest.xml:20:5-22:41
@@ -468,6 +506,12 @@ MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/wissam
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/0edfcc1f7a9a0d5d24ab936151684294/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88ca545a367f3801d2642602fb6c9dc4/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88ca545a367f3801d2642602fb6c9dc4/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/350deb4cd05d5df15ff3e34d7329b852/jetified-appcompat-resources-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/350deb4cd05d5df15ff3e34d7329b852/jetified-appcompat-resources-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/50e6ba1ea4e16d9a4a966ba06b6f0ca6/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/50e6ba1ea4e16d9a4a966ba06b6f0ca6/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b5ebeba83bce45ada16b528388ea12fa/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b5ebeba83bce45ada16b528388ea12fa/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.core:core:1.3.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/649e0c0efc915ed729b494f3417970c7/core-1.3.2/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.core:core:1.3.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/649e0c0efc915ed729b494f3417970c7/core-1.3.2/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6afdc73a770cb262193a944db55e76a5/jetified-lifecycle-process-2.2.0/AndroidManifest.xml:20:5-22:41
@@ -496,6 +540,8 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /Users/wiss
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16e2a6158b1a242faa89e1f77ae6d807/versionedparcelable-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.firebase:firebase-components:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7929dff8581cf5142e456918f8a8cb54/jetified-firebase-components-17.0.0/AndroidManifest.xml:19:5-21:41
 MERGED from [com.google.firebase:firebase-components:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7929dff8581cf5142e456918f8a8cb54/jetified-firebase-components-17.0.0/AndroidManifest.xml:19:5-21:41
+MERGED from [androidx.cardview:cardview:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4f912c795344ebd1c2b3d77a6f1ed47a/cardview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4f912c795344ebd1c2b3d77a6f1ed47a/cardview-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:19:5-21:41
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/511de4202c37573f6ab73b3611c37e27/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:19:5-21:41
 MERGED from [com.google.android.datatransport:transport-runtime:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/09411377c961036dd60a36e40ebd7c4e/jetified-transport-runtime-3.0.0/AndroidManifest.xml:18:5-20:41
@@ -520,8 +566,12 @@ MERGED from [com.jakewharton.threetenabp:threetenabp:1.2.3] /Users/wissamboughan
 MERGED from [com.jakewharton.threetenabp:threetenabp:1.2.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/aa08ac1a19ee43db2e2eed35aaf82d9d/jetified-threetenabp-1.2.3/AndroidManifest.xml:5:5-44
 MERGED from [com.github.agorabuilder:native-full-sdk:3.4.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/525c2745eadf113038db61e4e41c12cf/jetified-native-full-sdk-3.4.5/AndroidManifest.xml:7:5-9:41
 MERGED from [com.github.agorabuilder:native-full-sdk:3.4.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/525c2745eadf113038db61e4e41c12cf/jetified-native-full-sdk-3.4.5/AndroidManifest.xml:7:5-9:41
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/36ff59c5ff196cd8b589304834de5b38/constraintlayout-1.1.3/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/36ff59c5ff196cd8b589304834de5b38/constraintlayout-1.1.3/AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.firebase:protolite-well-known-types:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d29c5efb4a3bfa33b7c9aa98f739b1d4/jetified-protolite-well-known-types-18.0.0/AndroidManifest.xml:7:5-9:41
 MERGED from [com.google.firebase:protolite-well-known-types:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d29c5efb4a3bfa33b7c9aa98f739b1d4/jetified-protolite-well-known-types-18.0.0/AndroidManifest.xml:7:5-9:41
+MERGED from [io.reactivex.rxjava2:rxandroid:2.0.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/fec13ec0aaeb48d1cc64fd3a165e23d5/jetified-rxandroid-2.0.2/AndroidManifest.xml:19:5-43
+MERGED from [io.reactivex.rxjava2:rxandroid:2.0.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/fec13ec0aaeb48d1cc64fd3a165e23d5/jetified-rxandroid-2.0.2/AndroidManifest.xml:19:5-43
 INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml
 INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml
 	tools:overrideLibrary
@@ -534,6 +584,8 @@ INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebas
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/debug/AndroidManifest.xml
 queries
 ADDED from [:file_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-15:15
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:14:5-20:15
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:14:5-20:15
 intent#action:name:android.intent.action.GET_CONTENT+data:mimeType:*/*
 ADDED from [:file_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:10:9-14:18
 action#android.intent.action.GET_CONTENT
@@ -582,6 +634,8 @@ MERGED from [:connectivity] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_li
 MERGED from [:connectivity] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/connectivity/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:22:5-79
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:22:5-79
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:11:5-79
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:11:5-79
 MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/983fcccaaf39eda3c572c95f0818dccf/jetified-exoplayer-core-2.14.2/AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/983fcccaaf39eda3c572c95f0818dccf/jetified-exoplayer-core-2.14.2/AndroidManifest.xml:24:5-79
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
@@ -592,6 +646,8 @@ MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughan
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:13:5-79
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
+MERGED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:10:5-79
+MERGED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:10:5-79
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b73379bf094423a32aa92f6918fbb332/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:7:5-79
@@ -618,16 +674,22 @@ MERGED from [:firebase_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_l
 MERGED from [:firebase_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:49:9-55:19
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:49:9-55:19
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:23:9-29:19
+MERGED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:23:9-29:19
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:74:9-80:19
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:74:9-80:19
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:17:9-23:19
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d022aae3e2c88d7757adfd87dd377133/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:17:9-23:19
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:30:9-36:19
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d96e79b8330c0f21ef540f7572e9e58b/jetified-firebase-storage-20.0.0/AndroidManifest.xml:30:9-36:19
+MERGED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:14:9-20:19
+MERGED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:14:9-20:19
 MERGED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcf94273fc7775d4f9b3c8a25ca6df28/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:25:9-31:19
 MERGED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcf94273fc7775d4f9b3c8a25ca6df28/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:25:9-31:19
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:15:9-21:19
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:15:9-21:19
+MERGED from [com.google.firebase:firebase-abt:21.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f942f2e18e008ad15fa3737c0e352ebb/jetified-firebase-abt-21.0.0/AndroidManifest.xml:12:9-16:19
+MERGED from [com.google.firebase:firebase-abt:21.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f942f2e18e008ad15fa3737c0e352ebb/jetified-firebase-abt-21.0.0/AndroidManifest.xml:12:9-16:19
 MERGED from [com.google.firebase:firebase-common:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4303f81154cde13901efa2a4e1548246/jetified-firebase-common-20.0.0/AndroidManifest.xml:33:9-37:35
 MERGED from [com.google.firebase:firebase-common:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4303f81154cde13901efa2a4e1548246/jetified-firebase-common-20.0.0/AndroidManifest.xml:33:9-37:35
 	android:exported
@@ -831,6 +893,26 @@ ADDED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughann
 		ADDED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:54:17-82
 	android:name
 		ADDED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/a3174804bce96acc204500589676e879/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:53:17-119
+intent#action:name:android.intent.action.VIEW+data:scheme:https
+ADDED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:15:9-19:18
+action#android.intent.action.VIEW
+ADDED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:16:13-65
+	android:name
+		ADDED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:16:21-62
+meta-data#com.google.firebase.components:com.google.firebase.inappmessaging.display.FirebaseInAppMessagingDisplayRegistrar
+ADDED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:26:13-28:85
+	android:value
+		ADDED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:28:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-inappmessaging-display:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c633757912e3e816c273956de7ff8ad9/jetified-firebase-inappmessaging-display-20.0.0/AndroidManifest.xml:27:17-144
+provider#com.squareup.picasso.PicassoProvider
+ADDED from [com.squareup.picasso:picasso:2.71828] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9e56827201df934ed2481f436217cc56/jetified-picasso-2.71828/AndroidManifest.xml:8:9-11:40
+	android:authorities
+		ADDED from [com.squareup.picasso:picasso:2.71828] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9e56827201df934ed2481f436217cc56/jetified-picasso-2.71828/AndroidManifest.xml:10:13-72
+	android:exported
+		ADDED from [com.squareup.picasso:picasso:2.71828] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9e56827201df934ed2481f436217cc56/jetified-picasso-2.71828/AndroidManifest.xml:11:13-37
+	android:name
+		ADDED from [com.squareup.picasso:picasso:2.71828] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9e56827201df934ed2481f436217cc56/jetified-picasso-2.71828/AndroidManifest.xml:9:13-64
 activity#com.google.firebase.auth.internal.GenericIdpActivity
 ADDED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:27:9-44:20
 	android:excludeFromRecents
@@ -845,10 +927,6 @@ ADDED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.g
 		ADDED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:28:13-80
 intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:firebase.auth+data:path:/+data:scheme:genericidp
 ADDED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:33:13-43:29
-action#android.intent.action.VIEW
-ADDED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:34:17-69
-	android:name
-		ADDED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:34:25-66
 category#android.intent.category.BROWSABLE
 ADDED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/df9660c93ac484df309b6870bdb79bb4/jetified-firebase-auth-21.0.1/AndroidManifest.xml:37:17-78
 	android:name
@@ -1125,6 +1203,12 @@ ADDED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissambough
 		ADDED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/90a5b4cb2fd9ac819652dcd9e531b5b9/jetified-play-services-base-17.1.0/AndroidManifest.xml:26:13-72
 	android:name
 		ADDED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/90a5b4cb2fd9ac819652dcd9e531b5b9/jetified-play-services-base-17.1.0/AndroidManifest.xml:24:13-79
+meta-data#com.google.firebase.components:com.google.firebase.inappmessaging.FirebaseInAppMessagingRegistrar
+ADDED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:17:13-19:85
+	android:value
+		ADDED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:19:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-inappmessaging:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/af1ba6c72ec7aa093ee49825eed64e32/jetified-firebase-inappmessaging-20.0.0/AndroidManifest.xml:18:17-129
 meta-data#com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar
 ADDED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcf94273fc7775d4f9b3c8a25ca6df28/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:28:13-30:85
 	android:value
@@ -1137,6 +1221,12 @@ ADDED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboug
 		ADDED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:20:17-82
 	android:name
 		ADDED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c06fbfa24257c70c94541aa8db636a98/jetified-firebase-installations-17.0.0/AndroidManifest.xml:19:17-127
+meta-data#com.google.firebase.components:com.google.firebase.abt.component.AbtRegistrar
+ADDED from [com.google.firebase:firebase-abt:21.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f942f2e18e008ad15fa3737c0e352ebb/jetified-firebase-abt-21.0.0/AndroidManifest.xml:13:13-15:85
+	android:value
+		ADDED from [com.google.firebase:firebase-abt:21.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f942f2e18e008ad15fa3737c0e352ebb/jetified-firebase-abt-21.0.0/AndroidManifest.xml:15:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-abt:21.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f942f2e18e008ad15fa3737c0e352ebb/jetified-firebase-abt-21.0.0/AndroidManifest.xml:14:17-109
 provider#com.google.firebase.provider.FirebaseInitProvider
 ADDED from [com.google.firebase:firebase-common:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4303f81154cde13901efa2a4e1548246/jetified-firebase-common-20.0.0/AndroidManifest.xml:26:9-31:39
 	android:authorities
@@ -1150,11 +1240,11 @@ ADDED from [com.google.firebase:firebase-common:20.0.0] /Users/wissamboughannam/
 	android:name
 		ADDED from [com.google.firebase:firebase-common:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4303f81154cde13901efa2a4e1548246/jetified-firebase-common-20.0.0/AndroidManifest.xml:27:13-77
 meta-data#com.google.android.gms.version
-ADDED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:23:9-25:69
+ADDED from [com.google.android.gms:play-services-basement:17.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/98bf82924a5ff931cbd2d50653de7c33/jetified-play-services-basement-17.3.0/AndroidManifest.xml:23:9-25:69
 	android:value
-		ADDED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:25:13-66
+		ADDED from [com.google.android.gms:play-services-basement:17.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/98bf82924a5ff931cbd2d50653de7c33/jetified-play-services-basement-17.3.0/AndroidManifest.xml:25:13-66
 	android:name
-		ADDED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dcaec673d11c8e2dd5451c3f35f9dd5f/jetified-play-services-basement-17.1.0/AndroidManifest.xml:24:13-58
+		ADDED from [com.google.android.gms:play-services-basement:17.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/98bf82924a5ff931cbd2d50653de7c33/jetified-play-services-basement-17.3.0/AndroidManifest.xml:24:13-58
 provider#androidx.lifecycle.ProcessLifecycleOwnerInitializer
 ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6afdc73a770cb262193a944db55e76a5/jetified-lifecycle-process-2.2.0/AndroidManifest.xml:25:9-29:43
 	android:authorities

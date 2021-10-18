@@ -190,9 +190,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       listScrollController.animateTo(0,
           duration: Duration(milliseconds: 300), curve: Curves.easeOut);
       //Notify the other user of the message being sent
-      print('other user token: ${otherUser?.fcmToken}');
       ms.token = otherUser?.fcmToken;
-      print('other user Token: ${ms.token}');
       ms.senderId = widget.currentUser?.userId;
       ms.senderName =
           '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}';
@@ -224,11 +222,14 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   _buildItem(int index, DocumentSnapshot? document) {
     if (document != null) {
+      print('doc ${document.id}');
       return MessageTile(
+        docId: document.id,
         message: document[ConversationRoomParam.message],
         currentUser: widget.currentUser?.userId,
         type: document[ConversationRoomParam.type],
         sentBy: document[ConversationRoomParam.senderId],
+        read: document[ChatRoomParameters.read],
       );
     }
   }
@@ -492,15 +493,27 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
 class MessageTile extends StatelessWidget {
   const MessageTile(
-      {Key? key, this.message, this.sentBy, this.currentUser, this.type})
+      {Key? key,
+      this.message,
+      this.sentBy,
+      this.currentUser,
+      this.type,
+      this.read,
+      this.docId,
+      this.chatRoomId})
       : super(key: key);
+  final String? docId;
+  final String? chatRoomId;
   final String? sentBy;
   final String? currentUser;
   final String? message;
   final String? type;
+  final bool? read;
 
   @override
   Widget build(BuildContext context) {
+    //mark messages as read
+    _markAsRead();
     return Container(
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(vertical: 5),
@@ -657,5 +670,16 @@ class MessageTile extends StatelessWidget {
   Future _initizalizeVideoPlayer(VideoPlayerController _controller) async {
     await _controller.initialize();
     return _controller;
+  }
+
+  //Mark as read
+  _markAsRead() async {
+    DatabaseService db = DatabaseService();
+    print('current: $currentUser - sentby: $sentBy');
+    if (currentUser == sentBy) {
+      if (!read!) {
+        //await db.updateConversationRead(docId: docId, chatRoomId: )
+      }
+    }
   }
 }

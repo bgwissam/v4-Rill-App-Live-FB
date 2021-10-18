@@ -38,7 +38,7 @@ class MessaginService {
         // 'from': senderName,
         'title': messageTitle,
         'body': '$senderName $messageBody',
-        'click_action': 'FLUTTER_NOTIFICATION_CLICK'
+        'click_action': '/notifications'
       },
       'to': token,
       'notification': {
@@ -69,14 +69,14 @@ class MessaginService {
         // 'from': senderName,
         'title': messageTitle,
         'body': '$senderName $messageBody',
-        'click_action': 'FLUTTER_NOTIFICATION_CLICK'
+        'click_action': '/notifications'
       },
       'to': token,
       'notification': {
         // 'from': senderName,
         'title': messageTitle,
         'body': '$senderName $messageBody',
-        'click_action': '/message_screen'
+        'click_action': '/notifications'
       },
     });
     var response = await http.post(

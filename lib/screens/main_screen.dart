@@ -104,6 +104,7 @@ class _MainScreenState extends State<MainScreen>
 
   //Services
   FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  FlutterLocalNotificationsPlugin? fltNotifications;
   late String fcmToken;
   NotificationSettings? notSettings;
   @override
@@ -302,7 +303,8 @@ class _MainScreenState extends State<MainScreen>
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         var notification = message.notification;
         var androidNotification = message.notification!.android;
-        print('Notification: $notification - Android: $androidNotification');
+        print(
+            'Notification: ${notification?.title} - Android: ${androidNotification?.channelId}');
         if (notification != null && androidNotification != null) {
           flutterLocalNotificationsPlugin!.show(
             notification.hashCode,
@@ -321,24 +323,25 @@ class _MainScreenState extends State<MainScreen>
 
       FirebaseMessaging.onBackgroundMessage((message) async {
         print('A background message exists');
-        // await Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (builder) => MessageView(
-        //         title: message.notification.title,
-        //         body: message.notification.body),
-        //   ),
-        // );
-        // return message;
-      });
-
-      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-        Navigator.push(
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (builder) => NotificationScreen(
-                title: message.notification!.title,
-                content: message.notification!.body),
+                title: message.notification?.title,
+                content: message.notification?.body),
+          ),
+        );
+      });
+
+      FirebaseMessaging.onMessageOpenedApp
+          .listen((RemoteMessage message) async {
+        print('message opened main_screen: $message');
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (builder) => NotificationScreen(
+                title: message.notification?.title,
+                content: message.notification?.body),
           ),
         );
       });

@@ -23,8 +23,7 @@ import 'models/user_model.dart';
 //A top level named handler to handle background/terminated messages will call
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   //make sure firebase is initialized bofore using this service
-  print('Id: ${message.messageId}');
-  await Firebase.initializeApp();
+  //await Firebase.initializeApp();
   print('Handling a background message: ${message.messageId}');
 }
 
@@ -36,9 +35,9 @@ FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 String errorMessage = '';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp().catchError((error) {
+  await Firebase.initializeApp().catchError((error, stackTrace) async {
     errorMessage = error.toString();
+    await Sentry.captureException(error, stackTrace: stackTrace);
   });
   cameras = await availableCameras();
 
@@ -49,6 +48,10 @@ void main() async {
         'High_Importance', 'High importance notifications',
         importance: Importance.high);
   }
+
+  FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    print('message opened main: $message');
+  });
 
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   //Create an android notification channel to overrid the default FCM channel
