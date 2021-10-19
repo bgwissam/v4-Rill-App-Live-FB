@@ -20,6 +20,8 @@ class MessagesScreen extends StatefulWidget {
 class _MessagesScreenState extends State<MessagesScreen> {
   late String _searchWord;
   late List<Map<String, dynamic>> messageList = [];
+  var unread;
+  late List<Map<String, dynamic>> chatList = [];
   //Controllers
   DatabaseService db = DatabaseService();
   //Streams
@@ -84,6 +86,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
   void initState() {
     super.initState();
     _getMessageStream();
+    _getUnreadMessages();
   }
 
   //Search Box
@@ -159,8 +162,32 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               ),
                             ),
                           ),
-                          title: Text(
-                              '${snapshot.data?.docs[index][UserParams.FIRST_NAME]} ${snapshot.data?.docs[index][UserParams.LAST_NAME]}'),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(border: Border.all()),
+                                width: size.width / 2,
+                                child: Text(
+                                  '${snapshot.data?.docs[index][UserParams.FIRST_NAME]} ${snapshot.data?.docs[index][UserParams.LAST_NAME]}',
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                              FutureBuilder(
+                                  future: unread,
+                                  builder: (context, AsyncSnapshot snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Container(
+                                          width: size.width / 8,
+                                          child: Text(
+                                            unread.toString(),
+                                          ));
+                                    }
+
+                                    return SizedBox.shrink();
+                                  }),
+                            ],
+                          ),
                         ),
                       ),
                     );
@@ -174,5 +201,18 @@ class _MessagesScreenState extends State<MessagesScreen> {
         );
       },
     );
+  }
+
+  Future<void> _getUnreadMessages() async {
+    var userChats = await db.getChatRoomFuturePerUser(userId: widget.userId);
+
+    for (var chat in userChats) {
+      var unreadChats =
+          await db.getUnreadMessages(chatRoomId: chat, userId: widget.userId);
+      if (!chatList.contains(chat)) {
+        print('unread: $unreadChats');
+        chatList.add({'chatId': chat, 'undread': unreadChats});
+      }
+    }
   }
 }

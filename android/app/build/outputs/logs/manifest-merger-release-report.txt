@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
-INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
-INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
-INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
+INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
+INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
+INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
 MERGED from [:file_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:2:1-17:12
 MERGED from [:image_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/image_picker/intermediates/library_manifest/release/AndroidManifest.xml:2:1-19:12
 MERGED from [:camera] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/camera/intermediates/library_manifest/release/AndroidManifest.xml:2:1-10:12
@@ -108,20 +108,20 @@ MERGED from [io.grpc:grpc-android:1.28.0] /Users/wissamboughannam/.gradle/caches
 MERGED from [com.jakewharton.threetenabp:threetenabp:1.2.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/aa08ac1a19ee43db2e2eed35aaf82d9d/jetified-threetenabp-1.2.3/AndroidManifest.xml:2:1-9:12
 MERGED from [com.github.agorabuilder:native-full-sdk:3.4.5] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/525c2745eadf113038db61e4e41c12cf/jetified-native-full-sdk-3.4.5/AndroidManifest.xml:2:1-11:12
 MERGED from [com.google.firebase:protolite-well-known-types:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d29c5efb4a3bfa33b7c9aa98f739b1d4/jetified-protolite-well-known-types-18.0.0/AndroidManifest.xml:2:1-11:12
-INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
-INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
-INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
+INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
+INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
+INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
 	package
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:2:5-34
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml
 	android:versionName
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml
 	android:versionCode
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-42:12
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:1-45:12
 		INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml
 	xmlns:android
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:1:11-69
@@ -176,7 +176,7 @@ ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/r
 	android:name
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:7:22-76
 application
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:8:4-41:19
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:8:4-44:19
 MERGED from [:image_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/image_picker/intermediates/library_manifest/release/AndroidManifest.xml:7:5-17:19
 MERGED from [:image_picker] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/image_picker/intermediates/library_manifest/release/AndroidManifest.xml:7:5-17:19
 MERGED from [:cloud_firestore] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/cloud_firestore/intermediates/library_manifest/release/AndroidManifest.xml:7:5-13:19
@@ -256,7 +256,7 @@ MERGED from [com.jakewharton.threetenabp:threetenabp:1.2.3] /Users/wissamboughan
 	android:usesCleartextTraffic
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:10:9-44
 activity#com.oxy.rillliveapp.MainActivity
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:12:9-36:20
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:12:9-37:20
 	android:launchMode
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:14:13-43
 	android:hardwareAccelerated
@@ -302,11 +302,11 @@ ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/r
 	android:name
 		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:34:25-71
 meta-data#flutterEmbedding
-ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:38:9-40:33
+ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:41:9-43:33
 	android:value
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:40:13-30
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:43:13-30
 	android:name
-		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:39:13-44
+		ADDED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml:42:13-44
 uses-sdk
 INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/android/app/src/main/AndroidManifest.xml

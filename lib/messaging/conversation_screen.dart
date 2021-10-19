@@ -182,6 +182,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       messageMap.type = messageType;
       messageMap.senderId = widget.currentUser?.userId;
       messageMap.time = DateTime.now().millisecondsSinceEpoch;
+      print('chat room id: ${widget.chatRoomId}');
       db.addConversationMessage(
           chatRoomId: widget.chatRoomId, messageMap: messageMap);
 
@@ -229,7 +230,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
         currentUser: widget.currentUser?.userId,
         type: document[ConversationRoomParam.type],
         sentBy: document[ConversationRoomParam.senderId],
-        read: document[ChatRoomParameters.read],
+        read: document[ChatRoomParameters.read] ?? false,
+        chatRoomId: widget.chatRoomId,
       );
     }
   }
@@ -675,10 +677,10 @@ class MessageTile extends StatelessWidget {
   //Mark as read
   _markAsRead() async {
     DatabaseService db = DatabaseService();
-    print('current: $currentUser - sentby: $sentBy');
-    if (currentUser == sentBy) {
-      if (!read!) {
-        //await db.updateConversationRead(docId: docId, chatRoomId: )
+    if (currentUser != sentBy) {
+      if (read! == false) {
+        await db.updateConversationRead(
+            docId: docId, chatRoomId: chatRoomId, read: true);
       }
     }
   }

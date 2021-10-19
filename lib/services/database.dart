@@ -590,13 +590,25 @@ class DatabaseService {
 
   //This section will handle the chat option
 
-  //Get all chat rooms
+  //stream all chat rooms per user
   getChatRoomPerUser({String? userId}) {
     try {
       return userModelCollection.doc(userId).collection('chats').snapshots();
     } catch (e, stackTrace) {
       Sentry.captureException(e, stackTrace: stackTrace);
-      print('An error fetching user chats');
+    }
+  }
+
+  //get all chat rooms per user
+  getChatRoomFuturePerUser({String? userId}) async {
+    try {
+      return userModelCollection
+          .doc(userId)
+          .collection('chats')
+          .get()
+          .then((value) => value.docs.map((e) => e.id).toList());
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
     }
   }
 
@@ -692,12 +704,13 @@ class DatabaseService {
   Future<void> updateConversationRead(
       {String? docId, String? chatRoomId, bool? read}) async {
     try {
+      print('chatroom param: ${ChatRoomParameters.read} - $read');
       await messagesCollection
           .doc(chatRoomId)
           .collection('chats')
           .doc(docId)
           .update({
-        ChatRoomParameters.read: read,
+        ChatRoomParameters.read: true,
       });
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
@@ -710,6 +723,24 @@ class DatabaseService {
       return messagesCollection.doc(chatRoomId).snapshots();
     } catch (e, stackTrace) {
       Sentry.captureException(e, stackTrace: stackTrace);
+    }
+  }
+
+  //get unread messages
+  getUnreadMessages({String? chatRoomId, String? userId}) async {
+    try {
+      print('unread data: $chatRoomId - $userId');
+      return messagesCollection
+          .doc(chatRoomId)
+          .collection('chats')
+          .where(ConversationRoomParam.senderId, isNotEqualTo: userId)
+          .where(ChatRoomParameters.read, isEqualTo: false)
+          .get()
+          .then((value) {
+        return value.docs.length;
+      });
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
     }
   }
 }

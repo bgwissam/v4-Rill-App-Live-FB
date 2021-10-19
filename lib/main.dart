@@ -23,7 +23,7 @@ import 'models/user_model.dart';
 //A top level named handler to handle background/terminated messages will call
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   //make sure firebase is initialized bofore using this service
-  //await Firebase.initializeApp();
+  await Firebase.initializeApp();
   print('Handling a background message: ${message.messageId}');
 }
 
