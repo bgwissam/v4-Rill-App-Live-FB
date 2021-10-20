@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
    <application
-        android:label="rill_live_app_fb_v4"
+        android:label="Rill Live"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity

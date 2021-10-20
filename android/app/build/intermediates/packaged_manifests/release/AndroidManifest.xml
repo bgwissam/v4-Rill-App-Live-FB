@@ -40,7 +40,7 @@
     <application
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:icon="@mipmap/ic_launcher"
-        android:label="rill_live_app_fb_v4"
+        android:label="Rill Live"
         android:usesCleartextTraffic="true" >
         <activity
             android:name="com.oxy.rillliveapp.MainActivity"

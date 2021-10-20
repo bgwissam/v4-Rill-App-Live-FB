@@ -590,7 +590,6 @@ class _AccountScreenState extends State<AccountScreen>
     //check if chatroom exists
     var result = await db.getChatRoom(
         chattingWith: widget.userModel!.userId!, userId: widget.userId);
-    print('the result of getting room: $result');
 
     if (result.isEmpty) {
       await db.createChatRoom(

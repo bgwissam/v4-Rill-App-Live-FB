@@ -609,7 +609,6 @@ class _MainScreenState extends State<MainScreen>
   //Get current user
   Future<UserModel> _getCurrentUser({String? userId}) async {
     var result = await db.getUserByUserId(userId: userId);
-    print('the fcm token: ${result.fcmToken}');
     if (result.fcmToken != null) {
       if (result.fcmToken != fcmToken) {
         await db.userModelCollection

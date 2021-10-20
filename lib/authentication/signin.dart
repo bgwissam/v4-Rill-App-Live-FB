@@ -44,7 +44,7 @@ class _SignInSignUpState extends State<SignInSignUp> {
   void initState() {
     super.initState();
     _isSigningIn = false;
-    _checkSignedIn = checkSignedInUser();
+    //_checkSignedIn = checkSignedInUser();
   }
 
   @override
@@ -90,190 +90,340 @@ class _SignInSignUpState extends State<SignInSignUp> {
               children: [
                 //back ground image
                 Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/bg3.png'),
-                        fit: BoxFit.cover),
-                  ),
-                  //Column for buttons
-                  child: FutureBuilder(
-                    future: _checkSignedIn,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return const Center(
-                            child: LoadingView(),
-                          );
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          print('we are here');
-                          return const Center(
-                            child: LoadingView(),
-                          );
-                        } else {
-                          return Container();
-                        }
-                      } else {
-                        return Column(
-                          //mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/images/logo_type.png',
-                              height: 250,
-                              width: 250,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/images/bg3.png'),
+                          fit: BoxFit.cover),
+                    ),
+                    //Column for buttons
+                    child: Column(
+                      //mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/logo_type.png',
+                          height: 250,
+                          width: 250,
+                        ),
+                        //Sign in button
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        AnimatedContainer(
+                          width: _signingInWidgetWidth,
+                          height: _signingInWidgetHeight,
+                          alignment: Alignment.center,
+                          duration: const Duration(seconds: 2),
+                          curve: Curves.fastOutSlowIn,
+                          child: _signIn(context),
+                        ),
+                        SizedBox(
+                          width: _size.width - 50,
+                          child: ElevatedButton(
+                            child: const Text(
+                              'Sign In',
+                              style: TextStyle(color: Color(0xffdf1266)),
                             ),
-                            //Sign in button
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            AnimatedContainer(
-                              width: _signingInWidgetWidth,
-                              height: _signingInWidgetHeight,
-                              alignment: Alignment.center,
-                              duration: const Duration(seconds: 2),
-                              curve: Curves.fastOutSlowIn,
-                              child: _signIn(context),
-                            ),
-                            SizedBox(
-                              width: _size.width - 50,
-                              child: ElevatedButton(
-                                child: const Text(
-                                  'Sign In',
-                                  style: TextStyle(color: Color(0xffdf1266)),
-                                ),
-                                onPressed: () async {
-                                  if (!_isSigningIn) {
-                                    setState(() {
-                                      _signingInWidgetHeight = 130;
-                                      _signingInWidgetWidth = _size.width - 50;
-                                      _isSigningIn = true;
-                                    });
-                                  } else {
-                                    if (!_signinKey.currentState!.validate()) {
-                                      print('keys are not valid');
-                                    } else {
-                                      setState(() {
-                                        _isLoading = true;
-                                      });
-                                      var response = await signInUser(
-                                          userName: userName,
-                                          password: password);
-                                      if (response != null) {
-                                        if (response.user!.emailVerified ==
-                                            false) {
-                                          as.resendVerificationCode();
-                                          Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (builder) =>
-                                                      EmailConfirmation()),
-                                              (route) => false);
-                                        } else {
-                                          Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (builder) => Wrapper(
-                                                  guestUser: false,
-                                                ),
-                                              ),
-                                              (route) => false);
-                                        }
-                                      } else {
-                                        setState(() {
-                                          _isLoading = false;
-                                        });
-                                      }
-                                    }
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  side: const BorderSide(
-                                      color: Color(0xffdf1266)),
-                                  primary: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            //Sign up button
-                            SizedBox(
-                              width: _size.width - 50,
-                              child: ElevatedButton(
-                                child: const Text('Sign Up'),
-                                onPressed: () async {
-                                  WidgetsBinding.instance!
-                                      .addPostFrameCallback((_) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const Register(),
-                                      ),
-                                    );
+                            onPressed: () async {
+                              if (!_isSigningIn) {
+                                setState(() {
+                                  _signingInWidgetHeight = 130;
+                                  _signingInWidgetWidth = _size.width - 50;
+                                  _isSigningIn = true;
+                                });
+                              } else {
+                                if (!_signinKey.currentState!.validate()) {
+                                  print('keys are not valid');
+                                } else {
+                                  setState(() {
+                                    _isLoading = true;
                                   });
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  side: const BorderSide(
-                                      color: Color(0xffdf1266)),
-                                  primary: const Color(0xffdf1266),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
+                                  var response = await signInUser(
+                                      userName: userName, password: password);
+                                  if (response != null) {
+                                    if (response.user!.emailVerified == false) {
+                                      as.resendVerificationCode();
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (builder) =>
+                                                  EmailConfirmation()),
+                                          (route) => false);
+                                    } else {
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (builder) => Wrapper(
+                                              guestUser: false,
+                                            ),
+                                          ),
+                                          (route) => false);
+                                    }
+                                  } else {
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                  }
+                                }
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              side: const BorderSide(color: Color(0xffdf1266)),
+                              primary: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
                               ),
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            errorMessage != null
-                                ? Expanded(
-                                    child: Container(
-                                        padding: EdgeInsets.all(10),
-                                        child: Text(
-                                          errorMessage,
-                                          style: errorText,
-                                          textAlign: TextAlign.center,
-                                        )),
-                                  )
-                                : SizedBox.shrink(),
-
-                            TextButton(
-                              onPressed: () async {
-                                await Navigator.push(
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        //Sign up button
+                        SizedBox(
+                          width: _size.width - 50,
+                          child: ElevatedButton(
+                            child: const Text('Sign Up'),
+                            onPressed: () async {
+                              WidgetsBinding.instance!
+                                  .addPostFrameCallback((_) {
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (builder) =>
-                                        const Wrapper(guestUser: true),
+                                    builder: (context) => const Register(),
                                   ),
                                 );
-                              },
-                              child: const Text(
-                                "Skip for now",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xffdf1266)),
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              side: const BorderSide(color: Color(0xffdf1266)),
+                              primary: const Color(0xffdf1266),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
                               ),
                             ),
-                            TextButton(
-                              onPressed: () async {},
-                              child: const Text(
-                                "Browse the app as a Guest User",
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ],
-                        );
-                      }
-                    },
-                  ),
-                  //Other method sign in
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        errorMessage != null
+                            ? Expanded(
+                                child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                      errorMessage,
+                                      style: errorText,
+                                      textAlign: TextAlign.center,
+                                    )),
+                              )
+                            : SizedBox.shrink(),
 
-                  //Skip button
-                ),
+                        TextButton(
+                          onPressed: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (builder) =>
+                                    const Wrapper(guestUser: true),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            "Skip for now",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffdf1266)),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () async {},
+                          child: const Text(
+                            "Browse the app as a Guest User",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    )
+
+                    // FutureBuilder(
+                    //   future: _checkSignedIn,
+                    //   builder: (context, snapshot) {
+                    //     if (snapshot.hasData) {
+                    //       if (snapshot.connectionState == ConnectionState.done) {
+                    //         return const Center(
+                    //           child: LoadingView(),
+                    //         );
+                    //       } else if (snapshot.connectionState ==
+                    //           ConnectionState.waiting) {
+                    //         print('we are here');
+                    //         return const Center(
+                    //           child: LoadingView(),
+                    //         );
+                    //       } else {
+                    //         return Container();
+                    //       }
+                    //     } else {
+                    //       return Column(
+                    //         //mainAxisAlignment: MainAxisAlignment.center,
+                    //         children: [
+                    //           Image.asset(
+                    //             'assets/images/logo_type.png',
+                    //             height: 250,
+                    //             width: 250,
+                    //           ),
+                    //           //Sign in button
+                    //           const SizedBox(
+                    //             height: 30,
+                    //           ),
+                    //           AnimatedContainer(
+                    //             width: _signingInWidgetWidth,
+                    //             height: _signingInWidgetHeight,
+                    //             alignment: Alignment.center,
+                    //             duration: const Duration(seconds: 2),
+                    //             curve: Curves.fastOutSlowIn,
+                    //             child: _signIn(context),
+                    //           ),
+                    //           SizedBox(
+                    //             width: _size.width - 50,
+                    //             child: ElevatedButton(
+                    //               child: const Text(
+                    //                 'Sign In',
+                    //                 style: TextStyle(color: Color(0xffdf1266)),
+                    //               ),
+                    //               onPressed: () async {
+                    //                 if (!_isSigningIn) {
+                    //                   setState(() {
+                    //                     _signingInWidgetHeight = 130;
+                    //                     _signingInWidgetWidth = _size.width - 50;
+                    //                     _isSigningIn = true;
+                    //                   });
+                    //                 } else {
+                    //                   if (!_signinKey.currentState!.validate()) {
+                    //                     print('keys are not valid');
+                    //                   } else {
+                    //                     setState(() {
+                    //                       _isLoading = true;
+                    //                     });
+                    //                     var response = await signInUser(
+                    //                         userName: userName,
+                    //                         password: password);
+                    //                     if (response != null) {
+                    //                       if (response.user!.emailVerified ==
+                    //                           false) {
+                    //                         as.resendVerificationCode();
+                    //                         Navigator.pushAndRemoveUntil(
+                    //                             context,
+                    //                             MaterialPageRoute(
+                    //                                 builder: (builder) =>
+                    //                                     EmailConfirmation()),
+                    //                             (route) => false);
+                    //                       } else {
+                    //                         Navigator.pushAndRemoveUntil(
+                    //                             context,
+                    //                             MaterialPageRoute(
+                    //                               builder: (builder) => Wrapper(
+                    //                                 guestUser: false,
+                    //                               ),
+                    //                             ),
+                    //                             (route) => false);
+                    //                       }
+                    //                     } else {
+                    //                       setState(() {
+                    //                         _isLoading = false;
+                    //                       });
+                    //                     }
+                    //                   }
+                    //                 }
+                    //               },
+                    //               style: ElevatedButton.styleFrom(
+                    //                 side: const BorderSide(
+                    //                     color: Color(0xffdf1266)),
+                    //                 primary: Colors.white,
+                    //                 shape: RoundedRectangleBorder(
+                    //                   borderRadius: BorderRadius.circular(5),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           const SizedBox(
+                    //             height: 10,
+                    //           ),
+                    //           //Sign up button
+                    //           SizedBox(
+                    //             width: _size.width - 50,
+                    //             child: ElevatedButton(
+                    //               child: const Text('Sign Up'),
+                    //               onPressed: () async {
+                    //                 WidgetsBinding.instance!
+                    //                     .addPostFrameCallback((_) {
+                    //                   Navigator.push(
+                    //                     context,
+                    //                     MaterialPageRoute(
+                    //                       builder: (context) => const Register(),
+                    //                     ),
+                    //                   );
+                    //                 });
+                    //               },
+                    //               style: ElevatedButton.styleFrom(
+                    //                 side: const BorderSide(
+                    //                     color: Color(0xffdf1266)),
+                    //                 primary: const Color(0xffdf1266),
+                    //                 shape: RoundedRectangleBorder(
+                    //                   borderRadius: BorderRadius.circular(5),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           const SizedBox(
+                    //             height: 10,
+                    //           ),
+                    //           errorMessage != null
+                    //               ? Expanded(
+                    //                   child: Container(
+                    //                       padding: EdgeInsets.all(10),
+                    //                       child: Text(
+                    //                         errorMessage,
+                    //                         style: errorText,
+                    //                         textAlign: TextAlign.center,
+                    //                       )),
+                    //                 )
+                    //               : SizedBox.shrink(),
+
+                    //           TextButton(
+                    //             onPressed: () async {
+                    //               await Navigator.push(
+                    //                 context,
+                    //                 MaterialPageRoute(
+                    //                   builder: (builder) =>
+                    //                       const Wrapper(guestUser: true),
+                    //                 ),
+                    //               );
+                    //             },
+                    //             child: const Text(
+                    //               "Skip for now",
+                    //               style: TextStyle(
+                    //                   fontSize: 20,
+                    //                   fontWeight: FontWeight.bold,
+                    //                   color: Color(0xffdf1266)),
+                    //             ),
+                    //           ),
+                    //           TextButton(
+                    //             onPressed: () async {},
+                    //             child: const Text(
+                    //               "Browse the app as a Guest User",
+                    //               style: TextStyle(color: Colors.black),
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       );
+                    //     }
+                    //   },
+                    // ),
+                    //Other method sign in
+
+                    //Skip button
+                    ),
                 _isLoading
                     ? Container(
                         height: 50,

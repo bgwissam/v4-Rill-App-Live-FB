@@ -16,6 +16,7 @@ import 'package:rillliveapp/services/auth.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/error_screen.dart';
+import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/wrapper.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'models/user_model.dart';
@@ -23,7 +24,7 @@ import 'models/user_model.dart';
 //A top level named handler to handle background/terminated messages will call
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   //make sure firebase is initialized bofore using this service
-  await Firebase.initializeApp();
+  //await Firebase.initializeApp();
   print('Handling a background message: ${message.messageId}');
 }
 
@@ -33,66 +34,153 @@ AndroidNotificationChannel? channel;
 //Initialize flutter notification channel
 FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 String errorMessage = '';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp().catchError((error, stackTrace) async {
-    errorMessage = error.toString();
-    await Sentry.captureException(error, stackTrace: stackTrace);
-  });
+
+  // await Firebase.initializeApp().catchError((error, stackTrace) async {
+  //   errorMessage = error.toString();
+  //   await Sentry.captureException(error, stackTrace: stackTrace);
+  // });
   cameras = await availableCameras();
-
-  //Set the background message handler
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  if (Platform.isAndroid || Platform.isIOS) {
-    channel = const AndroidNotificationChannel(
-        'High_Importance', 'High importance notifications',
-        importance: Importance.high);
-  }
-
-  FirebaseMessaging.onMessageOpenedApp.listen((message) {
-    print('message opened main: $message');
-  });
-
-  flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  //Create an android notification channel to overrid the default FCM channel
-  await flutterLocalNotificationsPlugin!
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel!);
-
-  //Update ios foreground notification presentation options
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-      alert: true, badge: true, sound: true);
-
   await SentryFlutter.init(
     (options) {
       options.dsn =
           'https://59a95067f678454ab288e638cd9d9774@o994278.ingest.sentry.io/5952729';
     },
-    appRunner: () => runApp(const MyApp()),
+    appRunner: () {
+      runApp(MyApp());
+    },
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  MyApp({Key? key}) : super(key: key);
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    bool _userSignedIn = false;
-    DatabaseService db = DatabaseService();
-    return MultiProvider(
-      providers: [
-        StreamProvider<UserModel?>.value(
-          value: AuthService().user,
-          initialData: null,
-          catchError: (_, error) {
-            print('Error streaming user: $error');
-            return null;
-          },
-        ),
-      ],
-      child: MaterialApp(
+    return
+        // MultiProvider(
+        //   providers: [
+        //     StreamProvider<UserModel?>.value(
+        //       value: AuthService().user,
+        //       initialData: null,
+        //       catchError: (_, error) {
+        //         print('Error streaming user: $error');
+        //         return null;
+        //       },
+        //     ),
+        //   ],
+        //   child:
+        FutureBuilder(
+            future: _initialization,
+            builder: (context, snapshot) {
+              print('the snapshot: ${snapshot.data}');
+              if (snapshot.hasError) {
+                return errorInitializing(snapshot.error.toString());
+              }
+              if (snapshot.connectionState == ConnectionState.done) {
+                //initiate messaging
+                _initiateMessaging();
+                return MultiProvider(
+                  providers: [
+                    StreamProvider<UserModel?>.value(
+                      value: AuthService().user,
+                      initialData: null,
+                      catchError: (_, error) {
+                        print('Error streaming user: $error');
+                        return null;
+                      },
+                    ),
+                  ],
+                  child: MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    title: 'Rill Live Streaming',
+                    theme: ThemeData(
+                      primarySwatch: Colors.blue,
+                      fontFamily: 'Poppins',
+                      textTheme: const TextTheme(
+                        headline1: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xffdf1266)),
+                        headline6: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xffdf1266)),
+                      ),
+                    ),
+                    home: errorMessage.isEmpty
+                        ? const MySplashScreen()
+                        : const ErrorScreen(),
+                    routes: <String, WidgetBuilder>{
+                      '/home': (BuildContext context) => const Wrapper(
+                            guestUser: false,
+                          ),
+                      '/notifications': (BuildContext context) =>
+                          const NotificationScreen(),
+                    },
+                  ),
+                );
+              }
+
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Rill Live Streaming',
+                theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                  fontFamily: 'Poppins',
+                  textTheme: const TextTheme(
+                    headline1: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xffdf1266)),
+                    headline6: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xffdf1266)),
+                  ),
+                ),
+                home: const Center(
+                  child: LoadingAmination(
+                    animationType: 'ThreeInOut',
+                  ),
+                ),
+              );
+            }
+            // ),
+            );
+  }
+
+  //Initiate the messaging process
+  Future _initiateMessaging() async {
+    //Set the background message handler
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    if (Platform.isAndroid || Platform.isIOS) {
+      channel = const AndroidNotificationChannel(
+          'High_Importance', 'High importance notifications',
+          importance: Importance.high);
+    }
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('message opened main: $message');
+    });
+
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    //Create an android notification channel to overrid the default FCM channel
+    await flutterLocalNotificationsPlugin!
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel!);
+
+    //Update ios foreground notification presentation options
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+            alert: true, badge: true, sound: true);
+  }
+
+  errorInitializing(String error) {
+    return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Rill Live Streaming',
         theme: ThemeData(
@@ -109,17 +197,9 @@ class MyApp extends StatelessWidget {
                 color: Color(0xffdf1266)),
           ),
         ),
-        home:
-            errorMessage.isEmpty ? const MySplashScreen() : const ErrorScreen(),
-        routes: <String, WidgetBuilder>{
-          '/home': (BuildContext context) => const Wrapper(
-                guestUser: false,
-              ),
-          '/notifications': (BuildContext context) =>
-              const NotificationScreen(),
-        },
-      ),
-    );
+        home: Center(
+          child: Text('Error loading cloud firebase: $error'),
+        ));
   }
 }
 
@@ -149,10 +229,9 @@ class _MySplashScreenState extends State<MySplashScreen> {
   void initState() {
     super.initState();
     pNotif.init();
-    //_checkSignedIn = checkSignedInUser();
-    //_getDeviceInfo();
+
     Timer(
-      Duration(seconds: 7),
+      Duration(seconds: 4),
       () => Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(

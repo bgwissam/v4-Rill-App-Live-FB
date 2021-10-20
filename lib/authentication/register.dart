@@ -190,7 +190,6 @@ class RegisterState extends State<Register> {
                       phoneIsoCode: phoneIsoCode,
                       phoneFullNumber: phoneFullNumber,
                       address: address);
-                  print('the result of registering is: $result');
                   if (result.isNotEmpty) {
                     if (result.contains(' ')) {
                       if (result.contains('email address is already in use')) {
@@ -249,7 +248,6 @@ class RegisterState extends State<Register> {
                       .catchError((error, stackTrace) async {
                     print('An error updating user: $error: stack: $stackTrace');
                   });
-                  print('the result of updating: $result');
                 }
                 setState(() {
                   _isSavingUpdating = false;

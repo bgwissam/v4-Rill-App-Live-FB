@@ -36,7 +36,6 @@ class _WrapperState extends State<Wrapper> {
     super.initState();
     _guestUser = widget.guestUser!;
     _getFcmToken();
-
     //Initiate a future to check user verification
   }
 
@@ -67,6 +66,7 @@ class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
     currentUser = Provider.of<UserModel?>(context);
+    print('the signed in user: ${currentUser?.userId}');
     if (currentUser?.userId != null) {
       _addFcmToken();
       setState(() {

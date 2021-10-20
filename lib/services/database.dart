@@ -226,7 +226,6 @@ class DatabaseService {
               isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
               roles: (doc.data()! as Map)[UserParams.ROLES]),
         );
-    print('the result: $result');
     return result;
   }
 
