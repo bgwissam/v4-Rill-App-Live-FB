@@ -109,7 +109,8 @@ class MyApp extends StatelessWidget {
                 color: Color(0xffdf1266)),
           ),
         ),
-        home: errorMessage != null ? MySplashScreen() : ErrorScreen(),
+        home:
+            errorMessage.isEmpty ? const MySplashScreen() : const ErrorScreen(),
         routes: <String, WidgetBuilder>{
           '/home': (BuildContext context) => const Wrapper(
                 guestUser: false,
@@ -151,7 +152,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     //_checkSignedIn = checkSignedInUser();
     //_getDeviceInfo();
     Timer(
-      Duration(seconds: 4),
+      Duration(seconds: 7),
       () => Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
