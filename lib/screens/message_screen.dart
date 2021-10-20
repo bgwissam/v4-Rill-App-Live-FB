@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rillliveapp/authentication/signin.dart';
@@ -86,7 +85,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
   void initState() {
     super.initState();
     _getMessageStream();
-    _getUnreadMessages();
+    unread = _getUnreadMessages();
   }
 
   //Search Box
@@ -117,6 +116,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
 
   //build messages list
   Widget _messageList(Size size) {
+    chatList.clear();
     return StreamBuilder<QuerySnapshot>(
       stream: messageStream,
       builder: (context, AsyncSnapshot snapshot) {
@@ -126,6 +126,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
               ? ListView.builder(
                   itemCount: snapshot.data?.docs.length,
                   itemBuilder: (context, index) {
+                    //var unreadMessage = _getUnreadMessages();
+
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: InkWell(
@@ -134,10 +136,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (builder) => ConversationScreen(
-                                  otherUser: snapshot.data?.docs[index]
-                                      [ChatRoomParameters.chattingWith],
-                                  currentUser: widget.userModel,
-                                  chatRoomId: snapshot.data?.docs[index].id),
+                                otherUser: snapshot.data?.docs[index]
+                                    [ChatRoomParameters.chattingWith],
+                                currentUser: widget.userModel,
+                                chatRoomId: snapshot.data?.docs[index].id,
+                                // markRead: markAsRead,
+                              ),
                             ),
                           );
                         },
@@ -166,7 +170,6 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Container(
-                                decoration: BoxDecoration(border: Border.all()),
                                 width: size.width / 2,
                                 child: Text(
                                   '${snapshot.data?.docs[index][UserParams.FIRST_NAME]} ${snapshot.data?.docs[index][UserParams.LAST_NAME]}',
@@ -177,14 +180,43 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                   future: unread,
                                   builder: (context, AsyncSnapshot snapshot) {
                                     if (snapshot.hasData) {
-                                      return Container(
-                                          width: size.width / 8,
-                                          child: Text(
-                                            unread.toString(),
-                                          ));
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.done) {
+                                        if (snapshot.data.isNotEmpty) {
+                                          if (snapshot.data[index]['unread'] >
+                                              0) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  color: Colors.red),
+                                              width: 35,
+                                              height: 35,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                snapshot.data[index]['unread']
+                                                    .toString(),
+                                              ),
+                                            );
+                                          }
+                                        }
+                                        return SizedBox.shrink();
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container(
+                                          width: 35,
+                                          height: 35,
+                                          alignment: Alignment.center,
+                                          child: CircularProgressIndicator(
+                                            color: color_4,
+                                          ),
+                                        );
+                                      }
+                                      return SizedBox.shrink();
+                                    } else {
+                                      return SizedBox.shrink();
                                     }
-
-                                    return SizedBox.shrink();
                                   }),
                             ],
                           ),
@@ -203,16 +235,23 @@ class _MessagesScreenState extends State<MessagesScreen> {
     );
   }
 
-  Future<void> _getUnreadMessages() async {
+  //Mark messages as read when chat is accessed
+  markAsRead() async {
+    unread = _getUnreadMessages();
+    print('the unread: $unread');
+  }
+
+  Future<List<Map<String, dynamic>>> _getUnreadMessages() async {
     var userChats = await db.getChatRoomFuturePerUser(userId: widget.userId);
 
     for (var chat in userChats) {
       var unreadChats =
           await db.getUnreadMessages(chatRoomId: chat, userId: widget.userId);
       if (!chatList.contains(chat)) {
-        print('unread: $unreadChats');
-        chatList.add({'chatId': chat, 'undread': unreadChats});
+        chatList.add({'chatId': chat, 'unread': unreadChats});
       }
     }
+    print('the chatList: $chatList');
+    return chatList;
   }
 }

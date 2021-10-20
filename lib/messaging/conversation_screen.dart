@@ -20,8 +20,13 @@ class ConversationScreen extends StatefulWidget {
   final String? chatRoomId;
   final UserModel? currentUser;
   final String? otherUser;
+  final Function? markRead;
   const ConversationScreen(
-      {Key? key, this.chatRoomId, this.currentUser, this.otherUser})
+      {Key? key,
+      this.chatRoomId,
+      this.currentUser,
+      this.otherUser,
+      this.markRead})
       : super(key: key);
 
   @override
@@ -74,7 +79,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
     } else {
       Navigator.pop(context);
     }
-
+    //widget.markRead;
     return Future.value(false);
   }
 

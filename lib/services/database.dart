@@ -729,7 +729,6 @@ class DatabaseService {
   //get unread messages
   getUnreadMessages({String? chatRoomId, String? userId}) async {
     try {
-      print('unread data: $chatRoomId - $userId');
       return messagesCollection
           .doc(chatRoomId)
           .collection('chats')
@@ -740,6 +739,7 @@ class DatabaseService {
         return value.docs.length;
       });
     } catch (e, stackTrace) {
+      print('error reading chats: $e');
       await Sentry.captureException(e, stackTrace: stackTrace);
     }
   }
