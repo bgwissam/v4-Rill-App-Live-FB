@@ -8,6 +8,7 @@ class UserModel {
   String? phoneNumber;
   String? phoneIsoCode;
   String? phoneFullNumber;
+  int? coins;
   var dob;
   String? address;
   String? bioDescription;
@@ -25,6 +26,7 @@ class UserModel {
       this.phoneNumber,
       this.phoneIsoCode,
       this.phoneFullNumber,
+      this.coins,
       this.dob,
       this.address,
       this.bioDescription,

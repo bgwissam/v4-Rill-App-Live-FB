@@ -204,6 +204,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       ms.messageType = 'message';
       ms.messageTitle = 'New Message';
       ms.messageBody = messageString;
+      // ms.userModel = widget.currentUser;
       ms.sendPushMessage();
     }
   }

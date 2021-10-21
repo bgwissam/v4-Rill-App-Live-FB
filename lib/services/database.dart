@@ -122,6 +122,7 @@ class DatabaseService {
             phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
             fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
             phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
+            coins: (doc.data()! as Map)[UserParams.COINS],
             isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
             roles: (doc.data()! as Map)[UserParams.ROLES]);
       });
@@ -148,6 +149,7 @@ class DatabaseService {
           phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
           fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
           phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
+          coins: (doc.data()! as Map)[UserParams.COINS],
           isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
           roles: (doc.data()! as Map)[UserParams.ROLES]);
     }).toList();
@@ -201,6 +203,7 @@ class DatabaseService {
           phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
           fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
           phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
+          coins: (doc.data()! as Map)[UserParams.COINS],
           isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
           roles: (doc.data()! as Map)[UserParams.ROLES]);
     });
@@ -223,6 +226,7 @@ class DatabaseService {
               phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
               fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
               phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
+              coins: (doc.data()! as Map)[UserParams.COINS],
               isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
               roles: (doc.data()! as Map)[UserParams.ROLES]),
         );

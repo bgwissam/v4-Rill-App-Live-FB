@@ -270,13 +270,13 @@ class _MainScreenState extends State<MainScreen>
   //Get firebase messaging token and save it to the user
   _getFcmToken() async {
     await _fcm.getInitialMessage().then((message) async {
-      if (message != null) {
+      if (message?.notification != null) {
         await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (builder) => NotificationScreen(
-                title: message.notification!.title,
-                content: message.notification!.body),
+                title: message?.notification!.title,
+                content: message?.notification!.body),
           ),
         );
       }
@@ -303,9 +303,8 @@ class _MainScreenState extends State<MainScreen>
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         var notification = message.notification;
         var androidNotification = message.notification!.android;
-        print(
-            'Notification: ${notification?.title} - Android: ${androidNotification?.channelId}');
-        if (notification != null && androidNotification != null) {
+        print('Notification: ${notification?.title} - ${notification?.body}');
+        if (notification!.title != null) {
           flutterLocalNotificationsPlugin!.show(
             notification.hashCode,
             notification.title,
@@ -322,28 +321,47 @@ class _MainScreenState extends State<MainScreen>
       });
 
       FirebaseMessaging.onBackgroundMessage((message) async {
-        print('A background message exists');
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (builder) => NotificationScreen(
-                title: message.notification?.title,
-                content: message.notification?.body),
-          ),
-        );
+        print('A background message exists: ${message.messageType}');
+        switch (message.data['type']) {
+          case 'message':
+            MessagesScreen(
+              userId: message.data['userId'],
+              userModel: message.data['userModel'],
+            );
+            break;
+
+          default:
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (builder) => NotificationScreen(
+                    title: message.notification?.title,
+                    content: message.notification?.body),
+              ),
+            );
+        }
       });
 
-      FirebaseMessaging.onMessageOpenedApp
-          .listen((RemoteMessage message) async {
-        print('message opened main_screen: $message');
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (builder) => NotificationScreen(
-                title: message.notification?.title,
-                content: message.notification?.body),
-          ),
-        );
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+        print('message opened main_screen: ${message.data['type']}');
+        switch (message.data['type']) {
+          case 'message':
+            MessagesScreen(
+              userId: message.data['userId'],
+              userModel: message.data['userModel'],
+            );
+            break;
+
+          default:
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (builder) => NotificationScreen(
+                    title: message.notification?.title,
+                    content: message.notification?.body),
+              ),
+            );
+        }
       });
     } else {
       return showDialog(

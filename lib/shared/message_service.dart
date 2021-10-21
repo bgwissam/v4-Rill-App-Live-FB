@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:rillliveapp/models/user_model.dart';
 
 class MessaginService {
   String? token;
@@ -9,6 +10,7 @@ class MessaginService {
   String? messageType;
   String? messageTitle;
   String? messageBody;
+  UserModel? userModel;
 
   Future<void> sendPushMessage() async {
     //_firebaseMessaging.onTokenRefresh;
@@ -38,14 +40,13 @@ class MessaginService {
         // 'from': senderName,
         'title': messageTitle,
         'body': '$senderName $messageBody',
-        'click_action': '/notifications'
+        'click_action': 'FLUTTER_NOTIFICATION_CLICK'
       },
       'to': token,
       'notification': {
         // 'from': senderName,
         'title': messageTitle,
         'body': '$senderName $messageBody',
-        'click_action': '/notifications'
       },
     });
     var response = await http.post(
@@ -63,20 +64,19 @@ class MessaginService {
   }
 
   _sendMessageNotification() async {
-    print('a message is being sent: $senderName - $messageBody');
     var msg = jsonEncode({
       'data': {
-        // 'from': senderName,
         'title': messageTitle,
         'body': '$senderName $messageBody',
-        'click_action': '/notifications'
+        'type': messageType,
+        'userId': senderId,
+        //'userProvider': userModel,
+        'click_action': 'FLUTTER_NOTIFICATION_CLICK',
       },
       'to': token,
       'notification': {
-        // 'from': senderName,
         'title': messageTitle,
         'body': '$senderName $messageBody',
-        'click_action': '/notifications'
       },
     });
     var response = await http.post(

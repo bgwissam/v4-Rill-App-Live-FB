@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rillliveapp/shared/color_styles.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({Key? key, this.title, this.content, this.type})
@@ -14,8 +15,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: color_4,
+        title: Text('Notifications'),
+      ),
       body: _buildMessageScreen(),
     );
   }
@@ -25,6 +28,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Padding(
       padding: EdgeInsets.all(15),
       child: Container(
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         height: size.height,
         child: Column(
           children: [

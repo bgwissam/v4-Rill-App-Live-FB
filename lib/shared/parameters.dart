@@ -36,6 +36,7 @@ class UserParams {
   static String AVATAR = 'avatarUrl';
   static String ADDRESS = 'address';
   static String FCM_TOKEN = 'fcmToken';
+  static String COINS = 'coins';
 }
 
 class ImageVideoParams {
