@@ -1237,13 +1237,15 @@ class _MainScreenState extends State<MainScreen>
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (builder) => ImageViewerProvider(
-                              userModel: userProvider,
-                              fileId: imageVideoProvider[index]!.uid,
-                              collection: 'comments',
-                              imageOwnerId: imageVideoProvider[index]!.userId,
-                              imageUrl:
-                                  imageVideoProvider[index]!.url.toString())),
+                        builder: (builder) => ImageViewerProvider(
+                          userModel: userProvider,
+                          fileId: imageVideoProvider[index]!.uid,
+                          collection: 'comments',
+                          imageOwnerId: imageVideoProvider[index]!.userId,
+                          imageUrl: imageVideoProvider[index]!.url.toString(),
+                          imageProvider: imageVideoProvider[index],
+                        ),
+                      ),
                     );
                   },
                   child: CachedNetworkImage(
@@ -1275,6 +1277,7 @@ class _MainScreenState extends State<MainScreen>
                           collection: 'comments',
                           playerUrl: imageVideoProvider[index]!.url,
                           videoOwnerId: imageVideoProvider[index]!.userId,
+                          imageProvider: imageVideoProvider[index],
                         ),
                       ),
                     );

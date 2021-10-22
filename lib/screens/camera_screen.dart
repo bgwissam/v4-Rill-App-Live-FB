@@ -30,6 +30,7 @@ class _CameraScreenState extends State<CameraScreen> {
   bool _isCameraInitialized = false;
   bool _isRearCameraSelected = true;
   bool _ismicOn = true;
+  String? description;
   FlashMode? _currentFlashMode;
   final ImagePicker _picker = ImagePicker();
   int selectedButton = 0;
@@ -127,6 +128,7 @@ class _CameraScreenState extends State<CameraScreen> {
     var size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.black,
         body: _isCameraInitialized
             ? Padding(
@@ -336,9 +338,9 @@ class _CameraScreenState extends State<CameraScreen> {
     );
   }
 
+  //the following dialog will show up after the image has been captured
   Widget _previewImage(XFile? file) {
     if (file != null) {
-      print('we are here: $file');
       showDialog(
           context: context,
           builder: (builder) {
@@ -350,8 +352,22 @@ class _CameraScreenState extends State<CameraScreen> {
                     ))
                   : const SizedBox.shrink(),
               AlertDialog(
-                content: Semantics(
-                  child: Image.file(File(file.path)),
+                content: Column(
+                  children: [
+                    Expanded(
+                      child: Semantics(
+                        child: Image.file(File(file.path)),
+                      ),
+                    ),
+                    TextFormField(
+                      initialValue: '',
+                      decoration: const InputDecoration(
+                          hintText: 'Say something..', filled: false),
+                      onChanged: (val) {
+                        description = val.trim();
+                      },
+                    )
+                  ],
                 ),
                 actions: [
                   TextButton(
@@ -367,7 +383,8 @@ class _CameraScreenState extends State<CameraScreen> {
                             userId: widget.userId,
                             url: result['imageUrl'],
                             tags: ['cat', 'cute'],
-                            type: 'image');
+                            type: 'image',
+                            description: description);
                       }
                       setState(() {
                         _isUploadingFile = false;

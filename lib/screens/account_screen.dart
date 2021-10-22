@@ -648,6 +648,7 @@ class _AccountScreenState extends State<AccountScreen>
                       collection: 'comments',
                       fileId: feedProvider[index]!.uid,
                       imageOwnerId: feedProvider[index]!.userId,
+                      imageProvider: feedProvider[index],
                     ),
                   ),
                 );
@@ -679,6 +680,7 @@ class _AccountScreenState extends State<AccountScreen>
                     collection: 'comments',
                     playerUrl: feedProvider[index]!.url,
                     videoOwnerId: feedProvider[index]!.userId,
+                    imageProvider: feedProvider[index],
                   ),
                 ),
               );

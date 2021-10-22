@@ -224,13 +224,15 @@ class _SearchScreenState extends State<SearchScreen> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (builder) => ImageViewerProvider(
-                                userModel: widget.userModel,
-                                fileId: imageVideoProvider[index]!.uid,
-                                imageOwnerId: imageVideoProvider[index]!.userId,
-                                collection: 'comments',
-                                imageUrl:
-                                    imageVideoProvider[index]!.url.toString())),
+                          builder: (builder) => ImageViewerProvider(
+                            userModel: widget.userModel,
+                            fileId: imageVideoProvider[index]!.uid,
+                            imageOwnerId: imageVideoProvider[index]!.userId,
+                            collection: 'comments',
+                            imageUrl: imageVideoProvider[index]!.url.toString(),
+                            imageProvider: imageVideoProvider[index],
+                          ),
+                        ),
                       );
                     },
                     child: CachedNetworkImage(
@@ -263,6 +265,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             collection: 'comments',
                             videoOwnerId: imageVideoProvider[index]!.userId,
                             playerUrl: imageVideoProvider[index]!.url,
+                            imageProvider: imageVideoProvider[index],
                           ),
                         ),
                       );

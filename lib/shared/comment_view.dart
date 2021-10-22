@@ -16,17 +16,24 @@ class CommentsView extends StatefulWidget {
 class _CommentsViewState extends State<CommentsView> {
   var currentTime = DateTime.now();
   var commentTime;
+  double? commentFieldSize;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    _getCommentFieldSize(size);
     return Container(
       margin: EdgeInsets.all(12),
       decoration: widget.imageComments.isNotEmpty
           ? BoxDecoration(
               color: color_13, borderRadius: BorderRadius.circular(12))
           : BoxDecoration(),
-      height: size.height - 350,
+      height: commentFieldSize,
       child: ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
@@ -94,6 +101,28 @@ class _CommentsViewState extends State<CommentsView> {
     if (currentTime.difference(commentTime).inSeconds > 0) {
       difference = '${currentTime.difference(commentTime).inSeconds} s';
       return difference;
+    }
+    return 'just now';
+  }
+
+  _getCommentFieldSize(var size) {
+    print('size comment ${widget.imageComments.length}');
+    if (widget.imageComments.length >= 3) {
+      commentFieldSize = size.height - 350;
+      return commentFieldSize;
+    }
+
+    if (widget.imageComments.length >= 2) {
+      commentFieldSize = size.height - 450;
+      return commentFieldSize;
+    }
+
+    if (widget.imageComments.isNotEmpty) {
+      commentFieldSize = size.height - 550;
+      return commentFieldSize;
+    } else {
+      commentFieldSize = 0;
+      return commentFieldSize;
     }
   }
 }

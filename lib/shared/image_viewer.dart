@@ -17,13 +17,15 @@ class ImageViewerProvider extends StatelessWidget {
       this.fileId,
       this.collection,
       this.imageUrl,
-      this.imageOwnerId})
+      this.imageOwnerId,
+      this.imageProvider})
       : super(key: key);
   final UserModel? userModel;
   final String? imageOwnerId;
   final String? fileId;
   final String? collection;
   final String? imageUrl;
+  final ImageVideoModel? imageProvider;
   @override
   Widget build(BuildContext context) {
     DatabaseService db = DatabaseService();
@@ -40,6 +42,7 @@ class ImageViewerProvider extends StatelessWidget {
         fileId: fileId,
         imageUrl: imageUrl!,
         imageOwnerId: imageOwnerId,
+        imageProvider: imageProvider,
       ),
     );
   }
@@ -51,12 +54,14 @@ class ImageViewer extends StatefulWidget {
       required this.imageUrl,
       this.userModel,
       this.fileId,
-      this.imageOwnerId})
+      this.imageOwnerId,
+      this.imageProvider})
       : super(key: key);
   final String imageUrl;
   final String? imageOwnerId;
   final UserModel? userModel;
   final String? fileId;
+  final ImageVideoModel? imageProvider;
   @override
   _ImageViewerState createState() => _ImageViewerState();
 }
@@ -67,6 +72,7 @@ class _ImageViewerState extends State<ImageViewer> {
   var commentProvider;
   DatabaseService db = DatabaseService();
   var getUser;
+  bool _isLiked = false;
   @override
   void initState() {
     super.initState();
@@ -197,26 +203,28 @@ class _ImageViewerState extends State<ImageViewer> {
         Expanded(
           flex: 4,
           child: Container(
-            decoration: BoxDecoration(border: Border.all(color: color_6)),
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.all(12),
             child: TextButton(
               child: Text(
-                'Like',
-                style: textStyle_3,
+                '${widget.imageProvider?.description != null ? widget.imageProvider?.description.toString().capitalize() : ''}',
+                style: textStyle_15,
+                textAlign: TextAlign.left,
               ),
               onPressed: () async {},
             ),
           ),
         ),
         Expanded(
-          child: Container(
-            decoration: BoxDecoration(border: Border.all(color: color_6)),
-            child: TextButton(
-              child: Text(
-                'Share',
-                style: textStyle_3,
-              ),
-              onPressed: () async {},
-            ),
+          child: IconButton(
+            icon: Image.asset(_isLiked
+                ? 'assets/icons/heart_rill_icon_dark.png'
+                : 'assets/icons/heart_rill_icon_light.png'),
+            onPressed: () async {
+              setState(() {
+                _isLiked = !_isLiked;
+              });
+            },
           ),
         ),
       ],
@@ -228,11 +236,6 @@ class _ImageViewerState extends State<ImageViewer> {
       height: _size.height - 90,
       child: CachedNetworkImage(
         imageUrl: widget.imageUrl,
-        // progressIndicatorBuilder: (context, imageUrl, progress) {
-        //   return CircularProgressIndicator(
-        //     backgroundColor: color_12,
-        //   );
-        // },
       ),
     );
   }
