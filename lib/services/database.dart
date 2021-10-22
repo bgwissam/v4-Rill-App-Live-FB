@@ -447,7 +447,8 @@ class DatabaseService {
       String? url,
       List<String>? tags,
       String? type,
-      String? thumbnailUrl}) async {
+      String? thumbnailUrl,
+      String? description}) async {
     try {
       var result = await imageVideoCollection.add({
         ImageVideoParams.USER_ID: userId,
@@ -456,6 +457,7 @@ class DatabaseService {
         ImageVideoParams.TAGS: tags,
         ImageVideoParams.TYPE: type,
         ImageVideoParams.THUMBNAIL: thumbnailUrl,
+        ImageVideoParams.DESCRIPTION: description,
       }).then((value) => value.id);
       return result;
     } catch (e, stackTrace) {
@@ -471,7 +473,8 @@ class DatabaseService {
       String? name,
       String? url,
       List<String>? tags,
-      String? thumbnailUrl}) async {
+      String? thumbnailUrl,
+      String? description}) async {
     try {
       await imageVideoCollection.doc(uid).update({
         ImageVideoParams.USER_ID: userId,
@@ -479,6 +482,7 @@ class DatabaseService {
         ImageVideoParams.URL: url,
         ImageVideoParams.TAGS: tags,
         ImageVideoParams.THUMBNAIL: thumbnailUrl,
+        ImageVideoParams.DESCRIPTION: description,
       });
       print('$name has been updated');
       return '$name has been updated';
@@ -498,7 +502,8 @@ class DatabaseService {
           url: (doc.data() as Map)[ImageVideoParams.URL],
           tags: (doc.data() as Map)[ImageVideoParams.TAGS],
           type: (doc.data() as Map)[ImageVideoParams.TYPE],
-          videoThumbnailurl: (doc.data() as Map)[ImageVideoParams.THUMBNAIL]);
+          videoThumbnailurl: (doc.data() as Map)[ImageVideoParams.THUMBNAIL],
+          description: (doc.data() as Map)[ImageVideoParams.DESCRIPTION]);
     }).toList();
   }
 
@@ -533,6 +538,7 @@ class DatabaseService {
       String? userId,
       String? fullName,
       String? collection,
+      String? avatarUrl,
       DateTime? dateTime}) async {
     try {
       await imageVideoCollection.doc(uid).collection(collection!).add({
@@ -540,6 +546,7 @@ class DatabaseService {
         CommentParameters.COMMENT: comment,
         CommentParameters.FULL_NAME: fullName,
         CommentParameters.DATE_TIME: dateTime,
+        CommentParameters.AVATAR: avatarUrl,
       });
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);

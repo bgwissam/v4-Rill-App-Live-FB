@@ -16,6 +16,7 @@ import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/followers.dart';
 import 'package:rillliveapp/shared/image_viewer.dart';
 import 'package:rillliveapp/shared/parameters.dart';
+import 'package:rillliveapp/shared/video_viewer.dart';
 import 'package:rillliveapp/wrapper.dart';
 import 'package:video_player/video_player.dart';
 import 'package:path/path.dart' as p;
@@ -33,7 +34,7 @@ class AccountProvider extends StatelessWidget {
       providers: [
         //All user feed provider
         StreamProvider<List<ImageVideoModel?>>.value(
-          value: db.getUserImageVideoList(userId: userId),
+          value: db.getUserImageVideoList(userId: userModel?.userId),
           initialData: [],
           catchError: (context, error) {
             print('Error fetching user feed: $error');
@@ -42,7 +43,7 @@ class AccountProvider extends StatelessWidget {
         ),
         //All user feed live recording
         StreamProvider<List<StreamingModel?>>.value(
-          value: db.getUserStreamingList(userId: userId),
+          value: db.getUserStreamingList(userId: userModel?.userId),
           initialData: [],
           catchError: (context, error) {
             print('Error fetching user streaming data: $error');
@@ -60,7 +61,8 @@ class AccountProvider extends StatelessWidget {
         ),
         StreamProvider<List<UsersFollowing?>>.value(
           value: db.getUsersBeingFollowed(
-              userId: userId, collection: FollowParameters.followers!),
+              userId: userModel?.userId,
+              collection: FollowParameters.followers!),
           initialData: [],
           catchError: (context, error) {
             print('An error fetching user: $error');
@@ -69,7 +71,8 @@ class AccountProvider extends StatelessWidget {
         ),
         StreamProvider<List<UsersFollowed?>>.value(
           value: db.getUsersFollowingUser(
-              userId: userId, collection: FollowParameters.following!),
+              userId: userModel?.userId,
+              collection: FollowParameters.following!),
           initialData: [],
           catchError: (context, error) {
             print('An error fetching user: $error');
@@ -653,7 +656,7 @@ class _AccountScreenState extends State<AccountScreen>
                   imageUrl: feedProvider[index]!.url!,
                   progressIndicatorBuilder: (context, imageUrl, progress) {
                     return const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
                       child: LinearProgressIndicator(
                         minHeight: 12.0,
                       ),
@@ -667,13 +670,18 @@ class _AccountScreenState extends State<AccountScreen>
         } else {
           return InkWell(
             onTap: () async {
-              // await Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (builder) => VideoPlayerPage(
-              //         videoController: feedProvider[index].url!),
-              //   ),
-              // );
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (builder) => VideoPlayerProvider(
+                    userModel: userProvider,
+                    fileId: feedProvider[index]!.uid,
+                    collection: 'comments',
+                    playerUrl: feedProvider[index]!.url,
+                    videoOwnerId: feedProvider[index]!.userId,
+                  ),
+                ),
+              );
             },
             child: Container(
               alignment: Alignment.center,

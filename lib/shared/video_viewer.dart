@@ -95,7 +95,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                   padding: const EdgeInsets.all(3.0),
                   child: FittedBox(
                     fit: BoxFit.fill,
-                    child: Image.network(snapshot.data.avatarUrl!),
+                    child: Image.network(
+                        snapshot.data.avatarUrl! ?? 'assets/images/g.png'),
                   ),
                 ),
                 title: Text(

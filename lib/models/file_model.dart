@@ -10,6 +10,7 @@ class ImageVideoModel {
   String? name;
   String? type;
   String? videoThumbnailurl;
+  String? description;
 
   ImageVideoModel(
       {this.uid,
@@ -18,7 +19,8 @@ class ImageVideoModel {
       this.tags,
       this.name,
       this.type,
-      this.videoThumbnailurl});
+      this.videoThumbnailurl,
+      this.description});
 }
 
 class StreamingModel {
@@ -76,6 +78,7 @@ class CommentModel {
   String? userId;
   String? fullName;
   String? comment;
+  String? avatarUrl;
   var dateTime;
 
   CommentModel({
@@ -84,5 +87,6 @@ class CommentModel {
     this.fullName,
     this.comment,
     this.dateTime,
+    this.avatarUrl,
   });
 }

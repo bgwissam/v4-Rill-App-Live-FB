@@ -47,6 +47,7 @@ class ImageVideoParams {
   static String NAME = 'imageName';
   static String TYPE = 'type';
   static String THUMBNAIL = 'thumbnailUrl';
+  static String DESCRIPTION = 'description';
 }
 
 class LiveStreamingParams {
@@ -66,6 +67,7 @@ class CommentParameters {
   static String FULL_NAME = 'fullName';
   static String COMMENT = 'comment';
   static String DATE_TIME = 'dateTime';
+  static String AVATAR = 'avatarUrl';
 }
 
 class FollowParameters {

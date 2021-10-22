@@ -7,6 +7,7 @@ import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/comment_add.dart';
 import 'package:rillliveapp/shared/comment_view.dart';
+import 'package:rillliveapp/shared/extensions.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 
 class ImageViewerProvider extends StatelessWidget {
@@ -80,19 +81,75 @@ class _ImageViewerState extends State<ImageViewer> {
         future: getUser,
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            print('the data obtained: ${snapshot.data.firstName}');
             return Scaffold(
               appBar: AppBar(
                 leading: Padding(
-                  padding: const EdgeInsets.all(3.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: FittedBox(
                     fit: BoxFit.fill,
-                    child: Image.network(snapshot.data.avatarUrl),
+                    child: Image.network(
+                        snapshot.data.avatarUrl ?? 'assets/images/g.png'),
                   ),
                 ),
-                title: Text(
-                    '${snapshot.data.firstName} ${snapshot.data.lastName}'),
-                backgroundColor: color_4,
+                title: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: SizedBox(
+                        height: 50,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${snapshot.data.firstName.toString().capitalize()} ${snapshot.data.lastName.toString().capitalize()}',
+                              style: heading_4,
+                            ),
+                            Text(
+                              '${snapshot.data.address.toString().capitalize()}',
+                              style: heading_4,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    //Views
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                              height: 30,
+                              child: Image.asset(
+                                  'assets/icons/eye_rill_icon_light.png')),
+                          Text(
+                            '321',
+                            style: heading_4,
+                          )
+                        ],
+                      ),
+                    ),
+                    //Comments
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                              height: 30,
+                              child: Image.asset(
+                                  'assets/icons/pop_rill_icon_light.png')),
+                          Text(
+                            '${commentProvider.length}',
+                            style: heading_4,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                backgroundColor: color_9,
               ),
               resizeToAvoidBottomInset: true,
               body: SizedBox(height: _size.height, child: _buildImageViewer()),
@@ -118,29 +175,27 @@ class _ImageViewerState extends State<ImageViewer> {
 
   Widget _buildImageViewer() {
     return SingleChildScrollView(
-      physics: ScrollPhysics(),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            //Displays the image
-            _imageContainer(),
-            //Like share widget
-            _likeShareView(),
-            //Displays the comments
-            CommentsView(imageComments: commentProvider, fileId: widget.fileId)
-          ],
-        ),
+      // physics: ScrollPhysics(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          //Displays the image
+          _imageContainer(),
+          //Like share widget
+          _description(),
+          //Displays the comments
+          CommentsView(imageComments: commentProvider, fileId: widget.fileId)
+        ],
       ),
     );
   }
 
-  Widget _likeShareView() {
+  Widget _description() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(
+          flex: 4,
           child: Container(
             decoration: BoxDecoration(border: Border.all(color: color_6)),
             child: TextButton(
@@ -172,12 +227,13 @@ class _ImageViewerState extends State<ImageViewer> {
     return SizedBox(
       height: _size.height - 90,
       child: CachedNetworkImage(
-          imageUrl: widget.imageUrl,
-          progressIndicatorBuilder: (context, imageUrl, progress) {
-            return CircularProgressIndicator(
-              backgroundColor: color_12,
-            );
-          }),
+        imageUrl: widget.imageUrl,
+        // progressIndicatorBuilder: (context, imageUrl, progress) {
+        //   return CircularProgressIndicator(
+        //     backgroundColor: color_12,
+        //   );
+        // },
+      ),
     );
   }
 

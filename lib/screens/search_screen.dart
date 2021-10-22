@@ -178,7 +178,7 @@ class _SearchScreenState extends State<SearchScreen> {
           child: TextFormField(
             focusNode: _focus,
             decoration: InputDecoration(
-              prefixIcon: ImageIcon(
+              prefixIcon: const ImageIcon(
                 AssetImage("assets/icons/search_rill.png"),
                 //  color: Color(0xffdf1266),
               ),
