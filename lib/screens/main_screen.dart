@@ -648,7 +648,7 @@ class _MainScreenState extends State<MainScreen>
   Widget _bottomNavigationWidget() {
     return SizedBox(
       width: _size.width,
-      height: 60,
+      height: 65,
       child: Stack(
         children: [
           CustomPaint(
@@ -656,10 +656,10 @@ class _MainScreenState extends State<MainScreen>
             painter: BottomNavigatorPainter(),
           ),
           Center(
-            heightFactor: 0.4,
+            heightFactor: 0.3,
             child: SizedBox(
-              height: 100,
-              width: 100,
+              height: 150,
+              width: 150,
               child: FloatingActionButton(
                 onPressed: () {
                   widget.userId != null
@@ -674,24 +674,8 @@ class _MainScreenState extends State<MainScreen>
                           'You need to login in order to use this feature');
                 },
                 backgroundColor: color_3,
-                child: IconButton(
-                  iconSize: 48,
-                  onPressed: () async {
-                    widget.userId != null
-                        ? await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (builder) =>
-                                    CameraScreen(userId: widget.userId)),
-                          )
-                        //showBottomNavigationMenu()
-                        : errorDialog('Guest Account',
-                            'You need to login in order to use this feature');
-                  },
-                  icon: Image.asset(
-                      'assets/icons/Rill_Small_Transparent_W@2x.png'),
-                ),
-                elevation: 0.5,
+                child: Image.asset('assets/icons/app_stream_button.png'),
+                elevation: 0.8,
               ),
             ),
           ),

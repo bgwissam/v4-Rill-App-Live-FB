@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rillliveapp/controller/token_controller.dart';
 import 'package:rillliveapp/main.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
@@ -36,10 +37,14 @@ class _CameraScreenState extends State<CameraScreen> {
   int selectedButton = 0;
   late bool _isUploadingFile = false;
   late bool _isRecordingVideo = false;
+  String? token;
+  String? _channelName;
 
   //Controllers
   StorageData storageData = StorageData();
   DatabaseService db = DatabaseService();
+  TokenGenerator tokenGenerator = TokenGenerator();
+
   Widget textButton(String text, Function()? function, Color color) {
     return TextButton(
       onPressed: function,
@@ -56,6 +61,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
+
     onNewCameraSelected(cameras[0]);
   }
 
@@ -325,6 +331,7 @@ class _CameraScreenState extends State<CameraScreen> {
                             setState(() {
                               selectedButton = 2;
                             });
+                            _getToken();
                           },
                           selectedButton == 2 ? Colors.yellow : Colors.white,
                         ),
@@ -336,6 +343,15 @@ class _CameraScreenState extends State<CameraScreen> {
             : Container(),
       ),
     );
+  }
+
+  //Future to get token
+  Future<void> _getToken() async {
+    print('we are creating token');
+    token = await tokenGenerator.createVideoAudioChannelToken(
+        channelName: 'testChannel', //_channelName!,
+        role: 'publisher',
+        userId: widget.userId!);
   }
 
   //the following dialog will show up after the image has been captured

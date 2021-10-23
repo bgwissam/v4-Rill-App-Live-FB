@@ -31,42 +31,42 @@ var color_13 = const Color(0xffD6D6D6);
 //Text input colors
 var textStyle_1 = TextStyle(
     color: color_4,
-    fontFamily: 'Montserrat-SB',
+    fontFamily: 'Poppins',
     fontWeight: FontWeight.bold,
     fontSize: 15);
 
 var textStyle_2 =
-    TextStyle(color: color_12, fontFamily: 'Montserra-SB', fontSize: 14);
+    TextStyle(color: color_12, fontFamily: 'Poppins', fontSize: 14);
 
 var textStyle_3 = TextStyle(
     color: color_4,
-    fontFamily: 'Montserrat-SB',
+    fontFamily: 'Poppins',
     fontWeight: FontWeight.bold,
     fontSize: 20);
 
 var textStyle_4 = TextStyle(
   color: color_6,
-  fontFamily: 'Montserrat-SB',
+  fontFamily: 'Poppins',
   fontWeight: FontWeight.bold,
   fontSize: 15,
 );
 
 var textStyle_5 = TextStyle(
   color: color_7,
-  fontFamily: 'Montserrat-SB',
+  fontFamily: 'Poppins',
   fontWeight: FontWeight.bold,
   fontSize: 18,
 );
 
 var textStyle_6 = TextStyle(
     color: color_3,
-    fontFamily: 'Montserrat-M',
+    fontFamily: 'Poppins',
     fontWeight: FontWeight.bold,
     fontSize: 15);
 
 var textStyle_7 = TextStyle(
   color: color_10,
-  fontFamily: 'Montserrat-M',
+  fontFamily: 'Poppins',
   fontStyle: FontStyle.italic,
   fontSize: 14,
 );
@@ -78,13 +78,13 @@ var textStyle_9 =
 
 var textStyle_10 = TextStyle(
     color: color_8,
-    fontFamily: 'Montserrat-SB',
+    fontFamily: 'Poppins',
     fontWeight: FontWeight.bold,
     fontSize: 15);
 
 var textStyle_11 = TextStyle(
     color: color_9,
-    fontFamily: 'Montserrat-SB',
+    fontFamily: 'Poppins',
     fontStyle: FontStyle.italic,
     fontSize: 13);
 
@@ -110,40 +110,40 @@ var textStyle_15 = TextStyle(
 );
 
 var textStyle_16 =
-    TextStyle(fontSize: 12, fontFamily: 'Montserrat-SB', color: color_11);
+    TextStyle(fontSize: 12, fontFamily: 'Poppins', color: color_11);
 
 var heading_1 = TextStyle(
     color: color_4,
-    fontFamily: 'Montserrat-B',
+    fontFamily: 'Poppins',
     fontWeight: FontWeight.bold,
     fontSize: 28);
 
 var heading_2 = const TextStyle(
     color: Colors.black,
-    fontFamily: 'Montserrat-B',
+    fontFamily: 'Poppins',
     fontWeight: FontWeight.bold,
     fontSize: 9);
 
 var heading_3 = TextStyle(
     color: color_4,
-    fontFamily: 'Montserrat-B',
+    fontFamily: 'Poppins',
     fontWeight: FontWeight.bold,
     fontSize: 18);
 
 var heading_4 = TextStyle(
     color: color_12,
-    fontFamily: 'Montserrat-B',
+    fontFamily: 'Poppins',
     fontWeight: FontWeight.bold,
     fontSize: 14);
 
 var errorText = TextStyle(
     color: color_3,
-    fontFamily: 'Montserrat-B',
+    fontFamily: 'Poppins',
     fontWeight: FontWeight.bold,
     fontSize: 20);
 
 var button_1 = TextStyle(
     color: color_9,
-    fontFamily: 'Montserrat-SB',
+    fontFamily: 'Poppins',
     fontWeight: FontWeight.bold,
     fontSize: 14);
