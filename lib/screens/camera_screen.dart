@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rillliveapp/controller/live_streaming.dart';
+import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/controller/token_controller.dart';
 import 'package:rillliveapp/main.dart';
 import 'package:rillliveapp/services/database.dart';
@@ -22,9 +25,16 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
+  //controllers
   CameraController? _controller;
   VideoPlayerController? _vcontroller;
   VideoPlayerController? _toBeDisposed;
+  RecordingController _recordingController = RecordingController();
+  StorageData storageData = StorageData();
+  DatabaseService db = DatabaseService();
+  TokenGenerator tokenGenerator = TokenGenerator();
+
+  //variables
   ResolutionPreset currentResolutionPreset = ResolutionPreset.high;
   double _minAvailableExposureOffset = 0.0;
   double _maxAvailableExposureOffset = 0.0;
@@ -39,11 +49,10 @@ class _CameraScreenState extends State<CameraScreen> {
   late bool _isRecordingVideo = false;
   String? token;
   String? _channelName;
-
-  //Controllers
-  StorageData storageData = StorageData();
-  DatabaseService db = DatabaseService();
-  TokenGenerator tokenGenerator = TokenGenerator();
+  late bool _isLoadingStream = false;
+  //Maps
+  late Map acquireResponse;
+  late Map startRecording;
 
   Widget textButton(String text, Function()? function, Color color) {
     return TextButton(
@@ -61,7 +70,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
-
+    _channelName = 'testing';
     onNewCameraSelected(cameras[0]);
   }
 
@@ -244,16 +253,83 @@ class _CameraScreenState extends State<CameraScreen> {
                                 ),
                               ),
                             if (selectedButton == 2)
-                              const Padding(
-                                padding: EdgeInsets.only(bottom: 20),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: CircleAvatar(
-                                    radius: 30,
-                                    backgroundColor: Colors.grey,
+                              GestureDetector(
+                                onTap: () async {
+                                  if (mounted) {
+                                    setState(() {
+                                      _isLoadingStream = true;
+                                    });
+                                  }
+                                  if (token == 'failed') {
+                                    return;
+                                  }
+                                  if (_controller == null ||
+                                      !_controller!.value.isInitialized) {
+                                    print('error select camera first');
+                                    return;
+                                  }
+
+                                  if (_controller!.value.isRecordingVideo) {
+                                    setState(() {
+                                      _isLoadingStream = true;
+                                    });
+                                  }
+                                  //Start live streaming
+                                  try {
+                                    if (!_isRecordingVideo) {
+                                      setState(() {
+                                        _isLoadingStream = true;
+                                      });
+                                      //Check if recording could be started
+                                      var acquire = await _recordingController
+                                          .getVideoRecordingRefId(
+                                              _channelName!, '0', token!);
+                                      acquireResponse =
+                                          await json.decode(acquire.body);
+
+                                      if (acquireResponse['resourceId'] !=
+                                          null) {
+                                        var start = await _recordingController
+                                            .startRecordingVideo(
+                                                acquireResponse['resourceId'],
+                                                'mix',
+                                                _channelName!,
+                                                '0',
+                                                token!);
+                                        startRecording =
+                                            await json.decode(start.body);
+                                      }
+                                      if (startRecording['sid'] != null) {
+                                        _startRecordingLiveStream();
+                                      } else {
+                                        //add code here to show the recording initiation failed
+
+                                      }
+                                    } else {
+                                      setState(() {
+                                        _isLoadingStream = false;
+                                      });
+                                    }
+                                  } on CameraException catch (e, stackTrace) {
+                                    print(
+                                        'An exception with the camera occured: $e - $stackTrace');
+                                  }
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(bottom: 20),
+                                  child: Align(
+                                    alignment: Alignment.bottomCenter,
                                     child: CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor: Colors.red,
+                                      radius: 30,
+                                      backgroundColor: Colors.grey,
+                                      child: !_isLoadingStream
+                                          ? const CircleAvatar(
+                                              radius: 28,
+                                              backgroundColor: Colors.red,
+                                            )
+                                          : const CircularProgressIndicator(
+                                              backgroundColor:
+                                                  Colors.redAccent),
                                     ),
                                   ),
                                 ),
@@ -345,13 +421,50 @@ class _CameraScreenState extends State<CameraScreen> {
     );
   }
 
+  //The following functions will start recording a live stream
+  _startRecordingLiveStream() async {
+    //save stream to your database in order for other users to view it
+    var streamRec = await db.createNewDataStream(
+        channelName: _channelName,
+        token: token,
+        userId: widget.userId,
+        userName: 'Example',
+        resourceId: acquireResponse['resourceId'],
+        sid: startRecording['sid']);
+
+    print('the stream rec: $streamRec');
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (builder) => LiveStreaming(
+          channelName: _channelName!,
+          userRole: 'publisher',
+          token: token!,
+          userId: '0',
+          sid: startRecording['sid'],
+          resourceId: acquireResponse['resourceId'],
+          mode: 'mix',
+          streamModelId: streamRec,
+          streamUserId: widget.userId,
+          loadingStateCallback: callBackLoadingState,
+        ),
+      ),
+    );
+  }
+
   //Future to get token
   Future<void> _getToken() async {
-    print('we are creating token');
     token = await tokenGenerator.createVideoAudioChannelToken(
-        channelName: 'testChannel', //_channelName!,
-        role: 'publisher',
-        userId: widget.userId!);
+        channelName: _channelName!, role: 'publisher', userId: '');
+  }
+
+  //stopping the loading state when stream ends
+  void callBackLoadingState() {
+    setState(() {
+      print('we are turning off loading state');
+      _isLoadingStream = false;
+    });
   }
 
   //the following dialog will show up after the image has been captured

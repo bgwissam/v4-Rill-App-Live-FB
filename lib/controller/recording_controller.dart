@@ -32,7 +32,7 @@ class RecordingController {
             "uid": userId,
             "clientRequest": <String, dynamic>{
               "region": "CN",
-              "resourceExpiredHour": 24,
+              "resourceExpiredHour": 3,
             },
           },
         ),
@@ -111,6 +111,7 @@ class RecordingController {
       String? resouceId,
       String? mode,
       String? streamId}) async {
+    print('stoping video streaming: $resouceId - $sid - $mode');
     var rtcStopUrl = Uri.parse(
         'https://api.agora.io/v1/apps/${param.app_ID}/cloud_recording/resourceid/$resouceId/sid/$sid/mode/$mode/stop');
     String credentials = '${param.Customer_ID}:${param.Customer_secret}';
@@ -123,7 +124,7 @@ class RecordingController {
 
     try {
       //delete stream from stream video url data store
-      print('starting to delete: $streamVideoUrlId');
+      print('stpping - deleting: $streamVideoUrlId');
       if (streamVideoUrlId.isNotEmpty) {
         await db.deleteStreamingVideo(streamId: streamVideoUrlId);
         print('stream has been deleted');

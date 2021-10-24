@@ -431,7 +431,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   //Info panel to show logs
   Widget messageList() {
     return Container(
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.only(bottom: 45),
       alignment: Alignment.bottomCenter,
       child: FractionallySizedBox(
           heightFactor: 0.5,
@@ -441,13 +441,13 @@ class _LiveStreamingState extends State<LiveStreaming> {
                 reverse: true,
                 itemCount: _infoString.length,
                 itemBuilder: (context, index) {
-                  if (_infoString.isEmpty) {
+                  if (_messageList.isEmpty) {
                     return Container();
                   }
                   return Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-                      child: Text('${_infoString[index]}'));
+                      child: Text(_messageList[index]));
                 }),
           )),
     );
@@ -497,15 +497,18 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //tool bar functions
   void _onCallEnd(BuildContext context) async {
+    print('we are here stopping video streaming');
     String streamingId =
         await db.fetchStreamingVideoUrl(uid: widget.streamModelId);
+
+    print('the stream id: $streamingId');
     if (streamingId == widget.streamUserId) {
       widget.loadingStateCallback!();
 
       //Stop the recording and save the stream to the bucket
       var stopRecordingResult = await recordingController.stopRecordingVideos(
         channelName: widget.channelName,
-        userId: widget.userId,
+        userId: '0',
         sid: widget.sid,
         resouceId: widget.resourceId,
         mode: widget.mode,
