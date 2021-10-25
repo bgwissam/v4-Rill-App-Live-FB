@@ -7,7 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rillliveapp/controller/live_streaming.dart';
 import 'package:rillliveapp/controller/recording_controller.dart';
-import 'package:rillliveapp/controller/token_controller.dart';
+import 'package:rillliveapp/controller/token_controller_rtc.dart';
+import 'package:rillliveapp/controller/token_controller_rtm.dart';
 import 'package:rillliveapp/main.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
@@ -32,7 +33,8 @@ class _CameraScreenState extends State<CameraScreen> {
   RecordingController _recordingController = RecordingController();
   StorageData storageData = StorageData();
   DatabaseService db = DatabaseService();
-  TokenGenerator tokenGenerator = TokenGenerator();
+  RtcTokenGenerator rtctokenGenerator = RtcTokenGenerator();
+  RtmTokenGenerator rtmTokenGenerator = RtmTokenGenerator();
 
   //variables
   ResolutionPreset currentResolutionPreset = ResolutionPreset.high;
@@ -47,7 +49,8 @@ class _CameraScreenState extends State<CameraScreen> {
   int selectedButton = 0;
   late bool _isUploadingFile = false;
   late bool _isRecordingVideo = false;
-  String? token;
+  String? rtcToken;
+  String? rtmToken;
   String? _channelName;
   late bool _isLoadingStream = false;
   //Maps
@@ -71,6 +74,7 @@ class _CameraScreenState extends State<CameraScreen> {
   void initState() {
     super.initState();
     _channelName = 'testing';
+    print('the cameras: $cameras');
     onNewCameraSelected(cameras[0]);
   }
 
@@ -260,7 +264,7 @@ class _CameraScreenState extends State<CameraScreen> {
                                       _isLoadingStream = true;
                                     });
                                   }
-                                  if (token == 'failed') {
+                                  if (rtcToken == 'failed') {
                                     return;
                                   }
                                   if (_controller == null ||
@@ -283,7 +287,7 @@ class _CameraScreenState extends State<CameraScreen> {
                                       //Check if recording could be started
                                       var acquire = await _recordingController
                                           .getVideoRecordingRefId(
-                                              _channelName!, '0', token!);
+                                              _channelName!, '0', rtcToken!);
                                       acquireResponse =
                                           await json.decode(acquire.body);
 
@@ -295,7 +299,7 @@ class _CameraScreenState extends State<CameraScreen> {
                                                 'mix',
                                                 _channelName!,
                                                 '0',
-                                                token!);
+                                                rtcToken!);
                                         startRecording =
                                             await json.decode(start.body);
                                       }
@@ -407,7 +411,7 @@ class _CameraScreenState extends State<CameraScreen> {
                             setState(() {
                               selectedButton = 2;
                             });
-                            _getToken();
+                            _getTokens();
                           },
                           selectedButton == 2 ? Colors.yellow : Colors.white,
                         ),
@@ -426,7 +430,8 @@ class _CameraScreenState extends State<CameraScreen> {
     //save stream to your database in order for other users to view it
     var streamRec = await db.createNewDataStream(
         channelName: _channelName,
-        token: token,
+        rtcToken: rtcToken,
+        rtmToken: rtmToken,
         userId: widget.userId,
         userName: 'Example',
         resourceId: acquireResponse['resourceId'],
@@ -440,7 +445,8 @@ class _CameraScreenState extends State<CameraScreen> {
         builder: (builder) => LiveStreaming(
           channelName: _channelName!,
           userRole: 'publisher',
-          token: token!,
+          rtcToken: rtcToken!,
+          rtmToken: rtmToken!,
           userId: '0',
           sid: startRecording['sid'],
           resourceId: acquireResponse['resourceId'],
@@ -454,9 +460,16 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   //Future to get token
-  Future<void> _getToken() async {
-    token = await tokenGenerator.createVideoAudioChannelToken(
-        channelName: _channelName!, role: 'publisher', userId: '');
+  Future<void> _getTokens() async {
+    rtcToken =
+        //'006d480c821a2a946d6a4d29292462a3d6fIACwIItxGO0hkIJbjwNWftrcxapPfalxsW46SqmGPy75PwZa8+gAAAAAIgDJD5AXcH13YQQAAQBvfXdhAgBvfXdhAwBvfXdhBABvfXdh';
+
+        await rtctokenGenerator.createVideoAudioChannelToken(
+            channelName: _channelName!, role: 'publisher', userId: 0);
+
+    rtmToken = await rtmTokenGenerator.createMessagingToken(
+        channelName: _channelName!, userId: '', role: 'publisher');
+    print('the rtc token: $rtcToken');
   }
 
   //stopping the loading state when stream ends

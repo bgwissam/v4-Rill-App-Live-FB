@@ -15,7 +15,7 @@ import 'package:rillliveapp/authentication/register.dart';
 import 'package:rillliveapp/authentication/security.dart';
 import 'package:rillliveapp/controller/live_streaming.dart';
 import 'package:rillliveapp/controller/recording_controller.dart';
-import 'package:rillliveapp/controller/token_controller.dart';
+import 'package:rillliveapp/controller/token_controller_rtc.dart';
 import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/screens/account_screen.dart';
@@ -67,7 +67,8 @@ class _MainScreenState extends State<MainScreen>
   var _userRole = 'subscriber';
   final _userId = '45678';
   final _userId_2 = '34343';
-  late String token = '';
+  late String rtcToken = '';
+  late String rtmToken = '';
   late List<String> videoStreams = [];
   late List<Widget> _bodyWidget = [];
   late int _selectedIndex = 0;
@@ -84,7 +85,7 @@ class _MainScreenState extends State<MainScreen>
   late Future getSubscriptionFeed;
   //Define controller
   RecordingController recordingController = RecordingController();
-  TokenGenerator tokenGenerator = TokenGenerator();
+  RtcTokenGenerator tokenGenerator = RtcTokenGenerator();
   StorageData storageData = StorageData();
   Parameters params = Parameters();
   DatabaseService db = DatabaseService();
@@ -483,11 +484,13 @@ class _MainScreenState extends State<MainScreen>
                                         streamUserId:
                                             streamingProvider[index]!.userId,
                                         userRole: userType,
-                                        token: streamingProvider[index]!
-                                            .token
+                                        rtcToken: streamingProvider[index]!
+                                            .rtcToken
                                             .toString(),
-                                        userId:
-                                            _userId_2, //widget.userId.toString(),
+                                        rtmToken: streamingProvider[index]!
+                                            .rtmToken
+                                            .toString(),
+                                        userId: '0', //widget.userId.toString(),
                                         resourceId: streamingProvider[index]!
                                             .resourceId
                                             .toString(),
@@ -836,18 +839,18 @@ class _MainScreenState extends State<MainScreen>
                                                     print(
                                                         'the client Role: $_userRole');
 
-                                                    token = await tokenGenerator
-                                                        .createVideoAudioChannelToken(
-                                                            channelName:
-                                                                _channelName,
-                                                            role: _userRole,
-                                                            userId: _userId);
+                                                    // rtcToken = await tokenGenerator
+                                                    //     .createVideoAudioChannelToken(
+                                                    //         channelName:
+                                                    //             _channelName,
+                                                    //         role: _userRole,
+                                                    //         userId: _userId);
                                                     var acquireResult =
                                                         await recordingController
                                                             .getVideoRecordingRefId(
                                                                 _channelName,
                                                                 _userId,
-                                                                token);
+                                                                rtcToken);
                                                     acquireResponse =
                                                         await json.decode(
                                                             acquireResult.body);
@@ -864,7 +867,7 @@ class _MainScreenState extends State<MainScreen>
                                                                   'mix',
                                                                   _channelName,
                                                                   _userId,
-                                                                  token);
+                                                                  rtcToken);
                                                       startRecordingResponse =
                                                           await json.decode(
                                                               startResult.body);
@@ -879,7 +882,8 @@ class _MainScreenState extends State<MainScreen>
                                                           .createNewDataStream(
                                                               channelName:
                                                                   _channelName,
-                                                              token: token,
+                                                              rtcToken:
+                                                                  rtcToken,
                                                               userId:
                                                                   widget.userId,
                                                               userName:
@@ -897,7 +901,10 @@ class _MainScreenState extends State<MainScreen>
                                                         context,
                                                         MaterialPageRoute(
                                                           builder: (context) => LiveStreaming(
-                                                              token: token,
+                                                              rtcToken:
+                                                                  rtcToken,
+                                                              rtmToken:
+                                                                  rtmToken,
                                                               streamUserId:
                                                                   widget.userId,
                                                               channelName:

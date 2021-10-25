@@ -365,7 +365,8 @@ class DatabaseService {
   //Create a new data stream
   Future<dynamic> createNewDataStream(
       {String? channelName,
-      String? token,
+      String? rtcToken,
+      String? rtmToken,
       String? userId,
       String? userName,
       String? thumbnailUrl,
@@ -375,7 +376,8 @@ class DatabaseService {
       var result = await liveStreamingCollection.add({
         LiveStreamingParams.USER_ID: userId,
         LiveStreamingParams.CHANNEL_NAME: channelName,
-        LiveStreamingParams.TOKEN: token,
+        LiveStreamingParams.RTC_TOKEN: rtcToken,
+        LiveStreamingParams.RTM_TOKEN: rtmToken,
         LiveStreamingParams.URL: thumbnailUrl,
         LiveStreamingParams.resouceId: resourceId,
         LiveStreamingParams.sid: sid,
@@ -406,7 +408,7 @@ class DatabaseService {
           channelName: (doc.data() as Map)[LiveStreamingParams.CHANNEL_NAME],
           url: (doc.data() as Map)[LiveStreamingParams.URL],
           tags: (doc.data() as Map)[LiveStreamingParams.TAGS],
-          token: (doc.data() as Map)[LiveStreamingParams.TOKEN],
+          rtcToken: (doc.data() as Map)[LiveStreamingParams.RTC_TOKEN],
           thumbnailUrl: (doc.data() as Map)[LiveStreamingParams.URL],
           resourceId: (doc.data() as Map)[LiveStreamingParams.resouceId],
           sid: (doc.data() as Map)[LiveStreamingParams.sid]);

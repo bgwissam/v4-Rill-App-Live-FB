@@ -12,7 +12,8 @@ import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/parameters.dart';
 
 class LiveStreaming extends StatefulWidget {
-  final String token;
+  final String rtcToken;
+  final String rtmToken;
   final String channelName;
   final String userId;
   final String userRole;
@@ -25,7 +26,8 @@ class LiveStreaming extends StatefulWidget {
   const LiveStreaming({
     required this.channelName,
     required this.userRole,
-    required this.token,
+    required this.rtcToken,
+    required this.rtmToken,
     this.sid,
     this.mode,
     required this.userId,
@@ -47,6 +49,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   List<UserModel> _userList = [];
   //Agora Live and Video streaming
   late RtcEngine _engine;
+
   //Agora Messaging
   late AgoraRtmClient _client;
   late AgoraRtmChannel _channel;
@@ -54,6 +57,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //bool values
   bool _isLogin = false;
+  bool _joined = false;
+  bool _switch = false;
   bool _muted = false;
   bool anyPerson = false;
   bool tryingToEnd = false;
@@ -62,6 +67,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   bool accepted = false;
 
   int userNo = 0;
+  int _remoteId = 0;
   late String userRole;
   Parameters param = Parameters();
   //Controllers
@@ -86,110 +92,117 @@ class _LiveStreamingState extends State<LiveStreaming> {
     createClient();
   }
 
+  //Will initialize the Rtc Engine
+  Future<void> _initializeRtcEngine() async {
+    if (param.app_ID.isNotEmpty) {
+      RtcEngineContext context = RtcEngineContext(param.app_ID);
+      _engine = await RtcEngine.createWithContext(context);
+
+      //set event handlers
+      _engine.setEventHandler(
+        RtcEngineEventHandler(
+          warning: (warningCode) {
+            setState(() {
+              final info = 'warning: $warningCode';
+              _infoString.add(info);
+            });
+          },
+          error: (errorCode) {
+            setState(() {
+              final info = 'Error: $errorCode';
+              _infoString.add(info);
+            });
+            print('Error Code: $errorCode');
+          },
+          joinChannelSuccess: (channel, uid, elapsed) async {
+            var queryResponse = await recordingController.queryRecoding(
+                resourceId: widget.resourceId,
+                sid: widget.sid,
+                mode: widget.mode);
+            print(
+                'Query response: ${queryResponse.body} Join Success: $channel - $uid - $elapsed');
+            setState(
+              () {
+                _joined = true;
+                final info = 'channel: $channel, uid: $uid';
+                _infoString.add(info);
+              },
+            );
+          }, //Leave Channel
+          leaveChannel: (stats) {
+            setState(
+              () {
+                final info = 'Left Channel: $stats';
+                _infoString.add(info);
+                //_leaveChannel();
+                _users.clear();
+              },
+            );
+          }, //Join Channel
+          userJoined: (uid, elapsed) {
+            setState(
+              () {
+                _remoteId = uid;
+                final info = 'Joined Channel: $uid';
+                _infoString.add(info);
+                _users.add(uid);
+              },
+            );
+            print('Added users: $_users');
+          }, //userJoined
+          userOffline: (uid, elapsed) {
+            setState(
+              () {
+                _remoteId = 0;
+                final info = 'User Offline: $uid - $elapsed';
+                _users.remove(uid);
+              },
+            );
+            print('removed users: $_users');
+          },
+          firstRemoteVideoFrame: (uid, width, height, elapsed) {
+            setState(() {
+              final info = 'First Remote video: $uid, ${width}x$height';
+              _infoString.add(info);
+            });
+          },
+        ),
+      );
+
+      await _engine.enableVideo().catchError((err) {
+        print('Error enableing video: $err');
+      });
+      await _engine.enableLocalAudio(true);
+      await _engine
+          .setChannelProfile(ChannelProfile.LiveBroadcasting)
+          .catchError((err) {
+        print('Error setting the channel Profile: $err');
+      });
+      if (widget.userRole == 'publisher') {
+        await _engine.setClientRole(ClientRole.Broadcaster);
+      } else {
+        await _engine.setClientRole(ClientRole.Audience);
+      }
+    } else {
+      _infoString.add('App Id is empty');
+      return;
+    }
+  }
+
   //Will initialize the agora channel, token and app id
   Future<void> initializeAgore() async {
-    if (widget.token.isNotEmpty) {
-      _infoString.add('Token: ${widget.token}');
+    if (widget.rtcToken.isNotEmpty) {
+      _infoString
+          .add('Rtc_Token: ${widget.rtcToken} - Rtm_Token: ${widget.rtmToken}');
       await _initializeRtcEngine();
-      _addAgoraEventHandlers();
-      await _engine.setParameters(
-          '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}} ''');
+      // await _engine.setParameters(
+      //     '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}} ''');
       //Join the channel
-      await _engine.joinChannel(widget.token, widget.channelName, null, 0);
+      await _engine.joinChannel(widget.rtcToken, widget.channelName, null, 0);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Failed to connect')));
     }
-  }
-
-  void _addAgoraEventHandlers() {
-    //The event handler will handle the functions after the Rtc engine has been
-    //initialized
-    _engine.setEventHandler(
-      RtcEngineEventHandler(
-        warning: (warningCode) {
-          setState(() {
-            final info = 'warning: $warningCode';
-            _infoString.add(info);
-          });
-        },
-        error: (errorCode) {
-          setState(() {
-            final info = 'Error: $errorCode';
-            _infoString.add(info);
-          });
-          print('Error Code: $errorCode');
-        },
-        joinChannelSuccess: (channel, uid, elapsed) async {
-          var queryResponse = await recordingController.queryRecoding(
-              resourceId: widget.resourceId,
-              sid: widget.sid,
-              mode: widget.mode);
-          print(
-              'Query response: ${queryResponse.body} Join Success: $channel - $uid - $elapsed');
-          setState(
-            () {
-              final info = 'channel: $channel, uid: $uid';
-              _infoString.add(info);
-            },
-          );
-        }, //Leave Channel
-        leaveChannel: (stats) {
-          setState(
-            () {
-              final info = 'Left Channel: $stats';
-              _infoString.add(info);
-              _users.clear();
-            },
-          );
-        }, //Join Channel
-        userJoined: (uid, elapsed) {
-          setState(
-            () {
-              final info = 'Joined Channel: $uid';
-              _infoString.add(info);
-              _users.add(uid);
-            },
-          );
-          print('Added users: $_users');
-        }, //userJoined
-        userOffline: (uid, elapsed) {
-          setState(
-            () {
-              final info = 'User Offline: $uid - $elapsed';
-              _users.remove(uid);
-            },
-          );
-          print('removed users: $_users');
-        },
-        firstRemoteVideoFrame: (uid, width, height, elapsed) {
-          setState(() {
-            final info = 'First Remote video: $uid, ${width}x$height';
-            _infoString.add(info);
-          });
-        },
-
-        //     //userOffline
-        //     streamMessage: (int uid, int streamId, String data) {
-        //   setState(() {
-        //     final info = 'Stream Message: $uid, $streamId, $data';
-        //     _infoString.add(info);
-        //   });
-        //   //_showMyStreamMessageDialog(uid, streamId, data);
-        // }, streamMessageError: (int uid, int streamId, ErrorCode error,
-        //         int missed, int cached) {
-        //   setState(() {
-        //     final info =
-        //         'Stream Error: $uid, $streamId, $error, $missed, $cached';
-        //     _infoString.add(info);
-        //   });
-        // }
-        // tokenPrivilegeWillExpire: (token) async {
-        //   await _getToken();
-        //   await _engine.renewToken(token);
-        // },
-      ),
-    );
   }
 
   Future<void> _showMyStreamMessageDialog(
@@ -217,30 +230,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
             ],
           );
         });
-  }
-
-  //Will initialize the Rtc Engine
-  Future<void> _initializeRtcEngine() async {
-    if (param.app_ID.isNotEmpty) {
-      _engine = await RtcEngine.create(param.app_ID);
-      await _engine.enableVideo().catchError((err) {
-        print('Error enableing video: $err');
-      });
-      await _engine.enableLocalAudio(true);
-      await _engine
-          .setChannelProfile(ChannelProfile.LiveBroadcasting)
-          .catchError((err) {
-        print('Error setting the channel Profile: $err');
-      });
-      if (widget.userRole == 'publisher') {
-        await _engine.setClientRole(ClientRole.Broadcaster);
-      } else {
-        await _engine.setClientRole(ClientRole.Audience);
-      }
-    } else {
-      _infoString.add('App Id is empty');
-      return;
-    }
   }
 
   Future<List<Widget>> _futureRenderViews() async {
@@ -347,36 +336,32 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
     switch (views.length) {
       case 1:
-        return Container(
-            child: Column(
+        return Column(
           children: [
             _expandedViewWidget([views[0]])
           ],
-        ));
+        );
       case 2:
-        return Container(
-            child: Column(
+        return Column(
           children: [
             _expandedViewWidget([views[0]]),
             _expandedViewWidget([views[1]]),
           ],
-        ));
+        );
       case 3:
-        return Container(
-            child: Column(
+        return Column(
           children: [
             _expandedViewWidget(views.sublist(0, 2)),
             _expandedViewWidget(views.sublist(2, 3))
           ],
-        ));
+        );
       case 4:
-        return Container(
-            child: Column(
+        return Column(
           children: [
             _expandedViewWidget(views.sublist(0, 2)),
             _expandedViewWidget(views.sublist(2, 4))
           ],
-        ));
+        );
       default:
         return Container(
           child: _exceededBroadCasters(),
@@ -497,6 +482,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //tool bar functions
   void _onCallEnd(BuildContext context) async {
+    //logout from rtm channel
+    _logout();
+
     print('we are here stopping video streaming');
     String streamingId =
         await db.fetchStreamingVideoUrl(uid: widget.streamModelId);
@@ -546,6 +534,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
     //   return Container();
     // }
     return Container(
+        decoration: BoxDecoration(color: Colors.grey, border: Border.all()),
         height: 100,
         alignment: Alignment.bottomCenter,
         child: Padding(
@@ -674,7 +663,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         });
       }
     };
-    await _client.login(widget.token, widget.channelName);
+    await _client.login(widget.rtcToken, widget.channelName);
     _channel = await _createChannel(widget.channelName);
 
     await _channel.join();

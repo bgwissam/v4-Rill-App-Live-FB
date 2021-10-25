@@ -29,7 +29,8 @@ class StreamingModel {
   String? url;
   List<dynamic>? tags;
   String? channelName;
-  String? token;
+  String? rtcToken;
+  String? rtmToken;
   String? thumbnailUrl;
   String? resourceId;
   String? sid;
@@ -39,7 +40,8 @@ class StreamingModel {
       this.url,
       this.tags,
       this.channelName,
-      this.token,
+      this.rtcToken,
+      this.rtmToken,
       this.thumbnailUrl,
       this.resourceId,
       this.sid});
