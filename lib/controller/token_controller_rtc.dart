@@ -15,21 +15,13 @@ class RtcTokenGenerator {
       required int userId,
       required String role}) async {
     try {
-      // String credentials =
-      //     '${Parameters().Customer_ID}:${Parameters().Customer_secret}';
-      // Codec<String, String> stringToBase64 = utf8.fuse(base64);
-      // String encoded = stringToBase64.encode(credentials);
-      // print('the encoded: $encoded');
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: <String, String>{
           "Content-Type": "application/json",
-          //'Authorization': 'Basic $encoded'
         },
         body: jsonEncode(
           <String, dynamic>{
-            // "appID": appId,
-            // "appCertificate": appCertification,
             "channelName": channelName,
             "uid": userId,
             "role": role,

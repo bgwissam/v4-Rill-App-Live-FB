@@ -12,7 +12,7 @@ class RtmTokenGenerator {
   //Api post request to request Audio Video Token
   Future<String> createMessagingToken(
       {required String channelName,
-      required String userId,
+      required int userId,
       required String role}) async {
     try {
       final response = await http.post(

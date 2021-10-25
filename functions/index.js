@@ -7,11 +7,10 @@ admin.initializeApp();
 const APP_ID = "d480c821a2a946d6a4d29292462a3d6f";
 const APP_CERTIFICATE = "832101fbfa424e358854a936e4c13db8";
 
-
 exports.tokenGenerator = functions.https.onRequest((req, res) => {
     try {
 
-        functions.logger.info("Token Logger", { structuredData: true });
+        // functions.logger.info("Token Logger", { structuredData: true });
         var channelName = req.body.channelName;
         if (!channelName) {
             return res.status(500).json({ 'error': 'channel is required' });
@@ -23,9 +22,9 @@ exports.tokenGenerator = functions.https.onRequest((req, res) => {
             uid = 0;
         }
         //get the role
-        var role = "subscriber";
-        if (req.body.role == "publisher") {
-            role = "publisher";
+        var role = RtcRole.SUBSCRIBER;
+        if (req.body.role == RtcRole.PUBLISHER) {
+            role = RtcRole.PUBLISHER;
         }
         //get expiry time
         var expireTime = req.body.expireTime;
