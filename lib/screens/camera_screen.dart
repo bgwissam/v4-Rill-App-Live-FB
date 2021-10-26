@@ -462,10 +462,10 @@ class _CameraScreenState extends State<CameraScreen> {
   //Future to get token
   Future<void> _getTokens() async {
     rtcToken =
-        // '006d480c821a2a946d6a4d29292462a3d6fIACwIItxGO0hkIJbjwNWftrcxapPfalxsW46SqmGPy75PwZa8+gAAAAAIgDJD5AXcH13YQQAAQBvfXdhAgBvfXdhAwBvfXdhBABvfXdh';
+        '006d480c821a2a946d6a4d29292462a3d6fIAAMeKCa14vqddIPUZwznIsGle+X+MWcaLhO7v1s7KhGJQZa8+gAAAAAEACQNaFNF7l4YQEAAQCndXdh';
 
-        await rtctokenGenerator.createVideoAudioChannelToken(
-            channelName: _channelName!, role: 'publisher', userId: 0);
+    // await rtctokenGenerator.createVideoAudioChannelToken(
+    //     channelName: _channelName!, role: 'publisher', userId: 0);
 
     rtmToken = await rtmTokenGenerator.createMessagingToken(
         channelName: _channelName!, userId: 0, role: 'publisher');

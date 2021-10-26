@@ -11,23 +11,23 @@ exports.tokenGenerator = functions.https.onRequest((req, res) => {
     try {
 
         // functions.logger.info("Token Logger", { structuredData: true });
-        var channelName = req.body.channelName;
+        let channelName = req.body.channelName;
         if (!channelName) {
             return res.status(500).json({ 'error': 'channel is required' });
         }
-        var uid = req.body.uid;
+        let uid = req.body.uid;
         //this will allow a low level security feature by assigning all users to join on the same uid
         //this feature is applicable for live streaming
         if (!uid || uid == '') {
             uid = 0;
         }
         //get the role
-        var role = RtcRole.SUBSCRIBER;
+        let role = RtcRole.SUBSCRIBER;
         if (req.body.role == RtcRole.PUBLISHER) {
             role = RtcRole.PUBLISHER;
         }
         //get expiry time
-        var expireTime = req.body.expireTime;
+        let expireTime = req.body.expireTime;
         if (!expireTime || expireTime == '') {
             expireTime = 3600;
         } else {
