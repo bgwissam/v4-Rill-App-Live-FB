@@ -473,7 +473,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
     // await rtmTokenGenerator.createMessagingToken(
     //     channelName: _channelName!, userId: 0, role: 'publisher');
-    print('the rtc token: $rtcToken - $uid');
+    print('the rtc token: $rtcToken - $uid - ${uid.runtimeType}');
   }
 
   //stopping the loading state when stream ends

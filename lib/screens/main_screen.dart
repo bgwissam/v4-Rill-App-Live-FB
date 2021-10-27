@@ -484,8 +484,8 @@ class _MainScreenState extends State<MainScreen>
                                         channelName: streamingProvider[index]!
                                             .channelName
                                             .toString(),
-                                        streamUserId:
-                                            streamingProvider[index]!.userId,
+                                        streamUserId: streamingProvider[index]!
+                                            .streamerId,
                                         userRole: userType,
                                         rtcToken: streamingProvider[index]!
                                             .rtcToken
@@ -494,11 +494,13 @@ class _MainScreenState extends State<MainScreen>
                                             .rtmToken
                                             .toString(),
                                         userId: streamingProvider[index]!
-                                            .streamerId
+                                            .userId
                                             .toString(),
                                         resourceId: streamingProvider[index]!
                                             .resourceId
                                             .toString(),
+                                        uid: int.parse(streamingProvider[index]!
+                                            .streamerId!),
                                         sid: streamingProvider[index]!
                                             .sid
                                             .toString(),

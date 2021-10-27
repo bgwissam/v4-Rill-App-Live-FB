@@ -14,12 +14,12 @@ exports.tokenGenerator = functions.https.onRequest((req, res) => {
         if (!channelName) {
             return res.status(500).json({ 'error': 'channel is required' });
         }
-        const uid = Math.floor(Math.random() * 100000);//req.body.uid;
+        let uid = req.body.uid;
         //this will allow a low level security feature by assigning all users to join on the same uid
         //this feature is applicable for live streaming
-        // if (!uid || uid == '') {
-        //     uid = 0;
-        // }
+        if (!uid || uid == '') {
+            uid = 0;
+        }
         //get the role
         let role = RtcRole.SUBSCRIBER;
         if (req.body.role == RtcRole.PUBLISHER) {
@@ -35,7 +35,7 @@ exports.tokenGenerator = functions.https.onRequest((req, res) => {
         //calculate expire time privilage
         let currentTime = Math.floor(Date.now() / 1000);
         const priviledgeExpireTime = currentTime + expireTime;
-        console.log(`The token generator log: ${APP_ID} - ${APP_CERTIFICATE} - ${channelName} - ${uid} - ${role} - ${priviledgeExpireTime}`);
+        console.log(`The token generator log: ${channelName} - ${uid}`);
         const token = RtcTokenBuilder.buildTokenWithUid(APP_ID, APP_CERTIFICATE, channelName, uid, role, priviledgeExpireTime);
         return res.json({ "token": token, "uid": uid });
 
