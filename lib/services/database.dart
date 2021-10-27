@@ -368,6 +368,7 @@ class DatabaseService {
       String? rtcToken,
       String? rtmToken,
       String? userId,
+      String? streamerId,
       String? userName,
       String? thumbnailUrl,
       String? resourceId,
@@ -375,6 +376,7 @@ class DatabaseService {
     try {
       var result = await liveStreamingCollection.add({
         LiveStreamingParams.USER_ID: userId,
+        LiveStreamingParams.STREAMER_ID: streamerId,
         LiveStreamingParams.CHANNEL_NAME: channelName,
         LiveStreamingParams.RTC_TOKEN: rtcToken,
         LiveStreamingParams.RTM_TOKEN: rtmToken,
@@ -405,6 +407,7 @@ class DatabaseService {
       return StreamingModel(
           uid: doc.id,
           userId: (doc.data() as Map)[LiveStreamingParams.USER_ID],
+          streamerId: (doc.data() as Map)[LiveStreamingParams.STREAMER_ID],
           channelName: (doc.data() as Map)[LiveStreamingParams.CHANNEL_NAME],
           url: (doc.data() as Map)[LiveStreamingParams.URL],
           tags: (doc.data() as Map)[LiveStreamingParams.TAGS],

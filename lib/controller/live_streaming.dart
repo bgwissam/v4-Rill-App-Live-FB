@@ -14,6 +14,7 @@ import 'package:rillliveapp/shared/parameters.dart';
 class LiveStreaming extends StatefulWidget {
   final String rtcToken;
   final String rtmToken;
+  final int? uid;
   final String channelName;
   final String userId;
   final String userRole;
@@ -36,6 +37,7 @@ class LiveStreaming extends StatefulWidget {
     this.loadingStateCallback,
     this.streamModelId,
     Key? key,
+    this.uid,
   }) : super(key: key);
 
   @override
@@ -112,7 +114,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
               final info = 'Error: $errorCode';
               _infoString.add(info);
             });
-            print('Error Code: $errorCode');
+            print('Error Code: ${errorCode.index} - $errorCode');
           },
           joinChannelSuccess: (channel, uid, elapsed) async {
             var queryResponse = await recordingController.queryRecoding(
@@ -198,7 +200,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
       // await _engine.setParameters(
       //     '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}} ''');
       //Join the channel
-      await _engine.joinChannel(widget.rtcToken, widget.channelName, null, 0);
+      await _engine.joinChannel(
+          widget.rtcToken, widget.channelName, null, widget.uid!);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Failed to connect')));
@@ -496,7 +499,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
       //Stop the recording and save the stream to the bucket
       var stopRecordingResult = await recordingController.stopRecordingVideos(
         channelName: widget.channelName,
-        userId: '0',
+        userId: widget.uid!,
         sid: widget.sid,
         resouceId: widget.resourceId,
         mode: widget.mode,

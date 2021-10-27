@@ -52,6 +52,7 @@ class _CameraScreenState extends State<CameraScreen> {
   String? rtcToken;
   String? rtmToken;
   String? _channelName;
+  int? uid;
   late bool _isLoadingStream = false;
   //Maps
   late Map acquireResponse;
@@ -433,6 +434,7 @@ class _CameraScreenState extends State<CameraScreen> {
         rtcToken: rtcToken,
         rtmToken: rtmToken,
         userId: widget.userId,
+        streamerId: uid.toString(),
         userName: 'Example',
         resourceId: acquireResponse['resourceId'],
         sid: startRecording['sid']);
@@ -447,7 +449,8 @@ class _CameraScreenState extends State<CameraScreen> {
           userRole: 'publisher',
           rtcToken: rtcToken!,
           rtmToken: rtmToken!,
-          userId: '0',
+          userId: widget.userId!,
+          uid: uid!,
           sid: startRecording['sid'],
           resourceId: acquireResponse['resourceId'],
           mode: 'mix',
@@ -461,15 +464,16 @@ class _CameraScreenState extends State<CameraScreen> {
 
   //Future to get token
   Future<void> _getTokens() async {
-    rtcToken =
-        '006d480c821a2a946d6a4d29292462a3d6fIAAMeKCa14vqddIPUZwznIsGle+X+MWcaLhO7v1s7KhGJQZa8+gAAAAAEACQNaFNF7l4YQEAAQCndXdh';
+    var result = await rtctokenGenerator.createVideoAudioChannelToken(
+        channelName: _channelName!, role: '1');
 
-    // await rtctokenGenerator.createVideoAudioChannelToken(
-    //     channelName: _channelName!, role: 'publisher', userId: 0);
+    rtcToken = result['token'];
+    uid = result['uid'];
+    rtmToken = 'we dont need rtm now';
 
-    rtmToken = await rtmTokenGenerator.createMessagingToken(
-        channelName: _channelName!, userId: 0, role: 'publisher');
-    print('the rtc token: $rtcToken');
+    // await rtmTokenGenerator.createMessagingToken(
+    //     channelName: _channelName!, userId: 0, role: 'publisher');
+    print('the rtc token: $rtcToken - $uid');
   }
 
   //stopping the loading state when stream ends

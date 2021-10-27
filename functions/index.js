@@ -1,6 +1,6 @@
 const functions = require("firebase-functions");
 
-const { RtcTokenBuilder, RtcRole, RtmTokenBuilder } = require("agora-access-token");
+const { RtcTokenBuilder, RtcRole, RtmTokenBuilder, RtmRole } = require("agora-access-token");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
@@ -9,18 +9,17 @@ const APP_CERTIFICATE = "832101fbfa424e358854a936e4c13db8";
 
 exports.tokenGenerator = functions.https.onRequest((req, res) => {
     try {
-
         // functions.logger.info("Token Logger", { structuredData: true });
         let channelName = req.body.channelName;
         if (!channelName) {
             return res.status(500).json({ 'error': 'channel is required' });
         }
-        let uid = req.body.uid;
+        const uid = Math.floor(Math.random() * 100000);//req.body.uid;
         //this will allow a low level security feature by assigning all users to join on the same uid
         //this feature is applicable for live streaming
-        if (!uid || uid == '') {
-            uid = 0;
-        }
+        // if (!uid || uid == '') {
+        //     uid = 0;
+        // }
         //get the role
         let role = RtcRole.SUBSCRIBER;
         if (req.body.role == RtcRole.PUBLISHER) {
@@ -36,9 +35,9 @@ exports.tokenGenerator = functions.https.onRequest((req, res) => {
         //calculate expire time privilage
         let currentTime = Math.floor(Date.now() / 1000);
         const priviledgeExpireTime = currentTime + expireTime;
-
+        console.log(`The token generator log: ${APP_ID} - ${APP_CERTIFICATE} - ${channelName} - ${uid} - ${role} - ${priviledgeExpireTime}`);
         const token = RtcTokenBuilder.buildTokenWithUid(APP_ID, APP_CERTIFICATE, channelName, uid, role, priviledgeExpireTime);
-        return res.json({ "token": token });
+        return res.json({ "token": token, "uid": uid });
 
     } catch (e) {
         functions.logger.info(`error in initiating: ${e}`);
@@ -60,10 +59,10 @@ exports.rtmTokenGenerator = functions.https.onRequest((req, res) => {
             uid = 0;
         }
         //get the role
-        var role = "subscriber";
-        if (req.body.role == "publisher") {
-            role = "publisher";
-        }
+        var role = RtmRole.Rtm_User//"subscriber";
+        // if (req.body.role == "publisher") {
+        //     role = "publisher";
+        // }
         //get expiry time
         var expireTime = req.body.expireTime;
         if (!expireTime || expireTime == '') {

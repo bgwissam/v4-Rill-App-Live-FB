@@ -463,9 +463,12 @@ class _MainScreenState extends State<MainScreen>
                   scrollDirection: Axis.horizontal,
                   itemCount: streamingProvider.length,
                   itemBuilder: (context, index) {
+                    print(
+                        'the stream provider: ${streamingProvider[index]!.userId}');
                     return FutureBuilder(
                         future: getStreamerDetails(
-                            userId: streamingProvider[index]!.userId),
+                            userId:
+                                streamingProvider[index]!.userId.toString()),
                         builder: (context, AsyncSnapshot snapshot) {
                           if (snapshot.hasData) {
                             return GestureDetector(
@@ -490,8 +493,9 @@ class _MainScreenState extends State<MainScreen>
                                         rtmToken: streamingProvider[index]!
                                             .rtmToken
                                             .toString(),
-                                        userId:
-                                            '353434', //widget.userId.toString(),
+                                        userId: streamingProvider[index]!
+                                            .streamerId
+                                            .toString(),
                                         resourceId: streamingProvider[index]!
                                             .resourceId
                                             .toString(),
@@ -547,7 +551,7 @@ class _MainScreenState extends State<MainScreen>
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Container(
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 15, vertical: 5),
                                             child: Text('Live...',
                                                 style: textStyle_12),
@@ -879,53 +883,51 @@ class _MainScreenState extends State<MainScreen>
                                                             'sid'] !=
                                                         null) {
                                                       //Save stream data to firebase
-                                                      var streamModel = await db
-                                                          .createNewDataStream(
-                                                              channelName:
-                                                                  _channelName,
-                                                              rtcToken:
-                                                                  rtcToken,
-                                                              userId:
-                                                                  widget.userId,
-                                                              userName:
-                                                                  'Example',
-                                                              resourceId:
-                                                                  acquireResponse[
-                                                                      'resourceId'],
-                                                              sid:
-                                                                  startRecordingResponse[
-                                                                      'sid']);
-                                                      print(
-                                                          'the streamModel id: $streamModel');
+                                                      // var streamModel = await db
+                                                      //     .createNewDataStream(
+                                                      //         channelName:
+                                                      //             _channelName,
+                                                      //         rtcToken:
+                                                      //             rtcToken,
+                                                      //         userId:
+                                                      //             widget.userId,
+                                                      //         userName:
+                                                      //             'Example',
+                                                      //         resourceId:
+                                                      //             acquireResponse[
+                                                      //                 'resourceId'],
+                                                      //         sid:
+                                                      //             startRecordingResponse[
+                                                      //                 'sid']);
 
-                                                      await Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) => LiveStreaming(
-                                                              rtcToken:
-                                                                  rtcToken,
-                                                              rtmToken:
-                                                                  rtmToken,
-                                                              streamUserId:
-                                                                  widget.userId,
-                                                              channelName:
-                                                                  _channelName,
-                                                              userRole:
-                                                                  _userRole,
-                                                              resourceId:
-                                                                  acquireResponse[
-                                                                      'resourceId'],
-                                                              sid:
-                                                                  startRecordingResponse[
-                                                                      'sid'],
-                                                              mode: 'mix',
-                                                              streamModelId:
-                                                                  streamModel,
-                                                              userId: _userId,
-                                                              loadingStateCallback:
-                                                                  callBackLoadingState),
-                                                        ),
-                                                      );
+                                                      // await Navigator.push(
+                                                      //   context,
+                                                      //   MaterialPageRoute(
+                                                      //     builder: (context) => LiveStreaming(
+                                                      //         rtcToken:
+                                                      //             rtcToken,
+                                                      //         rtmToken:
+                                                      //             rtmToken,
+                                                      //         streamUserId:
+                                                      //             widget.userId,
+                                                      //         channelName:
+                                                      //             _channelName,
+                                                      //         userRole:
+                                                      //             _userRole,
+                                                      //         resourceId:
+                                                      //             acquireResponse[
+                                                      //                 'resourceId'],
+                                                      //         sid:
+                                                      //             startRecordingResponse[
+                                                      //                 'sid'],
+                                                      //         mode: 'mix',
+                                                      //         streamModelId:
+                                                      //             streamModel,
+                                                      //         userId: _userId,
+                                                      //         loadingStateCallback:
+                                                      //             callBackLoadingState),
+                                                      //   ),
+                                                      // );
                                                     } else {
                                                       print(
                                                           'Recording could not be started');

@@ -8,12 +8,10 @@ class RtcTokenGenerator {
       'https://us-central1-rill-app-live.cloudfunctions.net/tokenGenerator';
   String appId = Parameters().app_ID;
   String appCertification = Parameters().app_certificate;
-  late String token;
+  late Map<String, dynamic> token;
   //Api post request to request Audio Video Token
-  Future<String> createVideoAudioChannelToken(
-      {required String channelName,
-      required int userId,
-      required String role}) async {
+  Future<Map> createVideoAudioChannelToken(
+      {required String channelName, required String role}) async {
     try {
       final response = await http.post(
         Uri.parse(baseUrl),
@@ -23,7 +21,6 @@ class RtcTokenGenerator {
         body: jsonEncode(
           <String, dynamic>{
             "channelName": channelName,
-            "uid": userId,
             "role": role,
             "expireTime": 3000
           },
@@ -31,16 +28,17 @@ class RtcTokenGenerator {
       );
 
       var rawToken = json.decode(response.body);
-      token = rawToken['token'];
+      token = rawToken;
       if (response.statusCode == 200) {
         return token;
       } else {
-        return 'failed';
+        return {'token': 'failed', 'uid': 'no id'};
       }
     } catch (e, stackTrace) {
       print('An error occured: $e, Stack: $stackTrace');
-      return 'failed';
+      return {'token': 'failed', 'uid': 'no id'};
     }
-  } //End of post function
+  }
+} //End of post function
 
-}
+

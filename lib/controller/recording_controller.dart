@@ -106,7 +106,7 @@ class RecordingController {
   //Stop recording
   Future<http.Response> stopRecordingVideos(
       {required String channelName,
-      required String userId,
+      required int userId,
       String? sid,
       String? resouceId,
       String? mode,

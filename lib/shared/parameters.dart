@@ -53,6 +53,7 @@ class ImageVideoParams {
 class LiveStreamingParams {
   static String UID = 'uid';
   static String USER_ID = 'userId';
+  static String STREAMER_ID = 'streamerId';
   static String URL = 'streamUrl';
   static String TAGS = 'tags';
   static String CHANNEL_NAME = 'channelName';

@@ -26,6 +26,7 @@ class ImageVideoModel {
 class StreamingModel {
   String? uid;
   String? userId;
+  String? streamerId;
   String? url;
   List<dynamic>? tags;
   String? channelName;
@@ -37,6 +38,7 @@ class StreamingModel {
   StreamingModel(
       {this.uid,
       this.userId,
+      this.streamerId,
       this.url,
       this.tags,
       this.channelName,

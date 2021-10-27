@@ -18,7 +18,7 @@ class RtmTokenGenerator {
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: <String, String>{
-          "Content-Type": "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
         },
         body: jsonEncode(
           <String, dynamic>{
