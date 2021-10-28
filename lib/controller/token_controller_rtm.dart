@@ -10,9 +10,9 @@ class RtmTokenGenerator {
   String appCertification = Parameters().app_certificate;
   late String token;
   //Api post request to request Audio Video Token
-  Future<String> createMessagingToken(
+  Future<Map> createMessagingToken(
       {required String channelName,
-      required int userId,
+      required String userAccount,
       required String role}) async {
     try {
       final response = await http.post(
@@ -23,7 +23,7 @@ class RtmTokenGenerator {
         body: jsonEncode(
           <String, dynamic>{
             "channelName": channelName,
-            "uid": userId,
+            "uid": userAccount,
             "role": role,
             "expireTime": 3000
           },
@@ -31,15 +31,14 @@ class RtmTokenGenerator {
       );
 
       var rawToken = json.decode(response.body);
-      token = rawToken['token'];
       if (response.statusCode == 200) {
-        return token;
+        return rawToken;
       } else {
-        return 'failed';
+        return {'token': 'failed'};
       }
     } catch (e, stackTrace) {
       print('An error occured: $e, Stack: $stackTrace');
-      return 'failed';
+      return {'token': 'failed'};
     }
   } //End of post function
 

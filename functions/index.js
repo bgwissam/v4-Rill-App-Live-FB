@@ -48,23 +48,20 @@ exports.tokenGenerator = functions.https.onRequest((req, res) => {
 exports.rtmTokenGenerator = functions.https.onRequest((req, res) => {
     try {
         functions.logger.info("Token Logger", { structuredData: true });
-        var channelName = req.body.channelName;
+        const channelName = req.body.channelName;
         if (!channelName) {
             return res.status(500).json({ 'error': 'channel is required' });
         }
-        var uid = req.body.uid;
+
+        let userAccount = req.body.userAccount;
         //this will allow a low level security feature by assigning all users to join on the same uid
         //this feature is applicable for live streaming
-        if (!uid || uid == '') {
-            uid = 0;
-        }
+
         //get the role
-        var role = RtmRole.Rtm_User//"subscriber";
-        // if (req.body.role == "publisher") {
-        //     role = "publisher";
-        // }
+        let role = RtmRole.Rtm_User;
+
         //get expiry time
-        var expireTime = req.body.expireTime;
+        let expireTime = req.body.expireTime;
         if (!expireTime || expireTime == '') {
             expireTime = 3600;
         } else {
@@ -74,7 +71,7 @@ exports.rtmTokenGenerator = functions.https.onRequest((req, res) => {
         let currentTime = Math.floor(Date.now() / 1000);
         const priviledgeExpireTime = currentTime + expireTime;
 
-        const token = RtmTokenBuilder.buildToken(APP_ID, APP_CERTIFICATE, channelName, uid, role, priviledgeExpireTime);
+        const token = RtmTokenBuilder.buildToken(APP_ID, APP_CERTIFICATE, channelName, userAccount, role, priviledgeExpireTime);
         return res.json({ "token": token });
     } catch (e) {
         functions.logger.info(`error in initiating: ${e}`);

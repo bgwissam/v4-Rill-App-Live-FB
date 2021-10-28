@@ -464,16 +464,19 @@ class _CameraScreenState extends State<CameraScreen> {
 
   //Future to get token
   Future<void> _getTokens() async {
-    var result = await rtctokenGenerator.createVideoAudioChannelToken(
+    var rtcResult = await rtctokenGenerator.createVideoAudioChannelToken(
         channelName: _channelName!, role: '1');
 
-    rtcToken = result['token'];
-    uid = result['uid'];
-    rtmToken = 'we dont need rtm now';
+    rtcToken = rtcResult['token'];
+    uid = rtcResult['uid'];
+    var userAccount = 'testingOnly';
 
-    // await rtmTokenGenerator.createMessagingToken(
-    //     channelName: _channelName!, userId: 0, role: 'publisher');
-    print('the rtc token: $rtcToken - $uid - ${uid.runtimeType}');
+    var rtmResult = await rtmTokenGenerator.createMessagingToken(
+        channelName: _channelName!, userAccount: userAccount, role: '1');
+
+    rtmToken = rtmResult['token'];
+
+    print('the rtc token: $rtcToken - $uid - rtm token: $rtmToken');
   }
 
   //stopping the loading state when stream ends

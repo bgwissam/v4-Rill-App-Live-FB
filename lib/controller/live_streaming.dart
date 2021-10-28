@@ -424,18 +424,21 @@ class _LiveStreamingState extends State<LiveStreaming> {
       child: FractionallySizedBox(
           heightFactor: 0.5,
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 48),
+            padding: const EdgeInsets.symmetric(vertical: 48),
             child: ListView.builder(
                 reverse: true,
-                itemCount: _infoString.length,
+                itemCount: _messageList.length,
                 itemBuilder: (context, index) {
                   if (_messageList.isEmpty) {
                     return Container();
                   }
                   return Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-                      child: Text(_messageList[index]));
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                    child: Text(
+                      _messageList[index],
+                    ),
+                  );
                 }),
           )),
     );
@@ -666,7 +669,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         });
       }
     };
-    await _client.login(widget.rtcToken, widget.channelName);
+    await _client.login(widget.rtmToken, widget.channelName);
     _channel = await _createChannel(widget.channelName);
 
     await _channel.join();
@@ -714,6 +717,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         (AgoraRtmMessage message, AgoraRtmMember member) {
       _infoString
           .add('user: ${member.userId} message: ${message.text} type: message');
+      print('Messages: $member : $message');
     };
     return channel;
   }
