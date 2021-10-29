@@ -93,8 +93,8 @@ class _ImageViewerState extends State<ImageViewer> {
                   padding: const EdgeInsets.all(8.0),
                   child: FittedBox(
                     fit: BoxFit.fill,
-                    child: Image.network(
-                        snapshot.data.avatarUrl ?? 'assets/images/g.png'),
+                    child: Image.network(snapshot.data.avatarUrl ??
+                        'assets/images/empty_profile_photo.png'),
                   ),
                 ),
                 title: Row(

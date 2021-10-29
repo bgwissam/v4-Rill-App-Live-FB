@@ -412,6 +412,7 @@ class DatabaseService {
           url: (doc.data() as Map)[LiveStreamingParams.URL],
           tags: (doc.data() as Map)[LiveStreamingParams.TAGS],
           rtcToken: (doc.data() as Map)[LiveStreamingParams.RTC_TOKEN],
+          rtmToken: (doc.data() as Map)[LiveStreamingParams.RTM_TOKEN],
           thumbnailUrl: (doc.data() as Map)[LiveStreamingParams.URL],
           resourceId: (doc.data() as Map)[LiveStreamingParams.resouceId],
           sid: (doc.data() as Map)[LiveStreamingParams.sid]);

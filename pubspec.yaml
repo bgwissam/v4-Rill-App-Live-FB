@@ -41,6 +41,7 @@ dependencies:
   video_compress: ^3.1.0
   better_player: ^0.0.73
   email_validator: ^2.0.1
+  wakelock: ^0.5.6
 
   firebase_core: any
   firebase_auth: any

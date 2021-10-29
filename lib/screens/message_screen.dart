@@ -159,7 +159,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                         snapshot.data?.docs[index]
                                             [UserParams.AVATAR],
                                       )
-                                    : Image.asset('assets/images/g.png').image,
+                                    : Image.asset(
+                                            'assets/images/empty_profile_photo.png')
+                                        .image,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
                                 ),

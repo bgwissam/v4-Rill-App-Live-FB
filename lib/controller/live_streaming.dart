@@ -10,6 +10,7 @@ import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/parameters.dart';
+import 'package:wakelock/wakelock.dart';
 
 class LiveStreaming extends StatefulWidget {
   final String rtcToken;
@@ -47,7 +48,7 @@ class LiveStreaming extends StatefulWidget {
 class _LiveStreamingState extends State<LiveStreaming> {
   final _users = <int>[];
   final _infoString = <String>[];
-  final _messageList = <String>[];
+  late List<String> _messageList;
   List<UserModel> _userList = [];
   //Agora Live and Video streaming
   late RtcEngine _engine;
@@ -58,7 +59,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   var userMap;
 
   //bool values
-  bool _isLogin = false;
+  late bool _isLogin;
   bool _joined = false;
   bool _switch = false;
   bool _muted = false;
@@ -70,19 +71,22 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   int userNo = 0;
   int _remoteId = 0;
+  var size;
   late String userRole;
   Parameters param = Parameters();
   //Controllers
   DatabaseService db = DatabaseService();
   RecordingController recordingController = RecordingController();
-  final TextEditingController _channelMessageController =
-      TextEditingController();
+  late TextEditingController _channelMessageController;
+
   //To dispose the agora engin and clear the user list
   @override
   void dispose() {
+    Wakelock.disable();
     _users.clear();
     _engine.leaveChannel();
     _engine.destroy();
+    widget.userRole == 'publisher' ? _onCallEnd(context) : null;
     super.dispose();
   }
 
@@ -90,6 +94,11 @@ class _LiveStreamingState extends State<LiveStreaming> {
   @override
   void initState() {
     super.initState();
+    // To keep the screen on:
+    Wakelock.enable();
+    _messageList = [];
+
+    _channelMessageController = TextEditingController();
     initializeAgore();
     createClient();
   }
@@ -175,6 +184,10 @@ class _LiveStreamingState extends State<LiveStreaming> {
         print('Error enableing video: $err');
       });
       await _engine.enableLocalAudio(true);
+      if (widget.userRole == 'subscriber') {
+        _engine.disableAudio();
+      }
+
       await _engine
           .setChannelProfile(ChannelProfile.LiveBroadcasting)
           .catchError((err) {
@@ -202,6 +215,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
       //Join the channel
       await _engine.joinChannel(
           widget.rtcToken, widget.channelName, null, widget.uid!);
+      //creat live messaging channel
+      _channel = await _createChannel(widget.channelName);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Failed to connect')));
@@ -241,7 +256,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   @override
   Widget build(BuildContext context) {
-    print('the infoString: $_infoString');
+    size = MediaQuery.of(context).size;
     return Scaffold(
         body: FutureBuilder(
             future: _futureRenderViews(),
@@ -256,11 +271,14 @@ class _LiveStreamingState extends State<LiveStreaming> {
                     //show the toolbar to control the view
                     widget.userRole == 'publisher'
                         ? _toolBar()
-                        : const SizedBox.shrink(),
+                        : SizedBox.shrink(),
                     //show messaging bar
                     widget.userRole == 'publisher'
                         ? const SizedBox.shrink()
-                        : _bottomBar(),
+                        : SizedBox(
+                            width: size.width,
+                            child: _bottomBar(),
+                          ),
                     //will list the messages for this stream
                     messageList(),
                   ],
@@ -284,53 +302,14 @@ class _LiveStreamingState extends State<LiveStreaming> {
       list.add(RtcLocalView.SurfaceView());
     }
     //other broadCasters will access the remote view
-    _users.forEach((int uid) {
+    for (var uid in _users) {
       print('user adding remote view');
       list.add(
         RtcRemoteView.SurfaceView(uid: uid),
       );
-    });
+    }
     print('the list of users: $list');
     return list;
-  }
-
-  Widget _infoPannel() {
-    return Positioned(
-      left: 0,
-      top: 0,
-      child: Container(
-          height: 100,
-          decoration: BoxDecoration(
-              color: Colors.grey,
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(20)),
-          padding: EdgeInsets.all(10.0),
-          alignment: Alignment.bottomCenter,
-          child: FractionallySizedBox(
-            heightFactor: 0.5,
-            child: Center(
-              child: Container(
-                padding: EdgeInsets.all(5.0),
-                child: ListView.builder(
-                    itemCount: _infoString.length,
-                    itemBuilder: (context, index) {
-                      if (_infoString.isEmpty) {
-                        return Text('Empty');
-                      }
-                      return Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Flexible(child: Text(_infoString[index].toString()))
-                          ],
-                        ),
-                      );
-                    }),
-              ),
-            ),
-          )),
-    );
   }
 
   Widget _broadCastView() {
@@ -407,83 +386,92 @@ class _LiveStreamingState extends State<LiveStreaming> {
   Widget _expandedViewWidget(List<Widget> views) {
     final wrappedViews = views
         .map<Widget>((view) => Expanded(
-                child: Container(
               child: view,
-            )))
+            ))
         .toList();
-    return Expanded(
-      child: Row(children: wrappedViews),
-    );
+    return widget.userRole == 'publisher'
+        ? Expanded(
+            child: Row(children: wrappedViews),
+          )
+        : SizedBox(
+            width: size.width,
+            child: Row(children: wrappedViews),
+          );
   }
 
   //Info panel to show logs
   Widget messageList() {
     return Container(
-      padding: const EdgeInsets.only(bottom: 45),
+      padding: const EdgeInsets.only(bottom: 100),
       alignment: Alignment.bottomCenter,
       child: FractionallySizedBox(
-          heightFactor: 0.5,
+          heightFactor: 0.4,
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 48),
-            child: ListView.builder(
-                reverse: true,
-                itemCount: _messageList.length,
-                itemBuilder: (context, index) {
-                  if (_messageList.isEmpty) {
-                    return Container();
-                  }
-                  return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-                    child: Text(
-                      _messageList[index],
-                    ),
-                  );
-                }),
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: ListView.builder(
+                  reverse: false,
+                  itemCount: _messageList.length,
+                  itemBuilder: (context, index) {
+                    // _messageList.reversed;
+                    if (_messageList.isEmpty) {
+                      return Text('Empty messages');
+                    }
+                    return Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 3, horizontal: 10),
+                        child: Text(
+                          _messageList[index],
+                        ),
+                      ),
+                    );
+                  }),
+            ),
           )),
     );
   }
 
   Widget _toolBar() {
-    return widget.userRole == 'publisher'
-        ? Container(
-            alignment: Alignment.bottomCenter,
-            padding: const EdgeInsets.symmetric(vertical: 35.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                RawMaterialButton(
-                    onPressed: _onToggleMute,
-                    child: Icon(
-                      _muted ? Icons.mic_off : Icons.mic,
-                      color: _muted ? Colors.white : Colors.redAccent,
-                      size: 20.0,
-                    ),
-                    shape: const CircleBorder(),
-                    elevation: 2.0,
-                    fillColor: _muted ? Colors.redAccent : Colors.white,
-                    padding: const EdgeInsets.all(12.0)),
-                RawMaterialButton(
-                  onPressed: () => _onCallEnd(context),
-                  child: const Icon(Icons.call_end,
-                      color: Colors.white, size: 30.0),
-                  shape: const CircleBorder(),
-                  elevation: 2.0,
-                  fillColor: Colors.red,
-                  padding: const EdgeInsets.all(15.0),
+    return Container(
+        alignment: Alignment.bottomCenter,
+        padding: const EdgeInsets.symmetric(vertical: 35.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            RawMaterialButton(
+                onPressed: _onToggleMute,
+                child: Icon(
+                  _muted ? Icons.mic_off : Icons.mic,
+                  color: _muted ? Colors.white : Colors.redAccent,
+                  size: 20.0,
                 ),
-                RawMaterialButton(
-                  onPressed: () => _onSwitchCamera(context),
-                  child: const Icon(Icons.switch_camera,
-                      color: Colors.white, size: 30.0),
-                  shape: const CircleBorder(),
-                  elevation: 2.0,
-                  fillColor: Colors.grey,
-                  padding: const EdgeInsets.all(12.0),
-                ),
-              ],
-            ))
-        : const SizedBox.shrink();
+                shape: const CircleBorder(),
+                elevation: 2.0,
+                fillColor: _muted ? Colors.redAccent : Colors.white,
+                padding: const EdgeInsets.all(12.0)),
+            RawMaterialButton(
+              onPressed: () => _onCallEnd(context),
+              child:
+                  const Icon(Icons.call_end, color: Colors.white, size: 30.0),
+              shape: const CircleBorder(),
+              elevation: 2.0,
+              fillColor: Colors.red,
+              padding: const EdgeInsets.all(15.0),
+            ),
+            RawMaterialButton(
+              onPressed: () => _onSwitchCamera(context),
+              child: const Icon(Icons.switch_camera,
+                  color: Colors.white, size: 30.0),
+              shape: const CircleBorder(),
+              elevation: 2.0,
+              fillColor: Colors.grey,
+              padding: const EdgeInsets.all(12.0),
+            ),
+          ],
+        ));
   }
 
   //tool bar functions
@@ -519,7 +507,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
     setState(() {
       _muted = !_muted;
     });
+    print('muted: $_muted');
     _engine.muteAllRemoteAudioStreams(_muted);
+    _engine.muteLocalAudioStream(_muted);
   }
 
   void _onSwitchCamera(BuildContext context) {
@@ -534,14 +524,15 @@ class _LiveStreamingState extends State<LiveStreaming> {
    * createClient & _createChannel will monitor the status of signed in users and messages sent
    * the function below are to send and read message
    */
+  _buildMessagingInitiation() {
+    _login(context);
+    _queryOnlineUsers(context);
+  }
 
   Widget _bottomBar() {
-    // if (!_isLogin || !_isInChannel) {
-    //   return Container();
-    // }
     return Container(
-        decoration: BoxDecoration(color: Colors.grey, border: Border.all()),
-        height: 100,
+        decoration:
+            BoxDecoration(color: Colors.transparent, border: Border.all()),
         alignment: Alignment.bottomCenter,
         child: Padding(
           padding: const EdgeInsets.only(left: 8, top: 5, right: 8, bottom: 5),
@@ -625,8 +616,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
     try {
       _channelMessageController.clear();
       await _channel.sendMessage(AgoraRtmMessage.fromText(text));
+      print('the message: $text');
       setState(() {
-        _infoString.add('${widget.userId}: $text');
+        //_infoString.add('${widget.userId}: $text');
         _log(info: text, type: 'message', user: widget.userId);
       });
     } catch (e) {
@@ -636,12 +628,14 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
   }
 
+  //send message to other users
   void _sendMessage(text) async {
     if (text.isEmpty) {
       return;
     }
     try {
       _channelMessageController.clear();
+
       await _channel.sendMessage(AgoraRtmMessage.fromText(text));
       setState(() {
         _infoString.add('${widget.userId}: $text');
@@ -656,9 +650,10 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   void createClient() async {
     _client = await AgoraRtmClient.createInstance(Parameters().app_ID);
+    print('im before: create');
     _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
-      print('message received: ${message.text}');
-      _infoString.add('user: $peerId message: ${message.text}');
+      //_infoString.add('user: $peerId message: ${message.text}');
+      _log(type: 'message', user: peerId, info: message.text);
     };
 
     _client.onConnectionStateChanged = (int state, int reason) {
@@ -667,18 +662,74 @@ class _LiveStreamingState extends State<LiveStreaming> {
         setState(() {
           _isLogin = false;
         });
+        return;
       }
     };
-    await _client.login(widget.rtmToken, widget.channelName);
-    _channel = await _createChannel(widget.channelName);
+    _buildMessagingInitiation();
+  }
 
-    await _channel.join();
+  //will login current user
+  void _login(BuildContext context) async {
+    print('im before: loging');
+    if (widget.userId.isEmpty) {
+      print('user id is empty');
+      setState(() {
+        _isLogin = false;
+      });
+
+      return;
+    }
+    try {
+      await _client.login(widget.rtmToken, widget.channelName);
+      _log(type: 'login', user: widget.userId);
+      setState(() {
+        _isLogin = true;
+      });
+      _joinChannel(context);
+    } catch (e, stackTrace) {
+      print('An error login in rtm service: $e - $stackTrace');
+    }
+  }
+
+  //will query online users
+  void _queryOnlineUsers(BuildContext context) async {
+    String? peerId = widget.streamUserId;
+    if (peerId!.isEmpty) {
+      _log(type: 'login', user: 'empty', info: 'user id is null');
+    }
+    try {
+      Map<dynamic, dynamic> result =
+          await _client.queryPeersOnlineStatus([peerId]);
+      _log(type: 'login', user: peerId, info: '$result');
+    } catch (e, stackTrace) {
+      print('query peers error: $e - $stackTrace');
+      _log(type: 'error', user: peerId, info: '$e');
+    }
+  }
+
+  void _joinChannel(BuildContext context) async {
+    String channelId = widget.channelName;
+    if (channelId.isEmpty) {
+      _log(type: 'joined', info: 'no channel Id', user: widget.userId);
+      return;
+    }
+    //_channel = await _createChannel(channelId);
+
+    await _channel.join().catchError((err) {
+      print('an error joining: $err');
+      _log(type: 'error', info: 'error joining', user: widget.userId);
+    }).then((value) {
+      print('joined channel successfully');
+      _log(type: 'joined', info: 'user joined', user: widget.userId);
+    });
+    // _log(type: 'joined', user: widget.userId, info: 'joined');
   }
 
   Future<AgoraRtmChannel> _createChannel(String name) async {
     AgoraRtmChannel? channel = await _client.createChannel(name);
     channel!.onMemberJoined = (AgoraRtmMember member) async {
-      _infoString.add('memeber joinded: ${member.userId}');
+      print('new member joined: ${member.userId}');
+      _log(type: 'joined', user: member.userId, info: 'joined');
 
       setState(() {
         _userList.add(UserModel(userId: member.userId));
@@ -694,16 +745,16 @@ class _LiveStreamingState extends State<LiveStreaming> {
           userNo = len - 1;
         });
       });
-
-      _infoString.add('info: Member Joined: ${member.userId} type: join ');
     };
     channel.onMemberLeft = (AgoraRtmMember member) {
       var len;
+      _log(type: 'joined', user: member.userId, info: 'left');
       setState(() {
         _userList.removeWhere((element) => element.userId == member.userId);
         if (_userList.isEmpty) {
           anyPerson = false;
         }
+        _leaveChannel();
       });
       _channel.getMembers().then((value) {
         len = value.length;
@@ -715,9 +766,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
     channel.onMessageReceived =
         (AgoraRtmMessage message, AgoraRtmMember member) {
-      _infoString
-          .add('user: ${member.userId} message: ${message.text} type: message');
-      print('Messages: $member : $message');
+      print('message sent');
+      _log(type: 'message', user: member.userId, info: message.text);
     };
     return channel;
   }
@@ -725,6 +775,15 @@ class _LiveStreamingState extends State<LiveStreaming> {
   //show message chat
   void _log({String? info, String? type, String? user}) {
     if (type == 'message') {
+      _messageList.add('$user: $info');
+    }
+    if (type == 'login') {
+      _messageList.add('$user : logged in');
+    }
+    if (type == 'joined') {
+      _messageList.add('$user: $info');
+    }
+    if (type == 'error') {
       _messageList.add('$user: $info');
     }
   }

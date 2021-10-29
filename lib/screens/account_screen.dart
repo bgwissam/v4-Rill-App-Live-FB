@@ -177,7 +177,8 @@ class _AccountScreenState extends State<AccountScreen>
                           ),
                           child: FittedBox(
                               fit: BoxFit.fill,
-                              child: Image.asset("assets/images/g.png")),
+                              child: Image.asset(
+                                  "assets/images/empty_profile_photo.png")),
                         ),
                   Container(
                     padding:

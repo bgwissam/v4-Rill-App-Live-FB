@@ -52,7 +52,7 @@ class _CommentsViewState extends State<CommentsView> {
                   leading: widget.imageComments[index]!.avatarUrl != null
                       ? CachedNetworkImage(
                           imageUrl: widget.imageComments[index]!.avatarUrl!)
-                      : Image.asset('assets/images/g.png'),
+                      : Image.asset('assets/images/empty_profile_photo.png'),
                   title: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,

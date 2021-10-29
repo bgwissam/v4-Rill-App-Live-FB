@@ -473,9 +473,11 @@ class _MainScreenState extends State<MainScreen>
                           if (snapshot.hasData) {
                             return GestureDetector(
                               onTap: () async {
+                                print(
+                                    'the rtm: ${streamingProvider[index]!.rtmToken.toString()}');
                                 var userType =
                                     await _joiningStreamAlertDialog(context);
-
+                                print('the user role: $userType');
                                 await Navigator.push(
                                   context,
                                   MaterialPageRoute(
