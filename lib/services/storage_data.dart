@@ -129,7 +129,7 @@ class StorageData {
         video: videoUrl,
         thumbnailPath: (await getTemporaryDirectory()).path,
         imageFormat: ImageFormat.JPEG,
-        maxHeight: 220,
+        maxWidth: 600,
         quality: 25);
 
     var file = File(fileName!);
