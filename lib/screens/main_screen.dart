@@ -495,9 +495,7 @@ class _MainScreenState extends State<MainScreen>
                                         rtmToken: streamingProvider[index]!
                                             .rtmToken
                                             .toString(),
-                                        userId: streamingProvider[index]!
-                                            .userId
-                                            .toString(),
+                                        userId: widget.userId!,
                                         resourceId: streamingProvider[index]!
                                             .resourceId
                                             .toString(),

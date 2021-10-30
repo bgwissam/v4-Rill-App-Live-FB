@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,6 +15,7 @@ import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/aspect_ration_video.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
+import 'package:rillliveapp/shared/list_scroll_wheel.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
@@ -25,7 +27,8 @@ class CameraScreen extends StatefulWidget {
   _CameraScreenState createState() => _CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _CameraScreenState extends State<CameraScreen>
+    with TickerProviderStateMixin {
   //controllers
   CameraController? _controller;
   VideoPlayerController? _vcontroller;
@@ -35,7 +38,8 @@ class _CameraScreenState extends State<CameraScreen> {
   DatabaseService db = DatabaseService();
   RtcTokenGenerator rtctokenGenerator = RtcTokenGenerator();
   RtmTokenGenerator rtmTokenGenerator = RtmTokenGenerator();
-
+  ImagePicker _imagePicker = ImagePicker();
+  late ScrollController _scrollController;
   //variables
   ResolutionPreset currentResolutionPreset = ResolutionPreset.high;
   double _minAvailableExposureOffset = 0.0;
@@ -54,6 +58,8 @@ class _CameraScreenState extends State<CameraScreen> {
   String? _channelName;
   int? uid;
   late bool _isLoadingStream = false;
+  late bool _camButtonPressed = false;
+  int? selectedIndex = 0;
   //Maps
   late Map acquireResponse;
   late Map startRecording;
@@ -74,9 +80,12 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
+
     _channelName = 'testing';
-    print('the cameras: $cameras');
+    _getTokens();
     onNewCameraSelected(cameras[0]);
+
+    _scrollController = ScrollController();
   }
 
   @override
@@ -96,6 +105,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void dispose() {
     _controller?.dispose();
+
     super.dispose();
   }
 
@@ -149,234 +159,298 @@ class _CameraScreenState extends State<CameraScreen> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         body: _isCameraInitialized
-            ? Padding(
-                padding: const EdgeInsets.all(6.0),
-                child: Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
+            ? Column(
+                children: [
+                  SizedBox(
+                    height: size.height - 25,
+                    child: ClipRRect(
                       child: AspectRatio(
-                        aspectRatio: 1.02 / _controller!.value.aspectRatio,
+                        aspectRatio: 1 / _controller!.value.aspectRatio,
                         child: Stack(
                           children: [
                             _controller!.buildPreview(),
-                            if (selectedButton == 0)
-                              GestureDetector(
-                                onTap: () async {
-                                  // var result =
-                                  //     await storageData.uploadImageFile(
-                                  //         fileType: 'imageCamera');
-                                  var result = await _controller?.takePicture();
-                                  setState(() {
-                                    _previewImage(result);
-                                  });
-                                },
-                                child: const Padding(
-                                  padding: const EdgeInsets.only(bottom: 20),
-                                  child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: CircleAvatar(
-                                      radius: 30,
-                                      backgroundColor: Colors.grey,
-                                      child: CircleAvatar(
-                                        radius: 25,
-                                        backgroundColor: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (selectedButton == 1)
-                              GestureDetector(
-                                onTap: () async {
-                                  if (mounted) {
-                                    setState(() {});
-                                  }
-
-                                  if (_controller == null ||
-                                      !_controller!.value.isInitialized) {
-                                    print('error select camera first');
-                                  }
-
-                                  if (_controller!.value.isRecordingVideo) {
-                                    setState(() {
-                                      _isRecordingVideo = true;
-                                    });
-                                  }
-                                  try {
-                                    if (!_isRecordingVideo) {
-                                      await _controller!.startVideoRecording();
-                                      setState(() {
-                                        _isRecordingVideo = true;
-                                        print(
-                                            'is recordinging $_isRecordingVideo');
-                                      });
-                                    } else {
-                                      var result = await _controller!
-                                          .stopVideoRecording()
-                                          .then((file) async {
-                                        print(
-                                            'video: ${file.path} - ${file.name} - ${file.length}');
-                                        if (mounted) {
-                                          setState(() {});
-                                        }
-
-                                        if (file != null) {
-                                          _previewVideo(file);
-                                        }
-                                      });
-
-                                      setState(() {
-                                        _isRecordingVideo = false;
-                                      });
-                                    }
-                                  } on CameraException catch (e, stackTrace) {
-                                    print(
-                                        'An exception with the camera occured: $e - $stackTrace');
-                                  }
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 20),
-                                  child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: CircleAvatar(
-                                      radius: 30,
-                                      backgroundColor: Colors.grey,
-                                      child: !_isRecordingVideo
-                                          ? const CircleAvatar(
-                                              radius: 25,
-                                              backgroundColor: Colors.red,
-                                            )
-                                          : const CircleAvatar(
-                                              radius: 15,
-                                              backgroundColor: Colors.redAccent,
+                            Positioned(
+                                left: 0,
+                                top: size.height - 170,
+                                height: 120,
+                                width: size.width / 2 + 50,
+                                child: GestureDetector(
+                                  onTap: () async {},
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: IconButton(
+                                            iconSize: 30,
+                                            onPressed: () {
+                                              setState(() {
+                                                _isCameraInitialized = false;
+                                              });
+                                              onNewCameraSelected(cameras[
+                                                  _isRearCameraSelected
+                                                      ? 1
+                                                      : 0]);
+                                              setState(() {
+                                                _isRearCameraSelected =
+                                                    !_isRearCameraSelected;
+                                              });
+                                            },
+                                            icon: Image.asset(
+                                              'assets/icons/two_arrow_rill.png',
+                                              color: Colors.white,
                                             ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: IconButton(
+                                            iconSize: 30,
+                                            onPressed: () {
+                                              setState(() {
+                                                _ismicOn = !_ismicOn;
+                                              });
+                                            },
+                                            icon: _ismicOn
+                                                ? Image.asset(
+                                                    'assets/icons/bolt_rill_icon_light.png',
+                                                    color: Colors.white,
+                                                  )
+                                                : Image.asset(
+                                                    'assets/icons/bolt_rill_icon_dark.png',
+                                                    color: Colors.white,
+                                                  ),
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(bottom: 20),
+                                        child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: IconButton(
+                                            iconSize: 60,
+                                            onPressed: () async {
+                                              if (selectedButton == 2) {
+                                                var result = await _controller
+                                                    ?.takePicture();
+                                                setState(() {
+                                                  _camButtonPressed = true;
+                                                  _previewImage(result);
+                                                });
+                                              }
+                                              if (selectedButton == 1) {
+                                                if (mounted) {
+                                                  setState(() {
+                                                    _camButtonPressed = true;
+                                                  });
+                                                }
+
+                                                if (_controller == null ||
+                                                    !_controller!
+                                                        .value.isInitialized) {
+                                                  print(
+                                                      'error select camera first');
+                                                }
+
+                                                if (_controller!
+                                                    .value.isRecordingVideo) {
+                                                  setState(() {
+                                                    _isRecordingVideo = true;
+                                                  });
+                                                }
+                                                try {
+                                                  if (!_isRecordingVideo) {
+                                                    await _controller!
+                                                        .startVideoRecording();
+                                                    setState(() {
+                                                      _isRecordingVideo = true;
+                                                      print(
+                                                          'is recordinging $_isRecordingVideo');
+                                                    });
+                                                  } else {
+                                                    var result =
+                                                        await _controller!
+                                                            .stopVideoRecording()
+                                                            .then((file) async {
+                                                      print(
+                                                          'video: ${file.path} - ${file.name} - ${file.length}');
+                                                      if (mounted) {
+                                                        setState(() {});
+                                                      }
+
+                                                      if (file != null) {
+                                                        _previewVideo(file);
+                                                      }
+                                                    });
+
+                                                    setState(() {
+                                                      _isRecordingVideo = false;
+                                                    });
+                                                  }
+                                                } on CameraException catch (e, stackTrace) {
+                                                  print(
+                                                      'An exception with the camera occured: $e - $stackTrace');
+                                                }
+                                              }
+                                              if (selectedButton == 0) {
+                                                //live streaming
+                                                if (mounted) {
+                                                  setState(() {
+                                                    _camButtonPressed = true;
+                                                    _isLoadingStream = true;
+                                                  });
+                                                }
+                                                if (rtcToken == 'failed') {
+                                                  return;
+                                                }
+                                                if (_controller == null ||
+                                                    !_controller!
+                                                        .value.isInitialized) {
+                                                  print(
+                                                      'error select camera first');
+                                                  return;
+                                                }
+
+                                                if (_controller!
+                                                    .value.isRecordingVideo) {
+                                                  setState(() {
+                                                    _isLoadingStream = true;
+                                                  });
+                                                }
+                                                //Start live streaming
+                                                try {
+                                                  if (!_isRecordingVideo) {
+                                                    setState(() {
+                                                      _isLoadingStream = true;
+                                                    });
+                                                    //Check if recording could be started
+                                                    var acquire =
+                                                        await _recordingController
+                                                            .getVideoRecordingRefId(
+                                                                _channelName!,
+                                                                '0',
+                                                                rtcToken!);
+                                                    acquireResponse = await json
+                                                        .decode(acquire.body);
+
+                                                    if (acquireResponse[
+                                                            'resourceId'] !=
+                                                        null) {
+                                                      var start = await _recordingController
+                                                          .startRecordingVideo(
+                                                              acquireResponse[
+                                                                  'resourceId'],
+                                                              'mix',
+                                                              _channelName!,
+                                                              '0',
+                                                              rtcToken!);
+                                                      startRecording =
+                                                          await json.decode(
+                                                              start.body);
+                                                    }
+                                                    if (startRecording['sid'] !=
+                                                        null) {
+                                                      _startRecordingLiveStream();
+                                                    } else {
+                                                      //add code here to show the recording initiation failed
+
+                                                    }
+                                                  } else {
+                                                    setState(() {
+                                                      _isLoadingStream = false;
+                                                      _camButtonPressed = false;
+                                                    });
+                                                  }
+                                                } on CameraException catch (e, stackTrace) {
+                                                  print(
+                                                      'An exception with the camera occured: $e - $stackTrace');
+                                                }
+                                              }
+                                              //Open phone gallery
+                                              if (selectedButton == 3) {
+                                                //open image gallery
+                                                await _imagePicker.pickImage(
+                                                    source: ImageSource.gallery,
+                                                    preferredCameraDevice:
+                                                        CameraDevice.front,
+                                                    imageQuality: 25,
+                                                    maxHeight: 400,
+                                                    maxWidth: 400);
+                                              }
+                                            },
+                                            icon: !_camButtonPressed
+                                                ? Image.asset(
+                                                    'assets/icons/target_rill_light.png',
+                                                    color: Colors.white,
+                                                  )
+                                                : Image.asset(
+                                                    'assets/icons/target_rill_dark.png',
+                                                    color: Colors.white,
+                                                  ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                            Positioned(
+                              top: size.height - 100,
+                              width: size.width,
+                              height: 100,
+                              child: RotatedBox(
+                                quarterTurns: 3,
+                                child: ListWheelScrollView.useDelegate(
+                                  physics: FixedExtentScrollPhysics(),
+                                  itemExtent: 80,
+                                  diameterRatio: 80,
+                                  onSelectedItemChanged: _onSelectedItem,
+                                  childDelegate:
+                                      ListWheelChildListDelegate(children: [
+                                    RotatedBox(
+                                        quarterTurns: 1,
+                                        child: textButton('Live', () {
+                                          setState(() {
+                                            selectedButton = 0;
+                                          });
+                                        }, Colors.white)),
+                                    RotatedBox(
+                                      quarterTurns: 1,
+                                      child: textButton('Video', () {
+                                        setState(() {
+                                          selectedButton = 1;
+
+                                          _vcontroller?.initialize();
+                                        });
+                                      }, Colors.white),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            if (selectedButton == 2)
-                              GestureDetector(
-                                onTap: () async {
-                                  if (mounted) {
-                                    setState(() {
-                                      _isLoadingStream = true;
-                                    });
-                                  }
-                                  if (rtcToken == 'failed') {
-                                    return;
-                                  }
-                                  if (_controller == null ||
-                                      !_controller!.value.isInitialized) {
-                                    print('error select camera first');
-                                    return;
-                                  }
-
-                                  if (_controller!.value.isRecordingVideo) {
-                                    setState(() {
-                                      _isLoadingStream = true;
-                                    });
-                                  }
-                                  //Start live streaming
-                                  try {
-                                    if (!_isRecordingVideo) {
-                                      setState(() {
-                                        _isLoadingStream = true;
-                                      });
-                                      //Check if recording could be started
-                                      var acquire = await _recordingController
-                                          .getVideoRecordingRefId(
-                                              _channelName!, '0', rtcToken!);
-                                      acquireResponse =
-                                          await json.decode(acquire.body);
-
-                                      if (acquireResponse['resourceId'] !=
-                                          null) {
-                                        var start = await _recordingController
-                                            .startRecordingVideo(
-                                                acquireResponse['resourceId'],
-                                                'mix',
-                                                _channelName!,
-                                                '0',
-                                                rtcToken!);
-                                        startRecording =
-                                            await json.decode(start.body);
-                                      }
-                                      if (startRecording['sid'] != null) {
-                                        _startRecordingLiveStream();
-                                      } else {
-                                        //add code here to show the recording initiation failed
-
-                                      }
-                                    } else {
-                                      setState(() {
-                                        _isLoadingStream = false;
-                                      });
-                                    }
-                                  } on CameraException catch (e, stackTrace) {
-                                    print(
-                                        'An exception with the camera occured: $e - $stackTrace');
-                                  }
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.only(bottom: 20),
-                                  child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: CircleAvatar(
-                                      radius: 30,
-                                      backgroundColor: Colors.grey,
-                                      child: !_isLoadingStream
-                                          ? const CircleAvatar(
-                                              radius: 28,
-                                              backgroundColor: Colors.red,
-                                            )
-                                          : const CircularProgressIndicator(
-                                              backgroundColor:
-                                                  Colors.redAccent),
+                                    RotatedBox(
+                                      quarterTurns: 1,
+                                      child: textButton('Camera', () {
+                                        setState(() {
+                                          selectedButton = 2;
+                                        });
+                                      }, Colors.white),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            if (selectedButton == 2)
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _ismicOn = !_ismicOn;
-                                      });
-                                    },
-                                    icon: _ismicOn
-                                        ? Icon(Icons.mic_none_rounded)
-                                        : Icon(Icons.mic_off_rounded),
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _isCameraInitialized = false;
-                                    });
-                                    onNewCameraSelected(
-                                        cameras[_isRearCameraSelected ? 1 : 0]);
-                                    setState(() {
-                                      _isRearCameraSelected =
-                                          !_isRearCameraSelected;
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    Icons.cameraswitch_outlined,
-                                    color: Colors.white,
-                                  ),
+                                    RotatedBox(
+                                      quarterTurns: 1,
+                                      child: textButton('Gallery', () {
+                                        setState(() {
+                                          selectedButton = 3;
+                                        });
+                                      }, Colors.white),
+                                    ),
+                                  ]),
                                 ),
                               ),
                             ),
@@ -384,46 +458,19 @@ class _CameraScreenState extends State<CameraScreen> {
                         ),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        textButton(
-                          'Camera',
-                          () {
-                            setState(() {
-                              selectedButton = 0;
-                            });
-                          },
-                          selectedButton == 0 ? Colors.yellow : Colors.white,
-                        ),
-                        textButton(
-                          'Video',
-                          () {
-                            setState(() {
-                              selectedButton = 1;
-                              _vcontroller?.initialize();
-                            });
-                          },
-                          selectedButton == 1 ? Colors.yellow : Colors.white,
-                        ),
-                        textButton(
-                          'Live',
-                          () {
-                            setState(() {
-                              selectedButton = 2;
-                            });
-                            _getTokens();
-                          },
-                          selectedButton == 2 ? Colors.yellow : Colors.white,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               )
             : Container(),
       ),
     );
+  }
+
+  _onSelectedItem(int index) {
+    setState(() {
+      selectedButton = index;
+      print('the selected button: $selectedButton');
+    });
   }
 
   //The following functions will start recording a live stream
@@ -544,6 +591,10 @@ class _CameraScreenState extends State<CameraScreen> {
                   ),
                   TextButton(
                     onPressed: () {
+                      setState(() {
+                        _camButtonPressed = false;
+                      });
+
                       Navigator.pop(context);
                     },
                     child: Text('Cancel', style: textStyle_3),
@@ -613,7 +664,7 @@ class _CameraScreenState extends State<CameraScreen> {
                     TextButton(
                       onPressed: () async {
                         await _controller!.pausePreview();
-                        // await vController.dispose();
+                        //await vController.dispose();
                         // await _controller!.dispose();
                         Navigator.pop(context);
                         Navigator.pop(context);

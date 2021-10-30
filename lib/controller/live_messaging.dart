@@ -4,14 +4,14 @@ import 'package:agora_rtm/agora_rtm.dart';
 import 'package:flutter/material.dart';
 import 'package:rillliveapp/shared/parameters.dart';
 
-void main() => runApp(MyApp());
+class LiveMessaging extends StatefulWidget {
+  const LiveMessaging({Key? key}) : super(key: key);
 
-class MyApp extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _LiveMessaging createState() => _LiveMessaging();
 }
 
-class _MyAppState extends State<MyApp> {
+class _LiveMessaging extends State<LiveMessaging> {
   bool _isLogin = false;
   bool _isInChannel = false;
   Parameters param = Parameters();
@@ -91,8 +91,7 @@ class _MyAppState extends State<MyApp> {
       };
       channel.onMessageReceived =
           (AgoraRtmMessage message, AgoraRtmMember member) {
-        _log(
-            "Channel msg: " + member.userId + ", msg: " + (message.text ?? ""));
+        _log("Channel msg: " + member.userId + ", msg: " + (message.text));
       };
     }
     return channel;

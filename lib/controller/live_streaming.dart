@@ -216,7 +216,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
       await _engine.joinChannel(
           widget.rtcToken, widget.channelName, null, widget.uid!);
       //creat live messaging channel
-      _channel = await _createChannel(widget.channelName);
+      //_channel = await _createChannel(widget.channelName);
+      await _joinChannel(context);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Failed to connect')));
@@ -314,8 +315,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   Widget _broadCastView() {
     final views = _getRenderViews();
-    print('the total views are: ${views.length}');
-
     switch (views.length) {
       case 1:
         return Column(
@@ -478,7 +477,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
   void _onCallEnd(BuildContext context) async {
     //logout from rtm channel
     _logout();
-
     print('we are here stopping video streaming');
     String streamingId =
         await db.fetchStreamingVideoUrl(uid: widget.streamModelId);
@@ -500,6 +498,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
       print('Stop response: $stopRecordResponse');
     }
 
+    Navigator.pop(context);
     Navigator.pop(context);
   }
 
@@ -524,10 +523,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
    * createClient & _createChannel will monitor the status of signed in users and messages sent
    * the function below are to send and read message
    */
-  _buildMessagingInitiation() {
-    _login(context);
-    _queryOnlineUsers(context);
-  }
 
   Widget _bottomBar() {
     return Container(
@@ -578,11 +573,11 @@ class _LiveStreamingState extends State<LiveStreaming> {
         ));
   }
 
-  void _addPerson() {
-    setState(() {
-      personBool = !personBool;
-    });
-  }
+  // void _addPerson() {
+  //   setState(() {
+  //     personBool = !personBool;
+  //   });
+  // }
 
   void stopFunction() {
     setState(() {
@@ -630,6 +625,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //send message to other users
   void _sendMessage(text) async {
+    print('the text being sent: $text');
     if (text.isEmpty) {
       return;
     }
@@ -650,13 +646,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   void createClient() async {
     _client = await AgoraRtmClient.createInstance(Parameters().app_ID);
-    print('im before: create');
-    _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
-      //_infoString.add('user: $peerId message: ${message.text}');
-      _log(type: 'message', user: peerId, info: message.text);
-    };
 
     _client.onConnectionStateChanged = (int state, int reason) {
+      print('Connection state changed: $state - reasong: $reason');
       if (state == 5) {
         _client.logout();
         setState(() {
@@ -665,11 +657,32 @@ class _LiveStreamingState extends State<LiveStreaming> {
         return;
       }
     };
-    _buildMessagingInitiation();
+
+    await _login(context);
+
+    _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
+      setState(() {
+        print('a message received: $message - $peerId');
+        _log(type: 'message', user: peerId, info: message.text);
+      });
+    };
+
+    _channel = await _createChannel(widget.channelName);
+    await _channel.join();
+    _client.onConnectionStateChanged = (int state, int reason) {
+      print('Connection state changed: $state - reasong: $reason');
+      if (state == 5) {
+        _client.logout();
+        setState(() {
+          _isLogin = false;
+        });
+        return;
+      }
+    };
   }
 
   //will login current user
-  void _login(BuildContext context) async {
+  Future _login(BuildContext context) async {
     print('im before: loging');
     if (widget.userId.isEmpty) {
       print('user id is empty');
@@ -680,12 +693,14 @@ class _LiveStreamingState extends State<LiveStreaming> {
       return;
     }
     try {
+      print(
+          'The rtm loging: ${widget.rtmToken} - ${widget.channelName} - ${widget.userId}');
       await _client.login(widget.rtmToken, widget.channelName);
       _log(type: 'login', user: widget.userId);
       setState(() {
         _isLogin = true;
       });
-      _joinChannel(context);
+      //_joinChannel(context);
     } catch (e, stackTrace) {
       print('An error login in rtm service: $e - $stackTrace');
     }
@@ -707,13 +722,13 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
   }
 
-  void _joinChannel(BuildContext context) async {
+  Future _joinChannel(BuildContext context) async {
     String channelId = widget.channelName;
     if (channelId.isEmpty) {
       _log(type: 'joined', info: 'no channel Id', user: widget.userId);
       return;
     }
-    //_channel = await _createChannel(channelId);
+    _channel = await _createChannel(channelId);
 
     await _channel.join().catchError((err) {
       print('an error joining: $err');
@@ -727,6 +742,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   Future<AgoraRtmChannel> _createChannel(String name) async {
     AgoraRtmChannel? channel = await _client.createChannel(name);
+
+    //on member joined
     channel!.onMemberJoined = (AgoraRtmMember member) async {
       print('new member joined: ${member.userId}');
       _log(type: 'joined', user: member.userId, info: 'joined');
@@ -746,6 +763,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         });
       });
     };
+    //on member left
     channel.onMemberLeft = (AgoraRtmMember member) {
       var len;
       _log(type: 'joined', user: member.userId, info: 'left');
@@ -763,10 +781,10 @@ class _LiveStreamingState extends State<LiveStreaming> {
         });
       });
     };
-
+    //on message received
     channel.onMessageReceived =
         (AgoraRtmMessage message, AgoraRtmMember member) {
-      print('message sent');
+      print('message sent: $message');
       _log(type: 'message', user: member.userId, info: message.text);
     };
     return channel;
