@@ -152,19 +152,22 @@ class _SearchScreenState extends State<SearchScreen> {
                     });
                   },
                   child: Container(
-                    width: 100,
+                    width: 80,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color:
-                          filterItems[index]['isPressed'] ? color_4 : color_7,
-                    ),
+                        borderRadius: BorderRadius.circular(10),
+                        color: filterItems[index]['isPressed']
+                            ? color_4
+                            : color_11,
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 5.0,
+                              spreadRadius: 0.0,
+                              offset: Offset(2.0, 3.0))
+                        ]),
                     child: Center(
-                      child: Text(
-                        '${filterItems[index]['category']}',
-                        style: filterItems[index]['isPressed']
-                            ? textStyle_14
-                            : errorText,
-                      ),
+                      child: Text('${filterItems[index]['category']}',
+                          style: textStyle_14),
                     ),
                   ),
                 ),
@@ -235,19 +238,23 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                       );
                     },
-                    child: CachedNetworkImage(
-                        imageUrl: imageVideoProvider[index]!.url!,
-                        progressIndicatorBuilder:
-                            (context, imageUrl, progress) {
-                          return const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10.0),
-                            child: LinearProgressIndicator(
-                              minHeight: 12.0,
-                            ),
-                          );
-                        }),
+                    // child: CachedNetworkImage(
+                    //     imageUrl: imageVideoProvider[index]!.url!,
+                    //     progressIndicatorBuilder:
+                    //         (context, imageUrl, progress) {
+                    //       return const Padding(
+                    //         padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    //         child: LinearProgressIndicator(
+                    //           minHeight: 12.0,
+                    //         ),
+                    //       );
+                    //     }),
                   ),
                   decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(imageVideoProvider[index]!.url!),
+                        fit: BoxFit.fill,
+                      ),
                       color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(10.0)),
                 );
@@ -271,20 +278,20 @@ class _SearchScreenState extends State<SearchScreen> {
                       );
                     },
                     child: Stack(children: [
-                      Center(
-                        child: CachedNetworkImage(
-                            imageUrl:
-                                imageVideoProvider[index]!.videoThumbnailurl!,
-                            progressIndicatorBuilder:
-                                (context, imageUrl, progress) {
-                              return const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                child: LinearProgressIndicator(
-                                  minHeight: 12.0,
-                                ),
-                              );
-                            }),
-                      ),
+                      // Center(
+                      //   child: CachedNetworkImage(
+                      //       imageUrl:
+                      //           imageVideoProvider[index]!.videoThumbnailurl!,
+                      //       progressIndicatorBuilder:
+                      //           (context, imageUrl, progress) {
+                      //         return const Padding(
+                      //           padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      //           child: LinearProgressIndicator(
+                      //             minHeight: 12.0,
+                      //           ),
+                      //         );
+                      //       }),
+                      // ),
                       Center(
                         child: ImageIcon(
                           AssetImage("assets/icons/Play_Dark_rill.png"),
@@ -295,6 +302,10 @@ class _SearchScreenState extends State<SearchScreen> {
                     ]),
                   ),
                   decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              imageVideoProvider[index]!.videoThumbnailurl!),
+                          fit: BoxFit.fill),
                       color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(10.0)),
                 );

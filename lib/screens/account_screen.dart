@@ -654,18 +654,21 @@ class _AccountScreenState extends State<AccountScreen>
                   ),
                 );
               },
-              child: CachedNetworkImage(
-                  imageUrl: feedProvider[index]!.url!,
-                  progressIndicatorBuilder: (context, imageUrl, progress) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.0),
-                      child: LinearProgressIndicator(
-                        minHeight: 12.0,
-                      ),
-                    );
-                  }),
+              // child: CachedNetworkImage(
+              //     imageUrl: feedProvider[index]!.url!,
+              //     progressIndicatorBuilder: (context, imageUrl, progress) {
+              //       return const Padding(
+              //         padding: EdgeInsets.symmetric(horizontal: 5.0),
+              //         child: LinearProgressIndicator(
+              //           minHeight: 12.0,
+              //         ),
+              //       );
+              //     }),
             ),
             decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(feedProvider[index]!.url!),
+                    fit: BoxFit.fill),
                 color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(10.0)),
           );
@@ -688,18 +691,26 @@ class _AccountScreenState extends State<AccountScreen>
             },
             child: Container(
               alignment: Alignment.center,
-              child: feedProvider[index]!.url != null
-                  ? CachedNetworkImage(
-                      imageUrl: feedProvider[index]!.videoThumbnailurl!,
-                      progressIndicatorBuilder: (context, imageUrl, progress) {
-                        return const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          child: LinearProgressIndicator(
-                            minHeight: 12.0,
-                          ),
-                        );
-                      })
-                  : const Text('Not initialized'),
+              // child: feedProvider[index]!.url != null
+              //     ? CachedNetworkImage(
+              //         imageUrl: feedProvider[index]!.videoThumbnailurl!,
+              //         progressIndicatorBuilder: (context, imageUrl, progress) {
+              //           return const Padding(
+              //             padding: EdgeInsets.symmetric(horizontal: 10.0),
+              //             child: LinearProgressIndicator(
+              //               minHeight: 12.0,
+              //             ),
+              //           );
+              //         })
+              //     : const Text('Not initialized'),
+
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image:
+                          NetworkImage(feedProvider[index]!.videoThumbnailurl!),
+                      fit: BoxFit.fill),
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(10.0)),
             ),
           );
         }

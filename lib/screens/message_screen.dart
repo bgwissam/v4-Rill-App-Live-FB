@@ -32,7 +32,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         ? SizedBox(
             height: _size.height - 100,
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(5.0),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +47,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         Expanded(
                           flex: 1,
                           child: IconButton(
-                            icon: Image.asset('assets/icons/add_rill.png'),
+                            icon: Image.asset(
+                              'assets/icons/add_rill.png',
+                              color: color_4,
+                              height: 30,
+                            ),
                             onPressed: () {},
                           ),
                         ),
@@ -91,9 +95,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
   //Search Box
   Widget _searchBox() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(15),
           border: Border.all(color: color_7)),
       child: TextFormField(
         initialValue: '',
@@ -127,7 +131,6 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   itemCount: snapshot.data?.docs.length,
                   itemBuilder: (context, index) {
                     //var unreadMessage = _getUnreadMessages();
-
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: InkWell(
@@ -146,25 +149,23 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           );
                         },
                         child: ListTile(
-                          leading: Container(
+                          leading: SizedBox(
                             height: 60,
                             width: 60,
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: CircleAvatar(
-                                backgroundImage: snapshot.data?.docs[index]
-                                            [UserParams.AVATAR] !=
-                                        null
-                                    ? NetworkImage(
-                                        snapshot.data?.docs[index]
-                                            [UserParams.AVATAR],
-                                      )
-                                    : Image.asset(
-                                            'assets/images/empty_profile_photo.png')
-                                        .image,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: snapshot.data?.docs[index]
+                                                [UserParams.AVATAR] !=
+                                            null
+                                        ? NetworkImage(
+                                            snapshot.data?.docs[index]
+                                                [UserParams.AVATAR],
+                                          )
+                                        : Image.asset(
+                                                'assets/images/empty_profile_photo.png')
+                                            .image,
+                                    fit: BoxFit.fill),
                               ),
                             ),
                           ),
