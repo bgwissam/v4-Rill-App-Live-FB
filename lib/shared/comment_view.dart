@@ -9,6 +9,7 @@ class CommentsView extends StatefulWidget {
       : super(key: key);
   final List<CommentModel?> imageComments;
   final String? fileId;
+
   @override
   _CommentsViewState createState() => _CommentsViewState();
 }
@@ -28,12 +29,11 @@ class _CommentsViewState extends State<CommentsView> {
     var size = MediaQuery.of(context).size;
     _getCommentFieldSize(size);
     return Container(
-      margin: EdgeInsets.all(12),
       decoration: widget.imageComments.isNotEmpty
           ? BoxDecoration(
               color: color_13, borderRadius: BorderRadius.circular(12))
           : BoxDecoration(),
-      height: commentFieldSize,
+      height: commentFieldSize! > 0.0 ? commentFieldSize : 50,
       child: ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
@@ -42,6 +42,7 @@ class _CommentsViewState extends State<CommentsView> {
             var timeStampComment = widget.imageComments[index]?.dateTime;
             commentTime = DateTime.parse(timeStampComment.toDate().toString());
             var difference = _calculateTimeDifference(commentTime);
+            var _isLiked = false;
             return Padding(
               padding: const EdgeInsets.all(12.0),
               child: Container(
@@ -53,17 +54,38 @@ class _CommentsViewState extends State<CommentsView> {
                       ? CachedNetworkImage(
                           imageUrl: widget.imageComments[index]!.avatarUrl!)
                       : Image.asset('assets/images/empty_profile_photo.png'),
-                  title: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  title: Row(
                     children: [
-                      //User
-                      Text(
-                        widget.imageComments[index]!.fullName!.capitalize(),
-                        style: heading_4,
+                      Expanded(
+                        flex: 4,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //User
+                            Text(
+                              widget.imageComments[index]!.fullName!
+                                  .capitalize(),
+                              style: heading_4,
+                            ),
+                            //Time
+                            Text('$difference', style: textStyle_16)
+                          ],
+                        ),
                       ),
-                      //Time
-                      Text('$difference', style: textStyle_16)
+                      Expanded(
+                        child: IconButton(
+                          icon: Image.asset(_isLiked
+                              ? 'assets/icons/heart_rill_icon_dark.png'
+                              : 'assets/icons/heart_rill_icon_light.png'),
+                          onPressed: () async {
+                            setState(() {
+                              _isLiked = !_isLiked;
+                              print('$_isLiked');
+                            });
+                          },
+                        ),
+                      )
                     ],
                   ),
                   subtitle: Padding(

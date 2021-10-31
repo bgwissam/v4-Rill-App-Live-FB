@@ -143,7 +143,7 @@ class _ImageViewerState extends State<ImageViewer> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                              height: 30,
+                              height: 25,
                               child: Image.asset(
                                   'assets/icons/pop_rill_icon_light.png')),
                           Text(

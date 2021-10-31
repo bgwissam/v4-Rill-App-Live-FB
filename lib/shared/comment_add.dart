@@ -23,8 +23,10 @@ class _CommentAddState extends State<CommentAdd> {
     return Card(
       elevation: 2.0,
       child: Padding(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            right: 10,
+            left: 10),
         child: SizedBox(
           height: 80,
           width: double.infinity,
@@ -36,8 +38,35 @@ class _CommentAddState extends State<CommentAdd> {
                 child: TextFormField(
                   controller: _commentController,
                   decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Image.asset('assets/icons/send_rill.png',
+                          color: color_4),
+                      onPressed: () async {
+                        await db.addComment(
+                            uid: widget.fileId,
+                            userId: widget.userModel!.userId,
+                            comment: _newComment,
+                            collection: widget.collection,
+                            dateTime: DateTime.now(),
+                            fullName:
+                                '${widget.userModel!.firstName} ${widget.userModel!.lastName}');
+                        setState(() {
+                          _newComment = '';
+                          _commentController.clear();
+                          FocusScopeNode currentFocus = FocusScope.of(context);
+                          if (!currentFocus.hasPrimaryFocus) {
+                            currentFocus.unfocus();
+                          }
+                        });
+                      },
+                    ),
+                    prefixIcon: Image.asset(
+                      'assets/icons/pop_rill_icon_light.png',
+                      height: 17,
+                      color: color_4,
+                    ),
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(color: color_4)),
                   ),
                   onChanged: (val) {
@@ -49,38 +78,38 @@ class _CommentAddState extends State<CommentAdd> {
               ),
               SizedBox(width: 4),
               //Send comment
-              Expanded(
-                flex: 1,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: color_4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                    ),
-                    onPressed: () async {
-                      await db.addComment(
-                          uid: widget.fileId,
-                          userId: widget.userModel!.userId,
-                          comment: _newComment,
-                          collection: widget.collection,
-                          dateTime: DateTime.now(),
-                          fullName:
-                              '${widget.userModel!.firstName} ${widget.userModel!.lastName}');
-                      setState(() {
-                        _newComment = '';
-                        _commentController.clear();
-                        FocusScopeNode currentFocus = FocusScope.of(context);
-                        if (!currentFocus.hasPrimaryFocus) {
-                          currentFocus.unfocus();
-                        }
-                      });
-                    },
-                    child: Text(
-                      'Send',
-                      style: button_1,
-                    )),
-              )
+              // Expanded(
+              //   flex: 1,
+              //   child: ElevatedButton(
+              //       style: ElevatedButton.styleFrom(
+              //         primary: color_4,
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(25.0),
+              //         ),
+              //       ),
+              //       onPressed: () async {
+              //         await db.addComment(
+              //             uid: widget.fileId,
+              //             userId: widget.userModel!.userId,
+              //             comment: _newComment,
+              //             collection: widget.collection,
+              //             dateTime: DateTime.now(),
+              //             fullName:
+              //                 '${widget.userModel!.firstName} ${widget.userModel!.lastName}');
+              //         setState(() {
+              //           _newComment = '';
+              //           _commentController.clear();
+              //           FocusScopeNode currentFocus = FocusScope.of(context);
+              //           if (!currentFocus.hasPrimaryFocus) {
+              //             currentFocus.unfocus();
+              //           }
+              //         });
+              //       },
+              //       child: Text(
+              //         'Send',
+              //         style: button_1,
+              //       )),
+              // )
             ],
           ),
         ),
