@@ -37,6 +37,10 @@ class UserParams {
   static String ADDRESS = 'address';
   static String FCM_TOKEN = 'fcmToken';
   static String COINS = 'coins';
+  static String FRONT_ID = 'frontIdUrl';
+  static String BACK_ID = 'backIdUrl';
+  static String IS_VERIFIED = 'verifiedById';
+  static String ADMIN_COMMENTS = 'AdminComments';
 }
 
 class ImageVideoParams {

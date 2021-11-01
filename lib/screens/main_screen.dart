@@ -160,7 +160,7 @@ class _MainScreenState extends State<MainScreen>
                       ),
                     ),
                     ListTile(
-                      title: Text('Settings',
+                      title: Text('Account Settings',
                           style: Theme.of(context).textTheme.headline6),
                       leading: ImageIcon(
                         AssetImage('assets/icons/settings_rill.png'),
@@ -176,6 +176,15 @@ class _MainScreenState extends State<MainScreen>
                           ),
                         );
                       },
+                    ),
+                    ListTile(
+                      title: Text('Wallet',
+                          style: Theme.of(context).textTheme.headline6),
+                      leading: ImageIcon(
+                        AssetImage('assets/icons/money_rill_icon.png'),
+                        color: color_4,
+                      ),
+                      onTap: () async {},
                     ),
                     ListTile(
                       title: Text('Analytics',
@@ -227,6 +236,14 @@ class _MainScreenState extends State<MainScreen>
                       onTap: () async {},
                       leading: ImageIcon(
                           AssetImage('assets/icons/Grid_Rill_Icon.png'),
+                          color: color_4),
+                    ),
+                    ListTile(
+                      title: Text('Help',
+                          style: Theme.of(context).textTheme.headline6),
+                      onTap: () async {},
+                      leading: ImageIcon(
+                          AssetImage('assets/icons/info_rill_icon.png'),
                           color: color_4),
                     ),
                     const Divider(),

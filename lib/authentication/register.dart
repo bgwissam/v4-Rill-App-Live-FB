@@ -30,24 +30,44 @@ class RegisterState extends State<Register> {
   final ImagePicker _picker = ImagePicker();
 
   //image picker
-  Future _imgFromCamera() async {
+  Future _imgFromCamera(String imageType) async {
     final pickedImage =
         await _picker.pickImage(source: ImageSource.camera, imageQuality: 25);
 
     setState(() {
       if (pickedImage != null) {
-        image = File(pickedImage.path);
+        switch (imageType) {
+          case 'profilePic':
+            profileImage = File(pickedImage.path);
+            break;
+          case 'frontId':
+            frontId = File(pickedImage.path);
+            break;
+          case 'backId':
+            backId = File(pickedImage.path);
+            break;
+        }
       }
     });
   }
 
-  Future _imgFromGallery() async {
+  Future _imgFromGallery(String imageType) async {
     final pickedImage =
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
 
     setState(() {
       if (pickedImage != null) {
-        image = File(pickedImage.path);
+        switch (imageType) {
+          case 'profilePic':
+            profileImage = File(pickedImage.path);
+            break;
+          case 'frontId':
+            frontId = File(pickedImage.path);
+            break;
+          case 'backId':
+            backId = File(pickedImage.path);
+            break;
+        }
       }
     });
   }
@@ -58,7 +78,6 @@ class RegisterState extends State<Register> {
   void initState() {
     super.initState();
     showPassword = false;
-    print('the dob: ${widget.userModel?.dob}');
     _selectedDate = widget.userModel?.dob != null
         ? widget.userModel?.dob.toDate()
         : DateTime.now();
@@ -91,7 +110,9 @@ class RegisterState extends State<Register> {
 
   late String username;
   late DateTime? _selectedDate;
-  File? image;
+  File? profileImage;
+  File? frontId;
+  File? backId;
 
   String? password;
   late String emailAddress;
@@ -104,7 +125,10 @@ class RegisterState extends State<Register> {
   String? phoneIsoCode;
   String? phoneFullNumber;
   String? bioDescription;
-  String? imageUrl;
+  String? profileImageUrl;
+  String? frontIdUrl;
+  String? backIdUrl;
+  bool? isVerified;
   late FirebaseStorage storageReferece;
   late String errorMessage = '';
   //Services
@@ -113,7 +137,7 @@ class RegisterState extends State<Register> {
   //bool variables
   bool _isSavingUpdating = false;
 
-  void _showPicker(context) {
+  File? _showPicker(context, String imageType) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -128,14 +152,14 @@ class RegisterState extends State<Register> {
                       leading: Icon(Icons.photo_library),
                       title: Text('Gallery'),
                       onTap: () {
-                        _imgFromGallery();
+                        _imgFromGallery(imageType);
                         Navigator.of(context).pop();
                       }),
                   ListTile(
                     leading: Icon(Icons.photo_camera),
                     title: Text('Camera'),
                     onTap: () {
-                      _imgFromCamera();
+                      _imgFromCamera(imageType);
                       Navigator.of(context).pop();
                     },
                   ),
@@ -149,6 +173,7 @@ class RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
+    print('the image: $profileImage - $frontId');
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -165,17 +190,17 @@ class RegisterState extends State<Register> {
                 });
                 //in case it's a new user
                 if (widget.userModel == null) {
-                  print('the current user image: $image');
-                  if (image != null) {
+                  print('the current user image: $profileImage');
+                  if (profileImage != null) {
                     storageReferece = FirebaseStorage.instance;
-                    Reference ref = storageReferece
-                        .ref()
-                        .child('profile_pic/${Path.basename(image!.path)}');
-                    UploadTask uploadTask = ref.putFile(File(image!.path));
+                    Reference ref = storageReferece.ref().child(
+                        'profile_pic/${Path.basename(profileImage!.path)}');
+                    UploadTask uploadTask =
+                        ref.putFile(File(profileImage!.path));
 
                     var downloadImageUrl =
                         await (await uploadTask).ref.getDownloadURL();
-                    imageUrl = downloadImageUrl.toString();
+                    profileImageUrl = downloadImageUrl.toString();
                   }
 
                   var result = await as.signUp(
@@ -184,7 +209,7 @@ class RegisterState extends State<Register> {
                       firstName: firstname,
                       lastName: lastname,
                       emailAddress: emailAddress,
-                      avatarUrl: imageUrl,
+                      avatarUrl: profileImageUrl,
                       bioDescription: bioDescription,
                       mobileNumber: phoneNumber,
                       phoneIsoCode: phoneIsoCode,
@@ -218,16 +243,35 @@ class RegisterState extends State<Register> {
                 //In case you are updating the user
                 else {
                   //update image if image changed
-                  if (image != null) {
+                  if (profileImage != null) {
                     storageReferece = FirebaseStorage.instance;
-                    Reference ref = storageReferece
-                        .ref()
-                        .child('profile_pic/${Path.basename(image!.path)}');
-                    UploadTask uploadTask = ref.putFile(File(image!.path));
+                    Reference ref = storageReferece.ref().child(
+                        'profile_pic/${Path.basename(profileImage!.path)}');
+                    UploadTask uploadTask =
+                        ref.putFile(File(profileImage!.path));
 
                     var downloadImageUrl =
                         await (await uploadTask).ref.getDownloadURL();
-                    imageUrl = downloadImageUrl.toString();
+                    profileImageUrl = downloadImageUrl.toString();
+                  }
+
+                  if (frontId != null && backId != null) {
+                    storageReferece = FirebaseStorage.instance;
+                    Reference refFront = storageReferece.ref().child(
+                        'verification_id/${Path.basename(frontId!.path)}');
+                    Reference refBack = storageReferece.ref().child(
+                        'verification_id/${Path.basename(backId!.path)}');
+                    UploadTask uploadTaskFront =
+                        refFront.putFile(File(frontId!.path));
+                    UploadTask uploadTaskBack =
+                        refBack.putFile(File(backId!.path));
+
+                    var downloadFrontImageUrl =
+                        await (await uploadTaskFront).ref.getDownloadURL();
+                    var downloadBackImageUrl =
+                        await (await uploadTaskBack).ref.getDownloadURL();
+                    frontIdUrl = downloadFrontImageUrl.toString();
+                    backIdUrl = downloadBackImageUrl.toString();
                   }
 
                   var result = await db
@@ -243,7 +287,10 @@ class RegisterState extends State<Register> {
                     phoneFullNumber:
                         phoneFullNumber ?? widget.userModel?.phoneFullNumber,
                     dob: _selectedDate,
-                    avatarUrl: imageUrl ?? widget.userModel?.avatarUrl,
+                    avatarUrl: profileImageUrl ?? widget.userModel?.avatarUrl,
+                    frontIdUrl: frontIdUrl ?? widget.userModel?.frontIdUrl,
+                    backIdUrl: backIdUrl ?? widget.userModel?.backIdUrl,
+                    isVerifiedById: isVerified ?? false,
                   )
                       .catchError((error, stackTrace) async {
                     print('An error updating user: $error: stack: $stackTrace');
@@ -273,40 +320,51 @@ class RegisterState extends State<Register> {
                   ? Column(
                       children: [
                         widget.userModel != null
+                            ? Container(child: _buildProfileVerification())
+                            : const SizedBox.shrink(),
+                        widget.userModel != null
                             ? Center(
                                 child: GestureDetector(
                                   onTap: () {
-                                    _showPicker(context);
+                                    profileImage =
+                                        _showPicker(context, 'profilePic');
                                   },
-                                  child: CircleAvatar(
-                                    radius: 70,
-                                    backgroundColor: Colors.black12,
-                                    child: image == null &&
+                                  child: Container(
+                                    child: profileImage == null &&
                                             widget.userModel?.avatarUrl == null
                                         ? const Icon(
                                             Icons.add_a_photo_outlined,
                                             size: 40,
                                             color: Colors.white,
                                           )
-                                        : image != null
-                                            ? CircleAvatar(
-                                                radius: 68,
-                                                backgroundImage:
-                                                    FileImage(image!),
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                ),
+                                        : profileImage != null
+                                            ? Container(
+                                                height: 100,
+                                                width: _size.width / 3,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    image: DecorationImage(
+                                                        fit: BoxFit.fill,
+                                                        image: FileImage(
+                                                            profileImage!))),
                                               )
-                                            : CircleAvatar(
-                                                radius: 68,
-                                                backgroundImage: NetworkImage(
-                                                    widget
-                                                        .userModel!.avatarUrl!),
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                ),
+                                            : Container(
+                                                height: 100,
+                                                width: _size.width / 3,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    image: DecorationImage(
+                                                      fit: BoxFit.fill,
+                                                      image: NetworkImage(widget
+                                                          .userModel!
+                                                          .avatarUrl!),
+                                                    )),
                                               ),
                                   ),
                                 ),
@@ -516,6 +574,12 @@ class RegisterState extends State<Register> {
                                     ),
                                   ],
                                 ),
+                                widget.userModel != null
+                                    ? SizedBox(
+                                        height: 180,
+                                        width: _size.width,
+                                        child: _supportingDocuments())
+                                    : const SizedBox.shrink(),
 
                                 errorMessage.isNotEmpty
                                     ? Center(
@@ -541,6 +605,158 @@ class RegisterState extends State<Register> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildProfileVerification() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Card(
+            elevation: 1,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Image.asset(
+                      'assets/icons/verified_rill_icon.png',
+                      color: color_4,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: ListTile(
+                        title: Text('Status'), subtitle: Text('Not Applied')),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Text(
+                          'Verification bade helps you distinguish yourself from scammers and fake profiles',
+                          style: textStyle_16),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {},
+            child: Text('Apply for Profile Verification',
+                textAlign: TextAlign.left, style: textStyle_3),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _supportingDocuments() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Supporting Documents', style: textStyle_18),
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Row(
+              children: [
+                //Front id side
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+                        _showPicker(context, 'frontId');
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        height: 120,
+                        decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.grey[100]),
+                        child: frontId == null
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                    Expanded(
+                                      child: Image.asset(
+                                          'assets/icons/add_rill.png',
+                                          color: color_4),
+                                    ),
+                                    Expanded(
+                                        child: Text(
+                                            'Upload Front Side of a recognised ID proof',
+                                            textAlign: TextAlign.center,
+                                            style: textStyle_17)),
+                                  ])
+                            : Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: FileImage(frontId!),
+                                      fit: BoxFit.fill),
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
+                ),
+                //Back id side
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+                        _showPicker(context, 'backId');
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        height: 120,
+                        decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.grey[100]),
+                        child: backId == null
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                    Expanded(
+                                      child: Image.asset(
+                                          'assets/icons/add_rill.png',
+                                          color: color_4),
+                                    ),
+                                    Expanded(
+                                        child: Text(
+                                            'Upload Back Side of a recognised ID proof',
+                                            textAlign: TextAlign.center,
+                                            style: textStyle_17)),
+                                  ])
+                            : Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: FileImage(backId!),
+                                      fit: BoxFit.fill),
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

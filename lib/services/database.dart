@@ -80,6 +80,11 @@ class DatabaseService {
     String? address,
     bool? isActive,
     List<String>? roles,
+    //for verification of a user
+    String? frontIdUrl,
+    String? backIdUrl,
+    bool? isVerifiedById,
+    String? adminComments,
   }) async {
     try {
       return await userModelCollection.doc(userId).update({
@@ -95,7 +100,11 @@ class DatabaseService {
         UserParams.DOB: dob,
         UserParams.ADDRESS: address,
         UserParams.IS_ACTIVE: true,
-        UserParams.ROLES: ['normalUser']
+        UserParams.ROLES: ['normalUser'],
+        UserParams.FRONT_ID: frontIdUrl,
+        UserParams.BACK_ID: backIdUrl,
+        UserParams.IS_VERIFIED: isVerifiedById,
+        UserParams.ADMIN_COMMENTS: adminComments,
       }).then((value) => 'user was successfully updated');
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
@@ -109,22 +118,27 @@ class DatabaseService {
     try {
       return await userModelCollection.doc(uid).get().then((doc) {
         return UserModel(
-            userId: (doc.data()! as Map)[UserParams.USER_ID],
-            userName: (doc.data()! as Map)[UserParams.USER_NAME],
-            emailAddress: (doc.data()! as Map)[UserParams.EMAIL_ADDRESS],
-            firstName: (doc.data()! as Map)[UserParams.FIRST_NAME],
-            lastName: (doc.data()! as Map)[UserParams.LAST_NAME],
-            dob: (doc.data()! as Map)[UserParams.DOB],
-            address: (doc.data()! as Map)[UserParams.ADDRESS],
-            avatarUrl: (doc.data()! as Map)[UserParams.AVATAR],
-            bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
-            phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
-            phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
-            fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
-            phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
-            coins: (doc.data()! as Map)[UserParams.COINS],
-            isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
-            roles: (doc.data()! as Map)[UserParams.ROLES]);
+          userId: (doc.data()! as Map)[UserParams.USER_ID],
+          userName: (doc.data()! as Map)[UserParams.USER_NAME],
+          emailAddress: (doc.data()! as Map)[UserParams.EMAIL_ADDRESS],
+          firstName: (doc.data()! as Map)[UserParams.FIRST_NAME],
+          lastName: (doc.data()! as Map)[UserParams.LAST_NAME],
+          dob: (doc.data()! as Map)[UserParams.DOB],
+          address: (doc.data()! as Map)[UserParams.ADDRESS],
+          avatarUrl: (doc.data()! as Map)[UserParams.AVATAR],
+          bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
+          phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
+          phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
+          fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
+          phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
+          coins: (doc.data()! as Map)[UserParams.COINS],
+          isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
+          roles: (doc.data()! as Map)[UserParams.ROLES],
+          frontIdUrl: (doc.data()! as Map)[UserParams.FRONT_ID],
+          backIdUrl: (doc.data()! as Map)[UserParams.BACK_ID],
+          isIdVerified: (doc.data()! as Map)[UserParams.IS_VERIFIED],
+          adminComments: (doc.data()! as Map)[UserParams.ADMIN_COMMENTS],
+        );
       });
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);

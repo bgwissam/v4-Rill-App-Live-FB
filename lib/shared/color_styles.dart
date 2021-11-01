@@ -111,6 +111,11 @@ var textStyle_15 = TextStyle(
 
 var textStyle_16 =
     TextStyle(fontSize: 12, fontFamily: 'Poppins', color: color_11);
+var textStyle_17 =
+    TextStyle(fontSize: 15, fontFamily: 'Poppins', color: color_11);
+
+var textStyle_18 =
+    TextStyle(fontSize: 18, fontFamily: 'Poppins', color: color_11);
 
 var heading_1 = TextStyle(
     color: color_4,

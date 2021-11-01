@@ -15,6 +15,10 @@ class UserModel {
   bool? isActive;
   List<dynamic>? roles;
   String? fcmToken;
+  String? frontIdUrl;
+  String? backIdUrl;
+  bool? isIdVerified;
+  String? adminComments;
   String? error;
   UserModel(
       {this.userId,
@@ -32,6 +36,10 @@ class UserModel {
       this.bioDescription,
       this.isActive,
       this.roles,
+      this.frontIdUrl,
+      this.backIdUrl,
+      this.isIdVerified,
+      this.adminComments,
       this.fcmToken,
       this.error});
 }
