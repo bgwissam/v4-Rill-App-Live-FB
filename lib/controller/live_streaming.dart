@@ -55,11 +55,11 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //Agora Messaging
   late AgoraRtmClient _client;
-  late AgoraRtmChannel _channel;
+  late AgoraRtmChannel? _channel;
   var userMap;
 
   //bool values
-  late bool _isLogin;
+  bool _isLogin = false;
   bool _joined = false;
   bool _switch = false;
   bool _muted = false;
@@ -78,6 +78,13 @@ class _LiveStreamingState extends State<LiveStreaming> {
   DatabaseService db = DatabaseService();
   RecordingController recordingController = RecordingController();
   late TextEditingController _channelMessageController;
+
+  //Live messaging controllers
+  final _userNameController = TextEditingController();
+  final _peerUserIdController = TextEditingController();
+  final _peerMessageController = TextEditingController();
+  final _invitationController = TextEditingController();
+  final _channelNameController = TextEditingController();
 
   //To dispose the agora engin and clear the user list
   @override
@@ -100,7 +107,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
     _channelMessageController = TextEditingController();
     initializeAgore();
-    createClient();
+    _createClient();
   }
 
   //Will initialize the Rtc Engine
@@ -217,7 +224,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
           widget.rtcToken, widget.channelName, null, widget.uid!);
       //creat live messaging channel
       //_channel = await _createChannel(widget.channelName);
-      await _joinChannel(context);
+
+      //await _joinChannel(context);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Failed to connect')));
@@ -282,6 +290,23 @@ class _LiveStreamingState extends State<LiveStreaming> {
                           ),
                     //will list the messages for this stream
                     messageList(),
+                    Positioned(
+                      top: 40,
+                      left: 10,
+                      child: SizedBox(
+                          height: 50,
+                          width: size.width,
+                          child: Column(children: [
+                            _buildLogin(),
+                            _buildQueryOnlineStatus(),
+                            _buildSendPeerMessage(),
+                            _buildSendLocalInvitation(),
+                            _buildJoinChannel(),
+                            _buildGetMembers(),
+                            _buildSendChannelMessage(),
+                            _buildInfoList(),
+                          ])),
+                    ),
                   ],
                 );
               } else {
@@ -476,7 +501,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   //tool bar functions
   void _onCallEnd(BuildContext context) async {
     //logout from rtm channel
-    _logout();
+    //_logout();
     print('we are here stopping video streaming');
     String streamingId =
         await db.fetchStreamingVideoUrl(uid: widget.streamModelId);
@@ -507,7 +532,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
       _muted = !_muted;
     });
     print('muted: $_muted');
-    _engine.muteAllRemoteAudioStreams(_muted);
+    // _engine.muteAllRemoteAudioStreams(_muted);
     _engine.muteLocalAudioStream(_muted);
   }
 
@@ -538,7 +563,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
                 child: TextField(
                   cursorColor: Colors.blue,
                   textInputAction: TextInputAction.send,
-                  onSubmitted: _sendMessage,
+                  //onSubmitted: _sendMessage,
                   style: textStyle_4,
                   controller: _channelMessageController,
                   textCapitalization: TextCapitalization.sentences,
@@ -559,7 +584,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
                 padding: const EdgeInsets.fromLTRB(4.0, 0, 0, 0),
                 child: MaterialButton(
                   minWidth: 0,
-                  onPressed: _toggleSendChannelMessage,
+                  onPressed: () {}, //_toggleSendChannelMessage,
                   child: ImageIcon(AssetImage("assets/icons/send_rill.png"),
                       color: color_12, size: 20),
                   shape: const CircleBorder(),
@@ -573,33 +598,325 @@ class _LiveStreamingState extends State<LiveStreaming> {
         ));
   }
 
-  // void _addPerson() {
-  //   setState(() {
-  //     personBool = !personBool;
-  //   });
-  // }
+  void _createClient() async {
+    _client = await AgoraRtmClient.createInstance(param.app_ID);
+    _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
+      _log(info: message.text, type: 'message', user: peerId);
+    };
+    _client.onConnectionStateChanged = (int state, int reason) {
+      _log(type: 'state', info: 'State: $state, $reason');
+      if (state == 5) {
+        _client.logout();
+        setState(() {
+          _isLogin = false;
+        });
+      }
+    };
 
-  void stopFunction() {
-    setState(() {
-      accepted = false;
-    });
+    _client.onLocalInvitationReceivedByPeer = (AgoraRtmLocalInvitation invite) {
+      _log(
+          type: 'invite',
+          info: 'invitation received Local',
+          user: invite.calleeId);
+    };
+
+    _client.onRemoteInvitationReceivedByPeer =
+        (AgoraRtmRemoteInvitation invite) {
+      _log(
+          type: 'invite',
+          info: 'invitation received Remote',
+          user: invite.callerId);
+    };
   }
 
-  void _logout() async {
-    try {
-      await _client.logout();
-    } catch (e) {
-      _infoString.add('Error logging out: $e type: logout');
+  Future<AgoraRtmChannel?> _createChannel(String name) async {
+    AgoraRtmChannel? channel = await _client.createChannel(name);
+    if (channel != null) {
+      channel.onMemberJoined = (AgoraRtmMember member) {
+        _log(
+            type: 'joined',
+            user: member.userId,
+            info: 'Memeber Joined: ${member.channelId}');
+      };
+      channel.onMemberLeft = (AgoraRtmMember member) {
+        _log(
+            type: 'joined',
+            user: member.userId,
+            info: 'Member Left: ${member.channelId}');
+      };
+      channel.onMessageReceived =
+          (AgoraRtmMessage message, AgoraRtmMember memeber) {
+        _log(type: 'message', user: memeber.userId, info: message.text);
+      };
+    }
+    return channel;
+  }
+
+  static TextStyle textStyle = TextStyle(fontSize: 18, color: Colors.blue);
+
+  Widget _buildLogin() {
+    return Row(children: <Widget>[
+      _isLogin
+          ? Expanded(child: Text('User Id: ' + widget.userId, style: textStyle))
+          : Expanded(
+              child: TextField(
+                  controller: _userNameController,
+                  decoration: InputDecoration(hintText: 'Input your user id'))),
+      OutlineButton(
+        child: Text(_isLogin ? 'Logout' : 'Login', style: textStyle),
+        onPressed: _toggleLogin,
+      )
+    ]);
+  }
+
+  Widget _buildQueryOnlineStatus() {
+    if (!_isLogin) {
+      return Container();
+    }
+    return Row(children: <Widget>[
+      Expanded(
+          child: TextField(
+              controller: _peerUserIdController,
+              decoration: InputDecoration(hintText: 'Input peer user id'))),
+      OutlineButton(
+        child: Text('Query Online', style: textStyle),
+        onPressed: _toggleQuery,
+      )
+    ]);
+  }
+
+  Widget _buildSendPeerMessage() {
+    if (!_isLogin) {
+      return Container();
+    }
+    return Row(children: <Widget>[
+      Expanded(
+          child: TextField(
+              controller: _peerMessageController,
+              decoration: InputDecoration(hintText: 'Input peer message'))),
+      OutlineButton(
+        child: Text('Send to Peer', style: textStyle),
+        onPressed: _toggleSendPeerMessage,
+      )
+    ]);
+  }
+
+  Widget _buildSendLocalInvitation() {
+    if (!_isLogin) {
+      return Container();
+    }
+    return Row(children: <Widget>[
+      Expanded(
+          child: TextField(
+              controller: _invitationController,
+              decoration:
+                  InputDecoration(hintText: 'Input invitation content'))),
+      OutlineButton(
+        child: Text('Send local invitation', style: textStyle),
+        onPressed: _toggleSendLocalInvitation,
+      )
+    ]);
+  }
+
+  Widget _buildJoinChannel() {
+    if (!_isLogin) {
+      return Container();
+    }
+    return Row(children: <Widget>[
+      _isInChannel
+          ? Expanded(
+              child: Text('Channel: ' + _channelNameController.text,
+                  style: textStyle))
+          : Expanded(
+              child: TextField(
+                  controller: _channelNameController,
+                  decoration: InputDecoration(hintText: 'Input channel id'))),
+      OutlineButton(
+        child: Text(_isInChannel ? 'Leave Channel' : 'Join Channel',
+            style: textStyle),
+        onPressed: _toggleJoinChannel,
+      )
+    ]);
+  }
+
+  Widget _buildSendChannelMessage() {
+    if (!_isLogin || !_isInChannel) {
+      return Container();
+    }
+    return Row(children: <Widget>[
+      Expanded(
+          child: TextField(
+              controller: _channelMessageController,
+              decoration: InputDecoration(hintText: 'Input channel message'))),
+      OutlineButton(
+        child: Text('Send to Channel', style: textStyle),
+        onPressed: _toggleSendChannelMessage,
+      )
+    ]);
+  }
+
+  Widget _buildGetMembers() {
+    if (!_isLogin || !_isInChannel) {
+      return Container();
+    }
+    return Row(children: <Widget>[
+      OutlineButton(
+        child: Text('Get Members in Channel', style: textStyle),
+        onPressed: _toggleGetMembers,
+      )
+    ]);
+  }
+
+  Widget _buildInfoList() {
+    return Expanded(
+        child: Container(
+            child: ListView.builder(
+      itemExtent: 24,
+      itemBuilder: (context, i) {
+        return ListTile(
+          contentPadding: const EdgeInsets.all(0.0),
+          title: Text(_infoString[i]),
+        );
+      },
+      itemCount: _infoString.length,
+    )));
+  }
+
+  void _toggleLogin() async {
+    if (_isLogin) {
+      try {
+        await _client.logout();
+        _log(type: 'login', info: 'LogedOut');
+        setState(() {
+          _isLogin = false;
+          _isInChannel = false;
+        });
+      } catch (e) {
+        _log(type: 'error', info: 'failed logout: $e', user: widget.userId);
+      }
+    } else {
+      String userId = _userNameController.text;
+      if (userId.isEmpty) {
+        _log(type: 'message', info: 'please input userId', user: userId);
+        return;
+      }
+      try {
+        await _client.login(null, userId);
+        _log(type: 'login', user: userId);
+        setState(() {
+          _isLogin = true;
+        });
+      } catch (e) {
+        _log(type: 'error', info: 'Login error: $e', user: userId);
+        print('Failed to login: $e');
+      }
     }
   }
 
-  void _leaveChannel() async {
+  void _toggleQuery() async {
+    String peerUid = _peerUserIdController.text;
+    if (peerUid.isEmpty) {
+      _log(type: 'message', info: 'Enter peer id', user: widget.userId);
+      return;
+    }
     try {
-      await _channel.leave();
-      _client.releaseChannel(_channel.channelId!);
-      _channelMessageController.text = '';
+      Map<dynamic, dynamic> result =
+          await _client.queryPeersOnlineStatus([peerUid]);
+      _log(type: 'message', info: result.toString(), user: peerUid);
     } catch (e) {
-      _infoString.add('Error leaving: $e type: leaving');
+      _log(type: 'error', info: 'Query Error: $e', user: widget.userId);
+    }
+  }
+
+  void _toggleSendPeerMessage() async {
+    String peerUid = _peerUserIdController.text;
+    if (peerUid.isEmpty) {
+      _log(type: 'message', info: 'Enter peer id', user: widget.userId);
+      return;
+    }
+    String text = _peerMessageController.text;
+    if (text.isEmpty) {
+      return;
+    }
+
+    try {
+      AgoraRtmMessage message = AgoraRtmMessage.fromText(text);
+      _log(type: 'message', info: message.text, user: peerUid);
+      await _client.sendMessageToPeer(peerUid, message, false);
+      print('message send successfully');
+    } catch (e) {
+      _log(type: 'error', info: 'Send Message Error: $e', user: widget.userId);
+    }
+  }
+
+  void _toggleSendLocalInvitation() async {
+    String peerUid = _peerUserIdController.text;
+    if (peerUid.isEmpty) {
+      _log(type: 'message', info: 'Enter peer id', user: widget.userId);
+      return;
+    }
+    String text = 'Woud you like to join';
+    try {
+      AgoraRtmLocalInvitation invitation =
+          AgoraRtmLocalInvitation(peerUid, content: text);
+      _log(
+          type: 'message',
+          info: 'Invitation: $invitation',
+          user: widget.userId);
+      await _client.sendLocalInvitation(invitation.toJson());
+      print('Invititation sent successfully');
+    } catch (e) {
+      _log(
+          type: 'error',
+          info: 'Send Invitation Error: $e',
+          user: widget.userId);
+    }
+  }
+
+  void _toggleJoinChannel() async {
+    if (_isInChannel) {
+      try {
+        await _channel?.leave();
+        print('left channel ');
+        if (_channel != null) {
+          _client.releaseChannel(_channel!.channelId!);
+        }
+        _channelMessageController.clear();
+        setState(() {
+          _isInChannel = false;
+        });
+      } catch (e) {
+        _log(
+            type: 'error',
+            info: 'Joine Channel Error: $e',
+            user: widget.userId);
+      }
+    } else {
+      String channelId = _channelNameController.text;
+      if (channelId.isEmpty) {
+        print('channel Id is empty');
+        return;
+      }
+      try {
+        _channel = await _createChannel(channelId);
+        await _channel?.join();
+        print('$channelId has been joined');
+        setState(() {
+          _isInChannel = true;
+        });
+      } catch (e) {
+        _log(
+            type: 'error', info: 'Join Channel Error: $e', user: widget.userId);
+      }
+    }
+  }
+
+  void _toggleGetMembers() async {
+    try {
+      List<AgoraRtmMember>? members = await _channel?.getMembers();
+      print('the members: $members');
+    } catch (e) {
+      _log(type: 'error', info: 'Get Memebers Error: $e', user: widget.userId);
     }
   }
 
@@ -609,186 +926,226 @@ class _LiveStreamingState extends State<LiveStreaming> {
       return;
     }
     try {
-      _channelMessageController.clear();
-      await _channel.sendMessage(AgoraRtmMessage.fromText(text));
-      print('the message: $text');
-      setState(() {
-        //_infoString.add('${widget.userId}: $text');
-        _log(info: text, type: 'message', user: widget.userId);
-      });
+      await _channel?.sendMessage(AgoraRtmMessage.fromText(text));
+      print('message channel sent successfully');
     } catch (e) {
-      setState(() {
-        _log(info: e.toString(), type: 'message', user: widget.userId);
-      });
+      _log(
+          type: 'error',
+          info: 'Send Channel Message Error: $e',
+          user: widget.userId);
     }
   }
 
-  //send message to other users
-  void _sendMessage(text) async {
-    print('the text being sent: $text');
-    if (text.isEmpty) {
-      return;
-    }
-    try {
-      _channelMessageController.clear();
+  // void stopFunction() {
+  //   setState(() {
+  //     accepted = false;
+  //   });
+  // }
 
-      await _channel.sendMessage(AgoraRtmMessage.fromText(text));
-      setState(() {
-        _infoString.add('${widget.userId}: $text');
-        _log(info: text, type: 'message', user: widget.userId);
-      });
-    } catch (e) {
-      setState(() {
-        _log(info: e.toString(), type: 'message', user: widget.userId);
-      });
-    }
-  }
+  // void _logout() async {
+  //   try {
+  //     await _client.logout();
+  //   } catch (e) {
+  //     _infoString.add('Error logging out: $e type: logout');
+  //   }
+  // }
 
-  void createClient() async {
-    _client = await AgoraRtmClient.createInstance(Parameters().app_ID);
+  // void _leaveChannel() async {
+  //   try {
+  //     await _channel.leave();
+  //     _client.releaseChannel(_channel.channelId!);
+  //     _channelMessageController.text = '';
+  //   } catch (e) {
+  //     _infoString.add('Error leaving: $e type: leaving');
+  //   }
+  // }
 
-    _client.onConnectionStateChanged = (int state, int reason) {
-      print('Connection state changed: $state - reasong: $reason');
-      if (state == 5) {
-        _client.logout();
-        setState(() {
-          _isLogin = false;
-        });
-        return;
-      }
-    };
+  // void _toggleSendChannelMessage() async {
+  //   String text = _channelMessageController.text;
+  //   if (text.isEmpty) {
+  //     return;
+  //   }
+  //   try {
+  //     _channelMessageController.clear();
+  //     await _channel.sendMessage(AgoraRtmMessage.fromText(text));
+  //     print('the message: $text');
+  //     setState(() {
+  //       //_infoString.add('${widget.userId}: $text');
+  //       _log(info: text, type: 'message', user: widget.userId);
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       _log(info: e.toString(), type: 'message', user: widget.userId);
+  //     });
+  //   }
+  // }
 
-    await _login(context);
+  // //send message to other users
+  // void _sendMessage(text) async {
+  //   print('the text being sent: $text');
+  //   if (text.isEmpty) {
+  //     return;
+  //   }
+  //   try {
+  //     _channelMessageController.clear();
 
-    _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
-      setState(() {
-        print('a message received: $message - $peerId');
-        _log(type: 'message', user: peerId, info: message.text);
-      });
-    };
+  //     await _channel.sendMessage(AgoraRtmMessage.fromText(text));
+  //     setState(() {
+  //       _infoString.add('${widget.userId}: $text');
+  //       _log(info: text, type: 'message', user: widget.userId);
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       _log(info: e.toString(), type: 'message', user: widget.userId);
+  //     });
+  //   }
+  // }
 
-    _channel = await _createChannel(widget.channelName);
-    await _channel.join();
-    _client.onConnectionStateChanged = (int state, int reason) {
-      print('Connection state changed: $state - reasong: $reason');
-      if (state == 5) {
-        _client.logout();
-        setState(() {
-          _isLogin = false;
-        });
-        return;
-      }
-    };
-  }
+  // void createClient() async {
+  //   _client = await AgoraRtmClient.createInstance(Parameters().app_ID);
 
-  //will login current user
-  Future _login(BuildContext context) async {
-    print('im before: loging');
-    if (widget.userId.isEmpty) {
-      print('user id is empty');
-      setState(() {
-        _isLogin = false;
-      });
+  //   _client.onConnectionStateChanged = (int state, int reason) {
+  //     print('Connection state changed: $state - reasong: $reason');
+  //     if (state == 5) {
+  //       _client.logout();
+  //       setState(() {
+  //         _isLogin = false;
+  //       });
+  //       return;
+  //     }
+  //   };
 
-      return;
-    }
-    try {
-      print(
-          'The rtm loging: ${widget.rtmToken} - ${widget.channelName} - ${widget.userId}');
-      await _client.login(widget.rtmToken, widget.channelName);
-      _log(type: 'login', user: widget.userId);
-      setState(() {
-        _isLogin = true;
-      });
-      //_joinChannel(context);
-    } catch (e, stackTrace) {
-      print('An error login in rtm service: $e - $stackTrace');
-    }
-  }
+  //   await _login(context);
 
-  //will query online users
-  void _queryOnlineUsers(BuildContext context) async {
-    String? peerId = widget.streamUserId;
-    if (peerId!.isEmpty) {
-      _log(type: 'login', user: 'empty', info: 'user id is null');
-    }
-    try {
-      Map<dynamic, dynamic> result =
-          await _client.queryPeersOnlineStatus([peerId]);
-      _log(type: 'login', user: peerId, info: '$result');
-    } catch (e, stackTrace) {
-      print('query peers error: $e - $stackTrace');
-      _log(type: 'error', user: peerId, info: '$e');
-    }
-  }
+  //   _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
+  //     setState(() {
+  //       print('a message received: $message - $peerId');
+  //       _log(type: 'message', user: peerId, info: message.text);
+  //     });
+  //   };
 
-  Future _joinChannel(BuildContext context) async {
-    String channelId = widget.channelName;
-    if (channelId.isEmpty) {
-      _log(type: 'joined', info: 'no channel Id', user: widget.userId);
-      return;
-    }
-    _channel = await _createChannel(channelId);
+  //   _channel = await _createChannel(widget.channelName);
+  //   await _channel.join();
+  //   _client.onConnectionStateChanged = (int state, int reason) {
+  //     print('Connection state changed: $state - reasong: $reason');
+  //     if (state == 5) {
+  //       _client.logout();
+  //       setState(() {
+  //         _isLogin = false;
+  //       });
+  //       return;
+  //     }
+  //   };
+  // }
 
-    await _channel.join().catchError((err) {
-      print('an error joining: $err');
-      _log(type: 'error', info: 'error joining', user: widget.userId);
-    }).then((value) {
-      print('joined channel successfully');
-      _log(type: 'joined', info: 'user joined', user: widget.userId);
-    });
-    // _log(type: 'joined', user: widget.userId, info: 'joined');
-  }
+  // //will login current user
+  // Future _login(BuildContext context) async {
+  //   print('im before: loging');
+  //   if (widget.userId.isEmpty) {
+  //     print('user id is empty');
+  //     setState(() {
+  //       _isLogin = false;
+  //     });
 
-  Future<AgoraRtmChannel> _createChannel(String name) async {
-    AgoraRtmChannel? channel = await _client.createChannel(name);
+  //     return;
+  //   }
+  //   try {
+  //     print(
+  //         'The rtm loging: ${widget.rtmToken} - ${widget.channelName} - ${widget.userId}');
+  //     await _client.login(widget.rtmToken, widget.channelName);
+  //     _log(type: 'login', user: widget.userId);
+  //     setState(() {
+  //       _isLogin = true;
+  //     });
+  //     //_joinChannel(context);
+  //   } catch (e, stackTrace) {
+  //     print('An error login in rtm service: $e - $stackTrace');
+  //   }
+  // }
 
-    //on member joined
-    channel!.onMemberJoined = (AgoraRtmMember member) async {
-      print('new member joined: ${member.userId}');
-      _log(type: 'joined', user: member.userId, info: 'joined');
+  // //will query online users
+  // void _queryOnlineUsers(BuildContext context) async {
+  //   String? peerId = widget.streamUserId;
+  //   if (peerId!.isEmpty) {
+  //     _log(type: 'login', user: 'empty', info: 'user id is null');
+  //   }
+  //   try {
+  //     Map<dynamic, dynamic> result =
+  //         await _client.queryPeersOnlineStatus([peerId]);
+  //     _log(type: 'login', user: peerId, info: '$result');
+  //   } catch (e, stackTrace) {
+  //     print('query peers error: $e - $stackTrace');
+  //     _log(type: 'error', user: peerId, info: '$e');
+  //   }
+  // }
 
-      setState(() {
-        _userList.add(UserModel(userId: member.userId));
-        if (_userList.isNotEmpty) {
-          anyPerson = true;
-        }
-      });
-      userMap.putIfAbsent(member.userId, () => 'usr img');
-      var len;
-      _channel.getMembers().then((value) {
-        len = value.length;
-        setState(() {
-          userNo = len - 1;
-        });
-      });
-    };
-    //on member left
-    channel.onMemberLeft = (AgoraRtmMember member) {
-      var len;
-      _log(type: 'joined', user: member.userId, info: 'left');
-      setState(() {
-        _userList.removeWhere((element) => element.userId == member.userId);
-        if (_userList.isEmpty) {
-          anyPerson = false;
-        }
-        _leaveChannel();
-      });
-      _channel.getMembers().then((value) {
-        len = value.length;
-        setState(() {
-          userNo = len - 1;
-        });
-      });
-    };
-    //on message received
-    channel.onMessageReceived =
-        (AgoraRtmMessage message, AgoraRtmMember member) {
-      print('message sent: $message');
-      _log(type: 'message', user: member.userId, info: message.text);
-    };
-    return channel;
-  }
+  // Future _joinChannel(BuildContext context) async {
+  //   String channelId = widget.channelName;
+  //   if (channelId.isEmpty) {
+  //     _log(type: 'joined', info: 'no channel Id', user: widget.userId);
+  //     return;
+  //   }
+  //   _channel = await _createChannel(channelId);
+
+  //   await _channel.join().catchError((err) {
+  //     print('an error joining: $err');
+  //     _log(type: 'error', info: 'error joining', user: widget.userId);
+  //   }).then((value) {
+  //     print('joined channel successfully');
+  //     _log(type: 'joined', info: 'user joined', user: widget.userId);
+  //   });
+  //   // _log(type: 'joined', user: widget.userId, info: 'joined');
+  // }
+
+  // Future<AgoraRtmChannel> _createChannel(String name) async {
+  //   AgoraRtmChannel? channel = await _client.createChannel(name);
+
+  //   //on member joined
+  //   channel!.onMemberJoined = (AgoraRtmMember member) async {
+  //     print('new member joined: ${member.userId}');
+  //     _log(type: 'joined', user: member.userId, info: 'joined');
+
+  //     setState(() {
+  //       _userList.add(UserModel(userId: member.userId));
+  //       if (_userList.isNotEmpty) {
+  //         anyPerson = true;
+  //       }
+  //     });
+  //     userMap.putIfAbsent(member.userId, () => 'usr img');
+  //     var len;
+  //     _channel.getMembers().then((value) {
+  //       len = value.length;
+  //       setState(() {
+  //         userNo = len - 1;
+  //       });
+  //     });
+  //   };
+  //   //on member left
+  //   channel.onMemberLeft = (AgoraRtmMember member) {
+  //     var len;
+  //     _log(type: 'joined', user: member.userId, info: 'left');
+  //     setState(() {
+  //       _userList.removeWhere((element) => element.userId == member.userId);
+  //       if (_userList.isEmpty) {
+  //         anyPerson = false;
+  //       }
+  //       _leaveChannel();
+  //     });
+  //     _channel.getMembers().then((value) {
+  //       len = value.length;
+  //       setState(() {
+  //         userNo = len - 1;
+  //       });
+  //     });
+  //   };
+  //   //on message received
+  //   channel.onMessageReceived =
+  //       (AgoraRtmMessage message, AgoraRtmMember member) {
+  //     print('message sent: $message');
+  //     _log(type: 'message', user: member.userId, info: message.text);
+  //   };
+  //   return channel;
+  // }
 
   //show message chat
   void _log({String? info, String? type, String? user}) {
@@ -803,6 +1160,12 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
     if (type == 'error') {
       _messageList.add('$user: $info');
+    }
+    if (type == 'state') {
+      _messageList.add('changed: $info');
+    }
+    if (type == 'invite') {
+      _messageList.add('Invited: $info by $user');
     }
   }
 }
