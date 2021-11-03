@@ -9,17 +9,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:rillliveapp/amplifyconfiguration.dart';
 import 'package:rillliveapp/push/push_notification.dart';
-import 'package:rillliveapp/screens/message_screen.dart';
 import 'package:rillliveapp/screens/notification_screen.dart';
 import 'package:rillliveapp/services/auth.dart';
-import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/error_screen.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/wrapper.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'models/user_model.dart';
+//Amplify configuration
+import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 //A top level named handler to handle background/terminated messages will call
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -60,74 +63,30 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return
-        // MultiProvider(
-        //   providers: [
-        //     StreamProvider<UserModel?>.value(
-        //       value: AuthService().user,
-        //       initialData: null,
-        //       catchError: (_, error) {
-        //         print('Error streaming user: $error');
-        //         return null;
-        //       },
-        //     ),
-        //   ],
-        //   child:
-        FutureBuilder(
-            future: _initialization,
-            builder: (context, snapshot) {
-              print('the snapshot: ${snapshot.data}');
-              if (snapshot.hasError) {
-                Sentry.captureException(snapshot.error);
-                return errorInitializing(snapshot.error.toString());
-              }
-              if (snapshot.connectionState == ConnectionState.done) {
-                print('the snapshot 1: ${snapshot.data}');
-                //initiate messaging
-                _initiateMessaging();
-                return MultiProvider(
-                  providers: [
-                    StreamProvider<UserModel?>.value(
-                      value: AuthService().user,
-                      initialData: null,
-                      catchError: (_, error) {
-                        Sentry.captureException(error);
-                        return null;
-                      },
-                    ),
-                  ],
-                  child: MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    title: 'Rill Live Streaming',
-                    theme: ThemeData(
-                      primarySwatch: Colors.blue,
-                      fontFamily: 'Poppins',
-                      textTheme: const TextTheme(
-                        headline1: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xffdf1266)),
-                        headline6: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xffdf1266)),
-                      ),
-                    ),
-                    home: errorMessage.isEmpty
-                        ? const MySplashScreen()
-                        : const ErrorScreen(),
-                    routes: <String, WidgetBuilder>{
-                      '/home': (BuildContext context) => const Wrapper(
-                            guestUser: false,
-                          ),
-                      '/notifications': (BuildContext context) =>
-                          const NotificationScreen(),
-                    },
-                  ),
-                );
-              }
-
-              return MaterialApp(
+    return FutureBuilder(
+        future: _initialization,
+        builder: (context, snapshot) {
+          print('the snapshot: ${snapshot.data}');
+          if (snapshot.hasError) {
+            Sentry.captureException(snapshot.error);
+            return errorInitializing(snapshot.error.toString());
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            print('the snapshot 1: ${snapshot.data}');
+            //initiate messaging
+            _initiateMessaging();
+            return MultiProvider(
+              providers: [
+                StreamProvider<UserModel?>.value(
+                  value: AuthService().user,
+                  initialData: null,
+                  catchError: (_, error) {
+                    Sentry.captureException(error);
+                    return null;
+                  },
+                ),
+              ],
+              child: MaterialApp(
                 debugShowCheckedModeBanner: false,
                 title: 'Rill Live Streaming',
                 theme: ThemeData(
@@ -144,15 +103,46 @@ class MyApp extends StatelessWidget {
                         color: Color(0xffdf1266)),
                   ),
                 ),
-                home: const Center(
-                  child: LoadingAmination(
-                    animationType: 'ThreeInOut',
-                  ),
-                ),
-              );
-            }
-            // ),
+                home: errorMessage.isEmpty
+                    ? const MySplashScreen()
+                    : const ErrorScreen(),
+                routes: <String, WidgetBuilder>{
+                  '/home': (BuildContext context) => const Wrapper(
+                        guestUser: false,
+                      ),
+                  '/notifications': (BuildContext context) =>
+                      const NotificationScreen(),
+                },
+              ),
             );
+          }
+
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Rill Live Streaming',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              fontFamily: 'Poppins',
+              textTheme: const TextTheme(
+                headline1: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xffdf1266)),
+                headline6: TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xffdf1266)),
+              ),
+            ),
+            home: const Center(
+              child: LoadingAmination(
+                animationType: 'ThreeInOut',
+              ),
+            ),
+          );
+        }
+        // ),
+        );
   }
 
   //Initiate the messaging process
@@ -231,7 +221,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   void initState() {
     super.initState();
     pNotif.init();
-
+    _configureAmplify();
     Timer(
       Duration(seconds: 4),
       () => Navigator.pushAndRemoveUntil(
@@ -255,6 +245,22 @@ class _MySplashScreenState extends State<MySplashScreen> {
       }
     } on PlatformException {
       print('Failed to get platform version');
+    }
+  }
+
+  void _configureAmplify() async {
+    // Add Pinpoint and Cognito Plugins, or any other plugins you want to use
+    AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
+    AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
+    await Amplify.addPlugins([authPlugin, analyticsPlugin]);
+
+    // Once Plugins are added, configure Amplify
+    // Note: Amplify can only be configured once.
+    try {
+      await Amplify.configure(amplifyconfig);
+    } on AmplifyAlreadyConfiguredException {
+      print(
+          "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
     }
   }
 

@@ -1,11 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:camera/camera.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:rillliveapp/controller/live_streaming.dart';
 import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/controller/token_controller_rtc.dart';
@@ -15,7 +12,6 @@ import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/aspect_ration_video.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
-import 'package:rillliveapp/shared/list_scroll_wheel.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';

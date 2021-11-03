@@ -107,7 +107,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
     _channelMessageController = TextEditingController();
     initializeAgore();
-    _createClient();
+    //_createClient();
   }
 
   //Will initialize the Rtc Engine
@@ -290,23 +290,23 @@ class _LiveStreamingState extends State<LiveStreaming> {
                           ),
                     //will list the messages for this stream
                     messageList(),
-                    Positioned(
-                      top: 40,
-                      left: 10,
-                      child: SizedBox(
-                          height: 50,
-                          width: size.width,
-                          child: Column(children: [
-                            _buildLogin(),
-                            _buildQueryOnlineStatus(),
-                            _buildSendPeerMessage(),
-                            _buildSendLocalInvitation(),
-                            _buildJoinChannel(),
-                            _buildGetMembers(),
-                            _buildSendChannelMessage(),
-                            _buildInfoList(),
-                          ])),
-                    ),
+                    // Positioned(
+                    //   top: 40,
+                    //   left: 10,
+                    //   child: SizedBox(
+                    //       height: 50,
+                    //       width: size.width,
+                    //       child: Column(children: [
+                    //         _buildLogin(),
+                    //         _buildQueryOnlineStatus(),
+                    //         _buildSendPeerMessage(),
+                    //         _buildSendLocalInvitation(),
+                    //         _buildJoinChannel(),
+                    //         _buildGetMembers(),
+                    //         _buildSendChannelMessage(),
+                    //         _buildInfoList(),
+                    //       ])),
+                    // ),
                   ],
                 );
               } else {

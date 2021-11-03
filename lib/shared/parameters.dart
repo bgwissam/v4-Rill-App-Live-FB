@@ -10,9 +10,9 @@ class Parameters {
 //S3 bucket ARN or ID
   final s3_bucket_id = 'videos165240-dev';
 //S3 bucket access key
-  final s3_access_key = 'AKIAQVDBZQTGZICDT4BW';
+  final s3_access_key = 'AKIAQVDBZQTGVH5RQ62C';
 //S3 bucket secret key
-  final s3_secret_key = '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';
+  final s3_secret_key = 'JnFWgMXS9WXZm+Cqgs4yvrE7GdrjAwDy/LnBR4/3';
 //App certificate
   final app_certificate = '832101fbfa424e358854a936e4c13db8';
 //rtc token base url

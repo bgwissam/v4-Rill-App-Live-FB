@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rillliveappfbv4-dev-64754-authRole",
+      "UnauthRoleArn": "arn:aws:iam::045302252749:role/amplify-rillliveappfbv4-dev-64754-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::045302252749:role/amplify-rillliveappfbv4-dev-64754-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-rillliveappfbv4-dev-64754-deployment",
+      "UnauthRoleName": "amplify-rillliveappfbv4-dev-64754-unauthRole",
+      "StackName": "amplify-rillliveappfbv4-dev-64754",
+      "StackId": "arn:aws:cloudformation:us-west-2:045302252749:stack/amplify-rillliveappfbv4-dev-64754/d8fc3a40-3c58-11ec-910b-0238bddd7185",
+      "AmplifyAppId": "d1ui484y7dyfcr"
+    }
+  }
+}
