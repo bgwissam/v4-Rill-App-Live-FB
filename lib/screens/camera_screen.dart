@@ -76,11 +76,9 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   void initState() {
     super.initState();
-
     _channelName = 'testing';
     _getTokens();
     onNewCameraSelected(cameras[0]);
-
     _scrollController = ScrollController();
   }
 
@@ -101,7 +99,6 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   void dispose() {
     _controller?.dispose();
-
     super.dispose();
   }
 
@@ -335,11 +332,12 @@ class _CameraScreenState extends State<CameraScreen>
                                                         await _recordingController
                                                             .getVideoRecordingRefId(
                                                                 _channelName!,
-                                                                '0',
+                                                                '12345',
                                                                 rtcToken!);
                                                     acquireResponse = await json
                                                         .decode(acquire.body);
-
+                                                    print(
+                                                        'the result Acquire: $acquireResponse');
                                                     if (acquireResponse[
                                                             'resourceId'] !=
                                                         null) {
@@ -349,18 +347,21 @@ class _CameraScreenState extends State<CameraScreen>
                                                                   'resourceId'],
                                                               'mix',
                                                               _channelName!,
-                                                              '0',
+                                                              '12345',
                                                               rtcToken!);
                                                       startRecording =
                                                           await json.decode(
                                                               start.body);
                                                     }
-                                                    if (startRecording['sid'] !=
-                                                        null) {
+                                                    print(
+                                                        'the result start: $startRecording');
+                                                    if (startRecording['sid']
+                                                        .isNotEmpty) {
                                                       _startRecordingLiveStream();
                                                     } else {
                                                       //add code here to show the recording initiation failed
-
+                                                      print(
+                                                          'the recording initiation failed');
                                                     }
                                                   } else {
                                                     setState(() {
@@ -500,6 +501,7 @@ class _CameraScreenState extends State<CameraScreen>
           streamModelId: streamRec,
           streamUserId: widget.userId,
           loadingStateCallback: callBackLoadingState,
+          recordingId: '12345',
         ),
       ),
     );

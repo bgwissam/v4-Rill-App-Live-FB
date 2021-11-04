@@ -23,7 +23,7 @@ class RtmTokenGenerator {
         body: jsonEncode(
           <String, dynamic>{
             "channelName": channelName,
-            "uid": userAccount,
+            "userAccount": userAccount,
             "role": role,
             "expireTime": 3000
           },

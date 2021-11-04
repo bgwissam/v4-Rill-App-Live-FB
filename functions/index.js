@@ -52,10 +52,7 @@ exports.rtmTokenGenerator = functions.https.onRequest((req, res) => {
         if (!channelName) {
             return res.status(500).json({ 'error': 'channel is required' });
         }
-
         let userAccount = req.body.userAccount;
-        //this will allow a low level security feature by assigning all users to join on the same uid
-        //this feature is applicable for live streaming
 
         //get the role
         let role = RtmRole.Rtm_User;

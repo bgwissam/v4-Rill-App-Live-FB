@@ -25,6 +25,7 @@ class LiveStreaming extends StatefulWidget {
   final String? mode;
   final String? streamModelId;
   final Function? loadingStateCallback;
+  final String? recordingId;
   const LiveStreaming({
     required this.channelName,
     required this.userRole,
@@ -39,6 +40,7 @@ class LiveStreaming extends StatefulWidget {
     this.streamModelId,
     Key? key,
     this.uid,
+    this.recordingId,
   }) : super(key: key);
 
   @override
@@ -107,7 +109,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
     _channelMessageController = TextEditingController();
     initializeAgore();
-    //_createClient();
+    _createClient();
   }
 
   //Will initialize the Rtc Engine
@@ -290,23 +292,23 @@ class _LiveStreamingState extends State<LiveStreaming> {
                           ),
                     //will list the messages for this stream
                     messageList(),
-                    // Positioned(
-                    //   top: 40,
-                    //   left: 10,
-                    //   child: SizedBox(
-                    //       height: 50,
-                    //       width: size.width,
-                    //       child: Column(children: [
-                    //         _buildLogin(),
-                    //         _buildQueryOnlineStatus(),
-                    //         _buildSendPeerMessage(),
-                    //         _buildSendLocalInvitation(),
-                    //         _buildJoinChannel(),
-                    //         _buildGetMembers(),
-                    //         _buildSendChannelMessage(),
-                    //         _buildInfoList(),
-                    //       ])),
-                    // ),
+                    Positioned(
+                      top: 40,
+                      left: 10,
+                      child: SizedBox(
+                          height: 50,
+                          width: size.width,
+                          child: Column(children: [
+                            _buildLogin(),
+                            _buildQueryOnlineStatus(),
+                            _buildSendPeerMessage(),
+                            _buildSendLocalInvitation(),
+                            _buildJoinChannel(),
+                            _buildGetMembers(),
+                            _buildSendChannelMessage(),
+                            _buildInfoList(),
+                          ])),
+                    ),
                   ],
                 );
               } else {
@@ -502,25 +504,25 @@ class _LiveStreamingState extends State<LiveStreaming> {
   void _onCallEnd(BuildContext context) async {
     //logout from rtm channel
     //_logout();
-    print('we are here stopping video streaming');
+    print('we are here stopping video streaming: ${widget.streamModelId}');
     String streamingId =
         await db.fetchStreamingVideoUrl(uid: widget.streamModelId);
 
-    print('the stream id: $streamingId');
+    print('the stream id: $streamingId - userId: ${widget.userId}');
     if (streamingId == widget.streamUserId) {
       widget.loadingStateCallback!();
 
       //Stop the recording and save the stream to the bucket
       var stopRecordingResult = await recordingController.stopRecordingVideos(
         channelName: widget.channelName,
-        userId: widget.uid!,
+        userId: widget.recordingId!,
         sid: widget.sid,
         resouceId: widget.resourceId,
         mode: widget.mode,
       );
       await db.deleteStreamingVideo(streamId: widget.streamModelId);
       var stopRecordResponse = await json.decode(stopRecordingResult.body);
-      print('Stop response: $stopRecordResponse');
+      print('the result stop: $stopRecordResponse');
     }
 
     Navigator.pop(context);
@@ -606,6 +608,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
     _client.onConnectionStateChanged = (int state, int reason) {
       _log(type: 'state', info: 'State: $state, $reason');
       if (state == 5) {
+        print('we are here');
         _client.logout();
         setState(() {
           _isLogin = false;
@@ -801,7 +804,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         return;
       }
       try {
-        await _client.login(null, userId);
+        await _client.login(widget.rtmToken, userId);
         _log(type: 'login', user: userId);
         setState(() {
           _isLogin = true;

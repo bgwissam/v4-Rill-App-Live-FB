@@ -23,7 +23,7 @@ class RecordingController {
     };
 
     try {
-      return await http.post(
+      var result = await http.post(
         rtcAcquireUrl,
         headers: headers,
         body: jsonEncode(
@@ -31,12 +31,15 @@ class RecordingController {
             "cname": channelName,
             "uid": userId,
             "clientRequest": <String, dynamic>{
-              "region": "CN",
-              "resourceExpiredHour": 3,
+              // "region": "CN",
+              "scene": 0,
+              "resourceExpiredHour": 24,
             },
           },
         ),
       );
+
+      return result;
     } catch (e) {
       print('Error fetching data: $e');
       rethrow;
@@ -57,9 +60,9 @@ class RecordingController {
       var rtcStartUrl = Uri.parse(
           'https://api.agora.io/v1/apps/${param.app_ID}/cloud_recording/resourceid/$referenceId/mode/$mode/start');
 
+      print('the userId start rec: $userId');
       //update streaming video data model with the current stream
-
-      return await http.post(
+      var result = await http.post(
         rtcStartUrl,
         headers: headers,
         body: jsonEncode(
@@ -69,8 +72,9 @@ class RecordingController {
             "clientRequest": <String, dynamic>{
               "token": token,
               "recordingConfig": <String, dynamic>{
-                "maxIdleTime": 120,
+                "maxIdleTime": 30,
                 "streamTypes": 2,
+                "audioProfile": 1,
                 "channelType": 1,
                 "videoStreamType": 0,
                 "transcodingConfig": <String, dynamic>{
@@ -81,11 +85,14 @@ class RecordingController {
                   "mixedVideoLayout": 1,
                   "backgroundColor": "#FFFFFF",
                 },
+                "subscribeVideoUids": ["123", "456"],
+                "subscribeAudioUids": ["123", "456"],
+                "subscribeUidGroup": 0
               },
               "recordingFileConfig": <String, dynamic>{
-                "avFileType": ["hls"],
+                "avFileType": ["hls"]
               },
-              "storageConfig": {
+              "storageConfig": <String, dynamic>{
                 "vendor": 1,
                 "region": 3,
                 "bucket": param.s3_bucket_id,
@@ -97,6 +104,8 @@ class RecordingController {
           },
         ),
       );
+
+      return result;
     } catch (e) {
       print('start recording could not be processed: $e');
       rethrow;
@@ -106,12 +115,11 @@ class RecordingController {
   //Stop recording
   Future<http.Response> stopRecordingVideos(
       {required String channelName,
-      required int userId,
+      required String userId,
       String? sid,
       String? resouceId,
       String? mode,
       String? streamId}) async {
-    print('stoping video streaming: $resouceId - $sid - $mode');
     var rtcStopUrl = Uri.parse(
         'https://api.agora.io/v1/apps/${param.app_ID}/cloud_recording/resourceid/$resouceId/sid/$sid/mode/$mode/stop');
     String credentials = '${param.Customer_ID}:${param.Customer_secret}';
@@ -124,14 +132,13 @@ class RecordingController {
 
     try {
       //delete stream from stream video url data store
-      print('stpping - deleting: $streamVideoUrlId');
-      if (streamVideoUrlId.isNotEmpty) {
-        await db.deleteStreamingVideo(streamId: streamVideoUrlId);
-        print('stream has been deleted');
-      }
+      // if (streamVideoUrlId.isNotEmpty) {
+      //   await db.deleteStreamingVideo(streamId: streamVideoUrlId);
+      //   print('stream has been deleted');
+      // }
 
       //stop recroding and save it
-      return await http.post(
+      var result = await http.post(
         rtcStopUrl,
         headers: headers,
         body: jsonEncode(
@@ -142,6 +149,7 @@ class RecordingController {
           },
         ),
       );
+      return result;
     } catch (e) {
       print('stop recording could not be processed: $e');
       rethrow;
