@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:chewie/chewie.dart';
@@ -23,6 +24,7 @@ import 'package:rillliveapp/screens/camera_screen.dart';
 import 'package:rillliveapp/screens/message_screen.dart';
 import 'package:rillliveapp/screens/notification_screen.dart';
 import 'package:rillliveapp/screens/search_screen.dart';
+import 'package:rillliveapp/services/amplify_storage.dart';
 import 'package:rillliveapp/services/auth.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
@@ -87,6 +89,7 @@ class _MainScreenState extends State<MainScreen>
   RecordingController recordingController = RecordingController();
   RtcTokenGenerator tokenGenerator = RtcTokenGenerator();
   StorageData storageData = StorageData();
+  AWSstorage awsStorage = AWSstorage();
   Parameters params = Parameters();
   DatabaseService db = DatabaseService();
   AuthService as = AuthService();
@@ -111,11 +114,13 @@ class _MainScreenState extends State<MainScreen>
   @override
   void initState() {
     super.initState();
+
     _tabController = TabController(length: 2, vsync: this);
     controller = CameraController(cameras[0], ResolutionPreset.max);
     getSubscriptionFeed = _getSubscriptionChannels();
     _getCurrentUser(userId: widget.currenUser?.userId);
     _getFcmToken();
+    awsStorage.list();
   }
 
   @override

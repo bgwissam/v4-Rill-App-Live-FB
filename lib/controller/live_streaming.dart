@@ -1,16 +1,21 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtm/agora_rtm.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/models/user_model.dart';
+import 'package:rillliveapp/services/amplify_storage.dart';
 import 'package:rillliveapp/services/database.dart';
+import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/parameters.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:path/path.dart' as Path;
 
 class LiveStreaming extends StatefulWidget {
   final String rtcToken;
@@ -80,6 +85,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
   DatabaseService db = DatabaseService();
   RecordingController recordingController = RecordingController();
   late TextEditingController _channelMessageController;
+  late FirebaseStorage storageRef;
+  AWSstorage awsStorage = AWSstorage();
 
   //Live messaging controllers
   final _userNameController = TextEditingController();
@@ -502,12 +509,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //tool bar functions
   void _onCallEnd(BuildContext context) async {
-    //logout from rtm channel
-    //_logout();
-    print('we are here stopping video streaming: ${widget.streamModelId}');
     String streamingId =
         await db.fetchStreamingVideoUrl(uid: widget.streamModelId);
-
     print('the stream id: $streamingId - userId: ${widget.userId}');
     if (streamingId == widget.streamUserId) {
       widget.loadingStateCallback!();
@@ -523,10 +526,59 @@ class _LiveStreamingState extends State<LiveStreaming> {
       await db.deleteStreamingVideo(streamId: widget.streamModelId);
       var stopRecordResponse = await json.decode(stopRecordingResult.body);
       print('the result stop: $stopRecordResponse');
+      //save the live stream to firebase
+      _saveLiveStream(stopRecordResponse);
     }
 
     Navigator.pop(context);
     Navigator.pop(context);
+  }
+
+  void _saveLiveStream(var data) async {
+    String thumbnailUrl = '';
+    var streamFile;
+    var streamKey;
+    if (data['serverResponse']['uploadingStatus'] == 'uploaded') {
+      streamKey = data['serverResponse']['fileList'];
+      print('the stream key: $streamKey');
+      if (streamKey != null) {
+        await awsStorage.list();
+      }
+      //generate streaming thumbnail
+      StorageData sd = StorageData();
+      if (streamFile != null) {
+        var key = await sd.generateThumbnailUrl(streamFile);
+        print('data streaming: $key');
+        //create streaming thumbnail
+        if (key != null) {
+          storageRef = FirebaseStorage.instance;
+          Reference ref =
+              storageRef.ref().child('thumbnails/${Path.basename(key.path)}');
+
+          UploadTask uploadTask = ref.putFile(File(key.path));
+          var downloadUrlThumbnail =
+              await (await uploadTask).ref.getDownloadURL();
+          thumbnailUrl = downloadUrlThumbnail.toString();
+          print('data streaming thumbnail: $thumbnailUrl');
+        }
+        if (data['serverResponse']['uploadingStatus'] == 'uploaded') {
+          var result = await db.saveEndedLiveStream(
+              userId: widget.userId,
+              thumbnailUrl: thumbnailUrl,
+              streamUrl: data['serverResponse']['fileList'],
+              description: 'We will create that later');
+
+          if (result.isNotEmpty) {
+            print('The video stream was uploaded properly');
+          } else {
+            print(
+                'An error occured uploading stream, check with customer support');
+          }
+        }
+      } else {
+        print('stream file is null');
+      }
+    }
   }
 
   void _onToggleMute() {

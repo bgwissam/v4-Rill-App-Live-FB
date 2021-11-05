@@ -23,6 +23,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('following');
   final CollectionReference messagesCollection =
       FirebaseFirestore.instance.collection('messages');
+  final CollectionReference streamCollection =
+      FirebaseFirestore.instance.collection('ended_live_streams');
 
   //Create a new a user
   Future<String> createUser({
@@ -458,6 +460,30 @@ class DatabaseService {
       return '';
     }
   }
+
+  //save ended live stream
+  Future<String> saveEndedLiveStream({
+    String? userId,
+    String? thumbnailUrl,
+    String? streamUrl,
+    String? description,
+  }) async {
+    try {
+      return await streamCollection.add({
+        LiveStreamingParams.USER_ID: userId,
+        LiveStreamingParams.URL: streamUrl,
+        ImageVideoParams.THUMBNAIL: thumbnailUrl,
+        ImageVideoParams.DESCRIPTION: description,
+      }).then((value) => value.id);
+    } catch (e, stackTrace) {
+      print('failed to save data: $e');
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      return 'error saving stream: $e';
+    }
+  }
+  //edit ended live stream
+
+  //delete live stream
 
   //This section is to create, update and delete images in the database
   //Add Video

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:camera/camera.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -252,7 +253,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
     // Add Pinpoint and Cognito Plugins, or any other plugins you want to use
     AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
     AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
-    await Amplify.addPlugins([authPlugin, analyticsPlugin]);
+    AmplifyStorageS3 storageS3Plugin = AmplifyStorageS3();
+    await Amplify.addPlugins([analyticsPlugin, authPlugin, storageS3Plugin]);
 
     // Once Plugins are added, configure Amplify
     // Note: Amplify can only be configured once.
@@ -261,6 +263,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
     } on AmplifyAlreadyConfiguredException {
       print(
           "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+    } catch (e) {
+      print('could not configure amplify: $e');
     }
   }
 

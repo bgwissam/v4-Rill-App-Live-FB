@@ -25,6 +25,7 @@ MERGED from [:firebase_storage] /Volumes/Sub - 2/Oxygen Media Group/Projects/Ril
 MERGED from [:better_player] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/better_player/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:wakelock] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/wakelock/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:permission_handler] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/permission_handler/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
+MERGED from [:amplify_storage_s3] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_storage_s3/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:amplify_analytics_pinpoint] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_analytics_pinpoint/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-13:12
 MERGED from [:amplify_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_core/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-46:12
@@ -38,6 +39,7 @@ MERGED from [androidx.multidex:multidex:2.0.0] /Users/wissamboughannam/.gradle/c
 MERGED from [com.github.agorabuilder:rtm-sdk:1.4.7] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/06c6043954795eb69bf5bf8e875d1ad3/jetified-rtm-sdk-1.4.7/AndroidManifest.xml:2:1-11:12
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4e2770d048936999ca2355507ec1f653/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:17:1-58:12
 MERGED from [com.amplifyframework:aws-auth-cognito:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e81339ecba8324ff3169189412913af8/jetified-aws-auth-cognito-1.28.2/AndroidManifest.xml:16:1-24:12
+MERGED from [com.amplifyframework:aws-storage-s3:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16dacac40952bae39cb904c65b55e0dc/jetified-aws-storage-s3-1.28.2/AndroidManifest.xml:16:1-30:12
 MERGED from [com.amplifyframework:aws-analytics-pinpoint:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/28e0acef312616df4e507ccaadfe4363/jetified-aws-analytics-pinpoint-1.28.2/AndroidManifest.xml:16:1-24:12
 MERGED from [com.amplifyframework:core:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e4bf27123182c6bac275c1fbeb442c5c/jetified-core-1.28.2/AndroidManifest.xml:16:1-32:12
 MERGED from [androidx.exifinterface:exifinterface:1.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/38d8c9ea297c76cb5e2e116073e3c091/exifinterface-1.3.0/AndroidManifest.xml:17:1-24:12
@@ -62,6 +64,7 @@ MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradl
 MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/47833c4da062d923a45ba9eaf155bb78/work-runtime-2.5.0/AndroidManifest.xml:17:1-143:12
 MERGED from [androidx.lifecycle:lifecycle-service:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/3e2e024078eebe35b83292f6f3084f97/jetified-lifecycle-service-2.1.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.transition:transition:1.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1429f0c6da4e2ae99531285b11758255/transition-1.3.0/AndroidManifest.xml:17:1-24:12
+MERGED from [com.amazonaws:aws-android-sdk-s3:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e3e5b4b22eae934ebd129f18092b8660/jetified-aws-android-sdk-s3-2.34.0/AndroidManifest.xml:2:1-12:12
 MERGED from [androidx.appcompat:appcompat:1.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dc0db64dbb3ecce14138161df12c9cbb/appcompat-1.2.0/AndroidManifest.xml:17:1-24:12
 MERGED from [com.amazonaws:aws-android-sdk-mobile-client:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c988e40c165e78763cf05cb189003845/jetified-aws-android-sdk-mobile-client-2.34.0/AndroidManifest.xml:2:1-20:12
 MERGED from [com.google.android.exoplayer:extension-mediasession:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/158fc35af3710402972465a200cac012/jetified-extension-mediasession-2.14.2/AndroidManifest.xml:17:1-24:12
@@ -131,6 +134,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /Users/wiss
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/178315a4967da72388ae7488e2ad1ccb/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b951b020cc75232a958d9a513005e540/jetified-aws-android-sdk-cognitoidentityprovider-2.34.0/AndroidManifest.xml:2:1-10:12
 MERGED from [com.amazonaws:aws-android-sdk-auth-core:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/3249886a59d48e912f8cc7b8e5aef760/jetified-aws-android-sdk-auth-core-2.34.0/AndroidManifest.xml:2:1-10:12
+MERGED from [com.amazonaws:aws-android-sdk-kms:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d352bbcf51d2313b87a0aeb3a9cda70b/jetified-aws-android-sdk-kms-2.34.0/AndroidManifest.xml:2:1-10:12
 MERGED from [com.amazonaws:aws-android-sdk-core:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7d549bf39a858f4cf471f061600cc55a/jetified-aws-android-sdk-core-2.34.0/AndroidManifest.xml:2:1-16:12
 MERGED from [com.google.firebase:firebase-components:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c5114f67fbfd4e42d5a095437f461c60/jetified-firebase-components-17.0.0/AndroidManifest.xml:15:1-23:12
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d3a97f37d39bc4917423747a2512aa9d/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:15:1-38:12
@@ -245,6 +249,8 @@ MERGED from [:firebase_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_l
 MERGED from [:firebase_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4e2770d048936999ca2355507ec1f653/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:27:5-56:19
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4e2770d048936999ca2355507ec1f653/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:27:5-56:19
+MERGED from [com.amplifyframework:aws-storage-s3:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16dacac40952bae39cb904c65b55e0dc/jetified-aws-storage-s3-1.28.2/AndroidManifest.xml:24:5-28:19
+MERGED from [com.amplifyframework:aws-storage-s3:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16dacac40952bae39cb904c65b55e0dc/jetified-aws-storage-s3-1.28.2/AndroidManifest.xml:24:5-28:19
 MERGED from [com.amplifyframework:core:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e4bf27123182c6bac275c1fbeb442c5c/jetified-core-1.28.2/AndroidManifest.xml:26:5-30:19
 MERGED from [com.amplifyframework:core:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e4bf27123182c6bac275c1fbeb442c5c/jetified-core-1.28.2/AndroidManifest.xml:26:5-30:19
 MERGED from [com.otaliastudios:transcoder:0.9.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/38dbf2e4dd3aabaa478871b046d6d0d9/jetified-transcoder-0.9.1/AndroidManifest.xml:11:5-20
@@ -411,6 +417,8 @@ MERGED from [:wakelock] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_a
 MERGED from [:wakelock] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/wakelock/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:permission_handler] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/permission_handler/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:permission_handler] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/permission_handler/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:amplify_storage_s3] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_storage_s3/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:amplify_storage_s3] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_storage_s3/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:amplify_analytics_pinpoint] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_analytics_pinpoint/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:amplify_analytics_pinpoint] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_analytics_pinpoint/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:amplify_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_core/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
@@ -437,6 +445,8 @@ MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughan
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4e2770d048936999ca2355507ec1f653/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.amplifyframework:aws-auth-cognito:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e81339ecba8324ff3169189412913af8/jetified-aws-auth-cognito-1.28.2/AndroidManifest.xml:20:5-22:41
 MERGED from [com.amplifyframework:aws-auth-cognito:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e81339ecba8324ff3169189412913af8/jetified-aws-auth-cognito-1.28.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.amplifyframework:aws-storage-s3:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16dacac40952bae39cb904c65b55e0dc/jetified-aws-storage-s3-1.28.2/AndroidManifest.xml:20:5-22:41
+MERGED from [com.amplifyframework:aws-storage-s3:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16dacac40952bae39cb904c65b55e0dc/jetified-aws-storage-s3-1.28.2/AndroidManifest.xml:20:5-22:41
 MERGED from [com.amplifyframework:aws-analytics-pinpoint:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/28e0acef312616df4e507ccaadfe4363/jetified-aws-analytics-pinpoint-1.28.2/AndroidManifest.xml:20:5-22:41
 MERGED from [com.amplifyframework:aws-analytics-pinpoint:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/28e0acef312616df4e507ccaadfe4363/jetified-aws-analytics-pinpoint-1.28.2/AndroidManifest.xml:20:5-22:41
 MERGED from [com.amplifyframework:core:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e4bf27123182c6bac275c1fbeb442c5c/jetified-core-1.28.2/AndroidManifest.xml:20:5-22:41
@@ -485,6 +495,8 @@ MERGED from [androidx.lifecycle:lifecycle-service:2.1.0] /Users/wissamboughannam
 MERGED from [androidx.lifecycle:lifecycle-service:2.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/3e2e024078eebe35b83292f6f3084f97/jetified-lifecycle-service-2.1.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.transition:transition:1.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1429f0c6da4e2ae99531285b11758255/transition-1.3.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.transition:transition:1.3.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1429f0c6da4e2ae99531285b11758255/transition-1.3.0/AndroidManifest.xml:20:5-22:41
+MERGED from [com.amazonaws:aws-android-sdk-s3:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e3e5b4b22eae934ebd129f18092b8660/jetified-aws-android-sdk-s3-2.34.0/AndroidManifest.xml:6:5-8:41
+MERGED from [com.amazonaws:aws-android-sdk-s3:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e3e5b4b22eae934ebd129f18092b8660/jetified-aws-android-sdk-s3-2.34.0/AndroidManifest.xml:6:5-8:41
 MERGED from [androidx.appcompat:appcompat:1.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dc0db64dbb3ecce14138161df12c9cbb/appcompat-1.2.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.appcompat:appcompat:1.2.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/dc0db64dbb3ecce14138161df12c9cbb/appcompat-1.2.0/AndroidManifest.xml:20:5-22:41
 MERGED from [com.amazonaws:aws-android-sdk-mobile-client:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c988e40c165e78763cf05cb189003845/jetified-aws-android-sdk-mobile-client-2.34.0/AndroidManifest.xml:12:5-15:96
@@ -623,6 +635,8 @@ MERGED from [com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.34.0] /User
 MERGED from [com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b951b020cc75232a958d9a513005e540/jetified-aws-android-sdk-cognitoidentityprovider-2.34.0/AndroidManifest.xml:6:5-8:41
 MERGED from [com.amazonaws:aws-android-sdk-auth-core:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/3249886a59d48e912f8cc7b8e5aef760/jetified-aws-android-sdk-auth-core-2.34.0/AndroidManifest.xml:6:5-8:41
 MERGED from [com.amazonaws:aws-android-sdk-auth-core:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/3249886a59d48e912f8cc7b8e5aef760/jetified-aws-android-sdk-auth-core-2.34.0/AndroidManifest.xml:6:5-8:41
+MERGED from [com.amazonaws:aws-android-sdk-kms:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d352bbcf51d2313b87a0aeb3a9cda70b/jetified-aws-android-sdk-kms-2.34.0/AndroidManifest.xml:6:5-8:41
+MERGED from [com.amazonaws:aws-android-sdk-kms:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d352bbcf51d2313b87a0aeb3a9cda70b/jetified-aws-android-sdk-kms-2.34.0/AndroidManifest.xml:6:5-8:41
 MERGED from [com.amazonaws:aws-android-sdk-core:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7d549bf39a858f4cf471f061600cc55a/jetified-aws-android-sdk-core-2.34.0/AndroidManifest.xml:6:5-8:41
 MERGED from [com.amazonaws:aws-android-sdk-core:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7d549bf39a858f4cf471f061600cc55a/jetified-aws-android-sdk-core-2.34.0/AndroidManifest.xml:6:5-8:41
 MERGED from [com.google.firebase:firebase-components:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c5114f67fbfd4e42d5a095437f461c60/jetified-firebase-components-17.0.0/AndroidManifest.xml:19:5-21:41
@@ -723,6 +737,8 @@ MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/024ee83d74904e363a7d4e0146b888d7/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
 MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/47833c4da062d923a45ba9eaf155bb78/work-runtime-2.5.0/AndroidManifest.xml:26:5-79
 MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/47833c4da062d923a45ba9eaf155bb78/work-runtime-2.5.0/AndroidManifest.xml:26:5-79
+MERGED from [com.amazonaws:aws-android-sdk-s3:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e3e5b4b22eae934ebd129f18092b8660/jetified-aws-android-sdk-s3-2.34.0/AndroidManifest.xml:10:5-79
+MERGED from [com.amazonaws:aws-android-sdk-s3:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e3e5b4b22eae934ebd129f18092b8660/jetified-aws-android-sdk-s3-2.34.0/AndroidManifest.xml:10:5-79
 MERGED from [com.amazonaws:aws-android-sdk-mobile-client:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c988e40c165e78763cf05cb189003845/jetified-aws-android-sdk-mobile-client-2.34.0/AndroidManifest.xml:18:5-79
 MERGED from [com.amazonaws:aws-android-sdk-mobile-client:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c988e40c165e78763cf05cb189003845/jetified-aws-android-sdk-mobile-client-2.34.0/AndroidManifest.xml:18:5-79
 MERGED from [com.amazonaws:aws-android-sdk-pinpoint:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d9b7933f4b1fe93b74c9fbde4f9ad8f3/jetified-aws-android-sdk-pinpoint-2.34.0/AndroidManifest.xml:10:5-79
@@ -976,6 +992,12 @@ ADDED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughann
 		ADDED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4e2770d048936999ca2355507ec1f653/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:54:17-82
 	android:name
 		ADDED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4e2770d048936999ca2355507ec1f653/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:53:17-119
+service#com.amazonaws.mobileconnectors.s3.transferutility.TransferService
+ADDED from [com.amplifyframework:aws-storage-s3:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16dacac40952bae39cb904c65b55e0dc/jetified-aws-storage-s3-1.28.2/AndroidManifest.xml:25:9-27:38
+	android:enabled
+		ADDED from [com.amplifyframework:aws-storage-s3:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16dacac40952bae39cb904c65b55e0dc/jetified-aws-storage-s3-1.28.2/AndroidManifest.xml:27:13-35
+	android:name
+		ADDED from [com.amplifyframework:aws-storage-s3:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/16dacac40952bae39cb904c65b55e0dc/jetified-aws-storage-s3-1.28.2/AndroidManifest.xml:26:13-93
 activity#com.amplifyframework.devmenu.DeveloperMenuActivity
 ADDED from [com.amplifyframework:core:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e4bf27123182c6bac275c1fbeb442c5c/jetified-core-1.28.2/AndroidManifest.xml:27:9-29:54
 	android:theme

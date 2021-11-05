@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:rillliveapp/models/file_model.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:path/path.dart' as Path;
 import 'package:video_compress/video_compress.dart';
