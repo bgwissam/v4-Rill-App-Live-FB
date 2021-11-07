@@ -23,6 +23,8 @@ class CameraScreen extends StatefulWidget {
   _CameraScreenState createState() => _CameraScreenState();
 }
 
+enum DescretionCharacter { descrete, allages }
+
 class _CameraScreenState extends State<CameraScreen>
     with TickerProviderStateMixin {
   //controllers
@@ -56,6 +58,9 @@ class _CameraScreenState extends State<CameraScreen>
   late bool _isLoadingStream = false;
   late bool _camButtonPressed = false;
   int? selectedIndex = 0;
+  final _formKey = GlobalKey<FormState>();
+  int paymentValue = 0;
+  DescretionCharacter? _character = DescretionCharacter.allages;
   //Maps
   late Map acquireResponse;
   late Map startRecording;
@@ -76,8 +81,8 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   void initState() {
     super.initState();
-    _channelName = 'testing';
-    _getTokens();
+
+    //_getTokens();
     onNewCameraSelected(cameras[0]);
     _scrollController = ScrollController();
   }
@@ -146,6 +151,203 @@ class _CameraScreenState extends State<CameraScreen>
     }
   }
 
+  //build the live streaming channel name text field along with the payment and descretion
+  _buildLiveStreamingFields() {
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            //Channel name
+            Container(
+              height: 70,
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: TextFormField(
+                initialValue: '',
+                maxLength: 50,
+                decoration: InputDecoration(
+                    focusColor: color_4,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          const BorderSide(color: Colors.white, width: 2),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          const BorderSide(color: Colors.white, width: 2),
+                    ),
+                    hintText: 'Add a Title to your LIVE...',
+                    hintStyle: textStyle_20),
+                onChanged: (val) {
+                  _channelName = val.trim().toString();
+                },
+              ),
+            ),
+            //Spec buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                //set pay
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: TextButton(
+                      onPressed: () {
+                        _setPayPerView();
+                      },
+                      style: TextButton.styleFrom(
+                          primary: Colors.transparent,
+                          side: BorderSide(color: color_4, width: 2)),
+                      child: paymentValue <= 0
+                          ? Text('Set Pay Per View ', style: textStyle_19)
+                          : Text('Payment \$$paymentValue',
+                              style: textStyle_19),
+                    ),
+                  ),
+                ),
+                //viewer descretion
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: TextButton(
+                      onPressed: () {
+                        _setUserDescretion();
+                      },
+                      style: TextButton.styleFrom(
+                          primary: Colors.transparent,
+                          side: BorderSide(color: color_4, width: 2)),
+                      child: Text('Viewer Descretion', style: textStyle_19),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  //sets the rate of payment per user
+  _setPayPerView() {
+    showDialog(
+      context: context,
+      builder: (builder) => AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () async {
+                setState(() {
+                  paymentValue = 0;
+                });
+
+                Navigator.pop(context);
+              },
+              child: Text('Cancel', style: textStyle_6),
+            ),
+            TextButton(
+              onPressed: () async {
+                setState(() {});
+                Navigator.pop(context);
+              },
+              child: Text('Set', style: textStyle_6),
+            ),
+          ],
+          content: SizedBox(
+            height: MediaQuery.of(context).size.height / 4,
+            width: MediaQuery.of(context).size.width - 100,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('Payment Per View', style: textStyle_6),
+                TextFormField(
+                  initialValue: '',
+                  decoration: InputDecoration(
+                    hintStyle: textStyle_20,
+                    hintText: 'Set payment per view',
+                  ),
+                  keyboardType: TextInputType.number,
+                  maxLength: 2,
+                  onChanged: (val) {
+                    if (val.isNotEmpty) {
+                      paymentValue = int.parse(val.trim());
+                    }
+                  },
+                ),
+              ],
+            ),
+          )),
+    );
+  }
+
+  //sets wether the content is for adults of not
+  _setUserDescretion() {
+    showDialog(
+      context: context,
+      builder: (builder) => StatefulBuilder(builder: (context, setState) {
+        return AlertDialog(
+            content: SizedBox(
+          height: MediaQuery.of(context).size.height / 4,
+          width: MediaQuery.of(context).size.width - 100,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('Viewer Descretion', style: textStyle_6),
+              Row(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 3 - 10,
+                    child: Row(
+                      children: [
+                        Radio<DescretionCharacter>(
+                          activeColor: color_4,
+                          value: DescretionCharacter.descrete,
+                          groupValue: _character,
+                          onChanged: (DescretionCharacter? value) {
+                            setState(() {
+                              print('the value: $value');
+                              _character = value;
+                            });
+                          },
+                        ),
+                        Expanded(child: Text('Turn On', style: textStyle_19))
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 3 - 10,
+                    child: Row(children: [
+                      Radio<DescretionCharacter>(
+                        activeColor: color_4,
+                        value: DescretionCharacter.allages,
+                        groupValue: _character,
+                        onChanged: (DescretionCharacter? value) {
+                          setState(() {
+                            _character = value;
+                          });
+                        },
+                      ),
+                      Expanded(child: Text('Turn Off', style: textStyle_19))
+                    ]),
+                  ),
+                ],
+              ),
+              Text(
+                  'This is for adult content that is not suitable for children, and for some adults as well. Be very careful about labelling your content',
+                  style: textStyle_20),
+            ],
+          ),
+        ));
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -164,6 +366,14 @@ class _CameraScreenState extends State<CameraScreen>
                         child: Stack(
                           children: [
                             _controller!.buildPreview(),
+                            selectedButton == 0
+                                ? Positioned(
+                                    left: 0,
+                                    top: 20,
+                                    height: 120,
+                                    width: size.width - 10,
+                                    child: _buildLiveStreamingFields())
+                                : const SizedBox.shrink(),
                             Positioned(
                                 left: 0,
                                 top: size.height - 170,
@@ -292,6 +502,14 @@ class _CameraScreenState extends State<CameraScreen>
                                               }
                                             }
                                             if (selectedButton == 0) {
+                                              //validate form first
+                                              if (!_formKey.currentState!
+                                                  .validate()) {
+                                                return;
+                                              } else {
+                                                await _getTokens();
+                                              }
+
                                               //live streaming
                                               if (mounted) {
                                                 setState(() {
@@ -508,10 +726,9 @@ class _CameraScreenState extends State<CameraScreen>
 
     rtcToken = rtcResult['token'];
     uid = rtcResult['uid'];
-    var userAccount = 'testingOnly';
 
     var rtmResult = await rtmTokenGenerator.createMessagingToken(
-        channelName: _channelName!, userAccount: userAccount, role: '1');
+        channelName: _channelName!, userAccount: '12345', role: '1');
 
     rtmToken = rtmResult['token'];
 

@@ -856,6 +856,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         return;
       }
       try {
+        print('the uid: $userId');
         await _client.login(widget.rtmToken, userId);
         _log(type: 'login', user: userId);
         setState(() {

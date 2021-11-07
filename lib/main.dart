@@ -222,7 +222,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   void initState() {
     super.initState();
     pNotif.init();
-    _configureAmplify();
+    //_configureAmplify();
     Timer(
       Duration(seconds: 4),
       () => Navigator.pushAndRemoveUntil(

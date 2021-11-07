@@ -59,7 +59,7 @@ var textStyle_5 = TextStyle(
 );
 
 var textStyle_6 = TextStyle(
-    color: color_3,
+    color: Colors.black,
     fontFamily: 'Poppins',
     fontWeight: FontWeight.bold,
     fontSize: 15);
@@ -116,6 +116,12 @@ var textStyle_17 =
 
 var textStyle_18 =
     TextStyle(fontSize: 18, fontFamily: 'Poppins', color: color_11);
+
+var textStyle_19 =
+    TextStyle(fontSize: 15, fontFamily: 'Poppins', color: color_4);
+
+var textStyle_20 =
+    TextStyle(fontSize: 15, fontFamily: 'Poppins', color: color_13);
 
 var heading_1 = TextStyle(
     color: color_4,

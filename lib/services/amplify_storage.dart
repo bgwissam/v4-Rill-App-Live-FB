@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rillliveapp/shared/parameters.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
 class AWSstorage {
   AmplifyStorageS3 storage = AmplifyStorageS3();
+  Parameters param = Parameters();
 
   Future<dynamic> downloadFile(String key) async {
     final documentDir = await getApplicationDocumentsDirectory();
