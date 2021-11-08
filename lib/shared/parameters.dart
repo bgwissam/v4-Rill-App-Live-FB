@@ -67,6 +67,7 @@ class LiveStreamingParams {
   static String sid = 'sid';
   static String PAYMENT_VIEW = 'paymentView';
   static String DESCRETION = 'descretion';
+  static String DESCRIPTION = 'description';
 }
 
 class CommentParameters {

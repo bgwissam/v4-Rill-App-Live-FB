@@ -1,8 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:chewie/chewie.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -94,6 +91,7 @@ class _MainScreenState extends State<MainScreen>
   DatabaseService db = DatabaseService();
   AuthService as = AuthService();
   late List<ImageVideoModel?> imageVideoProvider;
+  late List<EndedStreamsModel?> endedStreamModels;
   late UserModel userProvider;
   late bool _isLoadingStream = false;
   late bool _isUploadingFile = false;
@@ -137,6 +135,7 @@ class _MainScreenState extends State<MainScreen>
   @override
   Widget build(BuildContext context) {
     imageVideoProvider = Provider.of<List<ImageVideoModel?>>(context);
+    endedStreamModels = Provider.of<List<EndedStreamsModel?>>(context);
     userProvider = Provider.of<UserModel>(context);
     _size = MediaQuery.of(context).size;
     _buildMainScreenWidget();
@@ -1349,68 +1348,125 @@ class _MainScreenState extends State<MainScreen>
 
   //Subscribed feed section
   Widget _subscribedFeed() {
-    return FutureBuilder(
-        future: getSubscriptionFeed,
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData && snapshot.data.isNotEmpty) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 1),
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    late String extension;
-                    _isLoadingStream = false;
-                    late ChewieController _chewieController;
-                    _chewieController = ChewieController(
-                      videoPlayerController: snapshot.data[index]['value'],
-                      autoInitialize: false,
-                      autoPlay: false,
-                      looping: false,
-                      showControls: false,
-                      allowMuting: true,
-                    );
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (builder) => VideoPlayerPage(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          alignment: Alignment.center,
-                          child:
-                              snapshot.data[index]['value'].value.isInitialized
-                                  ? Chewie(controller: _chewieController)
-                                  : const Text('Not initialized'),
-                        ),
+    VideoPlayerController _videoPlayerController;
+
+    return RefreshIndicator(
+      onRefresh: _pullRefresh,
+      child: GridView.builder(
+        cacheExtent: 1000,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 2,
+            crossAxisSpacing: 2,
+            childAspectRatio: 0.7),
+        itemCount: endedStreamModels.length,
+        itemBuilder: (context, index) {
+          print('stream url: ${endedStreamModels[index]!.streamUrl!}');
+          if (endedStreamModels[index]!.uid != null) {
+            _videoPlayerController = VideoPlayerController.network(
+                endedStreamModels[index]!.streamUrl!)
+              ..initialize().then((_) {
+                setState(() {});
+              });
+            return Container(
+              alignment: Alignment.center,
+              child: InkWell(
+                onTap: () async {
+                  // await Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (builder) => ImageViewerProvider(
+                  //       userModel: userProvider,
+                  //       fileId: imageVideoProvider[index]!.uid,
+                  //       collection: 'comments',
+                  //       imageOwnerId: imageVideoProvider[index]!.userId,
+                  //       imageUrl: imageVideoProvider[index]!.url.toString(),
+                  //       imageProvider: imageVideoProvider[index],
+                  //     ),
+                  //   ),
+                  // );
+                },
+                child: _videoPlayerController.value.isInitialized
+                    ? AspectRatio(
+                        aspectRatio: _videoPlayerController.value.aspectRatio,
+                        child: VideoPlayer(_videoPlayerController),
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(),
                       ),
-                    );
-                  });
-            } else {
-              return const LoadingAmination(
-                animationType: 'ThreeInOut',
-              );
-            }
-          } else {
-            return SizedBox(
-                child: Center(
-              child: Text('You have not subscribed to any channel',
-                  style: textStyle_12),
-            ));
+              ),
+            );
           }
-        });
+          return const Center(
+            child: LoadingAmination(
+              animationType: 'ThreeInOut',
+            ),
+          );
+        },
+      ),
+    );
+    // return FutureBuilder(
+    //     future: getSubscriptionFeed,
+    //     builder: (context, AsyncSnapshot snapshot) {
+    //       if (snapshot.hasData && snapshot.data.isNotEmpty) {
+    //         if (snapshot.connectionState == ConnectionState.done) {
+    //           return GridView.builder(
+    //               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //                   crossAxisCount: 2,
+    //                   mainAxisSpacing: 10,
+    //                   crossAxisSpacing: 10,
+    //                   childAspectRatio: 1),
+    //               itemCount: snapshot.data!.length,
+    //               itemBuilder: (context, index) {
+    //                 late String extension;
+    //                 _isLoadingStream = false;
+    //                 late ChewieController _chewieController;
+    //                 _chewieController = ChewieController(
+    //                   videoPlayerController: snapshot.data[index]['value'],
+    //                   autoInitialize: false,
+    //                   autoPlay: false,
+    //                   looping: false,
+    //                   showControls: false,
+    //                   allowMuting: true,
+    //                 );
+    //                 return Padding(
+    //                   padding: const EdgeInsets.all(8.0),
+    //                   child: InkWell(
+    //                     onTap: () async {
+    //                       await Navigator.push(
+    //                         context,
+    //                         MaterialPageRoute(
+    //                           builder: (builder) => VideoPlayerPage(),
+    //                         ),
+    //                       );
+    //                     },
+    //                     child: Container(
+    //                       decoration: BoxDecoration(
+    //                         border: Border.all(),
+    //                         borderRadius: BorderRadius.circular(15),
+    //                       ),
+    //                       alignment: Alignment.center,
+    //                       child:
+    //                           snapshot.data[index]['value'].value.isInitialized
+    //                               ? Chewie(controller: _chewieController)
+    //                               : const Text('Not initialized'),
+    //                     ),
+    //                   ),
+    //                 );
+    //               });
+    //         } else {
+    //           return const LoadingAmination(
+    //             animationType: 'ThreeInOut',
+    //           );
+    //         }
+    //       } else {
+    //         return SizedBox(
+    //             child: Center(
+    //           child: Text('You have not subscribed to any channel',
+    //               style: textStyle_12),
+    //         ));
+    //       }
+    //     });
   }
 
   //Listen to streaming videos

@@ -525,6 +525,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
       );
       await db.deleteStreamingVideo(streamId: widget.streamModelId);
       var stopRecordResponse = await json.decode(stopRecordingResult.body);
+
       print('the result stop: $stopRecordResponse');
       //save the live stream to firebase
       _saveLiveStream(stopRecordResponse);
@@ -542,30 +543,35 @@ class _LiveStreamingState extends State<LiveStreaming> {
       streamKey = data['serverResponse']['fileList'];
       print('the stream key: $streamKey');
       if (streamKey != null) {
-        await awsStorage.list();
+        // await awsStorage.list();
       }
+
       //generate streaming thumbnail
       StorageData sd = StorageData();
-      if (streamFile != null) {
-        var key = await sd.generateThumbnailUrl(streamFile);
-        print('data streaming: $key');
-        //create streaming thumbnail
-        if (key != null) {
-          storageRef = FirebaseStorage.instance;
-          Reference ref =
-              storageRef.ref().child('thumbnails/${Path.basename(key.path)}');
+      if (streamKey != null) {
+        // var key = await sd.generateThumbnailUrl(streamFile);
+        // print('data streaming: $key');
+        // //create streaming thumbnail
+        // if (key != null) {
+        //   storageRef = FirebaseStorage.instance;
+        //   Reference ref =
+        //       storageRef.ref().child('thumbnails/${Path.basename(key.path)}');
 
-          UploadTask uploadTask = ref.putFile(File(key.path));
-          var downloadUrlThumbnail =
-              await (await uploadTask).ref.getDownloadURL();
-          thumbnailUrl = downloadUrlThumbnail.toString();
-          print('data streaming thumbnail: $thumbnailUrl');
-        }
+        //   UploadTask uploadTask = ref.putFile(File(key.path));
+        //   var downloadUrlThumbnail =
+        //       await (await uploadTask).ref.getDownloadURL();
+        //   thumbnailUrl = downloadUrlThumbnail.toString();
+        //   print('data streaming thumbnail: $thumbnailUrl');
+        // }
+
         if (data['serverResponse']['uploadingStatus'] == 'uploaded') {
+          var streamUrl =
+              'https://videos165240-dev.s3.us-west-2.amazonaws.com/${data['serverResponse']['fileList']}';
+          print('the stream url: $streamUrl');
           var result = await db.saveEndedLiveStream(
               userId: widget.userId,
               thumbnailUrl: thumbnailUrl,
-              streamUrl: data['serverResponse']['fileList'],
+              streamUrl: streamUrl,
               description: 'We will create that later');
 
           if (result.isNotEmpty) {

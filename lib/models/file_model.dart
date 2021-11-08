@@ -53,6 +53,25 @@ class StreamingModel {
       this.sid});
 }
 
+//Ended stream model
+class EndedStreamsModel {
+  String? uid;
+  String? userId;
+  String? streamUrl;
+  String? descritpion;
+  int? paymentValue;
+  bool? descretion;
+
+  EndedStreamsModel({
+    this.uid,
+    this.userId,
+    this.streamUrl,
+    this.descretion,
+    this.paymentValue,
+    this.descritpion,
+  });
+}
+
 class ThumbnailRequest {
   String video;
   String thumbnailPath;

@@ -92,14 +92,24 @@ class _WrapperState extends State<Wrapper> {
                     return [];
                   },
                 ),
+                //live streaming videos
                 StreamProvider<List<StreamingModel?>>.value(
                   value: db.getStreamingVidoes(),
                   initialData: [],
                   catchError: (context, error) {
-                    print('Error fetching image stream: $error');
+                    print('Error fetching live streams: $error');
                     return [];
                   },
                 ),
+                //ended streaming videos
+                StreamProvider<List<EndedStreamsModel?>>.value(
+                  value: db.getEndedStreamingVidoes(),
+                  initialData: [],
+                  catchError: (context, error) {
+                    print('Error fetching ended stream: $error');
+                    return [];
+                  },
+                )
               ],
             child: MainScreen(
               userId: currentUser?.userId,

@@ -491,6 +491,25 @@ class DatabaseService {
 
   //delete live stream
 
+  //get ended live streams
+  //Map streaming vides
+  List<EndedStreamsModel?> _mapEndedStreamsFromSnapshot(
+      QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return EndedStreamsModel(
+        uid: doc.id,
+        userId: (doc.data() as Map)[LiveStreamingParams.USER_ID],
+        streamUrl: (doc.data() as Map)[LiveStreamingParams.URL],
+        descretion: (doc.data() as Map)[LiveStreamingParams.DESCRETION],
+        descritpion: (doc.data() as Map)[LiveStreamingParams.DESCRIPTION],
+      );
+    }).toList();
+  }
+
+  Stream<List<EndedStreamsModel?>> getEndedStreamingVidoes() {
+    return streamCollection.snapshots().map(_mapEndedStreamsFromSnapshot);
+  }
+
   //This section is to create, update and delete images in the database
   //Add Video
   Future<String> createImageVideo(
