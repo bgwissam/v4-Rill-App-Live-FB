@@ -34,6 +34,8 @@ class StreamingModel {
   String? rtmToken;
   String? thumbnailUrl;
   String? resourceId;
+  int? paymentPerView;
+  bool? descretion;
   String? sid;
   StreamingModel(
       {this.uid,
@@ -46,6 +48,8 @@ class StreamingModel {
       this.rtmToken,
       this.thumbnailUrl,
       this.resourceId,
+      this.paymentPerView,
+      this.descretion,
       this.sid});
 }
 

@@ -61,6 +61,7 @@ class _CameraScreenState extends State<CameraScreen>
   final _formKey = GlobalKey<FormState>();
   int paymentValue = 0;
   DescretionCharacter? _character = DescretionCharacter.allages;
+  bool? _isDescrete = false;
   //Maps
   late Map acquireResponse;
   late Map startRecording;
@@ -167,6 +168,7 @@ class _CameraScreenState extends State<CameraScreen>
               child: TextFormField(
                 initialValue: '',
                 maxLength: 50,
+                style: textStyle_20,
                 decoration: InputDecoration(
                     focusColor: color_4,
                     enabledBorder: OutlineInputBorder(
@@ -684,6 +686,9 @@ class _CameraScreenState extends State<CameraScreen>
 
   //The following functions will start recording a live stream
   _startRecordingLiveStream() async {
+    if (_character != DescretionCharacter.allages) {
+      _isDescrete = true;
+    }
     //save stream to your database in order for other users to view it
     var streamRec = await db.createNewDataStream(
         channelName: _channelName,
@@ -693,6 +698,8 @@ class _CameraScreenState extends State<CameraScreen>
         streamerId: uid.toString(),
         userName: 'Example',
         resourceId: acquireResponse['resourceId'],
+        paymentPerView: paymentValue,
+        descretion: _isDescrete,
         sid: startRecording['sid']);
 
     print('the stream rec: $streamRec');

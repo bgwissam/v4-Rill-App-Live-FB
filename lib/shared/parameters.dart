@@ -65,6 +65,8 @@ class LiveStreamingParams {
   static String RTM_TOKEN = 'rtm_token';
   static String resouceId = 'resourceId';
   static String sid = 'sid';
+  static String PAYMENT_VIEW = 'paymentView';
+  static String DESCRETION = 'descretion';
 }
 
 class CommentParameters {

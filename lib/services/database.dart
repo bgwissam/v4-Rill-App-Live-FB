@@ -388,6 +388,8 @@ class DatabaseService {
       String? userName,
       String? thumbnailUrl,
       String? resourceId,
+      int? paymentPerView,
+      bool? descretion,
       String? sid}) async {
     try {
       var result = await liveStreamingCollection.add({
@@ -398,6 +400,8 @@ class DatabaseService {
         LiveStreamingParams.RTM_TOKEN: rtmToken,
         LiveStreamingParams.URL: thumbnailUrl,
         LiveStreamingParams.resouceId: resourceId,
+        LiveStreamingParams.PAYMENT_VIEW: paymentPerView,
+        LiveStreamingParams.DESCRETION: descretion,
         LiveStreamingParams.sid: sid,
       }).then((value) => value.id);
 
@@ -431,6 +435,8 @@ class DatabaseService {
           rtmToken: (doc.data() as Map)[LiveStreamingParams.RTM_TOKEN],
           thumbnailUrl: (doc.data() as Map)[LiveStreamingParams.URL],
           resourceId: (doc.data() as Map)[LiveStreamingParams.resouceId],
+          paymentPerView: (doc.data() as Map)[LiveStreamingParams.PAYMENT_VIEW],
+          descretion: (doc.data() as Map)[LiveStreamingParams.DESCRETION],
           sid: (doc.data() as Map)[LiveStreamingParams.sid]);
     }).toList();
   }
