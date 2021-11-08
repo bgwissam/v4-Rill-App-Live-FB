@@ -32,6 +32,7 @@ import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/loading_view.dart';
 import 'package:rillliveapp/shared/parameters.dart';
 import 'package:rillliveapp/shared/video_viewer.dart';
+import 'package:rillliveapp/wallet/wallet_view.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 import '../main.dart';
@@ -188,7 +189,12 @@ class _MainScreenState extends State<MainScreen>
                         AssetImage('assets/icons/money_rill_icon.png'),
                         color: color_4,
                       ),
-                      onTap: () async {},
+                      onTap: () async {
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (builder) => WalletView()));
+                      },
                     ),
                     ListTile(
                       title: Text('Analytics',

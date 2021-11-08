@@ -3,6 +3,7 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:camera/camera.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' as io;
 import 'dart:async';
@@ -24,6 +25,8 @@ import 'models/user_model.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 
 //A top level named handler to handle background/terminated messages will call
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -41,7 +44,9 @@ String errorMessage = '';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
+  }
   // await Firebase.initializeApp().catchError((error, stackTrace) async {
   //   errorMessage = error.toString();
   //   await Sentry.captureException(error, stackTrace: stackTrace);
