@@ -47,27 +47,20 @@ exports.tokenGenerator = functions.https.onRequest((req, res) => {
 
 exports.rtmTokenGenerator = functions.https.onRequest((req, res) => {
     try {
-        functions.logger.info("Token Logger", { structuredData: true });
         const channelName = req.body.channelName;
         if (!channelName) {
             return res.status(500).json({ 'error': 'channel is required' });
         }
         let userAccount = req.body.userAccount;
-
         //get the role
         let role = RtmRole.Rtm_User;
-
         //get expiry time
-        let expireTime = req.body.expireTime;
-        if (!expireTime || expireTime == '') {
-            expireTime = 3600;
-        } else {
-            expireTime = parseInt(expireTime, 10);
-        }
+        let expireTime = 3600;
+
         //calculate expire time privilage
         let currentTime = Math.floor(Date.now() / 1000);
         const priviledgeExpireTime = currentTime + expireTime;
-
+        console.log(`The expire time ${priviledgeExpireTime} - User Id: ${userAccount}`);
         const token = RtmTokenBuilder.buildToken(APP_ID, APP_CERTIFICATE, channelName, userAccount, role, priviledgeExpireTime);
         return res.json({ "token": token });
     } catch (e) {

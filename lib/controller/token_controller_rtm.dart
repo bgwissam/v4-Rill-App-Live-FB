@@ -1,13 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:rillliveapp/shared/parameters.dart';
 
 class RtmTokenGenerator {
-  late String apiToken;
   String baseUrl =
       'https://us-central1-rill-app-live.cloudfunctions.net/rtmTokenGenerator';
-  String appId = Parameters().app_ID;
-  String appCertification = Parameters().app_certificate;
+
   late String token;
   //Api post request to request Audio Video Token
   Future<Map> createMessagingToken(
@@ -15,17 +12,18 @@ class RtmTokenGenerator {
       required String userAccount,
       required String role}) async {
     try {
+      print('$channelName - $userAccount - $role');
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: <String, String>{
-          "Content-Type": "application/json;charset=UTF-8",
+          "Content-Type": "application/json",
         },
         body: jsonEncode(
           <String, dynamic>{
             "channelName": channelName,
             "userAccount": userAccount,
             "role": role,
-            "expireTime": 3000
+            "expireTime": 3600
           },
         ),
       );

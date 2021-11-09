@@ -28,6 +28,7 @@ MERGED from [:permission_handler] /Volumes/Sub - 2/Oxygen Media Group/Projects/R
 MERGED from [:amplify_storage_s3] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_storage_s3/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:amplify_analytics_pinpoint] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_analytics_pinpoint/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-13:12
 MERGED from [:amplify_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_core/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
+MERGED from [:shared_preferences] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-46:12
 MERGED from [:device_info] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/device_info/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:in_app_purchase_android] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/in_app_purchase_android/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
@@ -427,6 +428,8 @@ MERGED from [:amplify_analytics_pinpoint] /Volumes/Sub - 2/Oxygen Media Group/Pr
 MERGED from [:amplify_analytics_pinpoint] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_analytics_pinpoint/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:amplify_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_core/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:amplify_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_core/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:device_info] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/device_info/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44

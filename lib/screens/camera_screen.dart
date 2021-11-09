@@ -735,7 +735,7 @@ class _CameraScreenState extends State<CameraScreen>
     uid = rtcResult['uid'];
 
     var rtmResult = await rtmTokenGenerator.createMessagingToken(
-        channelName: _channelName!, userAccount: '12345', role: '1');
+        channelName: _channelName!, userAccount: 'testing', role: '1');
 
     rtmToken = rtmResult['token'];
 
