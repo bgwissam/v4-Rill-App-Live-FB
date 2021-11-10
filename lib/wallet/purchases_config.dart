@@ -7,7 +7,6 @@ import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_ios/in_app_purchase_ios.dart';
 import 'package:in_app_purchase_ios/store_kit_wrappers.dart';
-import 'package:rillliveapp/shared/color_styles.dart';
 import 'consumable_store.dart';
 
 class PurchaseConfig extends StatefulWidget {
@@ -19,17 +18,15 @@ class PurchaseConfig extends StatefulWidget {
 
 const bool _kAutoConsume = true;
 
-const String _kConsumableId = 'purchase';
-const String _kUpgradeId = 'upgrade';
-const String _k1SubscriptionId = '1000_coins';
-const String _k2SubscriptionId = '10000_coins';
-const String _k3SubscriptionId = '20000_coins';
+const String _k1SubscriptionId = 'coins100';
+const String _k2SubscriptionId = 'coins1000';
+const String _k3SubscriptionId = 'coins10000';
+const String _k4SubscriptionId = 'coins50000';
 const List<String> _kProductIds = <String>[
-  _kConsumableId,
-  _kUpgradeId,
   _k1SubscriptionId,
   _k2SubscriptionId,
   _k3SubscriptionId,
+  _k4SubscriptionId,
 ];
 
 class _PurchaseConfigState extends State<PurchaseConfig> {
@@ -55,8 +52,42 @@ class _PurchaseConfigState extends State<PurchaseConfig> {
     }, onError: (err) {
       print('Error in updating purchase list: $err');
     });
+
     initStoreInfo();
     super.initState();
+  }
+
+  _setProductDetails() async {
+    _products = [
+      ProductDetails(
+          id: 'coins100',
+          title: '100',
+          description: 'Coins',
+          price: '5',
+          rawPrice: 5.0,
+          currencyCode: 'USD'),
+      ProductDetails(
+          id: 'coins1000',
+          title: '1000',
+          description: 'Coins',
+          price: '10',
+          rawPrice: 10.0,
+          currencyCode: 'USD'),
+      ProductDetails(
+          id: 'coins10000',
+          title: '10000',
+          description: 'Coins',
+          price: '15',
+          rawPrice: 15.0,
+          currencyCode: 'USD'),
+      ProductDetails(
+          id: 'coins50000',
+          title: '50000',
+          description: 'Coins',
+          price: '20',
+          rawPrice: 20.0,
+          currencyCode: 'USD'),
+    ];
   }
 
   //Initiate the store
@@ -85,6 +116,7 @@ class _PurchaseConfigState extends State<PurchaseConfig> {
         await _inAppPurchase.queryProductDetails(
       _kProductIds.toSet(),
     );
+    print('the products: ${productDetailsResponse.productDetails}');
     //if product list confornted an error
     if (productDetailsResponse.error != null) {
       setState(() {
@@ -168,14 +200,8 @@ class _PurchaseConfigState extends State<PurchaseConfig> {
         ]),
       );
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Coin Store',
-          style: textStyle_4,
-        ),
-      ),
-      body: Stack(children: stack),
+    return Container(
+      child: Stack(children: stack),
     );
   }
 
@@ -212,6 +238,7 @@ class _PurchaseConfigState extends State<PurchaseConfig> {
 
   //will build the list of avialable products
   Card _buildProductList() {
+    print('loading: $_loading');
     if (_loading) {
       return const Card(
         child: ListTile(
@@ -220,7 +247,7 @@ class _PurchaseConfigState extends State<PurchaseConfig> {
         ),
       );
     }
-    if (_isAvailable) {
+    if (!_isAvailable) {
       return Card();
     }
     final ListTile productsHeader = ListTile(
@@ -251,6 +278,7 @@ class _PurchaseConfigState extends State<PurchaseConfig> {
         _products.map(
           (ProductDetails productDetails) {
             PurchaseDetails? previousPurchases = purchases[productDetails.id];
+            print('product details: ${productDetails.id}');
             return ListTile(
               title: Text(productDetails.title),
               subtitle: Text(productDetails.description),
@@ -274,14 +302,8 @@ class _PurchaseConfigState extends State<PurchaseConfig> {
                               applicationUserName: null);
                         }
 
-                        if (productDetails.id == _kConsumableId) {
-                          _inAppPurchase.buyConsumable(
-                              purchaseParam: purchaseParam,
-                              autoConsume: _kAutoConsume || Platform.isIOS);
-                        } else {
-                          _inAppPurchase.buyNonConsumable(
-                              purchaseParam: purchaseParam);
-                        }
+                        _inAppPurchase.buyNonConsumable(
+                            purchaseParam: purchaseParam);
                       }),
             );
           },
@@ -296,19 +318,173 @@ class _PurchaseConfigState extends State<PurchaseConfig> {
   }
 
   Card _buildConsumableBox() {
-    return Card();
+    if (_loading) {
+      return const Card(
+        child: ListTile(
+          leading: CircularProgressIndicator(),
+          title: Text('Fetching consumables'),
+        ),
+      );
+    }
+    if (!_isAvailable) {
+      return Card(
+        child: Text('Consumable box: Available: $_isAvailable'),
+      );
+    }
+    final ListTile consumableHeader =
+        ListTile(title: Text('Purchased consumables'));
+    final List<Widget> tokens = _consumables.map((String id) {
+      return GridTile(
+        child: IconButton(
+          icon: const Icon(
+            Icons.star,
+            size: 40,
+            color: Colors.orange,
+          ),
+          splashColor: Colors.yellowAccent,
+          onPressed: () => consume(id),
+        ),
+      );
+    }).toList();
+
+    return Card(
+        child: Column(
+      children: [
+        consumableHeader,
+        Divider(),
+        GridView.count(
+          crossAxisCount: 4,
+          children: tokens,
+          shrinkWrap: true,
+          padding: EdgeInsets.all(12),
+        )
+      ],
+    ));
   }
 
   Widget _buildRestoreButton() {
+    if (_loading) {
+      return Container();
+    }
     return Padding(
       padding: EdgeInsets.all(4),
-      child: Container(),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          TextButton(
+              onPressed: () => _inAppPurchase.restorePurchases(),
+              child: Text('Restore Purhcases'))
+        ],
+      ),
     );
   }
 
-  Future<void> confirmPriceChange(BuildContext context) async {}
+  Future<void> consume(String id) async {
+    await ConsumableStore.consume(id);
+    final List<String> consumables = await ConsumableStore.load();
+    setState(() {
+      _consumables = consumables;
+    });
+  }
 
-  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {}
+  void showPendingUI() {
+    setState(() {
+      _purchasePending = true;
+    });
+  }
+
+  void deliverProduct(PurchaseDetails purchaseDetails) async {
+    // IMPORTANT!! Always verify purchase details before delivering the product.
+    // if (purchaseDetails.productID == _kConsumableId) {
+    //   await ConsumableStore.save(purchaseDetails.purchaseID!);
+    //   List<String> consumables = await ConsumableStore.load();
+    //   setState(() {
+    //     _purchasePending = false;
+    //     _consumables = consumables;
+    //   });
+    // } else {
+    setState(() {
+      _purchases.add(purchaseDetails);
+      _purchasePending = false;
+    });
+    // }
+  }
+
+  Future<bool> _verifyPurchase(PurchaseDetails purchaseDetails) {
+    // IMPORTANT!! Always verify a purchase before delivering the product.
+    // For the purpose of an example, we directly return true.
+    return Future<bool>.value(true);
+  }
+
+  void _handleInvalidPurchase(PurchaseDetails purchaseDetails) {
+    // handle invalid purchase here if  _verifyPurchase` failed.
+  }
+
+  void handleError(IAPError error) {
+    setState(() {
+      _purchasePending = false;
+    });
+  }
+
+  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      if (purchaseDetails.status == PurchaseStatus.pending) {
+        showPendingUI();
+      } else {
+        if (purchaseDetails.status == PurchaseStatus.error) {
+          handleError(purchaseDetails.error!);
+        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
+            purchaseDetails.status == PurchaseStatus.restored) {
+          bool valid = await _verifyPurchase(purchaseDetails);
+          if (valid) {
+            deliverProduct(purchaseDetails);
+          } else {
+            _handleInvalidPurchase(purchaseDetails);
+            return;
+          }
+        }
+        if (Platform.isAndroid) {
+          if (!_kAutoConsume) {
+            final InAppPurchaseAndroidPlatformAddition androidAddition =
+                _inAppPurchase.getPlatformAddition<
+                    InAppPurchaseAndroidPlatformAddition>();
+            await androidAddition.consumePurchase(purchaseDetails);
+          }
+        }
+        if (purchaseDetails.pendingCompletePurchase) {
+          await _inAppPurchase.completePurchase(purchaseDetails);
+        }
+      }
+    });
+  }
+
+  Future<void> confirmPriceChange(BuildContext context) async {
+    if (Platform.isAndroid) {
+      final InAppPurchaseAndroidPlatformAddition androidAddition =
+          _inAppPurchase
+              .getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
+      var priceChangeConfirmationResult = await androidAddition
+          .launchPriceChangeConfirmationFlow(sku: 'purchaseId');
+      if (priceChangeConfirmationResult.responseCode == BillingResponse.ok) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Price change accepted'),
+        ));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            priceChangeConfirmationResult.debugMessage ??
+                "Price change failed with code ${priceChangeConfirmationResult.responseCode}",
+          ),
+        ));
+      }
+    }
+    if (Platform.isIOS) {
+      var iaIosPlatformAddition = _inAppPurchase
+          .getPlatformAddition<InAppPurchaseIosPlatformAddition>();
+      await iaIosPlatformAddition.showPriceConsentIfNeeded();
+    }
+  }
 }
 
 //Queue delegate as needed for IOS

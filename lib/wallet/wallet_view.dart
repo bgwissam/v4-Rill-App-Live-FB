@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
+import 'package:rillliveapp/wallet/purchases_config.dart';
 
 class WalletView extends StatefulWidget {
   const WalletView({Key? key}) : super(key: key);
@@ -13,6 +14,9 @@ class _WalletViewState extends State<WalletView> {
   String? currentBalance;
   List<Map<String, dynamic>> coinOption = [];
   List<Map<String, dynamic>> transactionCount = [];
+
+  //controller
+  PurchaseConfig pConfig = PurchaseConfig();
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -158,34 +162,34 @@ class _WalletViewState extends State<WalletView> {
               style: Theme.of(context).textTheme.headline6,
             ),
             //List of transactions
-            SizedBox(
-              height: size.height / 2,
-              child: ListView.builder(
-                  itemCount: transactionCount.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                      width: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                                '${transactionCount[index]['description']}',
-                                style: textStyle_15),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text('${transactionCount[index]['date']}',
-                                style: textStyle_15),
-                          )
-                        ],
-                      ),
-                    );
-                  }),
-            ),
+            SizedBox(height: size.height / 2, child: pConfig
+
+                // ListView.builder(
+                //     itemCount: transactionCount.length,
+                //     itemBuilder: (context, index) {
+                //       return Container(
+                //         padding:
+                //             EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                //         width: double.infinity,
+                //         child: Row(
+                //           mainAxisAlignment: MainAxisAlignment.start,
+                //           children: [
+                //             Expanded(
+                //               flex: 2,
+                //               child: Text(
+                //                   '${transactionCount[index]['description']}',
+                //                   style: textStyle_15),
+                //             ),
+                //             Expanded(
+                //               flex: 1,
+                //               child: Text('${transactionCount[index]['date']}',
+                //                   style: textStyle_15),
+                //             )
+                //           ],
+                //         ),
+                //       );
+                //     }),
+                ),
           ],
         ),
       ),
