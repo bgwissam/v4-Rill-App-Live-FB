@@ -14,6 +14,7 @@ import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/parameters.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:path/path.dart' as Path;
 
@@ -276,56 +277,60 @@ class _LiveStreamingState extends State<LiveStreaming> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Scaffold(
-        body: FutureBuilder(
-            future: _futureRenderViews(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                return Stack(
-                  children: [
-                    //Show the video view
-                    widget.userRole == 'publisher'
-                        ? _broadCastView()
-                        : _audienceView(),
-                    //show the toolbar to control the view
-                    widget.userRole == 'publisher'
-                        ? _toolBar()
-                        : SizedBox.shrink(),
-                    //show messaging bar
-                    widget.userRole == 'publisher'
-                        ? const SizedBox.shrink()
-                        : SizedBox(
-                            width: size.width,
-                            child: _bottomBar(),
-                          ),
-                    //will list the messages for this stream
-                    messageList(),
-                    Positioned(
-                      top: 40,
-                      left: 10,
-                      child: SizedBox(
-                          height: 50,
-                          width: size.width,
-                          child: Column(children: [
-                            _buildLogin(),
-                            _buildQueryOnlineStatus(),
-                            _buildSendPeerMessage(),
-                            _buildSendLocalInvitation(),
-                            _buildJoinChannel(),
-                            _buildGetMembers(),
-                            _buildSendChannelMessage(),
-                            _buildInfoList(),
-                          ])),
-                    ),
-                  ],
-                );
-              } else {
-                return const Center(
-                  child: LoadingAmination(
-                    animationType: 'ThreeInOut',
-                  ),
-                );
-              }
-            }));
+      resizeToAvoidBottomInset: true,
+      body: FutureBuilder(
+        future: _futureRenderViews(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return Stack(
+              children: [
+                //Show the video view
+                widget.userRole == 'publisher'
+                    ? _broadCastView()
+                    : _audienceView(),
+                //show the toolbar to control the view
+
+                //_toolBar(),
+
+                //show messaging bar
+                widget.userRole == 'publisher'
+                    ? const SizedBox.shrink()
+                    : SizedBox(
+                        width: size.width,
+                        child: _bottomBar(),
+                      ),
+                //will list the messages for this stream
+                messageList(),
+                Positioned(
+                  top: 40,
+                  left: 10,
+                  child: SizedBox(
+                      height: 50,
+                      width: size.width,
+                      child: Column(children: [
+                        _buildLogin(),
+                        _buildQueryOnlineStatus(),
+                        _buildSendPeerMessage(),
+                        _buildSendLocalInvitation(),
+                        _buildJoinChannel(),
+                        _buildGetMembers(),
+                        _buildSendChannelMessage(),
+                        _buildInfoList(),
+                      ])),
+                ),
+              ],
+            );
+          } else {
+            return const Center(
+              child: LoadingAmination(
+                animationType: 'ThreeInOut',
+              ),
+            );
+          }
+        },
+      ),
+      bottomNavigationBar: _bottomBar(),
+    );
   }
 
   //this function will help the list of native views
@@ -468,67 +473,98 @@ class _LiveStreamingState extends State<LiveStreaming> {
   }
 
   Widget _toolBar() {
+    return Positioned(
+      left: 0,
+      top: size.height - 170,
+      height: 130,
+      width: size.width,
+      child: Row(
+        children: [
+          Expanded(flex: 1, child: _bottomBar()),
+        ],
+      ),
+    );
+
+    // return Container(
+    //   alignment: Alignment.bottomCenter,
+    //   padding: const EdgeInsets.symmetric(vertical: 35.0),
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //     children: [
+    //       RawMaterialButton(
+    //           onPressed: _onToggleMute,
+    //           child: Icon(
+    //             _muted ? Icons.mic_off : Icons.mic,
+    //             color: _muted ? Colors.white : Colors.redAccent,
+    //             size: 20.0,
+    //           ),
+    //           shape: const CircleBorder(),
+    //           elevation: 2.0,
+    //           fillColor: _muted ? Colors.redAccent : Colors.white,
+    //           padding: const EdgeInsets.all(12.0)),
+    //       RawMaterialButton(
+    //         onPressed: () => _onCallEnd(context),
+    //         child: const Icon(Icons.call_end, color: Colors.white, size: 30.0),
+    //         shape: const CircleBorder(),
+    //         elevation: 2.0,
+    //         fillColor: Colors.red,
+    //         padding: const EdgeInsets.all(15.0),
+    //       ),
+    //       RawMaterialButton(
+    //         onPressed: () => _onSwitchCamera(context),
+    //         child: const Icon(Icons.switch_camera,
+    //             color: Colors.white, size: 30.0),
+    //         shape: const CircleBorder(),
+    //         elevation: 2.0,
+    //         fillColor: Colors.grey,
+    //         padding: const EdgeInsets.all(12.0),
+    //       ),
+    //     ],
+    //   ),
+    // );
+  }
+
+  Widget _requestJoin() {
     return Container(
-        alignment: Alignment.bottomCenter,
-        padding: const EdgeInsets.symmetric(vertical: 35.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            RawMaterialButton(
-                onPressed: _onToggleMute,
-                child: Icon(
-                  _muted ? Icons.mic_off : Icons.mic,
-                  color: _muted ? Colors.white : Colors.redAccent,
-                  size: 20.0,
-                ),
-                shape: const CircleBorder(),
-                elevation: 2.0,
-                fillColor: _muted ? Colors.redAccent : Colors.white,
-                padding: const EdgeInsets.all(12.0)),
-            RawMaterialButton(
-              onPressed: () => _onCallEnd(context),
-              child:
-                  const Icon(Icons.call_end, color: Colors.white, size: 30.0),
-              shape: const CircleBorder(),
-              elevation: 2.0,
-              fillColor: Colors.red,
-              padding: const EdgeInsets.all(15.0),
-            ),
-            RawMaterialButton(
-              onPressed: () => _onSwitchCamera(context),
-              child: const Icon(Icons.switch_camera,
-                  color: Colors.white, size: 30.0),
-              shape: const CircleBorder(),
-              elevation: 2.0,
-              fillColor: Colors.grey,
-              padding: const EdgeInsets.all(12.0),
-            ),
-          ],
-        ));
+      decoration: BoxDecoration(
+          border: Border.all(color: color_4),
+          borderRadius: BorderRadius.circular(15)),
+      child: TextButton(
+        child: Text('Request to Join', style: textStyle_19),
+        onPressed: () async {
+          print('we shall add this later');
+        },
+      ),
+    );
   }
 
   //tool bar functions
   void _onCallEnd(BuildContext context) async {
-    String streamingId =
-        await db.fetchStreamingVideoUrl(uid: widget.streamModelId);
-    print('the stream id: $streamingId - userId: ${widget.userId}');
-    if (streamingId == widget.streamUserId) {
-      widget.loadingStateCallback!();
+    String streamingId = '';
+    if (widget.streamModelId != null) {
+      print('StreamingModel: ${widget.streamModelId}');
+      streamingId = await db.fetchStreamingVideoUrl(uid: widget.streamModelId);
+      print('StreamingID: $streamingId');
+      if (streamingId == widget.streamUserId) {
+        //widget.loadingStateCallback!();
+        //Stop the recording and save the stream to the bucket
+        var stopRecordingResult = await recordingController.stopRecordingVideos(
+          channelName: widget.channelName,
+          userId: widget.recordingId!,
+          sid: widget.sid,
+          resouceId: widget.resourceId,
+          mode: widget.mode,
+        );
+        await db.deleteStreamingVideo(streamId: widget.streamModelId);
+        var stopRecordResponse = await json.decode(stopRecordingResult.body);
 
-      //Stop the recording and save the stream to the bucket
-      var stopRecordingResult = await recordingController.stopRecordingVideos(
-        channelName: widget.channelName,
-        userId: widget.recordingId!,
-        sid: widget.sid,
-        resouceId: widget.resourceId,
-        mode: widget.mode,
-      );
-      await db.deleteStreamingVideo(streamId: widget.streamModelId);
-      var stopRecordResponse = await json.decode(stopRecordingResult.body);
-
-      print('the result stop: $stopRecordResponse');
-      //save the live stream to firebase
-      _saveLiveStream(stopRecordResponse);
+        print('the result stop: $stopRecordResponse');
+        //save the live stream to firebase
+        _saveLiveStream(stopRecordResponse);
+      }
+    } else {
+      print('An error occured: streamModelId is null');
+      await Sentry.captureException('streamModelId is null');
     }
 
     Navigator.pop(context);
@@ -539,7 +575,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
     String thumbnailUrl = '';
     var streamFile;
     var streamKey;
-    if (data['serverResponse']['uploadingStatus'] == 'uploaded') {
+    if (data['serverResponse'] != null &&
+        data['serverResponse']['uploadingStatus'] == 'uploaded') {
       streamKey = data['serverResponse']['fileList'];
       print('the stream key: $streamKey');
       if (streamKey != null) {
@@ -584,6 +621,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
       } else {
         print('stream file is null');
       }
+    } else {
+      await Sentry.captureException('Error obtaining server response aws');
     }
   }
 
@@ -611,38 +650,30 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   Widget _bottomBar() {
     return Container(
-        decoration:
-            BoxDecoration(color: Colors.transparent, border: Border.all()),
-        alignment: Alignment.bottomCenter,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8, top: 5, right: 8, bottom: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(
-                child: TextField(
-                  cursorColor: Colors.blue,
-                  textInputAction: TextInputAction.send,
-                  //onSubmitted: _sendMessage,
-                  style: textStyle_4,
-                  controller: _channelMessageController,
-                  textCapitalization: TextCapitalization.sentences,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    hintText: 'Comment',
-                    hintStyle: textStyle_4,
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        borderSide: const BorderSide(color: Colors.white)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        borderSide: const BorderSide(color: Colors.white)),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4.0, 0, 0, 0),
-                child: MaterialButton(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
+      decoration: const BoxDecoration(
+        color: Colors.transparent,
+      ),
+      height: 60,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            width: size.width / 2 + 40,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(10)),
+            child: TextField(
+              cursorColor: Colors.blue,
+              textInputAction: TextInputAction.send,
+              //onSubmitted: _sendMessage,
+              style: textStyle_4,
+              controller: _channelMessageController,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: InputDecoration(
+                suffix: MaterialButton(
                   minWidth: 0,
                   onPressed: () {}, //_toggleSendChannelMessage,
                   child: ImageIcon(AssetImage("assets/icons/send_rill.png"),
@@ -652,10 +683,22 @@ class _LiveStreamingState extends State<LiveStreaming> {
                   color: color_7,
                   padding: const EdgeInsets.all(10),
                 ),
+                isDense: false,
+                hintText: 'Comment',
+                hintStyle: textStyle_4,
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(color: Colors.white)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(color: Colors.white)),
               ),
-            ],
+            ),
           ),
-        ));
+          _requestJoin()
+        ],
+      ),
+    );
   }
 
   void _createClient() async {

@@ -90,7 +90,7 @@ class _CommentAddState extends State<CommentAdd> {
                     },
                   ),
                 ),
-                SizedBox(width: 4),
+                //SizedBox(width: 4),
                 //Send comment
                 // Expanded(
                 //   flex: 1,
