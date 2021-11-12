@@ -9,6 +9,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:rillliveapp/analytics/analytics_screen.dart';
 import 'package:rillliveapp/authentication/register.dart';
 import 'package:rillliveapp/authentication/security.dart';
 import 'package:rillliveapp/controller/live_streaming.dart';
@@ -199,7 +200,15 @@ class _MainScreenState extends State<MainScreen>
                     ListTile(
                       title: Text('Analytics',
                           style: Theme.of(context).textTheme.headline6),
-                      onTap: () async {},
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) =>
+                                AnalyticsScreen(userId: widget.userId!),
+                          ),
+                        );
+                      },
                       leading: ImageIcon(
                         AssetImage("assets/icons/Graphs_Rill_Icon.png"),
                         color: color_4,

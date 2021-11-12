@@ -32,6 +32,7 @@ MERGED from [:shared_preferences] /Volumes/Sub - 2/Oxygen Media Group/Projects/R
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-46:12
 MERGED from [:device_info] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/device_info/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:in_app_purchase_android] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/in_app_purchase_android/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-19:12
 MERGED from [:firebase_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [:sqflite] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/sqflite/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:connectivity] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/connectivity/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
@@ -57,6 +58,10 @@ MERGED from [androidx.navigation:navigation-ui-ktx:2.3.4] /Users/wissamboughanna
 MERGED from [androidx.navigation:navigation-ui:2.3.4] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6210af1f79073eddf151c35e0f247ff8/navigation-ui-2.3.4/AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.android.material:material:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ddecdb4f2f2c8235405c40a08fa86917/material-1.0.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6ddc39deb6ab16214abce2841c3a7f7f/legacy-support-core-ui-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.firebase:firebase-analytics:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c2da7c41a67e5c7f14c69d3deaeb7da2/jetified-firebase-analytics-19.0.0/AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:17:1-46:12
+MERGED from [com.google.android.gms:play-services-measurement-sdk:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/63dde0fa4d0d5a2566f99afee7d21254/jetified-play-services-measurement-sdk-19.0.0/AndroidManifest.xml:17:1-25:12
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:17:1-31:12
 MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88103c8c513a6410642d2a022ee1e52a/jetified-play-services-stats-17.0.0/AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/665fbcb994842a53f2e90b5447f10643/legacy-support-core-utils-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/779415cbe07883dad2a910885acd1a2a/localbroadcastmanager-1.0.0/AndroidManifest.xml:17:1-22:12
@@ -84,6 +89,7 @@ MERGED from [com.google.android.gms:play-services-safetynet:17.0.0] /Users/wissa
 MERGED from [com.google.firebase:firebase-database-collection:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/abe1bcab8ae00b83b4e8be64f3eeb233/jetified-firebase-database-collection-18.0.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.firebase:firebase-appcheck-interop:16.0.0-beta01] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6d65ef50cdb46b0342a03a3889a23b49/jetified-firebase-appcheck-interop-16.0.0-beta01/AndroidManifest.xml:15:1-26:12
 MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1d67e9f8fcd3c103d0f9ff5b012246e9/jetified-play-services-base-17.1.0/AndroidManifest.xml:17:1-29:12
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:17:1-36:12
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/efce505f4fc03d0676b284ca22183e76/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:2:1-10:12
 MERGED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/51c7d44e062941a6e98621e6d4de15c4/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:15:1-34:12
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ba10e32f53e640796dfd163c3fe5d1df/jetified-firebase-installations-17.0.0/AndroidManifest.xml:2:1-24:12
@@ -93,6 +99,9 @@ MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] /Users/wissambough
 MERGED from [com.google.firebase:firebase-installations-interop:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7b8e3b91aaddb00e2be535d780d15f0c/jetified-firebase-installations-interop-17.0.0/AndroidManifest.xml:15:1-23:12
 MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/41ffcc123f67b68589ae057ae2195b6c/jetified-play-services-tasks-17.0.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/08b4d0572b2b53d902cf3455bb8b0a5a/jetified-firebase-measurement-connector-19.0.0/AndroidManifest.xml:17:1-25:12
+MERGED from [com.google.android.gms:play-services-ads-identifier:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/49b6eb66f540405c7fad2f2a2a0e5d50/jetified-play-services-ads-identifier-17.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f427d29d1ee10365ae31e51dcc54c76c/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:17:1-27:12
+MERGED from [com.google.android.gms:play-services-measurement-base:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e61efa3646da7bc9ef337c37765f3c23/jetified-play-services-measurement-base-19.0.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b4abb3ae12fe055372984e118f8f9d66/jetified-play-services-basement-17.1.0/AndroidManifest.xml:17:1-28:12
 MERGED from [androidx.fragment:fragment:1.2.4] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/0e030afac53db8fb95a427737bd0934d/fragment-1.2.4/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/7a45aa56e5230c9ee019ce697b69fb78/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
@@ -182,10 +191,16 @@ MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Ril
 MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-67
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-67
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-67
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-67
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-67
 MERGED from [com.amplifyframework:core:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e4bf27123182c6bac275c1fbeb442c5c/jetified-core-1.28.2/AndroidManifest.xml:24:5-67
 MERGED from [com.amplifyframework:core:1.28.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e4bf27123182c6bac275c1fbeb442c5c/jetified-core-1.28.2/AndroidManifest.xml:24:5-67
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/024ee83d74904e363a7d4e0146b888d7/jetified-firebase-auth-21.0.1/AndroidManifest.xml:23:5-67
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/024ee83d74904e363a7d4e0146b888d7/jetified-firebase-auth-21.0.1/AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:23:5-67
 MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/718fe8a73ded39c934ff1a1a9059d27e/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:9:5-67
 MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/718fe8a73ded39c934ff1a1a9059d27e/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:9:5-67
 MERGED from [com.amazonaws:aws-android-sdk-mobile-client:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c988e40c165e78763cf05cb189003845/jetified-aws-android-sdk-mobile-client-2.34.0/AndroidManifest.xml:17:5-67
@@ -194,10 +209,14 @@ MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughan
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/8f61f852af59fb83dd0002ed55341f17/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:14:5-67
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/0acf3db9848686dfaaf696f7fddb6eb5/jetified-firebase-storage-20.0.0/AndroidManifest.xml:27:5-67
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/0acf3db9848686dfaaf696f7fddb6eb5/jetified-firebase-storage-20.0.0/AndroidManifest.xml:27:5-67
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:22:5-67
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:22:5-67
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ba10e32f53e640796dfd163c3fe5d1df/jetified-firebase-installations-17.0.0/AndroidManifest.xml:11:5-67
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ba10e32f53e640796dfd163c3fe5d1df/jetified-firebase-installations-17.0.0/AndroidManifest.xml:11:5-67
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9f77d6e29b29c5c6e4465c7958505169/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:8:5-67
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9f77d6e29b29c5c6e4465c7958505169/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:8:5-67
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f427d29d1ee10365ae31e51dcc54c76c/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f427d29d1ee10365ae31e51dcc54c76c/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:23:5-67
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d3a97f37d39bc4917423747a2512aa9d/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:26:5-67
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d3a97f37d39bc4917423747a2512aa9d/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:26:5-67
 	android:name
@@ -254,6 +273,8 @@ MERGED from [:amplify_analytics_pinpoint] /Volumes/Sub - 2/Oxygen Media Group/Pr
 MERGED from [:amplify_analytics_pinpoint] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_analytics_pinpoint/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-11:19
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-44:19
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-44:19
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-17:19
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-17:19
 MERGED from [:firebase_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
 MERGED from [:firebase_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4e2770d048936999ca2355507ec1f653/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:27:5-56:19
@@ -268,6 +289,14 @@ MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/024ee83d74904e363a7d4e0146b888d7/jetified-firebase-auth-21.0.1/AndroidManifest.xml:26:5-81:19
 MERGED from [com.google.android.material:material:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ddecdb4f2f2c8235405c40a08fa86917/material-1.0.0/AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ddecdb4f2f2c8235405c40a08fa86917/material-1.0.0/AndroidManifest.xml:22:5-20
+MERGED from [com.google.firebase:firebase-analytics:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c2da7c41a67e5c7f14c69d3deaeb7da2/jetified-firebase-analytics-19.0.0/AndroidManifest.xml:7:5-20
+MERGED from [com.google.firebase:firebase-analytics:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c2da7c41a67e5c7f14c69d3deaeb7da2/jetified-firebase-analytics-19.0.0/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:28:5-44:19
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:28:5-44:19
+MERGED from [com.google.android.gms:play-services-measurement-sdk:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/63dde0fa4d0d5a2566f99afee7d21254/jetified-play-services-measurement-sdk-19.0.0/AndroidManifest.xml:22:5-23:19
+MERGED from [com.google.android.gms:play-services-measurement-sdk:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/63dde0fa4d0d5a2566f99afee7d21254/jetified-play-services-measurement-sdk-19.0.0/AndroidManifest.xml:22:5-23:19
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:28:5-29:19
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:28:5-29:19
 MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88103c8c513a6410642d2a022ee1e52a/jetified-play-services-stats-17.0.0/AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88103c8c513a6410642d2a022ee1e52a/jetified-play-services-stats-17.0.0/AndroidManifest.xml:7:5-20
 MERGED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/718fe8a73ded39c934ff1a1a9059d27e/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:11:5-23:19
@@ -284,6 +313,8 @@ MERGED from [com.google.firebase:firebase-appcheck-interop:16.0.0-beta01] /Users
 MERGED from [com.google.firebase:firebase-appcheck-interop:16.0.0-beta01] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6d65ef50cdb46b0342a03a3889a23b49/jetified-firebase-appcheck-interop-16.0.0-beta01/AndroidManifest.xml:24:5-20
 MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1d67e9f8fcd3c103d0f9ff5b012246e9/jetified-play-services-base-17.1.0/AndroidManifest.xml:22:5-27:19
 MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1d67e9f8fcd3c103d0f9ff5b012246e9/jetified-play-services-base-17.1.0/AndroidManifest.xml:22:5-27:19
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:26:5-34:19
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:26:5-34:19
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/efce505f4fc03d0676b284ca22183e76/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:7:5-8:19
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/efce505f4fc03d0676b284ca22183e76/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:7:5-8:19
 MERGED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/51c7d44e062941a6e98621e6d4de15c4/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:24:5-32:19
@@ -298,6 +329,10 @@ MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/wissambou
 MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/41ffcc123f67b68589ae057ae2195b6c/jetified-play-services-tasks-17.0.0/AndroidManifest.xml:7:5-20
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/08b4d0572b2b53d902cf3455bb8b0a5a/jetified-firebase-measurement-connector-19.0.0/AndroidManifest.xml:22:5-23:19
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/08b4d0572b2b53d902cf3455bb8b0a5a/jetified-firebase-measurement-connector-19.0.0/AndroidManifest.xml:22:5-23:19
+MERGED from [com.google.android.gms:play-services-ads-identifier:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/49b6eb66f540405c7fad2f2a2a0e5d50/jetified-play-services-ads-identifier-17.0.0/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-ads-identifier:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/49b6eb66f540405c7fad2f2a2a0e5d50/jetified-play-services-ads-identifier-17.0.0/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-measurement-base:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e61efa3646da7bc9ef337c37765f3c23/jetified-play-services-measurement-base-19.0.0/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-measurement-base:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e61efa3646da7bc9ef337c37765f3c23/jetified-play-services-measurement-base-19.0.0/AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b4abb3ae12fe055372984e118f8f9d66/jetified-play-services-basement-17.1.0/AndroidManifest.xml:22:5-26:19
 MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b4abb3ae12fe055372984e118f8f9d66/jetified-play-services-basement-17.1.0/AndroidManifest.xml:22:5-26:19
 MERGED from [com.amazonaws:aws-android-sdk-cognitoauth:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/fd28eb26e90b01ead8464a8db57810f6/jetified-aws-android-sdk-cognitoauth-2.34.0/AndroidManifest.xml:11:5-17:19
@@ -442,6 +477,8 @@ MERGED from [:device_info] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_liv
 MERGED from [:device_info] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/device_info/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:in_app_purchase_android] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/in_app_purchase_android/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:in_app_purchase_android] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/in_app_purchase_android/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:sqflite] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/sqflite/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
@@ -492,6 +529,14 @@ MERGED from [com.google.android.material:material:1.0.0] /Users/wissamboughannam
 MERGED from [com.google.android.material:material:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ddecdb4f2f2c8235405c40a08fa86917/material-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6ddc39deb6ab16214abce2841c3a7f7f/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6ddc39deb6ab16214abce2841c3a7f7f/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-analytics:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c2da7c41a67e5c7f14c69d3deaeb7da2/jetified-firebase-analytics-19.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-analytics:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/c2da7c41a67e5c7f14c69d3deaeb7da2/jetified-firebase-analytics-19.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-sdk:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/63dde0fa4d0d5a2566f99afee7d21254/jetified-play-services-measurement-sdk-19.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-sdk:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/63dde0fa4d0d5a2566f99afee7d21254/jetified-play-services-measurement-sdk-19.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88103c8c513a6410642d2a022ee1e52a/jetified-play-services-stats-17.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-stats:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/88103c8c513a6410642d2a022ee1e52a/jetified-play-services-stats-17.0.0/AndroidManifest.xml:5:5-44
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/665fbcb994842a53f2e90b5447f10643/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
@@ -546,6 +591,8 @@ MERGED from [com.google.firebase:firebase-appcheck-interop:16.0.0-beta01] /Users
 MERGED from [com.google.firebase:firebase-appcheck-interop:16.0.0-beta01] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/6d65ef50cdb46b0342a03a3889a23b49/jetified-firebase-appcheck-interop-16.0.0-beta01/AndroidManifest.xml:19:5-21:41
 MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1d67e9f8fcd3c103d0f9ff5b012246e9/jetified-play-services-base-17.1.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1d67e9f8fcd3c103d0f9ff5b012246e9/jetified-play-services-base-17.1.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/efce505f4fc03d0676b284ca22183e76/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/efce505f4fc03d0676b284ca22183e76/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/51c7d44e062941a6e98621e6d4de15c4/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:19:5-21:41
@@ -564,6 +611,12 @@ MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/wissambou
 MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/41ffcc123f67b68589ae057ae2195b6c/jetified-play-services-tasks-17.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/08b4d0572b2b53d902cf3455bb8b0a5a/jetified-firebase-measurement-connector-19.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/08b4d0572b2b53d902cf3455bb8b0a5a/jetified-firebase-measurement-connector-19.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-ads-identifier:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/49b6eb66f540405c7fad2f2a2a0e5d50/jetified-play-services-ads-identifier-17.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-ads-identifier:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/49b6eb66f540405c7fad2f2a2a0e5d50/jetified-play-services-ads-identifier-17.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f427d29d1ee10365ae31e51dcc54c76c/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f427d29d1ee10365ae31e51dcc54c76c/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-measurement-base:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e61efa3646da7bc9ef337c37765f3c23/jetified-play-services-measurement-base-19.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-measurement-base:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e61efa3646da7bc9ef337c37765f3c23/jetified-play-services-measurement-base-19.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b4abb3ae12fe055372984e118f8f9d66/jetified-play-services-basement-17.1.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-basement:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/b4abb3ae12fe055372984e118f8f9d66/jetified-play-services-basement-17.1.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.fragment:fragment:1.2.4] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/0e030afac53db8fb95a427737bd0934d/fragment-1.2.4/AndroidManifest.xml:20:5-22:41
@@ -744,6 +797,8 @@ MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Ril
 MERGED from [:agora_rtc_engine] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/agora_rtc_engine/intermediates/library_manifest/debug/AndroidManifest.xml:15:5-79
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-79
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-79
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
 MERGED from [:connectivity] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/connectivity/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
 MERGED from [:connectivity] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/connectivity/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-79
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4e2770d048936999ca2355507ec1f653/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:22:5-79
@@ -752,6 +807,10 @@ MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissambo
 MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/edea779ee8dc6fe0d46cd8928e476fc3/jetified-exoplayer-core-2.14.2/AndroidManifest.xml:24:5-79
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/024ee83d74904e363a7d4e0146b888d7/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
 MERGED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/024ee83d74904e363a7d4e0146b888d7/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:24:5-79
 MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/47833c4da062d923a45ba9eaf155bb78/work-runtime-2.5.0/AndroidManifest.xml:26:5-79
 MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/47833c4da062d923a45ba9eaf155bb78/work-runtime-2.5.0/AndroidManifest.xml:26:5-79
 MERGED from [com.amazonaws:aws-android-sdk-s3:2.34.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/e3e5b4b22eae934ebd129f18092b8660/jetified-aws-android-sdk-s3-2.34.0/AndroidManifest.xml:10:5-79
@@ -764,10 +823,14 @@ MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughan
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/8f61f852af59fb83dd0002ed55341f17/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:13:5-79
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/0acf3db9848686dfaaf696f7fddb6eb5/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/0acf3db9848686dfaaf696f7fddb6eb5/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:23:5-79
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:23:5-79
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ba10e32f53e640796dfd163c3fe5d1df/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ba10e32f53e640796dfd163c3fe5d1df/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9f77d6e29b29c5c6e4465c7958505169/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:7:5-79
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9f77d6e29b29c5c6e4465c7958505169/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:7:5-79
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f427d29d1ee10365ae31e51dcc54c76c/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f427d29d1ee10365ae31e51dcc54c76c/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/51d1bdb818e17c55f225596a0d67355f/jetified-exoplayer-common-2.14.2/AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/51d1bdb818e17c55f225596a0d67355f/jetified-exoplayer-common-2.14.2/AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/d3a97f37d39bc4917423747a2512aa9d/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:25:5-79
@@ -786,6 +849,8 @@ MERGED from [:firebase_storage] /Volumes/Sub - 2/Oxygen Media Group/Projects/Ril
 MERGED from [:firebase_storage] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:33:9-37:19
 MERGED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:33:9-37:19
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:12:9-16:19
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:12:9-16:19
 MERGED from [:firebase_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
 MERGED from [:firebase_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4e2770d048936999ca2355507ec1f653/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:49:9-55:19
@@ -796,6 +861,8 @@ MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughan
 MERGED from [com.google.firebase:firebase-firestore:23.0.3] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/8f61f852af59fb83dd0002ed55341f17/jetified-firebase-firestore-23.0.3/AndroidManifest.xml:17:9-23:19
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/0acf3db9848686dfaaf696f7fddb6eb5/jetified-firebase-storage-20.0.0/AndroidManifest.xml:30:9-36:19
 MERGED from [com.google.firebase:firebase-storage:20.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/0acf3db9848686dfaaf696f7fddb6eb5/jetified-firebase-storage-20.0.0/AndroidManifest.xml:30:9-36:19
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:27:9-33:19
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:27:9-33:19
 MERGED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/51c7d44e062941a6e98621e6d4de15c4/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:25:9-31:19
 MERGED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/51c7d44e062941a6e98621e6d4de15c4/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:25:9-31:19
 MERGED from [com.google.firebase:firebase-installations:17.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ba10e32f53e640796dfd163c3fe5d1df/jetified-firebase-installations-17.0.0/AndroidManifest.xml:15:9-21:19
@@ -917,12 +984,22 @@ ADDED from [:amplify_analytics_pinpoint] /Volumes/Sub - 2/Oxygen Media Group/Pro
 		ADDED from [:amplify_analytics_pinpoint] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/amplify_analytics_pinpoint/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-90
 uses-permission#android.permission.WAKE_LOCK
 ADDED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-68
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-68
+MERGED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-68
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4e2770d048936999ca2355507ec1f653/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:23:5-68
 MERGED from [com.google.firebase:firebase-messaging:22.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/4e2770d048936999ca2355507ec1f653/jetified-firebase-messaging-22.0.0/AndroidManifest.xml:23:5-68
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:25:5-68
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:25:5-68
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:25:5-68
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:25:5-68
 MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/47833c4da062d923a45ba9eaf155bb78/work-runtime-2.5.0/AndroidManifest.xml:25:5-68
 MERGED from [androidx.work:work-runtime:2.5.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/47833c4da062d923a45ba9eaf155bb78/work-runtime-2.5.0/AndroidManifest.xml:25:5-68
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:24:5-68
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:24:5-68
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9f77d6e29b29c5c6e4465c7958505169/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:9:5-68
 MERGED from [com.google.android.gms:play-services-cloud-messaging:16.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/9f77d6e29b29c5c6e4465c7958505169/jetified-play-services-cloud-messaging-16.0.0/AndroidManifest.xml:9:5-68
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f427d29d1ee10365ae31e51dcc54c76c/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:25:5-68
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f427d29d1ee10365ae31e51dcc54c76c/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:25:5-68
 	android:name
 		ADDED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:8:22-65
 service#io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingBackgroundService
@@ -975,6 +1052,12 @@ ADDED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Ri
 		ADDED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:43:13-35
 	android:name
 		ADDED from [:firebase_messaging] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:40:13-102
+meta-data#com.google.firebase.components:io.flutter.plugins.firebaseanalytics.FlutterFirebaseAppRegistrar
+ADDED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-15:85
+	android:value
+		ADDED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:15:17-82
+	android:name
+		ADDED from [:firebase_analytics] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:14:17-127
 meta-data#com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar
 ADDED from [:firebase_core] /Volumes/Sub - 2/Oxygen Media Group/Projects/Rill_live_app_firebase/rill_live_app_fb_v4/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-11:85
 	android:value
@@ -1077,6 +1160,38 @@ ADDED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.g
 		ADDED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/024ee83d74904e363a7d4e0146b888d7/jetified-firebase-auth-21.0.1/AndroidManifest.xml:79:17-82
 	android:name
 		ADDED from [com.google.firebase:firebase-auth:21.0.1] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/024ee83d74904e363a7d4e0146b888d7/jetified-firebase-auth-21.0.1/AndroidManifest.xml:78:17-109
+uses-permission#com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE
+ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:26:5-110
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:26:5-110
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/ab1c46cbc9e5b7896cf1d59adc5c7869/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:26:5-110
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:26:22-107
+receiver#com.google.android.gms.measurement.AppMeasurementReceiver
+ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:29:9-33:20
+	android:enabled
+		ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:31:13-35
+	android:exported
+		ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:32:13-37
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:30:13-85
+service#com.google.android.gms.measurement.AppMeasurementService
+ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:35:9-38:40
+	android:enabled
+		ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:38:13-37
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:36:13-84
+service#com.google.android.gms.measurement.AppMeasurementJobService
+ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:39:9-43:72
+	android:enabled
+		ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:41:13-35
+	android:exported
+		ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:42:13-37
+	android:permission
+		ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:43:13-69
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/504d5873f696f17031dd2a8151f9df33/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:40:13-87
 provider#io.sentry.android.core.SentryPerformanceProvider
 ADDED from [io.sentry:sentry-android-core:5.1.2] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/718fe8a73ded39c934ff1a1a9059d27e/jetified-sentry-android-core-5.1.2/AndroidManifest.xml:18:9-22:39
 	android:authorities
@@ -1315,6 +1430,12 @@ ADDED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissambough
 		ADDED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1d67e9f8fcd3c103d0f9ff5b012246e9/jetified-play-services-base-17.1.0/AndroidManifest.xml:26:13-72
 	android:name
 		ADDED from [com.google.android.gms:play-services-base:17.1.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/1d67e9f8fcd3c103d0f9ff5b012246e9/jetified-play-services-base-17.1.0/AndroidManifest.xml:24:13-79
+meta-data#com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar
+ADDED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:30:13-32:85
+	android:value
+		ADDED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:32:17-82
+	android:name
+		ADDED from [com.google.android.gms:play-services-measurement-api:19.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/f8eb7b8209311b91bba6a42db131650e/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:31:17-139
 meta-data#com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar
 ADDED from [com.google.firebase:firebase-datatransport:18.0.0] /Users/wissamboughannam/.gradle/caches/transforms-2/files-2.1/51c7d44e062941a6e98621e6d4de15c4/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:28:13-30:85
 	android:value

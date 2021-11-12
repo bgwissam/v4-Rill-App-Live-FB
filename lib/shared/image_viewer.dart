@@ -72,11 +72,23 @@ class _ImageViewerState extends State<ImageViewer> {
   var commentProvider;
   DatabaseService db = DatabaseService();
   var getUser;
+  var currentTime = DateTime.now();
   bool _isLiked = false;
   @override
   void initState() {
     super.initState();
     getUser = _detailsForImageOwner(uid: widget.imageOwnerId);
+    if (getUser != null) {
+      //If opening the image or video was successful then we add a user view
+      if (widget.userModel!.userId != widget.imageOwnerId) {
+        _addUserView(
+            userId: widget.userModel!.userId,
+            fileId: widget.fileId,
+            ownerId: widget.imageOwnerId);
+        //check isLike status
+        _getIsLikeStatus();
+      }
+    }
   }
 
   @override
@@ -87,6 +99,8 @@ class _ImageViewerState extends State<ImageViewer> {
         future: getUser,
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
+            print('image userId: ${snapshot.data.userId}');
+
             return Scaffold(
               appBar: AppBar(
                 leading: Padding(
@@ -221,6 +235,16 @@ class _ImageViewerState extends State<ImageViewer> {
                 ? 'assets/icons/heart_rill_icon_dark.png'
                 : 'assets/icons/heart_rill_icon_light.png'),
             onPressed: () async {
+              if (!_isLiked) {
+                await _addUserLike(
+                    userId: widget.userModel!.userId,
+                    ownerId: widget.imageOwnerId,
+                    fileId: widget.fileId);
+              } else {
+                await _deleteUserLike(
+                    userId: widget.userModel!.userId, fileId: widget.fileId);
+              }
+
               setState(() {
                 _isLiked = !_isLiked;
               });
@@ -243,5 +267,46 @@ class _ImageViewerState extends State<ImageViewer> {
   //get the details for the image owner
   Future<UserModel> _detailsForImageOwner({String? uid}) async {
     return db.getSelectedUserById(uid: uid);
+  }
+
+  //Add user views to this file
+  _addUserView({String? ownerId, String? userId, String? fileId}) async {
+    await db.addUserViewToFiles(
+        ownerId: ownerId,
+        viewerId: userId,
+        fileId: fileId,
+        timeViewed: currentTime);
+  }
+
+  //Add like
+  _addUserLike({String? ownerId, String? userId, String? fileId}) async {
+    if (!_isLiked) {
+      await db.addLike(
+          fileOwnerId: ownerId,
+          likerId: userId,
+          likeTime: currentTime,
+          fileId: fileId);
+    } else {
+      await db.deleteLike(likerId: userId, fileId: fileId);
+    }
+  }
+
+  //delete like
+  _deleteUserLike({String? userId, String? fileId}) async {
+    if (_isLiked) {
+      await db.deleteLike(userId: userId, fileId: fileId);
+    }
+  }
+
+  //Get if file is liked or not
+  _getIsLikeStatus() async {
+    var result = await db.getIfFileIsLiked(
+      userId: widget.userModel!.userId,
+      fileId: widget.fileId,
+    );
+
+    setState(() {
+      _isLiked = result;
+    });
   }
 }

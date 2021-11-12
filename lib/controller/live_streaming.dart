@@ -905,7 +905,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
         return;
       }
       try {
-        print('the uid: $userId');
+        print('the RTM token: ${widget.rtmToken}');
+        print('the RTM uid: $userId - AppID: ${param.app_ID}');
         await _client.login(widget.rtmToken, userId);
         _log(type: 'login', user: userId);
         setState(() {

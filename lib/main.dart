@@ -27,6 +27,8 @@ import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 //A top level named handler to handle background/terminated messages will call
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -66,6 +68,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  final FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -93,6 +96,11 @@ class MyApp extends StatelessWidget {
                 ),
               ],
               child: MaterialApp(
+                navigatorObservers: [
+                  FirebaseAnalyticsObserver(
+                    analytics: FirebaseAnalytics(),
+                  ),
+                ],
                 debugShowCheckedModeBanner: false,
                 title: 'Rill Live Streaming',
                 theme: ThemeData(
@@ -226,6 +234,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   @override
   void initState() {
     super.initState();
+
     pNotif.init();
     //_configureAmplify();
     Timer(
@@ -254,24 +263,24 @@ class _MySplashScreenState extends State<MySplashScreen> {
     }
   }
 
-  void _configureAmplify() async {
-    // Add Pinpoint and Cognito Plugins, or any other plugins you want to use
-    AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
-    AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
-    AmplifyStorageS3 storageS3Plugin = AmplifyStorageS3();
-    await Amplify.addPlugins([analyticsPlugin, authPlugin, storageS3Plugin]);
+  // void _configureAmplify() async {
+  //   // Add Pinpoint and Cognito Plugins, or any other plugins you want to use
+  //   AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
+  //   AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
+  //   AmplifyStorageS3 storageS3Plugin = AmplifyStorageS3();
+  //   await Amplify.addPlugins([analyticsPlugin, authPlugin, storageS3Plugin]);
 
-    // Once Plugins are added, configure Amplify
-    // Note: Amplify can only be configured once.
-    try {
-      await Amplify.configure(amplifyconfig);
-    } on AmplifyAlreadyConfiguredException {
-      print(
-          "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
-    } catch (e) {
-      print('could not configure amplify: $e');
-    }
-  }
+  //   // Once Plugins are added, configure Amplify
+  //   // Note: Amplify can only be configured once.
+  //   try {
+  //     await Amplify.configure(amplifyconfig);
+  //   } on AmplifyAlreadyConfiguredException {
+  //     print(
+  //         "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+  //   } catch (e) {
+  //     print('could not configure amplify: $e');
+  //   }
+  // }
 
   //The splash screen will be the first screen of the app, clicking on it will lead to the sign in page or the home page
   Widget _buildSplashScreen() {

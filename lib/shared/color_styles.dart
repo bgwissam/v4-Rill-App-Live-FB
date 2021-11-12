@@ -27,7 +27,9 @@ var color_9 = const Color(0xfff2f2f2);
 var color_10 = const Color(0xff566e7e);
 var color_11 = const Color(0xff333333);
 var color_12 = const Color(0xff000000).withOpacity(0.6);
+
 var color_13 = const Color(0xffD6D6D6);
+var color_14 = const Color(0xff000000);
 //Text input colors
 var textStyle_1 = TextStyle(
     color: color_4,
@@ -122,6 +124,9 @@ var textStyle_19 =
 
 var textStyle_20 =
     TextStyle(fontSize: 15, fontFamily: 'Poppins', color: color_13);
+
+var textStyle_21 =
+    TextStyle(fontSize: 9, fontFamily: 'Poppins', color: color_14);
 
 var heading_1 = TextStyle(
     color: color_4,

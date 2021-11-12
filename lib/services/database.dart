@@ -275,13 +275,24 @@ class DatabaseService {
   }
 
   //Stream followers or followers
-  Stream<List<UserModel>> getFollowsPerUser(
+  Stream<List<UserModel>> streamFollowsPerUser(
       {String? userId, String? collection}) {
     return userModelCollection
         .doc(userId)
         .collection(collection!)
         .snapshots()
         .map(_userDataFromSnapshot);
+  }
+
+  //get followers
+  Future<int> getFollowersList({String? userId}) async {
+    return await userModelCollection
+        .doc(userId)
+        .collection('followers')
+        .get()
+        .then((value) {
+      return value.size;
+    });
   }
 
   //will stream the users followed by a certain user
@@ -375,6 +386,54 @@ class DatabaseService {
       await Sentry.captureException(e, stackTrace: stackTrace);
       print('an error occured trying to delete: $e');
     }
+  }
+
+  //This section will handle likes for Images, videos and streams uploaded by every user
+  //Add a new like
+  Future<void> addLike(
+      {String? fileOwnerId,
+      String? likerId,
+      String? fileId,
+      DateTime? likeTime}) async {
+    await imageVideoCollection
+        .doc(fileId)
+        .collection('likes')
+        .doc(likerId)
+        .set({
+      AnalyticParam.ownerId: fileOwnerId,
+      AnalyticParam.time: likeTime,
+    });
+  }
+
+  //read if a userlike this file
+  Future<bool> getIfFileIsLiked({String? userId, String? fileId}) async {
+    var result = await imageVideoCollection
+        .doc(fileId)
+        .collection('likes')
+        .doc(userId)
+        .get()
+        .then((value) => value.exists);
+
+    return result;
+  }
+
+  //read the total like for a file
+  Future<int> getLikesList({String? userId, String? fileId}) async {
+    return await imageVideoCollection
+        .doc(fileId)
+        .collection('like')
+        .get()
+        .then((value) => value.size);
+  }
+
+  //delete a like
+  Future<void> deleteLike(
+      {String? likerId, String? userId, String? fileId}) async {
+    await imageVideoCollection
+        .doc(fileId)
+        .collection('likes')
+        .doc(userId)
+        .delete();
   }
 
   //This section will handle uploading and retreiving data streams
@@ -584,11 +643,36 @@ class DatabaseService {
   }
 
   //stream image video files as per user
-  Stream<List<ImageVideoModel?>> getUserImageVideoList({String? userId}) {
+  Stream<List<ImageVideoModel?>> streamUserImageVideoList({String? userId}) {
     return imageVideoCollection
         .where(UserParams.USER_ID, isEqualTo: userId)
         .snapshots()
         .map(_mapImageFromSnapshot);
+  }
+
+  Future<int> getUserImageVideoList({String? userId}) async {
+    var numberOfComments = 0;
+    var fileList = await imageVideoCollection
+        .where(UserParams.USER_ID, isEqualTo: userId)
+        .get()
+        .then((value) {
+      return value.docs.map((e) {
+        return e.id;
+      }).toList();
+    }).catchError((err) {
+      print('An error occured: $err');
+    });
+
+    if (fileList.isNotEmpty) {
+      for (var element in fileList) {
+        numberOfComments += await imageVideoCollection
+            .doc(element)
+            .collection('comments')
+            .get()
+            .then((value) => value.docs.length);
+      }
+    }
+    return numberOfComments;
   }
 
   //Delete Image
@@ -669,6 +753,37 @@ class DatabaseService {
         .map(_mapCommentFromSnapshot);
   }
 
+  //This section will handle image, video, stream and profile views
+  //It will form the analytics for this app
+  //views will be added in a collection under each user
+  Future<void> addUserViewToFiles(
+      {String? ownerId,
+      String? viewerId,
+      String? fileId,
+      DateTime? timeViewed}) async {
+    await userModelCollection.doc(ownerId).collection('fileViews').add({
+      AnalyticParam.viewerId: viewerId,
+      AnalyticParam.fileId: fileId,
+      AnalyticParam.time: timeViewed,
+    });
+  }
+
+  //get views per user
+  Future<int> getUserViewToFiles({String? userId}) async {
+    int numberOfViews = 0;
+    numberOfViews = await userModelCollection
+        .doc(userId)
+        .collection('fileViews')
+        .get()
+        .then((value) {
+      return value.docs.length;
+    }).catchError((err) {
+      print('An error obtaining views: $err');
+      return 0;
+    });
+
+    return numberOfViews;
+  }
   //This section will handle the chat option
 
   //stream all chat rooms per user

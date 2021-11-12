@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 class CommentAdd extends StatefulWidget {
   const CommentAdd({Key? key, this.userModel, this.collection, this.fileId})
@@ -14,13 +16,23 @@ class CommentAdd extends StatefulWidget {
 }
 
 class _CommentAddState extends State<CommentAdd> {
+  final FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics();
   final _formKey = GlobalKey<FormState>();
   late String _newComment;
   TextEditingController _commentController = TextEditingController();
   //services
   DatabaseService db = DatabaseService();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(
+        'Some data: ${widget.userModel!.userId} - ${widget.collection} - ${widget.fileId}');
+
     return Form(
       key: _formKey,
       child: Card(

@@ -12,7 +12,6 @@ import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/screens/main_screen.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/parameters.dart';
-
 import 'models/user_model.dart';
 
 class Wrapper extends StatefulWidget {
@@ -36,7 +35,6 @@ class _WrapperState extends State<Wrapper> {
     super.initState();
     _guestUser = widget.guestUser!;
     _getFcmToken();
-    //Initiate a future to check user verification
   }
 
   _getFcmToken() async {
@@ -66,7 +64,7 @@ class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
     currentUser = Provider.of<UserModel?>(context);
-    print('the signed in user: ${currentUser?.userId}');
+
     if (currentUser?.userId != null) {
       _addFcmToken();
       setState(() {

@@ -34,7 +34,7 @@ class AccountProvider extends StatelessWidget {
       providers: [
         //All user feed provider
         StreamProvider<List<ImageVideoModel?>>.value(
-          value: db.getUserImageVideoList(userId: userModel?.userId),
+          value: db.streamUserImageVideoList(userId: userModel?.userId),
           initialData: [],
           catchError: (context, error) {
             print('Error fetching user feed: $error');
@@ -51,7 +51,7 @@ class AccountProvider extends StatelessWidget {
           },
         ),
         StreamProvider<List<UserModel>>.value(
-          value: db.getFollowsPerUser(
+          value: db.streamFollowsPerUser(
               userId: userId, collection: FollowParameters.following!),
           initialData: [],
           catchError: (context, error) {

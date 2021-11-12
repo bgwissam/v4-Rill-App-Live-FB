@@ -97,3 +97,11 @@ class ConversationRoomParam {
   static String time = 'time';
   static String type = 'type';
 }
+
+class AnalyticParam {
+  static String ownerId = 'owner_id';
+  static String viewerId = 'viewer_id';
+  static String likerId = 'liker_id';
+  static String time = 'time';
+  static String fileId = 'file_id';
+}
