@@ -32,6 +32,7 @@ class UserParams {
   static String DOB = 'dob';
   static String IS_ACTIVE = 'isActive';
   static String BIO_DESC = 'bioDescription';
+  static String INTERESTS = 'interests';
   static String ROLES = 'roles';
   static String AVATAR = 'avatarUrl';
   static String ADDRESS = 'address';

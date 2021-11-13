@@ -20,6 +20,12 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
   int numberOfFollowers = 0;
   int numberOfLikes = 0;
 
+  bool _viewNumer = false;
+  bool _commentNumber = false;
+  bool _followerNumber = false;
+  bool _likeNumber = false;
+  var size;
+
   @override
   void initState() {
     super.initState();
@@ -31,8 +37,18 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildAnalytics(),
+    size = MediaQuery.of(context).size;
+    return Container(
+      height: size.height,
+      width: size.width,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage('assets/images/bg1.png'), fit: BoxFit.cover),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: _buildAnalytics(),
+      ),
     );
   }
 
@@ -60,11 +76,20 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       color: color_4,
                       height: 30,
                     ),
-                    title: Text(
-                      numberOfLikes.toString().isEmpty
-                          ? '0'
-                          : numberOfLikes.toString(),
-                    ),
+                    title: _likeNumber
+                        ? Text(
+                            numberOfLikes.toString().isEmpty
+                                ? '0'
+                                : numberOfLikes.toString(),
+                          )
+                        : Container(
+                            padding: EdgeInsets.only(right: size.width / 2),
+                            height: 8,
+                            child: LinearProgressIndicator(
+                              backgroundColor: color_6,
+                              color: color_4,
+                            ),
+                          ),
                     subtitle:
                         Text('Number of Likes this week', style: textStyle_21),
                   ),
@@ -86,11 +111,20 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       color: color_4,
                       height: 30,
                     ),
-                    title: Text(
-                      numberOfFollowers.toString().isEmpty
-                          ? '0'
-                          : numberOfFollowers.toString(),
-                    ),
+                    title: _followerNumber
+                        ? Text(
+                            numberOfFollowers.toString().isEmpty
+                                ? '0'
+                                : numberOfFollowers.toString(),
+                          )
+                        : Container(
+                            padding: EdgeInsets.only(right: size.width / 2),
+                            height: 8,
+                            child: LinearProgressIndicator(
+                              backgroundColor: color_6,
+                              color: color_4,
+                            ),
+                          ),
                     subtitle:
                         Text('Followers gained this week', style: textStyle_21),
                   ),
@@ -112,11 +146,20 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       color: color_4,
                       height: 30,
                     ),
-                    title: Text(
-                      numberOfComments.toString().isEmpty
-                          ? '0'
-                          : numberOfComments.toString(),
-                    ),
+                    title: _commentNumber
+                        ? Text(
+                            numberOfComments.toString().isEmpty
+                                ? '0'
+                                : numberOfComments.toString(),
+                          )
+                        : Container(
+                            padding: EdgeInsets.only(right: size.width / 2),
+                            height: 8,
+                            child: LinearProgressIndicator(
+                              backgroundColor: color_6,
+                              color: color_4,
+                            ),
+                          ),
                     subtitle:
                         Text('Total Comments this week', style: textStyle_21),
                   ),
@@ -138,11 +181,20 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       color: color_4,
                       height: 30,
                     ),
-                    title: Text(
-                      numberOfViews.toString().isEmpty
-                          ? '0'
-                          : numberOfViews.toString(),
-                    ),
+                    title: _viewNumer
+                        ? Text(
+                            numberOfViews.toString().isEmpty
+                                ? '0'
+                                : numberOfViews.toString(),
+                          )
+                        : Container(
+                            padding: EdgeInsets.only(right: size.width / 2),
+                            height: 8,
+                            child: LinearProgressIndicator(
+                              backgroundColor: color_6,
+                              color: color_4,
+                            ),
+                          ),
                     subtitle: Text('Total views', style: textStyle_21),
                   ),
                 ),
@@ -163,7 +215,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       color: color_4,
                       height: 30,
                     ),
-                    title: Text(
+                    title: const Text(
                       '0',
                     ),
                     subtitle: Text('Accounts reached', style: textStyle_21),
@@ -186,6 +238,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     var result = await db.getUserViewToFiles(userId: widget.userId);
     setState(() {
       numberOfViews = result;
+      _viewNumer = true;
     });
   }
 
@@ -194,6 +247,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     var result = await db.getUserImageVideoList(userId: widget.userId);
     setState(() {
       numberOfComments = result;
+      _commentNumber = true;
     });
   }
 
@@ -202,6 +256,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     var result = await db.getFollowersList(userId: widget.userId);
     setState(() {
       numberOfFollowers = result;
+      _followerNumber = true;
     });
   }
 
@@ -211,6 +266,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     print('the result: $result');
     setState(() {
       numberOfLikes = result;
+      _likeNumber = true;
     });
   }
 }

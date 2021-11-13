@@ -343,41 +343,42 @@ class _AccountScreenState extends State<AccountScreen>
                 ]),
               ),
               //bio section
-              Container(
+              Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                height: size.height / 5,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Bio section here...',
-                      style: TextStyle(
-                        fontFamily: 'OpenSans',
-                        fontSize: 17,
-                        // italic
+                child: SizedBox(
+                  height: size.height / 4,
+                  width: size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      widget.userModel?.bioDescription == null
+                          ? Text('Bio section here...', style: textStyle_22)
+                          : Text(
+                              '${widget.userModel!.bioDescription}',
+                              style: textStyle_22,
+                            ),
+                      widget.userModel!.interest!.isEmpty
+                          ? Text('Hobbies | Music | Sport', style: textStyle_22)
+                          : SizedBox(
+                              height: 30,
+                              width: size.width - 30,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: widget.userModel!.interest!.length,
+                                  itemBuilder: (context, index) {
+                                    return Text(
+                                        '${widget.userModel!.interest![index]} |',
+                                        style: textStyle_22);
+                                  }),
+                            ),
+                      Text(
+                        '"Follow me for some amazing content"',
+                        style: textStyle_22,
                       ),
-                    ),
-                    Text(
-                      'Hobbies | Music | Sport',
-                      style: TextStyle(
-                        fontFamily: 'OpenSans',
-                        fontSize: 17,
-                        // italic
-                      ),
-                    ),
-                    Text(
-                      '"A message from the user to the followers"',
-                      style: TextStyle(
-                          fontFamily: 'OpenSans',
-                          //fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                          fontStyle: FontStyle.italic
-                          // italic
-                          ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               widget.myProfile == false

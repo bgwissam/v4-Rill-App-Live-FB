@@ -20,8 +20,17 @@ class _WalletViewState extends State<WalletView> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: _buildWalletView(),
+    return Container(
+      height: size.height,
+      width: size.width,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage('assets/images/bg1.png'), fit: BoxFit.cover),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: _buildWalletView(),
+      ),
     );
   }
 

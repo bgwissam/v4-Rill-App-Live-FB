@@ -129,6 +129,7 @@ class RegisterState extends State<Register> {
   String? frontIdUrl;
   String? backIdUrl;
   bool? isVerified;
+  List<dynamic>? interest = [];
   late FirebaseStorage storageReferece;
   late String errorMessage = '';
   //Services
@@ -139,32 +140,36 @@ class RegisterState extends State<Register> {
 
   File? _showPicker(context, String imageType) {
     showModalBottomSheet(
+        backgroundColor: color_4,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+        ),
         context: context,
         builder: (BuildContext bc) {
-          return SafeArea(
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(35),
-              ),
-              child: Wrap(
-                children: <Widget>[
-                  ListTile(
-                      leading: Icon(Icons.photo_library),
-                      title: Text('Gallery'),
-                      onTap: () {
-                        _imgFromGallery(imageType);
-                        Navigator.of(context).pop();
-                      }),
-                  ListTile(
-                    leading: Icon(Icons.photo_camera),
-                    title: Text('Camera'),
+          return Card(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+            ),
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: Icon(Icons.photo_library),
+                    title: Text('Gallery'),
                     onTap: () {
-                      _imgFromCamera(imageType);
+                      _imgFromGallery(imageType);
                       Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
+                    }),
+                ListTile(
+                  leading: Icon(Icons.photo_camera),
+                  title: Text('Camera'),
+                  onTap: () {
+                    _imgFromCamera(imageType);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
           );
         });
@@ -190,7 +195,6 @@ class RegisterState extends State<Register> {
                 });
                 //in case it's a new user
                 if (widget.userModel == null) {
-                  print('the current user image: $profileImage');
                   if (profileImage != null) {
                     storageReferece = FirebaseStorage.instance;
                     Reference ref = storageReferece.ref().child(
@@ -274,7 +278,7 @@ class RegisterState extends State<Register> {
                     backIdUrl = downloadBackImageUrl.toString();
                   }
 
-                  var result = await db
+                  await db
                       .updateUser(
                     userId: widget.userModel?.userId,
                     firstName: firstname ?? widget.userModel?.firstName,
@@ -289,6 +293,11 @@ class RegisterState extends State<Register> {
                     dob: _selectedDate,
                     avatarUrl: profileImageUrl ?? widget.userModel?.avatarUrl,
                     frontIdUrl: frontIdUrl ?? widget.userModel?.frontIdUrl,
+                    bioDescription:
+                        bioDescription ?? widget.userModel?.bioDescription,
+                    interests: interest!.isNotEmpty
+                        ? interest
+                        : widget.userModel?.interest,
                     backIdUrl: backIdUrl ?? widget.userModel?.backIdUrl,
                     isVerifiedById: isVerified ?? false,
                   )
@@ -574,6 +583,44 @@ class RegisterState extends State<Register> {
                                     ),
                                   ],
                                 ),
+                                //Bio Section
+                                TextFormField(
+                                  maxLength: 200,
+                                  initialValue:
+                                      widget.userModel?.bioDescription,
+                                  decoration: const InputDecoration(
+                                      hintText: 'Bio Section', filled: false),
+                                  onChanged: (val) {
+                                    setState(() {
+                                      bioDescription = val.trim();
+                                    });
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                //Hobbies and Interests
+                                TextFormField(
+                                  initialValue: widget.userModel?.interest !=
+                                          null
+                                      ? widget.userModel?.interest!.join(',')
+                                      : '',
+                                  decoration: const InputDecoration(
+                                      hintText:
+                                          'Interests & Hobbies (use comma to seperate)',
+                                      filled: false),
+                                  onChanged: (val) {
+                                    setState(() {
+                                      if (val.isNotEmpty) {
+                                        interest = val.trim().split(',');
+                                      }
+                                    });
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+
                                 widget.userModel != null
                                     ? SizedBox(
                                         height: 180,

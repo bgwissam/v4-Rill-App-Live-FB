@@ -12,6 +12,7 @@ class UserModel {
   var dob;
   String? address;
   String? bioDescription;
+  List<dynamic>? interest;
   bool? isActive;
   List<dynamic>? roles;
   String? fcmToken;
@@ -34,6 +35,7 @@ class UserModel {
       this.dob,
       this.address,
       this.bioDescription,
+      this.interest,
       this.isActive,
       this.roles,
       this.frontIdUrl,

@@ -35,6 +35,7 @@ class DatabaseService {
     String? lastName,
     String? avatarUrl,
     String? bioDescription,
+    List<String>? interests,
     String? mobileNumber,
     String? phoneIsoCode,
     String? phoneFullNumber,
@@ -52,6 +53,7 @@ class DatabaseService {
         UserParams.LAST_NAME: lastName,
         UserParams.AVATAR: avatarUrl,
         UserParams.BIO_DESC: bioDescription,
+        UserParams.INTERESTS: interests,
         UserParams.PHONE: mobileNumber,
         UserParams.PHONE_ISO: phoneIsoCode,
         UserParams.PHONE_FULL: phoneFullNumber,
@@ -82,6 +84,7 @@ class DatabaseService {
     String? address,
     bool? isActive,
     List<String>? roles,
+    List<dynamic>? interests,
     //for verification of a user
     String? frontIdUrl,
     String? backIdUrl,
@@ -96,6 +99,7 @@ class DatabaseService {
         UserParams.LAST_NAME: lastName,
         UserParams.AVATAR: avatarUrl,
         UserParams.BIO_DESC: bioDescription,
+        UserParams.INTERESTS: interests,
         UserParams.PHONE: mobileNumber,
         UserParams.PHONE_ISO: phoneIsoCode,
         UserParams.PHONE_FULL: phoneFullNumber,
@@ -129,6 +133,7 @@ class DatabaseService {
           address: (doc.data()! as Map)[UserParams.ADDRESS],
           avatarUrl: (doc.data()! as Map)[UserParams.AVATAR],
           bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
+          interest: (doc.data() as Map)[UserParams.INTERESTS],
           phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
           phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
           fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
@@ -215,6 +220,7 @@ class DatabaseService {
           address: (doc.data()! as Map)[UserParams.ADDRESS],
           avatarUrl: (doc.data()! as Map)[UserParams.AVATAR],
           bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
+          interest: (doc.data()! as Map)[UserParams.INTERESTS],
           phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
           phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
           fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
@@ -367,7 +373,6 @@ class DatabaseService {
 
   //delete follower
   Future<void> deleteFollowing({String? userId, String? followerId}) async {
-    print('deleting follower: $userId : $followerId');
     try {
       //delete following
       await userModelCollection
@@ -419,11 +424,26 @@ class DatabaseService {
 
   //read the total like for a file
   Future<int> getLikesList({String? userId, String? fileId}) async {
-    return await imageVideoCollection
-        .doc(fileId)
-        .collection('like')
+    var likeCount = 0;
+    var result = await imageVideoCollection
+        .where(CommentParameters.USER_ID, isEqualTo: userId)
         .get()
-        .then((value) => value.size);
+        .then((value) {
+      return value.docs.map((e) {
+        return e.id;
+      }).toList();
+    });
+
+    if (result.isNotEmpty) {
+      for (var image in result) {
+        likeCount += await imageVideoCollection
+            .doc(image)
+            .collection('likes')
+            .get()
+            .then((value) => value.size);
+      }
+    }
+    return likeCount;
   }
 
   //delete a like
