@@ -135,6 +135,7 @@ class _AccountScreenState extends State<AccountScreen>
   @override
   void initState() {
     super.initState();
+    print('interest: ${widget.userModel?.interest}');
     _tabController = TabController(length: 2, vsync: this);
     chatRoomMap = ChatRoomModel(userId: '', users: []);
     _getCurrentUser();
@@ -359,8 +360,7 @@ class _AccountScreenState extends State<AccountScreen>
                               '${widget.userModel!.bioDescription}',
                               style: textStyle_22,
                             ),
-                      widget.userModel!.interest != null &&
-                              widget.userModel!.interest!.isNotEmpty
+                      widget.userModel!.interest == null
                           ? Text('Hobbies | Music | Sport', style: textStyle_22)
                           : SizedBox(
                               height: 30,

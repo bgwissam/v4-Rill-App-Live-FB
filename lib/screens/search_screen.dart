@@ -73,19 +73,19 @@ class _SearchScreenState extends State<SearchScreen> {
   StorageData storageData = StorageData();
   DatabaseService db = DatabaseService();
   MessaginService ms = MessaginService();
-  late VideoPlayerController _videoPlayerController;
-  late ChewieController _chewieController;
   //Providers
-  var imageVideoProvider;
-  var userListProvider;
-  var userProvider;
-  var followedUsers;
+  var _imageVideoProvider;
+  var _userListProvider;
+  var _searchedList;
+  var _userProvider;
+  var _followedUsers;
   @override
   void initState() {
     super.initState();
     _focus.addListener(_onFocusChanged);
     getAllBucketData = _getAllObjects();
     _checkUsersFollowed();
+    _buildSearchListFilter('');
   }
 
   @override
@@ -101,12 +101,18 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    _userListProvider = Provider.of<List<UserModel>>(context);
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
-    imageVideoProvider = Provider.of<List<ImageVideoModel?>>(context);
-    userListProvider = Provider.of<List<UserModel>>(context);
-    userProvider = Provider.of<UserModel?>(context);
-    followedUsers = Provider.of<List<UsersFollowed?>>(context);
+    _imageVideoProvider = Provider.of<List<ImageVideoModel?>>(context);
+
+    _userProvider = Provider.of<UserModel?>(context);
+    _followedUsers = Provider.of<List<UsersFollowed?>>(context);
     return SizedBox(
       height: _size.height - 105,
       width: _size.width,
@@ -193,13 +199,38 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             onChanged: (val) {
               setState(() {
-                searchWord = val;
+                _buildSearchListFilter(val);
               });
             },
           ),
         ),
       ],
     );
+  }
+
+  _buildSearchListFilter(String text) {
+    var result = [];
+    //wait for stream to populate
+    Future.delayed(Duration(milliseconds: 1000), () {
+      setState(() {
+        _searchedList = _userListProvider;
+      });
+      return;
+    });
+
+    if (_userListProvider != null) {
+      result = _userListProvider
+          .where(
+            (_user) => _user.firstName
+                .toString()
+                .toLowerCase()
+                .contains(text.toString().toLowerCase()),
+          )
+          .toList();
+      setState(() {
+        _searchedList = result;
+      });
+    }
   }
 
   //Build feed grid view
@@ -216,10 +247,10 @@ class _SearchScreenState extends State<SearchScreen> {
               mainAxisSpacing: 2,
               crossAxisSpacing: 2,
               childAspectRatio: 0.5),
-          itemCount: imageVideoProvider.length,
+          itemCount: _imageVideoProvider.length,
           itemBuilder: (context, index) {
-            if (imageVideoProvider[index]!.uid != null) {
-              if (imageVideoProvider[index]!.type == 'image') {
+            if (_imageVideoProvider[index]!.uid != null) {
+              if (_imageVideoProvider[index]!.type == 'image') {
                 return Container(
                   alignment: Alignment.center,
                   child: InkWell(
@@ -229,11 +260,12 @@ class _SearchScreenState extends State<SearchScreen> {
                         MaterialPageRoute(
                           builder: (builder) => ImageViewerProvider(
                             userModel: widget.userModel,
-                            fileId: imageVideoProvider[index]!.uid,
-                            imageOwnerId: imageVideoProvider[index]!.userId,
+                            fileId: _imageVideoProvider[index]!.uid,
+                            imageOwnerId: _imageVideoProvider[index]!.userId,
                             collection: 'comments',
-                            imageUrl: imageVideoProvider[index]!.url.toString(),
-                            imageProvider: imageVideoProvider[index],
+                            imageUrl:
+                                _imageVideoProvider[index]!.url.toString(),
+                            imageProvider: _imageVideoProvider[index],
                           ),
                         ),
                       );
@@ -252,7 +284,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(imageVideoProvider[index]!.url!),
+                        image: NetworkImage(_imageVideoProvider[index]!.url!),
                         fit: BoxFit.fill,
                       ),
                       color: Colors.grey[100],
@@ -268,11 +300,11 @@ class _SearchScreenState extends State<SearchScreen> {
                         MaterialPageRoute(
                           builder: (builder) => VideoPlayerProvider(
                             userModel: widget.userModel,
-                            fileId: imageVideoProvider[index]!.uid,
+                            fileId: _imageVideoProvider[index]!.uid,
                             collection: 'comments',
-                            videoOwnerId: imageVideoProvider[index]!.userId,
-                            playerUrl: imageVideoProvider[index]!.url,
-                            imageProvider: imageVideoProvider[index],
+                            videoOwnerId: _imageVideoProvider[index]!.userId,
+                            playerUrl: _imageVideoProvider[index]!.url,
+                            imageProvider: _imageVideoProvider[index],
                           ),
                         ),
                       );
@@ -304,7 +336,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: NetworkImage(
-                              imageVideoProvider[index]!.videoThumbnailurl!),
+                              _imageVideoProvider[index]!.videoThumbnailurl!),
                           fit: BoxFit.fill),
                       color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(10.0)),
@@ -361,7 +393,6 @@ class _SearchScreenState extends State<SearchScreen> {
   //Build Grid View
   Widget _buildUsersGridView() {
     _size = MediaQuery.of(context).size;
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: SizedBox(
@@ -369,9 +400,10 @@ class _SearchScreenState extends State<SearchScreen> {
         height: _size.height - 275,
         child: ListView.builder(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          itemCount: userListProvider.length,
+          itemCount: _searchedList.length,
           itemBuilder: (context, index) {
-            return userListProvider[index].userId != widget.userId
+            print('the search list length: ${_searchedList.length}');
+            return _searchedList[index].userId != widget.userId
                 ? Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: InkWell(
@@ -381,10 +413,9 @@ class _SearchScreenState extends State<SearchScreen> {
                           MaterialPageRoute(
                             builder: (builder) => Scaffold(
                               body: AccountProvider(
-                                userId: widget
-                                    .userId, //userListProvider[index].userId,
+                                userId: widget.userId,
                                 myProfile: false,
-                                userModel: userListProvider[index],
+                                userModel: _searchedList[index],
                               ),
                             ),
                           ),
@@ -394,13 +425,13 @@ class _SearchScreenState extends State<SearchScreen> {
                         height: 80,
                         alignment: Alignment.center,
                         child: ListTile(
-                          leading: userListProvider[index].avatarUrl != null
+                          leading: _searchedList[index].avatarUrl != null
                               ? SizedBox(
                                   height: 50,
                                   width: 75,
                                   child: FittedBox(
                                     child: Image.network(
-                                        userListProvider[index].avatarUrl),
+                                        _searchedList[index].avatarUrl),
                                     fit: BoxFit.fill,
                                   ),
                                 )
@@ -412,14 +443,14 @@ class _SearchScreenState extends State<SearchScreen> {
                                       borderRadius: BorderRadius.circular(10)),
                                 ),
                           title: Text(
-                              '${userListProvider[index].firstName} ${userListProvider[index].lastName}'),
+                              '${_searchedList[index].firstName} ${_searchedList[index].lastName}'),
                           subtitle: Row(
                             children: [
                               Text('User details'),
                               TextButton(
                                 child: followed.isNotEmpty &&
                                         followed.contains(
-                                            userListProvider[index].userId)
+                                            _searchedList[index].userId)
                                     ? Text('Followed', style: textStyle_10)
                                     : Text('Follow',
                                         style: Theme.of(context)
@@ -428,38 +459,35 @@ class _SearchScreenState extends State<SearchScreen> {
                                 onPressed: () async {
                                   if (followed.isNotEmpty &&
                                       followed.contains(
-                                          userListProvider[index].userId)) {
+                                          _searchedList[index].userId)) {
                                     await db.deleteFollowing(
                                       userId: widget.userId,
-                                      followerId:
-                                          userListProvider[index].userId,
+                                      followerId: _searchedList[index].userId,
                                     );
                                     setState(() {
-                                      followed.remove(
-                                          userListProvider[index].userId);
+                                      followed
+                                          .remove(_searchedList[index].userId);
                                     });
                                   } else {
                                     await db.addFollowing(
                                         userId: widget.userId,
-                                        followerId:
-                                            userListProvider[index].userId,
+                                        followerId: _searchedList[index].userId,
                                         followerFirstName:
-                                            userListProvider[index].firstName,
+                                            _searchedList[index].firstName,
                                         followerLastName:
-                                            userListProvider[index].lastName,
+                                            _searchedList[index].lastName,
                                         avatarUrl:
-                                            userListProvider[index].avatarUrl);
+                                            _searchedList[index].avatarUrl);
                                     //Notify the person being followed of the user following
                                     try {
                                       print(
-                                          'the token: ${userListProvider[index]?.fcmToken}');
-                                      ms.token =
-                                          userListProvider[index]?.fcmToken;
+                                          'the token: ${_searchedList[index]?.fcmToken}');
+                                      ms.token = _searchedList[index]?.fcmToken;
                                       ms.senderId = widget.userModel?.userId;
                                       ms.senderName =
                                           '${widget.userModel?.firstName} ${widget.userModel?.lastName}';
                                       ms.receiverId =
-                                          userListProvider[index]?.userId;
+                                          _searchedList[index]?.userId;
                                       ms.messageType = 'follow';
                                       ms.messageTitle = 'New Follower';
                                       ms.messageBody = 'started following you';
@@ -470,8 +498,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                     }
 
                                     setState(() {
-                                      followed
-                                          .add(userListProvider[index].userId);
+                                      followed.add(_searchedList[index].userId);
                                     });
                                   }
                                 },
