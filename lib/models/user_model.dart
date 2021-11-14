@@ -18,7 +18,7 @@ class UserModel {
   String? fcmToken;
   String? frontIdUrl;
   String? backIdUrl;
-  bool? isIdVerified;
+  String? isIdVerified;
   String? adminComments;
   String? error;
   UserModel(

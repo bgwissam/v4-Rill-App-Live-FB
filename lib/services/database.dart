@@ -119,6 +119,22 @@ class DatabaseService {
     }
   }
 
+  //verfiy user id
+  Future<String?> verifyUser(
+      {String? userId, String? frontIdUrl, String? backIdUrl}) async {
+    try {
+      return await userModelCollection.doc(userId).update({
+        UserParams.FRONT_ID: frontIdUrl,
+        UserParams.BACK_ID: backIdUrl,
+        UserParams.IS_VERIFIED: 'Applied',
+      }).then((value) => 'user validation confirmed');
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      print('Could not verify: $e: $stackTrace');
+      return e.toString();
+    }
+  }
+
   //Future to get users details
   Future<UserModel> getSelectedUserById({String? uid}) async {
     try {
@@ -172,6 +188,9 @@ class DatabaseService {
           phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
           coins: (doc.data()! as Map)[UserParams.COINS],
           isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
+          frontIdUrl: (doc.data()! as Map)[UserParams.FRONT_ID],
+          backIdUrl: (doc.data()! as Map)[UserParams.BACK_ID],
+          isIdVerified: (doc.data()! as Map)[UserParams.IS_VERIFIED],
           roles: (doc.data()! as Map)[UserParams.ROLES]);
     }).toList();
   }
@@ -227,6 +246,9 @@ class DatabaseService {
           phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
           coins: (doc.data()! as Map)[UserParams.COINS],
           isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
+          frontIdUrl: (doc.data()! as Map)[UserParams.FRONT_ID],
+          backIdUrl: (doc.data()! as Map)[UserParams.BACK_ID],
+          isIdVerified: (doc.data()! as Map)[UserParams.IS_VERIFIED],
           roles: (doc.data()! as Map)[UserParams.ROLES]);
     });
   }
@@ -244,12 +266,16 @@ class DatabaseService {
               address: (doc.data()! as Map)[UserParams.ADDRESS],
               avatarUrl: (doc.data()! as Map)[UserParams.AVATAR],
               bioDescription: (doc.data()! as Map)[UserParams.BIO_DESC],
+              interest: (doc.data()! as Map)[UserParams.INTERESTS],
               phoneNumber: (doc.data()! as Map)[UserParams.PHONE],
               phoneIsoCode: (doc.data()! as Map)[UserParams.PHONE_ISO],
               fcmToken: (doc.data()! as Map)[UserParams.FCM_TOKEN],
               phoneFullNumber: (doc.data()! as Map)[UserParams.PHONE_FULL],
               coins: (doc.data()! as Map)[UserParams.COINS],
               isActive: (doc.data()! as Map)[UserParams.IS_ACTIVE],
+              frontIdUrl: (doc.data()! as Map)[UserParams.FRONT_ID],
+              backIdUrl: (doc.data()! as Map)[UserParams.BACK_ID],
+              isIdVerified: (doc.data()! as Map)[UserParams.IS_VERIFIED],
               roles: (doc.data()! as Map)[UserParams.ROLES]),
         );
     return result;

@@ -359,7 +359,8 @@ class _AccountScreenState extends State<AccountScreen>
                               '${widget.userModel!.bioDescription}',
                               style: textStyle_22,
                             ),
-                      widget.userModel!.interest!.isEmpty
+                      widget.userModel!.interest != null &&
+                              widget.userModel!.interest!.isNotEmpty
                           ? Text('Hobbies | Music | Sport', style: textStyle_22)
                           : SizedBox(
                               height: 30,

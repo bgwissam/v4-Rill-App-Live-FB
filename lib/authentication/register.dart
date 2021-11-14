@@ -113,7 +113,6 @@ class RegisterState extends State<Register> {
   File? profileImage;
   File? frontId;
   File? backId;
-
   String? password;
   late String emailAddress;
   String? firstname;
@@ -132,6 +131,7 @@ class RegisterState extends State<Register> {
   List<dynamic>? interest = [];
   late FirebaseStorage storageReferece;
   late String errorMessage = '';
+  final maxLines = 4;
   //Services
   AuthService as = AuthService();
   DatabaseService db = DatabaseService();
@@ -259,25 +259,6 @@ class RegisterState extends State<Register> {
                     profileImageUrl = downloadImageUrl.toString();
                   }
 
-                  if (frontId != null && backId != null) {
-                    storageReferece = FirebaseStorage.instance;
-                    Reference refFront = storageReferece.ref().child(
-                        'verification_id/${Path.basename(frontId!.path)}');
-                    Reference refBack = storageReferece.ref().child(
-                        'verification_id/${Path.basename(backId!.path)}');
-                    UploadTask uploadTaskFront =
-                        refFront.putFile(File(frontId!.path));
-                    UploadTask uploadTaskBack =
-                        refBack.putFile(File(backId!.path));
-
-                    var downloadFrontImageUrl =
-                        await (await uploadTaskFront).ref.getDownloadURL();
-                    var downloadBackImageUrl =
-                        await (await uploadTaskBack).ref.getDownloadURL();
-                    frontIdUrl = downloadFrontImageUrl.toString();
-                    backIdUrl = downloadBackImageUrl.toString();
-                  }
-
                   await db
                       .updateUser(
                     userId: widget.userModel?.userId,
@@ -292,13 +273,13 @@ class RegisterState extends State<Register> {
                         phoneFullNumber ?? widget.userModel?.phoneFullNumber,
                     dob: _selectedDate,
                     avatarUrl: profileImageUrl ?? widget.userModel?.avatarUrl,
-                    frontIdUrl: frontIdUrl ?? widget.userModel?.frontIdUrl,
+                    // frontIdUrl: frontIdUrl ?? widget.userModel?.frontIdUrl,
                     bioDescription:
                         bioDescription ?? widget.userModel?.bioDescription,
                     interests: interest!.isNotEmpty
                         ? interest
                         : widget.userModel?.interest,
-                    backIdUrl: backIdUrl ?? widget.userModel?.backIdUrl,
+                    //backIdUrl: backIdUrl ?? widget.userModel?.backIdUrl,
                     isVerifiedById: isVerified ?? false,
                   )
                       .catchError((error, stackTrace) async {
@@ -586,6 +567,7 @@ class RegisterState extends State<Register> {
                                 //Bio Section
                                 TextFormField(
                                   maxLength: 200,
+                                  maxLines: maxLines,
                                   initialValue:
                                       widget.userModel?.bioDescription,
                                   decoration: const InputDecoration(
@@ -678,7 +660,10 @@ class RegisterState extends State<Register> {
                   Expanded(
                     flex: 2,
                     child: ListTile(
-                        title: Text('Status'), subtitle: Text('Not Applied')),
+                        title: Text('Status'),
+                        subtitle: widget.userModel?.isIdVerified != null
+                            ? Text('${widget.userModel?.isIdVerified}')
+                            : Text('Not Applied')),
                   ),
                   Expanded(
                     flex: 3,
@@ -698,7 +683,33 @@ class RegisterState extends State<Register> {
             ),
           ),
           TextButton(
-            onPressed: () async {},
+            onPressed: () async {
+              if (frontId != null && backId != null) {
+                storageReferece = FirebaseStorage.instance;
+                Reference refFront = storageReferece
+                    .ref()
+                    .child('verification_id/${Path.basename(frontId!.path)}');
+                Reference refBack = storageReferece
+                    .ref()
+                    .child('verification_id/${Path.basename(backId!.path)}');
+                UploadTask uploadTaskFront =
+                    refFront.putFile(File(frontId!.path));
+                UploadTask uploadTaskBack = refBack.putFile(File(backId!.path));
+
+                var downloadFrontImageUrl =
+                    await (await uploadTaskFront).ref.getDownloadURL();
+                var downloadBackImageUrl =
+                    await (await uploadTaskBack).ref.getDownloadURL();
+                frontIdUrl = downloadFrontImageUrl.toString();
+                backIdUrl = downloadBackImageUrl.toString();
+                if (frontIdUrl != null && backIdUrl != null) {
+                  await db.verifyUser(
+                      userId: widget.userModel!.userId,
+                      frontIdUrl: frontIdUrl,
+                      backIdUrl: backIdUrl);
+                }
+              }
+            },
             child: Text('Apply for Profile Verification',
                 textAlign: TextAlign.left, style: textStyle_3),
           ),
@@ -708,6 +719,7 @@ class RegisterState extends State<Register> {
   }
 
   Widget _supportingDocuments() {
+    print('back id: ${widget.userModel!.backIdUrl}');
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Column(
@@ -733,7 +745,8 @@ class RegisterState extends State<Register> {
                             border: Border.all(),
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.grey[100]),
-                        child: frontId == null
+                        child: frontId == null &&
+                                widget.userModel?.frontIdUrl == null
                             ? Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -748,13 +761,21 @@ class RegisterState extends State<Register> {
                                             textAlign: TextAlign.center,
                                             style: textStyle_17)),
                                   ])
-                            : Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: FileImage(frontId!),
-                                      fit: BoxFit.fill),
-                                ),
-                              ),
+                            : frontId != null
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: FileImage(frontId!),
+                                          fit: BoxFit.fill),
+                                    ),
+                                  )
+                                : Container(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                widget.userModel!.frontIdUrl!),
+                                            fit: BoxFit.fill)),
+                                  ),
                       ),
                     ),
                   ),
@@ -774,7 +795,8 @@ class RegisterState extends State<Register> {
                             border: Border.all(),
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.grey[100]),
-                        child: backId == null
+                        child: backId == null &&
+                                widget.userModel?.backIdUrl == null
                             ? Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -789,13 +811,21 @@ class RegisterState extends State<Register> {
                                             textAlign: TextAlign.center,
                                             style: textStyle_17)),
                                   ])
-                            : Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: FileImage(backId!),
-                                      fit: BoxFit.fill),
-                                ),
-                              ),
+                            : backId != null
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: FileImage(backId!),
+                                          fit: BoxFit.fill),
+                                    ),
+                                  )
+                                : Container(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                widget.userModel!.backIdUrl!),
+                                            fit: BoxFit.fill)),
+                                  ),
                       ),
                     ),
                   ),
