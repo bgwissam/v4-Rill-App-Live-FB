@@ -106,11 +106,36 @@ class _SearchScreenState extends State<SearchScreen> {
     super.didChangeDependencies();
   }
 
+  _buildSearchListFilter(String text) {
+    var result = [];
+    //wait for stream to populate
+    if (text.isEmpty) {
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        setState(() {
+          _searchedList = _userListProvider;
+        });
+      });
+      return;
+    }
+    if (_userListProvider != null) {
+      result = _userListProvider
+          .where(
+            (_user) => _user.firstName
+                .toString()
+                .toLowerCase()
+                .contains(text.toString().toLowerCase()),
+          )
+          .toList();
+      setState(() {
+        _searchedList = result;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
     _imageVideoProvider = Provider.of<List<ImageVideoModel?>>(context);
-
     _userProvider = Provider.of<UserModel?>(context);
     _followedUsers = Provider.of<List<UsersFollowed?>>(context);
     return SizedBox(
@@ -206,31 +231,6 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ],
     );
-  }
-
-  _buildSearchListFilter(String text) {
-    var result = [];
-    //wait for stream to populate
-    Future.delayed(Duration(milliseconds: 1000), () {
-      setState(() {
-        _searchedList = _userListProvider;
-      });
-      return;
-    });
-
-    if (_userListProvider != null) {
-      result = _userListProvider
-          .where(
-            (_user) => _user.firstName
-                .toString()
-                .toLowerCase()
-                .contains(text.toString().toLowerCase()),
-          )
-          .toList();
-      setState(() {
-        _searchedList = result;
-      });
-    }
   }
 
   //Build feed grid view

@@ -750,14 +750,34 @@ class _MainScreenState extends State<MainScreen>
                   SizedBox(
                     width: _size.width * 0.2,
                   ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectedIndex = 2;
-                      });
-                    },
-                    icon: Image.asset('assets/icons/Messages_Rill_light.png'),
-                  ),
+                  Stack(children: [
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _selectedIndex = 2;
+                        });
+                      },
+                      icon: Image.asset('assets/icons/Messages_Rill_light.png'),
+                    ),
+                    Positioned(
+                      top: 1,
+                      right: 1,
+                      child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8),
+                                bottomRight: Radius.circular(8)),
+                          ),
+                          constraints:
+                              const BoxConstraints(minWidth: 20, minHeight: 14),
+                          child: Text('99',
+                              textAlign: TextAlign.center,
+                              style: textStyle_23)),
+                    ),
+                  ]),
                   IconButton(
                     onPressed: () {
                       setState(() {

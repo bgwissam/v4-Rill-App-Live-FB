@@ -1,5 +1,6 @@
 //Color style for elevated buttons
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 //Button Colors
 var buttonStyle1 =
@@ -28,8 +29,9 @@ var color_10 = const Color(0xff566e7e);
 var color_11 = const Color(0xff333333);
 var color_12 = const Color(0xff000000).withOpacity(0.6);
 
-var color_13 = const Color(0xffD6D6D6);
+var color_13 = const Color(0xffffffff);
 var color_14 = const Color(0xff000000);
+
 //Text input colors
 var textStyle_1 = TextStyle(
     color: color_4,
@@ -130,6 +132,12 @@ var textStyle_21 =
 
 var textStyle_22 =
     TextStyle(fontSize: 17, fontFamily: 'Poppins', color: color_14);
+
+var textStyle_23 = TextStyle(
+    fontSize: 10,
+    fontWeight: FontWeight.bold,
+    fontFamily: 'Poppins',
+    color: color_13);
 
 var heading_1 = TextStyle(
     color: color_4,
