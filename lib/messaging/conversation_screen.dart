@@ -189,7 +189,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
       messageMap.time = DateTime.now().millisecondsSinceEpoch;
       print('chat room id: ${widget.chatRoomId}');
       db.addConversationMessage(
-          chatRoomId: widget.chatRoomId, messageMap: messageMap);
+          chatRoomId: widget.chatRoomId,
+          messageMap: messageMap,
+          recepientId: otherUser?.userId);
 
       _inputMessageController.clear();
       //Move the message position
@@ -686,7 +688,10 @@ class MessageTile extends StatelessWidget {
     if (currentUser != sentBy) {
       if (read! == false) {
         await db.updateConversationRead(
-            docId: docId, chatRoomId: chatRoomId, read: true);
+            userId: currentUser,
+            docId: docId,
+            chatRoomId: chatRoomId,
+            read: true);
       }
     }
   }

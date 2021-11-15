@@ -835,7 +835,11 @@ class DatabaseService {
   //stream all chat rooms per user
   getChatRoomPerUser({String? userId}) {
     try {
-      return userModelCollection.doc(userId).collection('chats').snapshots();
+      return userModelCollection
+          .doc(userId)
+          .collection('chats')
+          .orderBy(ConversationRoomParam.time, descending: true)
+          .snapshots();
     } catch (e, stackTrace) {
       Sentry.captureException(e, stackTrace: stackTrace);
     }
@@ -928,14 +932,24 @@ class DatabaseService {
 
   //Create a conversation
   Future<void> addConversationMessage(
-      {String? chatRoomId, MessageMap? messageMap}) async {
+      {String? chatRoomId, MessageMap? messageMap, String? recepientId}) async {
     try {
+      //add message to message collection
       await messagesCollection.doc(chatRoomId).collection('chats').add({
         ConversationRoomParam.senderId: messageMap!.senderId,
         ConversationRoomParam.message: messageMap.message,
         ConversationRoomParam.type: messageMap.type,
         ConversationRoomParam.time: messageMap.time,
         ChatRoomParameters.read: false,
+      });
+      //add notification to user-chat collection
+      await userModelCollection
+          .doc(recepientId)
+          .collection('chats')
+          .doc(chatRoomId)
+          .update({
+        UserParams.UNREAD_MESSAGE: true,
+        ConversationRoomParam.time: messageMap.time
       });
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
@@ -944,9 +958,9 @@ class DatabaseService {
 
   //update conversation
   Future<void> updateConversationRead(
-      {String? docId, String? chatRoomId, bool? read}) async {
+      {String? userId, String? docId, String? chatRoomId, bool? read}) async {
     try {
-      print('chatroom param: ${ChatRoomParameters.read} - $read');
+      //update read message in a chat
       await messagesCollection
           .doc(chatRoomId)
           .collection('chats')
@@ -954,6 +968,12 @@ class DatabaseService {
           .update({
         ChatRoomParameters.read: true,
       });
+      //update read message in user collection
+      await userModelCollection
+          .doc(userId)
+          .collection('chats')
+          .doc(chatRoomId)
+          .update({UserParams.UNREAD_MESSAGE: false});
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
     }
@@ -984,5 +1004,18 @@ class DatabaseService {
       print('error reading chats: $e');
       await Sentry.captureException(e, stackTrace: stackTrace);
     }
+  }
+
+  //Stream the number of unread messages
+  Future<int> streamUnreadMessages({String? userId}) async {
+    print('result id: $userId');
+    var result = userModelCollection
+        .doc(userId)
+        .collection('chats')
+        .where(UserParams.UNREAD_MESSAGE, isEqualTo: true)
+        .get()
+        .then((value) => value.size);
+    print('result data: $result');
+    return result;
   }
 }

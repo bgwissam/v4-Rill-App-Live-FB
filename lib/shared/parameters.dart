@@ -42,6 +42,7 @@ class UserParams {
   static String BACK_ID = 'backIdUrl';
   static String IS_VERIFIED = 'verifiedById';
   static String ADMIN_COMMENTS = 'AdminComments';
+  static String UNREAD_MESSAGE = 'unreadMessage';
 }
 
 class ImageVideoParams {

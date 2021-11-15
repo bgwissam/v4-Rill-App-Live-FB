@@ -74,6 +74,7 @@ class _WrapperState extends State<Wrapper> {
     return _isUserSignedIn || _guestUser
         ? MultiProvider(
             providers: [
+                //provides current user data
                 StreamProvider<UserModel>.value(
                   value: db.streamUserById(userId: currentUser?.userId),
                   initialData: UserModel(),
@@ -82,6 +83,7 @@ class _WrapperState extends State<Wrapper> {
                     return UserModel();
                   },
                 ),
+                //provides a stream of uploaded images and videos
                 StreamProvider<List<ImageVideoModel?>>.value(
                   value: db.getImageList(),
                   initialData: [],
@@ -107,7 +109,7 @@ class _WrapperState extends State<Wrapper> {
                     print('Error fetching ended stream: $error');
                     return [];
                   },
-                )
+                ),
               ],
             child: MainScreen(
               userId: currentUser?.userId,
