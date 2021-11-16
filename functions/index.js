@@ -64,7 +64,7 @@ exports.rtmTokenGenerator = functions.https.onRequest((req, res) => {
         console.log(`Current time: ${currentTime}`);
         console.log(`Expiry Time: ${expireTime}`);
         console.log(`current time + expire time ${priviledgeExpireTime}`);
-        const token = RtmTokenBuilder.buildToken(APP_ID, APP_CERTIFICATE, channelName, userAccount, role, priviledgeExpireTime);
+        const token = RtmTokenBuilder.buildToken(APP_ID, APP_CERTIFICATE, userAccount, role, priviledgeExpireTime);
         console.log(`Token RTM: ${token}`);
         return res.json({ "token": token });
     } catch (e) {

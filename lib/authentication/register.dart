@@ -178,7 +178,7 @@ class RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
-    print('the image: $profileImage - $frontId');
+    print('the image: ${widget.userModel}');
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(

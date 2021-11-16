@@ -141,6 +141,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
               _infoString.add(info);
             });
             print('Error Code: ${errorCode.index} - $errorCode');
+            Sentry.captureException(errorCode);
           },
           joinChannelSuccess: (channel, uid, elapsed) async {
             var queryResponse = await recordingController.queryRecoding(
@@ -301,23 +302,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
                       ),
                 //will list the messages for this stream
                 messageList(),
-                Positioned(
-                  top: 40,
-                  left: 10,
-                  child: SizedBox(
-                      height: 50,
-                      width: size.width,
-                      child: Column(children: [
-                        _buildLogin(),
-                        _buildQueryOnlineStatus(),
-                        _buildSendPeerMessage(),
-                        _buildSendLocalInvitation(),
-                        _buildJoinChannel(),
-                        _buildGetMembers(),
-                        _buildSendChannelMessage(),
-                        _buildInfoList(),
-                      ])),
-                ),
               ],
             );
           } else {
@@ -439,6 +423,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //Info panel to show logs
   Widget messageList() {
+    print('the message List: $_messageList');
     return Container(
       padding: const EdgeInsets.only(bottom: 100),
       alignment: Alignment.bottomCenter,
@@ -542,9 +527,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   void _onCallEnd(BuildContext context) async {
     String streamingId = '';
     if (widget.streamModelId != null) {
-      print('StreamingModel: ${widget.streamModelId}');
       streamingId = await db.fetchStreamingVideoUrl(uid: widget.streamModelId);
-      print('StreamingID: $streamingId');
       if (streamingId == widget.streamUserId) {
         //widget.loadingStateCallback!();
         //Stop the recording and save the stream to the bucket
@@ -565,10 +548,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
     } else {
       print('An error occured: streamModelId is null');
       await Sentry.captureException('streamModelId is null');
+      Navigator.pop(context);
     }
-
-    Navigator.pop(context);
-    Navigator.pop(context);
   }
 
   void _saveLiveStream(var data) async {
@@ -604,7 +585,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         if (data['serverResponse']['uploadingStatus'] == 'uploaded') {
           var streamUrl =
               'https://videos165240-dev.s3.us-west-2.amazonaws.com/${data['serverResponse']['fileList']}';
-          print('the stream url: $streamUrl');
+
           var result = await db.saveEndedLiveStream(
               userId: widget.userId,
               thumbnailUrl: thumbnailUrl,
@@ -624,6 +605,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
     } else {
       await Sentry.captureException('Error obtaining server response aws');
     }
+    Navigator.pop(context);
   }
 
   void _onToggleMute() {
@@ -675,7 +657,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
               decoration: InputDecoration(
                 suffix: MaterialButton(
                   minWidth: 0,
-                  onPressed: () {}, //_toggleSendChannelMessage,
+                  onPressed: () async {
+                    await _toggleSendChannelMessage();
+                  },
                   child: ImageIcon(AssetImage("assets/icons/send_rill.png"),
                       color: color_12, size: 20),
                   shape: const CircleBorder(),
@@ -703,6 +687,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   void _createClient() async {
     _client = await AgoraRtmClient.createInstance(param.app_ID);
+
+    await _toggleLogin();
+    await _toggleJoinChannel();
     _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
       _log(info: message.text, type: 'message', user: peerId);
     };
@@ -756,137 +743,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
     return channel;
   }
 
-  static TextStyle textStyle = TextStyle(fontSize: 18, color: Colors.blue);
-
-  Widget _buildLogin() {
-    return Row(children: <Widget>[
-      _isLogin
-          ? Expanded(child: Text('User Id: ' + widget.userId, style: textStyle))
-          : Expanded(
-              child: TextField(
-                  controller: _userNameController,
-                  decoration: InputDecoration(hintText: 'Input your user id'))),
-      OutlineButton(
-        child: Text(_isLogin ? 'Logout' : 'Login', style: textStyle),
-        onPressed: _toggleLogin,
-      )
-    ]);
-  }
-
-  Widget _buildQueryOnlineStatus() {
-    if (!_isLogin) {
-      return Container();
-    }
-    return Row(children: <Widget>[
-      Expanded(
-          child: TextField(
-              controller: _peerUserIdController,
-              decoration: InputDecoration(hintText: 'Input peer user id'))),
-      OutlineButton(
-        child: Text('Query Online', style: textStyle),
-        onPressed: _toggleQuery,
-      )
-    ]);
-  }
-
-  Widget _buildSendPeerMessage() {
-    if (!_isLogin) {
-      return Container();
-    }
-    return Row(children: <Widget>[
-      Expanded(
-          child: TextField(
-              controller: _peerMessageController,
-              decoration: InputDecoration(hintText: 'Input peer message'))),
-      OutlineButton(
-        child: Text('Send to Peer', style: textStyle),
-        onPressed: _toggleSendPeerMessage,
-      )
-    ]);
-  }
-
-  Widget _buildSendLocalInvitation() {
-    if (!_isLogin) {
-      return Container();
-    }
-    return Row(children: <Widget>[
-      Expanded(
-          child: TextField(
-              controller: _invitationController,
-              decoration:
-                  InputDecoration(hintText: 'Input invitation content'))),
-      OutlineButton(
-        child: Text('Send local invitation', style: textStyle),
-        onPressed: _toggleSendLocalInvitation,
-      )
-    ]);
-  }
-
-  Widget _buildJoinChannel() {
-    if (!_isLogin) {
-      return Container();
-    }
-    return Row(children: <Widget>[
-      _isInChannel
-          ? Expanded(
-              child: Text('Channel: ' + _channelNameController.text,
-                  style: textStyle))
-          : Expanded(
-              child: TextField(
-                  controller: _channelNameController,
-                  decoration: InputDecoration(hintText: 'Input channel id'))),
-      OutlineButton(
-        child: Text(_isInChannel ? 'Leave Channel' : 'Join Channel',
-            style: textStyle),
-        onPressed: _toggleJoinChannel,
-      )
-    ]);
-  }
-
-  Widget _buildSendChannelMessage() {
-    if (!_isLogin || !_isInChannel) {
-      return Container();
-    }
-    return Row(children: <Widget>[
-      Expanded(
-          child: TextField(
-              controller: _channelMessageController,
-              decoration: InputDecoration(hintText: 'Input channel message'))),
-      OutlineButton(
-        child: Text('Send to Channel', style: textStyle),
-        onPressed: _toggleSendChannelMessage,
-      )
-    ]);
-  }
-
-  Widget _buildGetMembers() {
-    if (!_isLogin || !_isInChannel) {
-      return Container();
-    }
-    return Row(children: <Widget>[
-      OutlineButton(
-        child: Text('Get Members in Channel', style: textStyle),
-        onPressed: _toggleGetMembers,
-      )
-    ]);
-  }
-
-  Widget _buildInfoList() {
-    return Expanded(
-        child: Container(
-            child: ListView.builder(
-      itemExtent: 24,
-      itemBuilder: (context, i) {
-        return ListTile(
-          contentPadding: const EdgeInsets.all(0.0),
-          title: Text(_infoString[i]),
-        );
-      },
-      itemCount: _infoString.length,
-    )));
-  }
-
-  void _toggleLogin() async {
+  Future<void> _toggleLogin() async {
+    print('client is logging in: $_isLogin');
     if (_isLogin) {
       try {
         await _client.logout();
@@ -899,21 +757,19 @@ class _LiveStreamingState extends State<LiveStreaming> {
         _log(type: 'error', info: 'failed logout: $e', user: widget.userId);
       }
     } else {
-      String userId = _userNameController.text;
-      if (userId.isEmpty) {
-        _log(type: 'message', info: 'please input userId', user: userId);
+      print('client user id: ${widget.userId}');
+      if (widget.userId.isEmpty) {
+        _log(type: 'message', info: 'please input userId', user: widget.userId);
         return;
       }
       try {
-        print('the RTM token: ${widget.rtmToken}');
-        print('the RTM uid: $userId - AppID: ${param.app_ID}');
-        await _client.login(widget.rtmToken, userId);
-        _log(type: 'login', user: userId);
+        await _client.login(widget.rtmToken, widget.userId);
+        _log(type: 'login', user: widget.userId);
         setState(() {
           _isLogin = true;
         });
       } catch (e) {
-        _log(type: 'error', info: 'Login error: $e', user: userId);
+        _log(type: 'error', info: 'Login error: $e', user: widget.userId);
         print('Failed to login: $e');
       }
     }
@@ -979,7 +835,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
   }
 
-  void _toggleJoinChannel() async {
+  Future<void> _toggleJoinChannel() async {
     if (_isInChannel) {
       try {
         await _channel?.leave();
@@ -994,16 +850,17 @@ class _LiveStreamingState extends State<LiveStreaming> {
       } catch (e) {
         _log(
             type: 'error',
-            info: 'Joine Channel Error: $e',
+            info: 'Joined Channel Error: $e',
             user: widget.userId);
       }
     } else {
-      String channelId = _channelNameController.text;
+      String channelId = widget.channelName;
       if (channelId.isEmpty) {
         print('channel Id is empty');
         return;
       }
       try {
+        print('the channel id: $channelId');
         _channel = await _createChannel(channelId);
         await _channel?.join();
         print('$channelId has been joined');
@@ -1026,12 +883,13 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
   }
 
-  void _toggleSendChannelMessage() async {
+  Future<void> _toggleSendChannelMessage() async {
     String text = _channelMessageController.text;
     if (text.isEmpty) {
       return;
     }
     try {
+      print('the channel message: $text');
       await _channel?.sendMessage(AgoraRtmMessage.fromText(text));
       print('message channel sent successfully');
     } catch (e) {

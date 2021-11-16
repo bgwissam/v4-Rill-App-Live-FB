@@ -942,7 +942,7 @@ class _AccountScreenState extends State<AccountScreen>
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text('Basic Plan'),
                               Text('\$20/Annually'),
                               Text('Get Now')
@@ -959,7 +959,7 @@ class _AccountScreenState extends State<AccountScreen>
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text('Premium Plan'),
                               Text('\$50/Annually'),
                               Text('Get Now')

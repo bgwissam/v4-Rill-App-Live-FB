@@ -130,7 +130,6 @@ class _MessagesScreenState extends State<MessagesScreen> {
               ? ListView.builder(
                   itemCount: snapshot.data?.docs.length,
                   itemBuilder: (context, index) {
-                    //var unreadMessage = _getUnreadMessages();
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: InkWell(
@@ -172,7 +171,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: size.width / 2,
                                 child: Text(
                                   '${snapshot.data?.docs[index][UserParams.FIRST_NAME]} ${snapshot.data?.docs[index][UserParams.LAST_NAME]}',
@@ -183,6 +182,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                   future: unread,
                                   builder: (context, AsyncSnapshot snapshot) {
                                     if (snapshot.hasData) {
+                                      print('the chat index: $index');
                                       if (snapshot.connectionState ==
                                           ConnectionState.done) {
                                         if (snapshot.data.isNotEmpty) {

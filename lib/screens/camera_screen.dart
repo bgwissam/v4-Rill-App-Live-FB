@@ -770,18 +770,31 @@ class _CameraScreenState extends State<CameraScreen>
 
   //Future to get token
   Future<void> _getTokens() async {
-    var rtcResult = await rtctokenGenerator.createVideoAudioChannelToken(
-        channelName: _channelName!, role: '1');
+    if (widget.userId != null && _channelName != null) {
+      var rtcResult = await rtctokenGenerator.createVideoAudioChannelToken(
+          channelName: _channelName!, role: '1');
 
-    rtcToken = rtcResult['token'];
-    uid = rtcResult['uid'];
+      rtcToken = rtcResult['token'];
+      uid = rtcResult['uid'];
 
-    var rtmResult = await rtmTokenGenerator.createMessagingToken(
-        channelName: _channelName!, userAccount: 'testing', role: '1');
+      var rtmResult = await rtmTokenGenerator.createMessagingToken(
+          channelName: _channelName!, userAccount: widget.userId!, role: '1');
 
-    rtmToken = rtmResult['token'];
+      rtmToken = rtmResult['token'];
 
-    print('the rtc token: $rtcToken - $uid - rtm token: $rtmToken');
+      print('the rtc token: $rtcToken - $uid - rtm token: $rtmToken');
+    } else {
+      showDialog(
+          builder: (BuildContext context) {
+            return const Center(
+              child: AlertDialog(
+                title: Text('Missing Data'),
+                content: Text('User Id or Channel is empty'),
+              ),
+            );
+          },
+          context: context);
+    }
   }
 
   //stopping the loading state when stream ends

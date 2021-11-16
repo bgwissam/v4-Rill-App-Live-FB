@@ -1008,14 +1008,12 @@ class DatabaseService {
 
   //Stream the number of unread messages
   Future<int> streamUnreadMessages({String? userId}) async {
-    print('result id: $userId');
     var result = userModelCollection
         .doc(userId)
         .collection('chats')
         .where(UserParams.UNREAD_MESSAGE, isEqualTo: true)
         .get()
         .then((value) => value.size);
-    print('result data: $result');
     return result;
   }
 }
