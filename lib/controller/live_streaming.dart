@@ -659,11 +659,14 @@ class _LiveStreamingState extends State<LiveStreaming> {
                   minWidth: 0,
                   onPressed: () async {
                     await _toggleSendChannelMessage();
+                    setState(() {
+                      _channelMessageController.clear();
+                    });
                   },
                   child: ImageIcon(AssetImage("assets/icons/send_rill.png"),
                       color: color_12, size: 20),
                   shape: const CircleBorder(),
-                  elevation: 2.0,
+                  elevation: 1.0,
                   color: color_7,
                   padding: const EdgeInsets.all(10),
                 ),
@@ -688,20 +691,19 @@ class _LiveStreamingState extends State<LiveStreaming> {
   void _createClient() async {
     _client = await AgoraRtmClient.createInstance(param.app_ID);
 
-    await _toggleLogin();
-    await _toggleJoinChannel();
-    _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
-      _log(info: message.text, type: 'message', user: peerId);
-    };
     _client.onConnectionStateChanged = (int state, int reason) {
       _log(type: 'state', info: 'State: $state, $reason');
       if (state == 5) {
-        print('we are here');
         _client.logout();
         setState(() {
           _isLogin = false;
         });
       }
+    };
+
+    _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
+      print('message recieved: $message');
+      _log(info: message.text, type: 'message', user: peerId);
     };
 
     _client.onLocalInvitationReceivedByPeer = (AgoraRtmLocalInvitation invite) {
@@ -718,12 +720,16 @@ class _LiveStreamingState extends State<LiveStreaming> {
           info: 'invitation received Remote',
           user: invite.callerId);
     };
+
+    await _toggleLogin();
+    await _toggleJoinChannel();
   }
 
   Future<AgoraRtmChannel?> _createChannel(String name) async {
     AgoraRtmChannel? channel = await _client.createChannel(name);
     if (channel != null) {
       channel.onMemberJoined = (AgoraRtmMember member) {
+        print('memeber joined: ${member.userId}');
         _log(
             type: 'joined',
             user: member.userId,
@@ -737,7 +743,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
       };
       channel.onMessageReceived =
           (AgoraRtmMessage message, AgoraRtmMember memeber) {
-        _log(type: 'message', user: memeber.userId, info: message.text);
+        setState(() {
+          _log(type: 'message', user: memeber.userId, info: message.text);
+        });
       };
     }
     return channel;
@@ -775,7 +783,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
   }
 
-  void _toggleQuery() async {
+  Future<void> _toggleQuery() async {
     String peerUid = _peerUserIdController.text;
     if (peerUid.isEmpty) {
       _log(type: 'message', info: 'Enter peer id', user: widget.userId);
@@ -790,13 +798,13 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
   }
 
-  void _toggleSendPeerMessage() async {
-    String peerUid = _peerUserIdController.text;
+  Future<void> _toggleSendPeerMessage() async {
+    String peerUid = widget.userId;
     if (peerUid.isEmpty) {
       _log(type: 'message', info: 'Enter peer id', user: widget.userId);
       return;
     }
-    String text = _peerMessageController.text;
+    String text = _channelMessageController.text;
     if (text.isEmpty) {
       return;
     }
@@ -839,11 +847,11 @@ class _LiveStreamingState extends State<LiveStreaming> {
     if (_isInChannel) {
       try {
         await _channel?.leave();
-        print('left channel ');
+        print('left channel');
         if (_channel != null) {
           _client.releaseChannel(_channel!.channelId!);
         }
-        _channelMessageController.clear();
+        // _channelMessageController.clear();
         setState(() {
           _isInChannel = false;
         });
@@ -861,6 +869,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
       }
       try {
         print('the channel id: $channelId');
+
         _channel = await _createChannel(channelId);
         await _channel?.join();
         print('$channelId has been joined');
@@ -874,7 +883,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
   }
 
-  void _toggleGetMembers() async {
+  Future<void> _toggleGetMembers() async {
     try {
       List<AgoraRtmMember>? members = await _channel?.getMembers();
       print('the members: $members');
@@ -889,8 +898,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
       return;
     }
     try {
-      print('the channel message: $text');
       await _channel?.sendMessage(AgoraRtmMessage.fromText(text));
+      print('the channel message: $text');
+      _log(type: 'message', info: text, user: widget.userId);
       print('message channel sent successfully');
     } catch (e) {
       _log(

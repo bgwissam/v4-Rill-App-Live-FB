@@ -15,6 +15,7 @@ import 'package:rillliveapp/authentication/security.dart';
 import 'package:rillliveapp/controller/live_streaming.dart';
 import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/controller/token_controller_rtc.dart';
+import 'package:rillliveapp/controller/token_controller_rtm.dart';
 import 'package:rillliveapp/models/file_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/screens/account_screen.dart';
@@ -86,6 +87,7 @@ class _MainScreenState extends State<MainScreen>
   late Future getSubscriptionFeed;
   //Define controller
   RecordingController recordingController = RecordingController();
+  RtmTokenGenerator rtmTokenGenerator = RtmTokenGenerator();
   RtcTokenGenerator tokenGenerator = RtcTokenGenerator();
   StorageData storageData = StorageData();
   AWSstorage awsStorage = AWSstorage();
@@ -500,8 +502,6 @@ class _MainScreenState extends State<MainScreen>
                   scrollDirection: Axis.horizontal,
                   itemCount: streamingProvider.length,
                   itemBuilder: (context, index) {
-                    print(
-                        'the stream provider: ${streamingProvider[index]!.userId}');
                     return FutureBuilder(
                         future: getStreamerDetails(
                             userId:
@@ -510,42 +510,45 @@ class _MainScreenState extends State<MainScreen>
                           if (snapshot.hasData) {
                             return GestureDetector(
                               onTap: () async {
-                                print(
-                                    'the rtm: ${streamingProvider[index]!.rtmToken.toString()}');
-                                var userType =
-                                    await _joiningStreamAlertDialog(context);
-                                print('the user role: $userType');
-                                await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (builder) {
-                                      return LiveStreaming(
-                                        channelName: streamingProvider[index]!
-                                            .channelName
-                                            .toString(),
-                                        streamUserId: streamingProvider[index]!
-                                            .streamerId,
-                                        userRole: userType,
-                                        rtcToken: streamingProvider[index]!
-                                            .rtcToken
-                                            .toString(),
-                                        rtmToken: streamingProvider[index]!
-                                            .rtmToken
-                                            .toString(),
-                                        userId: widget.userId!,
-                                        resourceId: streamingProvider[index]!
-                                            .resourceId
-                                            .toString(),
-                                        uid: int.parse(streamingProvider[index]!
-                                            .streamerId!),
-                                        sid: streamingProvider[index]!
-                                            .sid
-                                            .toString(),
-                                        mode: 'mix',
-                                      );
-                                    },
-                                  ),
-                                );
+                                var userType = 'subscriber';
+                                var rtmToken = await _getRtmToken(
+                                    streamingProvider[index]!
+                                        .channelName
+                                        .toString());
+                                print('the rtm Token: $rtmToken');
+                                if (rtmToken.isNotEmpty) {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (builder) {
+                                        return LiveStreaming(
+                                          channelName: streamingProvider[index]!
+                                              .channelName
+                                              .toString(),
+                                          streamUserId:
+                                              streamingProvider[index]!
+                                                  .streamerId,
+                                          userRole: userType,
+                                          rtcToken: streamingProvider[index]!
+                                              .rtcToken
+                                              .toString(),
+                                          rtmToken: rtmToken.toString(),
+                                          userId: widget.userId!,
+                                          resourceId: streamingProvider[index]!
+                                              .resourceId
+                                              .toString(),
+                                          uid: int.parse(
+                                              streamingProvider[index]!
+                                                  .streamerId!),
+                                          sid: streamingProvider[index]!
+                                              .sid
+                                              .toString(),
+                                          mode: 'mix',
+                                        );
+                                      },
+                                    ),
+                                  );
+                                }
                               },
                               child: Container(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -662,6 +665,15 @@ class _MainScreenState extends State<MainScreen>
         ),
       ],
     );
+  }
+
+  //generate rtom token for each joining user
+  Future<String> _getRtmToken(String channelName) async {
+    var rtmResult = await rtmTokenGenerator.createMessagingToken(
+        channelName: channelName, userAccount: widget.userId!, role: '2');
+    print('what happened here');
+    rtmToken = rtmResult['token'];
+    return rtmToken;
   }
 
   //Get streamer details

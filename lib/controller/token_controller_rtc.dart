@@ -20,9 +20,9 @@ class RtcTokenGenerator {
         },
         body: jsonEncode(
           <String, dynamic>{
-            "channelName": channelName,
+            "channelName": channelName.trim(),
             "role": role,
-            "expireTime": 3000
+            "expireTime": 7200
           },
         ),
       );

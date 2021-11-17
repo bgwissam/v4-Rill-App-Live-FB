@@ -28,14 +28,15 @@ exports.tokenGenerator = functions.https.onRequest((req, res) => {
         //get expiry time
         let expireTime = req.body.expireTime;
         if (!expireTime || expireTime == '') {
-            expireTime = 3600;
+            expireTime = 7200;
         } else {
             expireTime = parseInt(expireTime, 10);
         }
         //calculate expire time privilage
         let currentTime = Math.floor(Date.now() / 1000);
         const priviledgeExpireTime = currentTime + expireTime;
-        console.log(`The token generator log: ${channelName} - ${uid}`);
+        console.log(`Role: ${role} - Expiry: ${expireTime} - Priviledge: ${priviledgeExpireTime}`);
+        console.log(`RTC token: ${channelName} - uid: ${uid}`);
         const token = RtcTokenBuilder.buildTokenWithUid(APP_ID, APP_CERTIFICATE, channelName, uid, role, priviledgeExpireTime);
         return res.json({ "token": token, "uid": uid });
 

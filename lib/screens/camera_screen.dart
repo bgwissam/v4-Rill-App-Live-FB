@@ -83,7 +83,6 @@ class _CameraScreenState extends State<CameraScreen>
   void initState() {
     super.initState();
 
-    //_getTokens();
     onNewCameraSelected(cameras[0]);
     _scrollController = ScrollController();
   }
