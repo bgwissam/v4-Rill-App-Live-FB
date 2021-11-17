@@ -8,6 +8,7 @@ import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/controller/token_controller_rtc.dart';
 import 'package:rillliveapp/controller/token_controller_rtm.dart';
 import 'package:rillliveapp/main.dart';
+import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/aspect_ration_video.dart';
@@ -17,8 +18,10 @@ import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({Key? key, this.userId}) : super(key: key);
+  const CameraScreen({Key? key, this.userId, this.currentUser})
+      : super(key: key);
   final String? userId;
+  final UserModel? currentUser;
   @override
   _CameraScreenState createState() => _CameraScreenState();
 }
@@ -746,6 +749,7 @@ class _CameraScreenState extends State<CameraScreen>
         context,
         MaterialPageRoute(
           builder: (builder) => LiveStreaming(
+            currentUser: widget.currentUser,
             channelName: _channelName!,
             userRole: 'publisher',
             rtcToken: rtcToken!,

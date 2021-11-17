@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:camera/camera.dart';
-import 'package:chewie/chewie.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -68,16 +67,15 @@ class _MainScreenState extends State<MainScreen>
   var micPermission = false;
   var _userRole = 'subscriber';
   final _userId = '45678';
-  final _userId_2 = '34343';
   late String rtcToken = '';
   late String rtmToken = '';
   late List<String> videoStreams = [];
   late List<Widget> _bodyWidget = [];
   late int _selectedIndex = 0;
-  // AmplifyDataService as = AmplifyDataService();
   late Map apiToken;
   late Map acquireResponse;
   late Map startRecordingResponse;
+  UserModel _currentUser = UserModel();
   //Controllers
   late VideoPlayerController _videoPlayerController;
   late TabController _tabController;
@@ -515,13 +513,14 @@ class _MainScreenState extends State<MainScreen>
                                     streamingProvider[index]!
                                         .channelName
                                         .toString());
-                                print('the rtm Token: $rtmToken');
-                                if (rtmToken.isNotEmpty) {
+                                if (rtmToken.isNotEmpty &&
+                                    _currentUser.userId != null) {
                                   await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (builder) {
                                         return LiveStreaming(
+                                          currentUser: _currentUser,
                                           channelName: streamingProvider[index]!
                                               .channelName
                                               .toString(),
@@ -684,10 +683,10 @@ class _MainScreenState extends State<MainScreen>
   }
 
   //Get current user
-  Future<UserModel> _getCurrentUser({String? userId}) async {
-    var result = await db.getUserByUserId(userId: userId);
-    if (result.fcmToken != null) {
-      if (result.fcmToken != fcmToken) {
+  Future<void> _getCurrentUser({String? userId}) async {
+    _currentUser = await db.getUserByUserId(userId: userId);
+    if (_currentUser.fcmToken != null) {
+      if (_currentUser.fcmToken != fcmToken) {
         await db.userModelCollection
             .doc(userId)
             .update({UserParams.FCM_TOKEN: fcmToken});
@@ -697,7 +696,6 @@ class _MainScreenState extends State<MainScreen>
           .doc(userId)
           .update({UserParams.FCM_TOKEN: fcmToken});
     }
-    return result;
   }
 
   //Pull refresh
@@ -721,12 +719,14 @@ class _MainScreenState extends State<MainScreen>
               width: 150,
               child: FloatingActionButton(
                 onPressed: () {
-                  widget.userId != null
+                  widget.userId != null && _currentUser.userId != null
                       ? Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (builder) =>
-                                  CameraScreen(userId: widget.userId)),
+                            builder: (builder) => CameraScreen(
+                                userId: widget.userId,
+                                currentUser: _currentUser),
+                          ),
                         )
                       //showBottomNavigationMenu()
                       : errorDialog('Guest Account',

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -32,6 +31,7 @@ class LiveStreaming extends StatefulWidget {
   final String? streamModelId;
   final Function? loadingStateCallback;
   final String? recordingId;
+  final UserModel? currentUser;
   const LiveStreaming({
     required this.channelName,
     required this.userRole,
@@ -47,6 +47,7 @@ class LiveStreaming extends StatefulWidget {
     Key? key,
     this.uid,
     this.recordingId,
+    this.currentUser,
   }) : super(key: key);
 
   @override
@@ -279,41 +280,46 @@ class _LiveStreamingState extends State<LiveStreaming> {
     size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: FutureBuilder(
-        future: _futureRenderViews(),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            return Stack(
-              children: [
-                //Show the video view
-                widget.userRole == 'publisher'
-                    ? _broadCastView()
-                    : _audienceView(),
-                //show the toolbar to control the view
+      body: Stack(
+        children: [
+          FutureBuilder(
+            future: _futureRenderViews(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return Stack(
+                  children: [
+                    //Show the video view
+                    widget.userRole == 'publisher'
+                        ? _broadCastView()
+                        : _audienceView(),
+                    //show the toolbar to control the view
 
-                //_toolBar(),
+                    //_toolBar(),
 
-                //show messaging bar
-                widget.userRole == 'publisher'
-                    ? const SizedBox.shrink()
-                    : SizedBox(
-                        width: size.width,
-                        child: _bottomBar(),
-                      ),
-                //will list the messages for this stream
-                messageList(),
-              ],
-            );
-          } else {
-            return const Center(
-              child: LoadingAmination(
-                animationType: 'ThreeInOut',
-              ),
-            );
-          }
-        },
+                    //show messaging bar
+                    widget.userRole == 'publisher'
+                        ? const SizedBox.shrink()
+                        : SizedBox(
+                            width: size.width,
+                            child: _bottomBar(),
+                          ),
+                    //will list the messages for this stream
+                    messageList(),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: LoadingAmination(
+                    animationType: 'ThreeInOut',
+                  ),
+                );
+              }
+            },
+          ),
+          _bottomBar()
+        ],
       ),
-      bottomNavigationBar: _bottomBar(),
+      //bottomNavigationBar: _bottomBar(),
     );
   }
 
@@ -511,6 +517,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   Widget _requestJoin() {
     return Container(
+      margin: EdgeInsets.only(right: 5, bottom: 5),
       decoration: BoxDecoration(
           border: Border.all(color: color_4),
           borderRadius: BorderRadius.circular(15)),
@@ -631,59 +638,75 @@ class _LiveStreamingState extends State<LiveStreaming> {
    */
 
   Widget _bottomBar() {
-    return Container(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
-      decoration: const BoxDecoration(
-        color: Colors.transparent,
-      ),
-      height: 60,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
-            width: size.width / 2 + 40,
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(10)),
-            child: TextField(
-              cursorColor: Colors.blue,
-              textInputAction: TextInputAction.send,
-              //onSubmitted: _sendMessage,
-              style: textStyle_4,
-              controller: _channelMessageController,
-              textCapitalization: TextCapitalization.sentences,
-              decoration: InputDecoration(
-                suffix: MaterialButton(
-                  minWidth: 0,
-                  onPressed: () async {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Theme(
+        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+        child: SizedBox(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
+                width: size.width / 2 + 40,
+                child: TextField(
+                  cursorColor: Colors.blue,
+                  textInputAction: TextInputAction.send,
+                  style: textStyle_22,
+                  controller: _channelMessageController,
+                  textCapitalization: TextCapitalization.sentences,
+                  onSubmitted: (val) async {
                     await _toggleSendChannelMessage();
                     setState(() {
                       _channelMessageController.clear();
                     });
                   },
-                  child: ImageIcon(AssetImage("assets/icons/send_rill.png"),
-                      color: color_12, size: 20),
-                  shape: const CircleBorder(),
-                  elevation: 1.0,
-                  color: color_7,
-                  padding: const EdgeInsets.all(10),
+                  decoration: InputDecoration(
+                      hintText: 'Say something..',
+                      hintStyle: textStyle_20,
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(color: color_13)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(color: color_13))),
+
+                  // InputDecoration(
+                  //   suffix: Padding(
+                  //     padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  //     child: MaterialButton(
+                  //       minWidth: 0,
+                  //       onPressed: () async {
+                  //         await _toggleSendChannelMessage();
+                  //         setState(() {
+                  //           _channelMessageController.clear();
+                  //         });
+                  //       },
+                  //       child: ImageIcon(AssetImage("assets/icons/send_rill.png"),
+                  //           color: color_12, size: 20),
+                  //       shape: const CircleBorder(),
+                  //       elevation: 1.0,
+                  //       color: color_7,
+                  //       padding: const EdgeInsets.all(10),
+                  //     ),
+                  //   ),
+                  //   isDense: false,
+                  //   hintText: 'Comment',
+                  //   hintStyle: textStyle_22,
+                  //   enabledBorder: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(10.0),
+                  //       borderSide: const BorderSide(color: Colors.white)),
+                  //   focusedBorder: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(10.0),
+                  //       borderSide: const BorderSide(color: Colors.white)),
+                  // ),
                 ),
-                isDense: false,
-                hintText: 'Comment',
-                hintStyle: textStyle_4,
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(color: Colors.white)),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(color: Colors.white)),
               ),
-            ),
+              _requestJoin()
+            ],
           ),
-          _requestJoin()
-        ],
+        ),
       ),
     );
   }
@@ -692,7 +715,11 @@ class _LiveStreamingState extends State<LiveStreaming> {
     _client = await AgoraRtmClient.createInstance(param.app_ID);
 
     _client.onConnectionStateChanged = (int state, int reason) {
-      _log(type: 'state', info: 'State: $state, $reason');
+      _log(
+          type: 'state',
+          info: 'State: $state, $reason',
+          fullName:
+              '${widget.currentUser?.firstName} - ${widget.currentUser?.lastName}');
       if (state == 5) {
         _client.logout();
         setState(() {
@@ -702,15 +729,21 @@ class _LiveStreamingState extends State<LiveStreaming> {
     };
 
     _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
-      print('message recieved: $message');
-      _log(info: message.text, type: 'message', user: peerId);
+      _log(
+          info: message.text,
+          type: 'message',
+          user: peerId,
+          fullName:
+              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
     };
 
     _client.onLocalInvitationReceivedByPeer = (AgoraRtmLocalInvitation invite) {
       _log(
           type: 'invite',
           info: 'invitation received Local',
-          user: invite.calleeId);
+          user: invite.calleeId,
+          fullName:
+              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
     };
 
     _client.onRemoteInvitationReceivedByPeer =
@@ -718,7 +751,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
       _log(
           type: 'invite',
           info: 'invitation received Remote',
-          user: invite.callerId);
+          user: invite.callerId,
+          fullName:
+              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
     };
 
     await _toggleLogin();
@@ -733,18 +768,27 @@ class _LiveStreamingState extends State<LiveStreaming> {
         _log(
             type: 'joined',
             user: member.userId,
-            info: 'Memeber Joined: ${member.channelId}');
+            info: 'Joined',
+            fullName:
+                '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
       };
       channel.onMemberLeft = (AgoraRtmMember member) {
         _log(
             type: 'joined',
             user: member.userId,
-            info: 'Member Left: ${member.channelId}');
+            info: 'Left',
+            fullName:
+                '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
       };
       channel.onMessageReceived =
           (AgoraRtmMessage message, AgoraRtmMember memeber) {
         setState(() {
-          _log(type: 'message', user: memeber.userId, info: message.text);
+          _log(
+              type: 'message',
+              user: memeber.userId,
+              info: message.text,
+              fullName:
+                  '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
         });
       };
     }
@@ -832,14 +876,18 @@ class _LiveStreamingState extends State<LiveStreaming> {
       _log(
           type: 'message',
           info: 'Invitation: $invitation',
-          user: widget.userId);
+          user: widget.userId,
+          fullName:
+              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
       await _client.sendLocalInvitation(invitation.toJson());
       print('Invititation sent successfully');
     } catch (e) {
       _log(
           type: 'error',
           info: 'Send Invitation Error: $e',
-          user: widget.userId);
+          user: widget.userId,
+          fullName:
+              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
     }
   }
 
@@ -859,7 +907,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
         _log(
             type: 'error',
             info: 'Joined Channel Error: $e',
-            user: widget.userId);
+            user: widget.userId,
+            fullName:
+                '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
       }
     } else {
       String channelId = widget.channelName;
@@ -872,13 +922,17 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
         _channel = await _createChannel(channelId);
         await _channel?.join();
-        print('$channelId has been joined');
+
         setState(() {
           _isInChannel = true;
         });
       } catch (e) {
         _log(
-            type: 'error', info: 'Join Channel Error: $e', user: widget.userId);
+            type: 'error',
+            info: 'Join Channel Error: $e',
+            user: widget.userId,
+            fullName:
+                '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
       }
     }
   }
@@ -892,6 +946,10 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
   }
 
+  void _sendMessage() async {
+    await _toggleSendChannelMessage();
+  }
+
   Future<void> _toggleSendChannelMessage() async {
     String text = _channelMessageController.text;
     if (text.isEmpty) {
@@ -900,13 +958,20 @@ class _LiveStreamingState extends State<LiveStreaming> {
     try {
       await _channel?.sendMessage(AgoraRtmMessage.fromText(text));
       print('the channel message: $text');
-      _log(type: 'message', info: text, user: widget.userId);
+      _log(
+          type: 'message',
+          info: text,
+          user: widget.userId,
+          fullName:
+              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
       print('message channel sent successfully');
     } catch (e) {
       _log(
           type: 'error',
           info: 'Send Channel Message Error: $e',
-          user: widget.userId);
+          user: widget.userId,
+          fullName:
+              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
     }
   }
 
@@ -1122,24 +1187,24 @@ class _LiveStreamingState extends State<LiveStreaming> {
   // }
 
   //show message chat
-  void _log({String? info, String? type, String? user}) {
+  void _log({String? info, String? type, String? user, String? fullName}) {
     if (type == 'message') {
-      _messageList.add('$user: $info');
+      _messageList.add('$fullName: $info');
     }
     if (type == 'login') {
-      _messageList.add('$user : logged in');
+      _messageList.add('$fullName : logged in');
     }
     if (type == 'joined') {
-      _messageList.add('$user: $info');
+      _messageList.add('$fullName: $info');
     }
     if (type == 'error') {
-      _messageList.add('$user: $info');
+      _messageList.add('$fullName: $info');
     }
-    if (type == 'state') {
-      _messageList.add('changed: $info');
-    }
+    // if (type == 'state') {
+    //   _messageList.add('changed: $info');
+    // }
     if (type == 'invite') {
-      _messageList.add('Invited: $info by $user');
+      _messageList.add('Invited: $info by $fullName');
     }
   }
 }

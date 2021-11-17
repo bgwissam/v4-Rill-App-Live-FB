@@ -12,7 +12,13 @@ class AuthService {
 
   //Create a user object based on firebase user
   UserModel? _userFromFirebaseUser(User? user) {
-    return user != null ? UserModel(userId: user.uid) : null;
+    return user != null
+        ? UserModel(
+            userId: user.uid,
+            firstName: user.displayName,
+            emailAddress: user.email,
+          )
+        : null;
   }
 
   //Change user screen when user is obtained

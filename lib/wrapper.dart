@@ -64,7 +64,6 @@ class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
     currentUser = Provider.of<UserModel?>(context);
-
     if (currentUser?.userId != null) {
       _addFcmToken();
       setState(() {
