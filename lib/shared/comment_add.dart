@@ -30,9 +30,6 @@ class _CommentAddState extends State<CommentAdd> {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        'Some data: ${widget.userModel!.userId} - ${widget.collection} - ${widget.fileId}');
-
     return Form(
       key: _formKey,
       child: Card(

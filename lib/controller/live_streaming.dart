@@ -59,6 +59,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   final _infoString = <String>[];
   late List<String> _messageList;
   List<UserModel> _userList = [];
+  List<String> _members = [];
   //Agora Live and Video streaming
   late RtcEngine _engine;
 
@@ -316,7 +317,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
               }
             },
           ),
-          _bottomBar()
+          widget.userRole == 'publisher' ? _streamerToolBar() : _bottomBar()
         ],
       ),
       //bottomNavigationBar: _bottomBar(),
@@ -463,60 +464,77 @@ class _LiveStreamingState extends State<LiveStreaming> {
     );
   }
 
-  Widget _toolBar() {
+  Widget _streamerToolBar() {
     return Positioned(
       left: 0,
-      top: size.height - 170,
-      height: 130,
+      top: size.height - 120,
+      height: 160,
       width: size.width,
-      child: Row(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Expanded(flex: 1, child: _bottomBar()),
+          SizedBox(
+              width: 60,
+              height: 25,
+              child: Image.asset('assets/icons/eye_rill_icon_light.png',
+                  color: color_13)),
+          Text(
+            '${_members.length}',
+            style: textStyle_20,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  padding: const EdgeInsets.symmetric(vertical: 35.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      RawMaterialButton(
+                          onPressed: _onToggleMute,
+                          child: Icon(
+                            _muted ? Icons.mic_off : Icons.mic,
+                            color: _muted ? Colors.white : Colors.redAccent,
+                            size: 20.0,
+                          ),
+                          shape: const CircleBorder(),
+                          elevation: 2.0,
+                          fillColor: _muted ? Colors.redAccent : Colors.white,
+                          padding: const EdgeInsets.all(12.0)),
+                      RawMaterialButton(
+                        onPressed: () => _onCallEnd(context),
+                        child: const Icon(Icons.call_end,
+                            color: Colors.white, size: 30.0),
+                        shape: const CircleBorder(),
+                        elevation: 2.0,
+                        fillColor: Colors.red,
+                        padding: const EdgeInsets.all(15.0),
+                      ),
+                      RawMaterialButton(
+                        onPressed: () => _onSwitchCamera(context),
+                        child: const Icon(Icons.switch_camera,
+                            color: Colors.white, size: 30.0),
+                        shape: const CircleBorder(),
+                        elevation: 2.0,
+                        fillColor: Colors.grey,
+                        padding: const EdgeInsets.all(12.0),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
-
-    // return Container(
-    //   alignment: Alignment.bottomCenter,
-    //   padding: const EdgeInsets.symmetric(vertical: 35.0),
-    //   child: Row(
-    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //     children: [
-    //       RawMaterialButton(
-    //           onPressed: _onToggleMute,
-    //           child: Icon(
-    //             _muted ? Icons.mic_off : Icons.mic,
-    //             color: _muted ? Colors.white : Colors.redAccent,
-    //             size: 20.0,
-    //           ),
-    //           shape: const CircleBorder(),
-    //           elevation: 2.0,
-    //           fillColor: _muted ? Colors.redAccent : Colors.white,
-    //           padding: const EdgeInsets.all(12.0)),
-    //       RawMaterialButton(
-    //         onPressed: () => _onCallEnd(context),
-    //         child: const Icon(Icons.call_end, color: Colors.white, size: 30.0),
-    //         shape: const CircleBorder(),
-    //         elevation: 2.0,
-    //         fillColor: Colors.red,
-    //         padding: const EdgeInsets.all(15.0),
-    //       ),
-    //       RawMaterialButton(
-    //         onPressed: () => _onSwitchCamera(context),
-    //         child: const Icon(Icons.switch_camera,
-    //             color: Colors.white, size: 30.0),
-    //         shape: const CircleBorder(),
-    //         elevation: 2.0,
-    //         fillColor: Colors.grey,
-    //         padding: const EdgeInsets.all(12.0),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 
   Widget _requestJoin() {
     return Container(
+      height: 45,
       margin: EdgeInsets.only(right: 5, bottom: 5),
       decoration: BoxDecoration(
           border: Border.all(color: color_4),
@@ -525,6 +543,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         child: Text('Request to Join', style: textStyle_19),
         onPressed: () async {
           print('we shall add this later');
+          _toggleSendPeerMessage();
         },
       ),
     );
@@ -643,67 +662,116 @@ class _LiveStreamingState extends State<LiveStreaming> {
       child: Theme(
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
         child: SizedBox(
-          height: 50,
+          height: 90,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
-                width: size.width / 2 + 40,
-                child: TextField(
-                  cursorColor: Colors.blue,
-                  textInputAction: TextInputAction.send,
-                  style: textStyle_22,
-                  controller: _channelMessageController,
-                  textCapitalization: TextCapitalization.sentences,
-                  onSubmitted: (val) async {
-                    await _toggleSendChannelMessage();
-                    setState(() {
-                      _channelMessageController.clear();
-                    });
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Say something..',
-                      hintStyle: textStyle_20,
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: color_13)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: color_13))),
-
-                  // InputDecoration(
-                  //   suffix: Padding(
-                  //     padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                  //     child: MaterialButton(
-                  //       minWidth: 0,
-                  //       onPressed: () async {
-                  //         await _toggleSendChannelMessage();
-                  //         setState(() {
-                  //           _channelMessageController.clear();
-                  //         });
-                  //       },
-                  //       child: ImageIcon(AssetImage("assets/icons/send_rill.png"),
-                  //           color: color_12, size: 20),
-                  //       shape: const CircleBorder(),
-                  //       elevation: 1.0,
-                  //       color: color_7,
-                  //       padding: const EdgeInsets.all(10),
-                  //     ),
-                  //   ),
-                  //   isDense: false,
-                  //   hintText: 'Comment',
-                  //   hintStyle: textStyle_22,
-                  //   enabledBorder: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(10.0),
-                  //       borderSide: const BorderSide(color: Colors.white)),
-                  //   focusedBorder: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(10.0),
-                  //       borderSide: const BorderSide(color: Colors.white)),
-                  // ),
-                ),
+              Column(
+                children: [
+                  //The row represents the icons and views
+                  SizedBox(
+                    width: size.width / 2 + 40,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 40,
+                            child: IconButton(
+                              icon: Image.asset(
+                                'assets/icons/heart_rill_icon_light.png',
+                                color: color_13,
+                              ),
+                              onPressed: () async {},
+                            ),
+                          ),
+                          SizedBox(
+                            height: 40,
+                            child: IconButton(
+                              icon: Image.asset(
+                                'assets/icons/pop_rill_icon_light.png',
+                                color: color_13,
+                              ),
+                              onPressed: () async {},
+                            ),
+                          ),
+                          SizedBox(
+                            height: 40,
+                            child: IconButton(
+                              icon: Image.asset(
+                                'assets/icons/sticker_rill_icon.png',
+                                color: color_13,
+                              ),
+                              onPressed: () async {},
+                            ),
+                          ),
+                        ]),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
+                    width: size.width / 2 + 40,
+                    height: 40,
+                    child: TextField(
+                      cursorColor: Colors.blue,
+                      textInputAction: TextInputAction.send,
+                      style: textStyle_22,
+                      controller: _channelMessageController,
+                      textCapitalization: TextCapitalization.sentences,
+                      onSubmitted: (val) async {
+                        await _toggleSendChannelMessage();
+                        setState(() {
+                          _channelMessageController.clear();
+                        });
+                      },
+                      decoration: InputDecoration(
+                          hintText: 'Say something..',
+                          hintStyle: textStyle_20,
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(color: color_13)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(color: color_13))),
+                    ),
+                  ),
+                ],
               ),
-              _requestJoin()
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: size.width / 2 - 55,
+                    height: 40,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                            width: 25,
+                            height: 40,
+                            child: Image.asset(
+                                'assets/icons/eye_rill_icon_light.png',
+                                color: color_13)),
+                        Text(
+                          '${_members.length}',
+                          style: textStyle_20,
+                        ),
+                        SizedBox(
+                            width: 25,
+                            height: 40,
+                            child: Image.asset(
+                                'assets/icons/pop_rill_icon_light.png',
+                                color: color_13)),
+                        Text(
+                          '${_messageList.length}',
+                          style: textStyle_20,
+                        )
+                      ],
+                    ),
+                  ),
+                  _requestJoin(),
+                ],
+              )
             ],
           ),
         ),
@@ -729,31 +797,24 @@ class _LiveStreamingState extends State<LiveStreaming> {
     };
 
     _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
-      _log(
-          info: message.text,
-          type: 'message',
-          user: peerId,
-          fullName:
-              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+      _log(info: message.text, type: 'message', user: peerId, fullName: peerId);
     };
 
     _client.onLocalInvitationReceivedByPeer = (AgoraRtmLocalInvitation invite) {
       _log(
-          type: 'invite',
-          info: 'invitation received Local',
-          user: invite.calleeId,
-          fullName:
-              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+        type: 'invite',
+        info: 'invitation received Local',
+        user: invite.calleeId,
+      );
     };
 
     _client.onRemoteInvitationReceivedByPeer =
         (AgoraRtmRemoteInvitation invite) {
       _log(
-          type: 'invite',
-          info: 'invitation received Remote',
-          user: invite.callerId,
-          fullName:
-              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+        type: 'invite',
+        info: 'invitation received Remote',
+        user: invite.callerId,
+      );
     };
 
     await _toggleLogin();
@@ -764,21 +825,30 @@ class _LiveStreamingState extends State<LiveStreaming> {
     AgoraRtmChannel? channel = await _client.createChannel(name);
     if (channel != null) {
       channel.onMemberJoined = (AgoraRtmMember member) {
-        print('memeber joined: ${member.userId}');
+        _toggleQuery();
+        if (!_members.contains(member.userId)) {
+          setState(() {
+            _members.add(member.userId);
+          });
+        }
         _log(
             type: 'joined',
             user: member.userId,
             info: 'Joined',
-            fullName:
-                '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+            fullName: member.userId);
       };
       channel.onMemberLeft = (AgoraRtmMember member) {
+        _toggleQuery();
+        if (_members.contains(member.userId)) {
+          setState(() {
+            _members.remove(member.userId);
+          });
+        }
         _log(
             type: 'joined',
             user: member.userId,
             info: 'Left',
-            fullName:
-                '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+            fullName: member.userId);
       };
       channel.onMessageReceived =
           (AgoraRtmMessage message, AgoraRtmMember memeber) {
@@ -787,8 +857,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
               type: 'message',
               user: memeber.userId,
               info: message.text,
-              fullName:
-                  '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+              fullName: '${memeber.userId} ');
         });
       };
     }
@@ -800,7 +869,11 @@ class _LiveStreamingState extends State<LiveStreaming> {
     if (_isLogin) {
       try {
         await _client.logout();
-        _log(type: 'login', info: 'LogedOut');
+        _log(
+            type: 'login',
+            info: 'LogedOut',
+            fullName:
+                '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
         setState(() {
           _isLogin = false;
           _isInChannel = false;
@@ -811,12 +884,20 @@ class _LiveStreamingState extends State<LiveStreaming> {
     } else {
       print('client user id: ${widget.userId}');
       if (widget.userId.isEmpty) {
-        _log(type: 'message', info: 'please input userId', user: widget.userId);
+        _log(
+          type: 'message',
+          info: 'please input userId',
+          user: widget.userId,
+        );
         return;
       }
       try {
         await _client.login(widget.rtmToken, widget.userId);
-        _log(type: 'login', user: widget.userId);
+        _log(
+            type: 'login',
+            user: widget.userId,
+            fullName:
+                '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
         setState(() {
           _isLogin = true;
         });
@@ -828,15 +909,15 @@ class _LiveStreamingState extends State<LiveStreaming> {
   }
 
   Future<void> _toggleQuery() async {
-    String peerUid = _peerUserIdController.text;
-    if (peerUid.isEmpty) {
-      _log(type: 'message', info: 'Enter peer id', user: widget.userId);
-      return;
-    }
+    // String peerUid = _peerUserIdController.text;
+    // if (peerUid.isEmpty) {
+    //   _log(type: 'message', info: 'Enter peer id', user: widget.userId);
+    //   return;
+    // }
     try {
       Map<dynamic, dynamic> result =
-          await _client.queryPeersOnlineStatus([peerUid]);
-      _log(type: 'message', info: result.toString(), user: peerUid);
+          await _client.queryPeersOnlineStatus([widget.currentUser!.userId!]);
+      print('the result of query: $result');
     } catch (e) {
       _log(type: 'error', info: 'Query Error: $e', user: widget.userId);
     }
@@ -848,7 +929,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
       _log(type: 'message', info: 'Enter peer id', user: widget.userId);
       return;
     }
-    String text = _channelMessageController.text;
+    String text = 'I would like to join your stream!';
     if (text.isEmpty) {
       return;
     }
@@ -944,10 +1025,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
     } catch (e) {
       _log(type: 'error', info: 'Get Memebers Error: $e', user: widget.userId);
     }
-  }
-
-  void _sendMessage() async {
-    await _toggleSendChannelMessage();
   }
 
   Future<void> _toggleSendChannelMessage() async {
