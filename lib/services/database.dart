@@ -617,15 +617,17 @@ class DatabaseService {
 
   //This section is to create, update and delete images in the database
   //Add Video
-  Future<String> createImageVideo(
-      {String? userId,
-      String? name,
-      String? url,
-      List<String>? tags,
-      String? type,
-      String? thumbnailUrl,
-      String? description}) async {
+  Future<String> createImageVideo({
+    String? userId,
+    String? name,
+    String? url,
+    List<String>? tags,
+    String? type,
+    String? thumbnailUrl,
+    String? description,
+  }) async {
     try {
+      var currentTime = DateTime.now();
       var result = await imageVideoCollection.add({
         ImageVideoParams.USER_ID: userId,
         ImageVideoParams.NAME: name,
@@ -634,6 +636,7 @@ class DatabaseService {
         ImageVideoParams.TYPE: type,
         ImageVideoParams.THUMBNAIL: thumbnailUrl,
         ImageVideoParams.DESCRIPTION: description,
+        ImageVideoParams.TIME: currentTime,
       }).then((value) => value.id);
       return result;
     } catch (e, stackTrace) {

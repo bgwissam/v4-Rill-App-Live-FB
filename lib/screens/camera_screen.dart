@@ -387,7 +387,7 @@ class _CameraScreenState extends State<CameraScreen>
                                     child: const CircularProgressIndicator())
                                 : Positioned(
                                     left: 0,
-                                    top: size.height - 170,
+                                    top: size.height - (size.height / 4),
                                     height: 120,
                                     width: size.width / 2 + 35,
                                     child: Row(
@@ -446,178 +446,81 @@ class _CameraScreenState extends State<CameraScreen>
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.only(bottom: 20),
-                                          child: Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: IconButton(
-                                              iconSize: 60,
-                                              onPressed: () async {
-                                                if (selectedButton == 2) {
-                                                  var result = await _controller
-                                                      ?.takePicture();
-                                                  setState(() {
-                                                    _camButtonPressed = true;
-                                                    _previewImage(result);
-                                                  });
-                                                }
-                                                if (selectedButton == 1) {
-                                                  if (mounted) {
+                                        GestureDetector(
+                                          onTap: () {
+                                            print('just tapping');
+                                          },
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsets.only(bottom: 20),
+                                            child: Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: IconButton(
+                                                alignment: Alignment.center,
+                                                iconSize: 60,
+                                                onPressed: () async {
+                                                  print(
+                                                      'camera images pressed');
+                                                  if (selectedButton == 2) {
+                                                    var result =
+                                                        await _controller
+                                                            ?.takePicture();
                                                     setState(() {
                                                       _camButtonPressed = true;
+                                                      _previewImage(result);
                                                     });
                                                   }
+                                                  if (selectedButton == 1) {
+                                                    if (mounted) {
+                                                      setState(() {
+                                                        _camButtonPressed =
+                                                            true;
+                                                      });
+                                                    }
 
-                                                  if (_controller == null ||
-                                                      !_controller!.value
-                                                          .isInitialized) {
-                                                    print(
-                                                        'error select camera first');
-                                                  }
+                                                    if (_controller == null ||
+                                                        !_controller!.value
+                                                            .isInitialized) {
+                                                      print(
+                                                          'error select camera first');
+                                                    }
 
-                                                  if (_controller!
-                                                      .value.isRecordingVideo) {
-                                                    setState(() {
-                                                      _isRecordingVideo = true;
-                                                    });
-                                                  }
-                                                  try {
-                                                    if (!_isRecordingVideo) {
-                                                      await _controller!
-                                                          .startVideoRecording();
+                                                    if (_controller!.value
+                                                        .isRecordingVideo) {
                                                       setState(() {
                                                         _isRecordingVideo =
                                                             true;
-                                                        print(
-                                                            'is recordinging $_isRecordingVideo');
-                                                      });
-                                                    } else {
-                                                      var result =
-                                                          await _controller!
-                                                              .stopVideoRecording()
-                                                              .then(
-                                                                  (file) async {
-                                                        print(
-                                                            'video: ${file.path} - ${file.name} - ${file.length}');
-                                                        if (mounted) {
-                                                          setState(() {});
-                                                        }
-
-                                                        if (file != null) {
-                                                          _previewVideo(file);
-                                                        }
-                                                      });
-
-                                                      setState(() {
-                                                        _isRecordingVideo =
-                                                            false;
                                                       });
                                                     }
-                                                  } on CameraException catch (e, stackTrace) {
-                                                    print(
-                                                        'An exception with the camera occured: $e - $stackTrace');
-                                                  }
-                                                }
-                                                if (selectedButton == 0) {
-                                                  //validate form first
-                                                  if (!_formKey.currentState!
-                                                      .validate()) {
-                                                    return;
-                                                  } else {
-                                                    if (_channelName != null &&
-                                                        _channelName != '') {
-                                                      setState(() {
-                                                        _isLoadingStream = true;
-                                                      });
-                                                      await _getTokens();
-                                                    } else {
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (builder) =>
-                                                            const AlertDialog(
-                                                          title: Text(
-                                                              'Add a title first!'),
-                                                        ),
-                                                      );
-                                                    }
-                                                  }
-                                                  //live streaming
-                                                  if (mounted &&
-                                                      _channelName != null &&
-                                                      _channelName != '') {
-                                                    setState(() {
-                                                      _camButtonPressed = true;
-                                                      _isLoadingStream = true;
-                                                    });
-                                                  }
-                                                  if (rtcToken == 'failed') {
-                                                    return;
-                                                  }
-                                                  if (_controller == null ||
-                                                      !_controller!.value
-                                                          .isInitialized) {
-                                                    print(
-                                                        'error select camera first');
-                                                    return;
-                                                  }
-
-                                                  if (_controller!
-                                                      .value.isRecordingVideo) {
-                                                    setState(() {
-                                                      _isLoadingStream = true;
-                                                    });
-                                                  }
-                                                  if (_channelName != null &&
-                                                      _channelName != '') {
                                                     try {
                                                       if (!_isRecordingVideo) {
+                                                        await _controller!
+                                                            .startVideoRecording();
                                                         setState(() {
-                                                          _isLoadingStream =
+                                                          _isRecordingVideo =
                                                               true;
-                                                        });
-                                                        //Check if recording could be started
-                                                        var acquire =
-                                                            await _recordingController
-                                                                .getVideoRecordingRefId(
-                                                                    _channelName!,
-                                                                    '12345',
-                                                                    rtcToken!);
-                                                        acquireResponse =
-                                                            await json.decode(
-                                                                acquire.body);
-                                                        print(
-                                                            'the result Acquire: $acquireResponse');
-                                                        if (acquireResponse[
-                                                                'resourceId'] !=
-                                                            null) {
-                                                          var start = await _recordingController
-                                                              .startRecordingVideo(
-                                                                  acquireResponse[
-                                                                      'resourceId'],
-                                                                  'mix',
-                                                                  _channelName!,
-                                                                  '12345',
-                                                                  rtcToken!);
-                                                          startRecording =
-                                                              await json.decode(
-                                                                  start.body);
-                                                        }
-                                                        print(
-                                                            'the result start: $startRecording');
-                                                        if (startRecording[
-                                                                'sid']
-                                                            .isNotEmpty) {
-                                                          _startRecordingLiveStream();
-                                                        } else {
-                                                          //add code here to show the recording initiation failed
                                                           print(
-                                                              'the recording initiation failed');
-                                                        }
+                                                              'is recordinging $_isRecordingVideo');
+                                                        });
                                                       } else {
+                                                        var result =
+                                                            await _controller!
+                                                                .stopVideoRecording()
+                                                                .then(
+                                                                    (file) async {
+                                                          print(
+                                                              'video: ${file.path} - ${file.name} - ${file.length}');
+                                                          if (mounted) {
+                                                            setState(() {});
+                                                          }
+
+                                                          if (file != null) {
+                                                            _previewVideo(file);
+                                                          }
+                                                        });
+
                                                         setState(() {
-                                                          _isLoadingStream =
-                                                              false;
-                                                          _camButtonPressed =
+                                                          _isRecordingVideo =
                                                               false;
                                                         });
                                                       }
@@ -626,38 +529,151 @@ class _CameraScreenState extends State<CameraScreen>
                                                           'An exception with the camera occured: $e - $stackTrace');
                                                     }
                                                   }
-                                                  //Start live streaming
+                                                  if (selectedButton == 0) {
+                                                    //validate form first
+                                                    if (!_formKey.currentState!
+                                                        .validate()) {
+                                                      return;
+                                                    } else {
+                                                      if (_channelName !=
+                                                              null &&
+                                                          _channelName != '') {
+                                                        setState(() {
+                                                          _isLoadingStream =
+                                                              true;
+                                                        });
+                                                        await _getTokens();
+                                                      } else {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (builder) =>
+                                                              const AlertDialog(
+                                                            title: Text(
+                                                                'Add a title first!'),
+                                                          ),
+                                                        );
+                                                      }
+                                                    }
+                                                    //live streaming
+                                                    if (mounted &&
+                                                        _channelName != null &&
+                                                        _channelName != '') {
+                                                      setState(() {
+                                                        _camButtonPressed =
+                                                            true;
+                                                        _isLoadingStream = true;
+                                                      });
+                                                    }
+                                                    if (rtcToken == 'failed') {
+                                                      return;
+                                                    }
+                                                    if (_controller == null ||
+                                                        !_controller!.value
+                                                            .isInitialized) {
+                                                      print(
+                                                          'error select camera first');
+                                                      return;
+                                                    }
 
-                                                }
-                                                //Open phone gallery
-                                                if (selectedButton == 3) {
-                                                  //open image gallery
-                                                  await _imagePicker.pickImage(
-                                                      source:
-                                                          ImageSource.gallery,
-                                                      preferredCameraDevice:
-                                                          CameraDevice.front,
-                                                      imageQuality: 25,
-                                                      maxHeight: 400,
-                                                      maxWidth: 400);
-                                                }
-                                              },
-                                              icon: !_camButtonPressed
-                                                  ? Image.asset(
-                                                      'assets/icons/target_rill_ver2.png',
-                                                      color: Colors.white,
-                                                    )
-                                                  : Image.asset(
-                                                      'assets/icons/target_rill_dark_ver2.png',
-                                                      color: Colors.white,
-                                                    ),
+                                                    if (_controller!.value
+                                                        .isRecordingVideo) {
+                                                      setState(() {
+                                                        _isLoadingStream = true;
+                                                      });
+                                                    }
+                                                    if (_channelName != null &&
+                                                        _channelName != '') {
+                                                      try {
+                                                        if (!_isRecordingVideo) {
+                                                          setState(() {
+                                                            _isLoadingStream =
+                                                                true;
+                                                          });
+                                                          //Check if recording could be started
+                                                          var acquire =
+                                                              await _recordingController
+                                                                  .getVideoRecordingRefId(
+                                                                      _channelName!,
+                                                                      '12345',
+                                                                      rtcToken!);
+                                                          acquireResponse =
+                                                              await json.decode(
+                                                                  acquire.body);
+                                                          print(
+                                                              'the result Acquire: $acquireResponse');
+                                                          if (acquireResponse[
+                                                                  'resourceId'] !=
+                                                              null) {
+                                                            var start = await _recordingController
+                                                                .startRecordingVideo(
+                                                                    acquireResponse[
+                                                                        'resourceId'],
+                                                                    'mix',
+                                                                    _channelName!,
+                                                                    '12345',
+                                                                    rtcToken!);
+                                                            startRecording =
+                                                                await json
+                                                                    .decode(start
+                                                                        .body);
+                                                          }
+                                                          print(
+                                                              'the result start: $startRecording');
+                                                          if (startRecording[
+                                                                  'sid']
+                                                              .isNotEmpty) {
+                                                            _startRecordingLiveStream();
+                                                          } else {
+                                                            //add code here to show the recording initiation failed
+                                                            print(
+                                                                'the recording initiation failed');
+                                                          }
+                                                        } else {
+                                                          setState(() {
+                                                            _isLoadingStream =
+                                                                false;
+                                                            _camButtonPressed =
+                                                                false;
+                                                          });
+                                                        }
+                                                      } on CameraException catch (e, stackTrace) {
+                                                        print(
+                                                            'An exception with the camera occured: $e - $stackTrace');
+                                                      }
+                                                    }
+                                                    //Start live streaming
+
+                                                  }
+                                                  //Open phone gallery
+                                                  if (selectedButton == 3) {
+                                                    //open image gallery
+                                                    await _imagePicker.pickImage(
+                                                        source:
+                                                            ImageSource.gallery,
+                                                        preferredCameraDevice:
+                                                            CameraDevice.front,
+                                                        imageQuality: 25,
+                                                        maxHeight: 400,
+                                                        maxWidth: 400);
+                                                  }
+                                                },
+                                                icon: !_camButtonPressed
+                                                    ? Image.asset(
+                                                        'assets/icons/target_rill_ver2.png',
+                                                        color: Colors.white,
+                                                      )
+                                                    : Image.asset(
+                                                        'assets/icons/target_rill_dark_ver2.png',
+                                                        color: Colors.white,
+                                                      ),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ],
                                     )),
                             Positioned(
-                              top: size.height - 100,
+                              top: size.height - (size.height / 6.3),
                               width: size.width,
                               height: 100,
                               child: RotatedBox(

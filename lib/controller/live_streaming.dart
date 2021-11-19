@@ -483,7 +483,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   Widget _streamerToolBar() {
     return Positioned(
       left: 0,
-      top: size.height - 130,
+      top: size.height - (size.height / 5.3),
       height: 160,
       width: size.width,
       child: Column(
@@ -1090,7 +1090,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
           leading: ClipRRect(
             child: CircleAvatar(
               radius: 20,
-              backgroundImage: _userList[user]?.avatarUrl != null
+              backgroundImage: _userList[user]?.avatarUrl == null
                   ? Image.asset('assets/images/empty_profile_photo.png').image
                   : NetworkImage(
                       '${_userList[user]?.avatarUrl}',
@@ -1118,7 +1118,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
           leading: ClipRRect(
             child: CircleAvatar(
               radius: 20,
-              backgroundImage: _userList[user]?.avatarUrl != null
+              backgroundImage: _userList[user]?.avatarUrl == null
                   ? Image.asset('assets/images/empty_profile_photo.png').image
                   : NetworkImage(
                       '${_userList[user]?.avatarUrl}',
@@ -1145,7 +1145,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
           leading: ClipRRect(
             child: CircleAvatar(
               radius: 20,
-              backgroundImage: _userList[user]?.avatarUrl != null
+              backgroundImage: _userList[user]?.avatarUrl == null
                   ? Image.asset('assets/images/empty_profile_photo.png').image
                   : NetworkImage(
                       '${_userList[user]?.avatarUrl}',
