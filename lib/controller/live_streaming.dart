@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtm/agora_rtm.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
@@ -57,9 +58,10 @@ class LiveStreaming extends StatefulWidget {
 class _LiveStreamingState extends State<LiveStreaming> {
   final _users = <int>[];
   final _infoString = <String>[];
-  late List<String> _messageList;
-  List<UserModel> _userList = [];
+  late List<Widget> _messageList;
+  Map<String, UserModel> _userList = {};
   List<String> _members = [];
+  UserModel _userData = UserModel();
   //Agora Live and Video streaming
   late RtcEngine _engine;
 
@@ -81,6 +83,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   int userNo = 0;
   int _remoteId = 0;
+  double _chatItemHeight = 60;
   var size;
   late String userRole;
   Parameters param = Parameters();
@@ -90,6 +93,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   late TextEditingController _channelMessageController;
   late FirebaseStorage storageRef;
   AWSstorage awsStorage = AWSstorage();
+  final _scrollController = ScrollController();
 
   //Live messaging controllers
   final _userNameController = TextEditingController();
@@ -122,18 +126,24 @@ class _LiveStreamingState extends State<LiveStreaming> {
     _createClient();
   }
 
+  //The scroll to index will allow the listview to scroll to the last index
+  void _scrollToIndex(lastIndex) {
+    _scrollController.animateTo(_chatItemHeight * lastIndex,
+        duration: Duration(milliseconds: 600), curve: Curves.easeIn);
+  }
+
   //Will initialize the Rtc Engine
   Future<void> _initializeRtcEngine() async {
     if (param.app_ID.isNotEmpty) {
-      RtcEngineContext context = RtcEngineContext(param.app_ID);
-      _engine = await RtcEngine.createWithContext(context);
+      RtcEngineContext rtcContext = RtcEngineContext(param.app_ID);
+      _engine = await RtcEngine.createWithContext(rtcContext);
 
       //set event handlers
       _engine.setEventHandler(
         RtcEngineEventHandler(
           warning: (warningCode) {
             setState(() {
-              final info = 'warning: $warningCode';
+              final info = 'Warning error: $warningCode';
               _infoString.add(info);
             });
           },
@@ -142,8 +152,16 @@ class _LiveStreamingState extends State<LiveStreaming> {
               final info = 'Error: $errorCode';
               _infoString.add(info);
             });
-            print('Error Code: ${errorCode.index} - $errorCode');
-            Sentry.captureException(errorCode);
+            if (errorCode.index > 0) {
+              //will show if an error showed up
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  duration: const Duration(milliseconds: 700),
+                  content: Text('${errorCode.index} - $errorCode'),
+                ),
+              );
+              return;
+            }
           },
           joinChannelSuccess: (channel, uid, elapsed) async {
             var queryResponse = await recordingController.queryRecoding(
@@ -200,8 +218,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
         ),
       );
 
-      await _engine.enableVideo().catchError((err) {
+      await _engine.enableVideo().catchError((err) async {
         print('Error enableing video: $err');
+        await Sentry.captureException('Enabling video failed: $err');
       });
       await _engine.enableLocalAudio(true);
       if (widget.userRole == 'subscriber') {
@@ -210,8 +229,10 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
       await _engine
           .setChannelProfile(ChannelProfile.LiveBroadcasting)
-          .catchError((err) {
+          .catchError((err) async {
         print('Error setting the channel Profile: $err');
+        await Sentry.captureException(
+            'Error setting the channel Profile: $err');
       });
       if (widget.userRole == 'publisher') {
         await _engine.setClientRole(ClientRole.Broadcaster);
@@ -230,15 +251,10 @@ class _LiveStreamingState extends State<LiveStreaming> {
       _infoString
           .add('Rtc_Token: ${widget.rtcToken} - Rtm_Token: ${widget.rtmToken}');
       await _initializeRtcEngine();
-      // await _engine.setParameters(
-      //     '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}} ''');
+
       //Join the channel
       await _engine.joinChannel(
           widget.rtcToken, widget.channelName, null, widget.uid!);
-      //creat live messaging channel
-      //_channel = await _createChannel(widget.channelName);
-
-      //await _joinChannel(context);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Failed to connect')));
@@ -430,32 +446,32 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //Info panel to show logs
   Widget messageList() {
-    print('the message List: $_messageList');
     return Container(
-      padding: const EdgeInsets.only(bottom: 100),
+      padding: const EdgeInsets.only(bottom: 120),
       alignment: Alignment.bottomCenter,
       child: FractionallySizedBox(
-          heightFactor: 0.4,
+          heightFactor: 0.5,
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Align(
               alignment: Alignment.bottomLeft,
               child: ListView.builder(
+                  controller: _scrollController,
                   reverse: false,
                   itemCount: _messageList.length,
                   itemBuilder: (context, index) {
-                    // _messageList.reversed;
+                    //_messageList.reversed;
                     if (_messageList.isEmpty) {
                       return Text('Empty messages');
                     }
-                    return Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 3, horizontal: 10),
-                        child: Text(
-                          _messageList[index],
-                        ),
+                    return SizedBox(
+                      width: size.width - 10,
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 3, horizontal: 10),
+                            child: _messageList[index]),
                       ),
                     );
                   }),
@@ -467,20 +483,30 @@ class _LiveStreamingState extends State<LiveStreaming> {
   Widget _streamerToolBar() {
     return Positioned(
       left: 0,
-      top: size.height - 120,
+      top: size.height - 130,
       height: 160,
       width: size.width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(
-              width: 60,
-              height: 25,
-              child: Image.asset('assets/icons/eye_rill_icon_light.png',
-                  color: color_13)),
-          Text(
-            '${_members.length}',
-            style: textStyle_20,
+          Container(
+            margin: EdgeInsets.only(right: 35),
+            width: size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(
+                  width: 60,
+                  height: 20,
+                  child: Image.asset('assets/icons/eye_rill_icon_light.png',
+                      color: color_13),
+                ),
+                Text(
+                  '${_members.length}',
+                  style: textStyle_20,
+                ),
+              ],
+            ),
           ),
           Row(
             children: [
@@ -515,7 +541,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
                       RawMaterialButton(
                         onPressed: () => _onSwitchCamera(context),
                         child: const Icon(Icons.switch_camera,
-                            color: Colors.white, size: 30.0),
+                            color: Colors.white, size: 20.0),
                         shape: const CircleBorder(),
                         elevation: 2.0,
                         fillColor: Colors.grey,
@@ -824,40 +850,46 @@ class _LiveStreamingState extends State<LiveStreaming> {
   Future<AgoraRtmChannel?> _createChannel(String name) async {
     AgoraRtmChannel? channel = await _client.createChannel(name);
     if (channel != null) {
-      channel.onMemberJoined = (AgoraRtmMember member) {
+      channel.onMemberJoined = (AgoraRtmMember member) async {
         _toggleQuery();
-        if (!_members.contains(member.userId)) {
+        if (!_userList.containsKey(member.userId)) {
+          _userData = await db.getUserByUserId(userId: member.userId);
           setState(() {
             _members.add(member.userId);
+            _userList = {
+              member.userId: _userData,
+            };
+            _log(
+                type: 'joined',
+                user: member.userId,
+                info: 'Joined',
+                fullName: _userList[member.userId]!.firstName);
           });
         }
-        _log(
-            type: 'joined',
-            user: member.userId,
-            info: 'Joined',
-            fullName: member.userId);
       };
       channel.onMemberLeft = (AgoraRtmMember member) {
         _toggleQuery();
-        if (_members.contains(member.userId)) {
+        if (_userList.containsKey(member.userId) &&
+            _members.contains(member.userId)) {
           setState(() {
             _members.remove(member.userId);
+            _userList.remove(member.userId);
+            _log(
+                type: 'joined',
+                info: 'Left',
+                user: member.userId,
+                fullName: _userList[member.userId]!.firstName);
           });
         }
-        _log(
-            type: 'joined',
-            user: member.userId,
-            info: 'Left',
-            fullName: member.userId);
       };
       channel.onMessageReceived =
-          (AgoraRtmMessage message, AgoraRtmMember memeber) {
+          (AgoraRtmMessage message, AgoraRtmMember member) {
         setState(() {
           _log(
               type: 'message',
-              user: memeber.userId,
+              user: member.userId,
               info: message.text,
-              fullName: '${memeber.userId} ');
+              fullName: _userList[member.userId]!.firstName);
         });
       };
     }
@@ -872,8 +904,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
         _log(
             type: 'login',
             info: 'LogedOut',
-            fullName:
-                '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+            user: widget.userId,
+            fullName: _userList[widget.userId]?.firstName);
         setState(() {
           _isLogin = false;
           _isInChannel = false;
@@ -882,27 +914,28 @@ class _LiveStreamingState extends State<LiveStreaming> {
         _log(type: 'error', info: 'failed logout: $e', user: widget.userId);
       }
     } else {
-      print('client user id: ${widget.userId}');
       if (widget.userId.isEmpty) {
-        _log(
-          type: 'message',
-          info: 'please input userId',
-          user: widget.userId,
-        );
+        print('User id is empty.');
         return;
       }
       try {
         await _client.login(widget.rtmToken, widget.userId);
-        _log(
-            type: 'login',
-            user: widget.userId,
-            fullName:
-                '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+        _userData = await db.getUserByUserId(userId: widget.userId);
+        if (!_userList.containsKey(widget.userId) &&
+            !_members.contains(widget.userId)) {
+          _members.add(widget.userId);
+          _userList = {widget.userId: _userData};
+        }
+
         setState(() {
           _isLogin = true;
+          _log(
+              type: 'login',
+              user: widget.userId,
+              fullName: _userList[widget.userId]?.firstName);
         });
       } catch (e) {
-        _log(type: 'error', info: 'Login error: $e', user: widget.userId);
+        // _log(type: 'error', info: 'Login error: $e', user: widget.userId);
         print('Failed to login: $e');
       }
     }
@@ -989,8 +1022,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
             type: 'error',
             info: 'Joined Channel Error: $e',
             user: widget.userId,
-            fullName:
-                '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+            fullName: _userList[widget.userId]?.firstName);
       }
     } else {
       String channelId = widget.channelName;
@@ -1012,8 +1044,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
             type: 'error',
             info: 'Join Channel Error: $e',
             user: widget.userId,
-            fullName:
-                '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+            fullName: _userList[widget.userId]?.firstName);
       }
     }
   }
@@ -1034,254 +1065,109 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
     try {
       await _channel?.sendMessage(AgoraRtmMessage.fromText(text));
-      print('the channel message: $text');
       _log(
           type: 'message',
           info: text,
           user: widget.userId,
-          fullName:
-              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
-      print('message channel sent successfully');
+          fullName: _userList[widget.userId]?.firstName);
     } catch (e) {
       _log(
           type: 'error',
           info: 'Send Channel Message Error: $e',
           user: widget.userId,
-          fullName:
-              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+          fullName: _userList[widget.userId]?.firstName);
     }
   }
-
-  // void stopFunction() {
-  //   setState(() {
-  //     accepted = false;
-  //   });
-  // }
-
-  // void _logout() async {
-  //   try {
-  //     await _client.logout();
-  //   } catch (e) {
-  //     _infoString.add('Error logging out: $e type: logout');
-  //   }
-  // }
-
-  // void _leaveChannel() async {
-  //   try {
-  //     await _channel.leave();
-  //     _client.releaseChannel(_channel.channelId!);
-  //     _channelMessageController.text = '';
-  //   } catch (e) {
-  //     _infoString.add('Error leaving: $e type: leaving');
-  //   }
-  // }
-
-  // void _toggleSendChannelMessage() async {
-  //   String text = _channelMessageController.text;
-  //   if (text.isEmpty) {
-  //     return;
-  //   }
-  //   try {
-  //     _channelMessageController.clear();
-  //     await _channel.sendMessage(AgoraRtmMessage.fromText(text));
-  //     print('the message: $text');
-  //     setState(() {
-  //       //_infoString.add('${widget.userId}: $text');
-  //       _log(info: text, type: 'message', user: widget.userId);
-  //     });
-  //   } catch (e) {
-  //     setState(() {
-  //       _log(info: e.toString(), type: 'message', user: widget.userId);
-  //     });
-  //   }
-  // }
-
-  // //send message to other users
-  // void _sendMessage(text) async {
-  //   print('the text being sent: $text');
-  //   if (text.isEmpty) {
-  //     return;
-  //   }
-  //   try {
-  //     _channelMessageController.clear();
-
-  //     await _channel.sendMessage(AgoraRtmMessage.fromText(text));
-  //     setState(() {
-  //       _infoString.add('${widget.userId}: $text');
-  //       _log(info: text, type: 'message', user: widget.userId);
-  //     });
-  //   } catch (e) {
-  //     setState(() {
-  //       _log(info: e.toString(), type: 'message', user: widget.userId);
-  //     });
-  //   }
-  // }
-
-  // void createClient() async {
-  //   _client = await AgoraRtmClient.createInstance(Parameters().app_ID);
-
-  //   _client.onConnectionStateChanged = (int state, int reason) {
-  //     print('Connection state changed: $state - reasong: $reason');
-  //     if (state == 5) {
-  //       _client.logout();
-  //       setState(() {
-  //         _isLogin = false;
-  //       });
-  //       return;
-  //     }
-  //   };
-
-  //   await _login(context);
-
-  //   _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
-  //     setState(() {
-  //       print('a message received: $message - $peerId');
-  //       _log(type: 'message', user: peerId, info: message.text);
-  //     });
-  //   };
-
-  //   _channel = await _createChannel(widget.channelName);
-  //   await _channel.join();
-  //   _client.onConnectionStateChanged = (int state, int reason) {
-  //     print('Connection state changed: $state - reasong: $reason');
-  //     if (state == 5) {
-  //       _client.logout();
-  //       setState(() {
-  //         _isLogin = false;
-  //       });
-  //       return;
-  //     }
-  //   };
-  // }
-
-  // //will login current user
-  // Future _login(BuildContext context) async {
-  //   print('im before: loging');
-  //   if (widget.userId.isEmpty) {
-  //     print('user id is empty');
-  //     setState(() {
-  //       _isLogin = false;
-  //     });
-
-  //     return;
-  //   }
-  //   try {
-  //     print(
-  //         'The rtm loging: ${widget.rtmToken} - ${widget.channelName} - ${widget.userId}');
-  //     await _client.login(widget.rtmToken, widget.channelName);
-  //     _log(type: 'login', user: widget.userId);
-  //     setState(() {
-  //       _isLogin = true;
-  //     });
-  //     //_joinChannel(context);
-  //   } catch (e, stackTrace) {
-  //     print('An error login in rtm service: $e - $stackTrace');
-  //   }
-  // }
-
-  // //will query online users
-  // void _queryOnlineUsers(BuildContext context) async {
-  //   String? peerId = widget.streamUserId;
-  //   if (peerId!.isEmpty) {
-  //     _log(type: 'login', user: 'empty', info: 'user id is null');
-  //   }
-  //   try {
-  //     Map<dynamic, dynamic> result =
-  //         await _client.queryPeersOnlineStatus([peerId]);
-  //     _log(type: 'login', user: peerId, info: '$result');
-  //   } catch (e, stackTrace) {
-  //     print('query peers error: $e - $stackTrace');
-  //     _log(type: 'error', user: peerId, info: '$e');
-  //   }
-  // }
-
-  // Future _joinChannel(BuildContext context) async {
-  //   String channelId = widget.channelName;
-  //   if (channelId.isEmpty) {
-  //     _log(type: 'joined', info: 'no channel Id', user: widget.userId);
-  //     return;
-  //   }
-  //   _channel = await _createChannel(channelId);
-
-  //   await _channel.join().catchError((err) {
-  //     print('an error joining: $err');
-  //     _log(type: 'error', info: 'error joining', user: widget.userId);
-  //   }).then((value) {
-  //     print('joined channel successfully');
-  //     _log(type: 'joined', info: 'user joined', user: widget.userId);
-  //   });
-  //   // _log(type: 'joined', user: widget.userId, info: 'joined');
-  // }
-
-  // Future<AgoraRtmChannel> _createChannel(String name) async {
-  //   AgoraRtmChannel? channel = await _client.createChannel(name);
-
-  //   //on member joined
-  //   channel!.onMemberJoined = (AgoraRtmMember member) async {
-  //     print('new member joined: ${member.userId}');
-  //     _log(type: 'joined', user: member.userId, info: 'joined');
-
-  //     setState(() {
-  //       _userList.add(UserModel(userId: member.userId));
-  //       if (_userList.isNotEmpty) {
-  //         anyPerson = true;
-  //       }
-  //     });
-  //     userMap.putIfAbsent(member.userId, () => 'usr img');
-  //     var len;
-  //     _channel.getMembers().then((value) {
-  //       len = value.length;
-  //       setState(() {
-  //         userNo = len - 1;
-  //       });
-  //     });
-  //   };
-  //   //on member left
-  //   channel.onMemberLeft = (AgoraRtmMember member) {
-  //     var len;
-  //     _log(type: 'joined', user: member.userId, info: 'left');
-  //     setState(() {
-  //       _userList.removeWhere((element) => element.userId == member.userId);
-  //       if (_userList.isEmpty) {
-  //         anyPerson = false;
-  //       }
-  //       _leaveChannel();
-  //     });
-  //     _channel.getMembers().then((value) {
-  //       len = value.length;
-  //       setState(() {
-  //         userNo = len - 1;
-  //       });
-  //     });
-  //   };
-  //   //on message received
-  //   channel.onMessageReceived =
-  //       (AgoraRtmMessage message, AgoraRtmMember member) {
-  //     print('message sent: $message');
-  //     _log(type: 'message', user: member.userId, info: message.text);
-  //   };
-  //   return channel;
-  // }
 
   //show message chat
   void _log({String? info, String? type, String? user, String? fullName}) {
     if (type == 'message') {
-      _messageList.add('$fullName: $info');
+      _messageList.add(Container(
+        padding: EdgeInsets.only(bottom: 5),
+        height: _chatItemHeight,
+        width: size.width - 50,
+        child: ListTile(
+          leading: ClipRRect(
+            child: CircleAvatar(
+              radius: 20,
+              backgroundImage: _userList[user]?.avatarUrl != null
+                  ? Image.asset('assets/images/empty_profile_photo.png').image
+                  : NetworkImage(
+                      '${_userList[user]?.avatarUrl}',
+                    ),
+              backgroundColor: Colors.transparent,
+            ),
+          ),
+          title: Text(
+              '${_userList[user]?.firstName} ${_userList[user]?.lastName}',
+              style: textStyle_23),
+          subtitle: Text('$info', style: textStyle_23),
+        ),
+      ));
+      if (_messageList.isNotEmpty) {
+        print('the message list: ${_messageList.length}');
+        _scrollToIndex(_messageList.length - 1);
+      }
     }
     if (type == 'login') {
-      _messageList.add('$fullName : logged in');
+      _messageList.add(Container(
+        padding: EdgeInsets.only(bottom: 5),
+        height: _chatItemHeight,
+        width: size.width - 50,
+        child: ListTile(
+          leading: ClipRRect(
+            child: CircleAvatar(
+              radius: 20,
+              backgroundImage: _userList[user]?.avatarUrl != null
+                  ? Image.asset('assets/images/empty_profile_photo.png').image
+                  : NetworkImage(
+                      '${_userList[user]?.avatarUrl}',
+                    ),
+              backgroundColor: Colors.transparent,
+            ),
+          ),
+          title: Text(
+              '${_userList[user]?.firstName} ${_userList[user]?.lastName}',
+              style: textStyle_23),
+          subtitle: Text('Logged In!', style: textStyle_23),
+        ),
+      ));
+      if (_messageList.isNotEmpty) {
+        _scrollToIndex(_messageList.length - 1);
+      }
     }
     if (type == 'joined') {
-      _messageList.add('$fullName: $info');
+      _messageList.add(Container(
+        padding: EdgeInsets.only(bottom: 5),
+        height: _chatItemHeight,
+        width: size.width - 50,
+        child: ListTile(
+          leading: ClipRRect(
+            child: CircleAvatar(
+              radius: 20,
+              backgroundImage: _userList[user]?.avatarUrl != null
+                  ? Image.asset('assets/images/empty_profile_photo.png').image
+                  : NetworkImage(
+                      '${_userList[user]?.avatarUrl}',
+                    ),
+              backgroundColor: Colors.transparent,
+            ),
+          ),
+          title: Text(
+              '${_userList[user]?.firstName} ${_userList[user]?.lastName}',
+              style: textStyle_23),
+          subtitle: Text('$info', style: textStyle_23),
+        ),
+      ));
+      if (_messageList.isNotEmpty) {
+        _scrollToIndex(_messageList.length - 1);
+      }
     }
-    if (type == 'error') {
-      _messageList.add('$fullName: $info');
-    }
-    // if (type == 'state') {
-    //   _messageList.add('changed: $info');
+    // if (type == 'error') {
+    //   _messageList.add('$fullName: $info');
     // }
-    if (type == 'invite') {
-      _messageList.add('Invited: $info by $fullName');
-    }
+    // if (type == 'invite') {
+    //   _messageList.add('Invited: $info by $fullName');
+    // }
   }
 }
