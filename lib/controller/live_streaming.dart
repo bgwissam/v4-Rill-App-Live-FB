@@ -227,7 +227,10 @@ class _LiveStreamingState extends State<LiveStreaming> {
         print('Error enableing video: $err');
         await Sentry.captureException('Enabling video failed: $err');
       });
-      await _engine.enableLocalAudio(true);
+      await _engine.enableLocalAudio(true).catchError((err) async {
+        print('Error enabling audio: $err');
+        await Sentry.captureException('Enabling audio failed: $err');
+      });
       if (userRole == 'subscriber') {
         _engine.disableAudio();
       }
@@ -433,11 +436,39 @@ class _LiveStreamingState extends State<LiveStreaming> {
     final views = _getRenderViews();
 
     if (views.isNotEmpty) {
-      return Container(
-        child: _expandedViewWidget(
-          [views[0]],
-        ),
-      );
+      switch (views.length) {
+        case 1:
+          return Column(
+            children: [
+              _expandedViewWidget([views[0]])
+            ],
+          );
+        case 2:
+          return Column(
+            children: [
+              _expandedViewWidget([views[0]]),
+              _expandedViewWidget([views[1]]),
+            ],
+          );
+        case 3:
+          return Column(
+            children: [
+              _expandedViewWidget(views.sublist(0, 2)),
+              _expandedViewWidget(views.sublist(2, 3))
+            ],
+          );
+        case 4:
+          return Column(
+            children: [
+              _expandedViewWidget(views.sublist(0, 2)),
+              _expandedViewWidget(views.sublist(2, 4))
+            ],
+          );
+        default:
+          return Container(
+            child: _exceededBroadCasters(),
+          );
+      }
     }
     return const Center(
       child: LoadingAmination(
@@ -453,14 +484,18 @@ class _LiveStreamingState extends State<LiveStreaming> {
               child: view,
             ))
         .toList();
-    return userRole == 'publisher'
-        ? Expanded(
-            child: Row(children: wrappedViews),
-          )
-        : SizedBox(
-            width: size.width,
-            child: Row(children: wrappedViews),
-          );
+    return Expanded(
+      child: Row(children: wrappedViews),
+    );
+
+    // return userRole == 'publisher'
+    //     ? Expanded(
+    //         child: Row(children: wrappedViews),
+    //       )
+    //     : SizedBox(
+    //         width: size.width,
+    //         child: Row(children: wrappedViews),
+    //       );
   }
 
   //Info panel to show logs
@@ -624,10 +659,9 @@ class _LiveStreamingState extends State<LiveStreaming> {
         );
         await db.deleteStreamingVideo(streamId: widget.streamModelId);
         var stopRecordResponse = await json.decode(stopRecordingResult.body);
-
-        print('the result stop: $stopRecordResponse');
+        print('the stop response: $stopRecordResponse');
         //save the live stream to firebase
-        _saveLiveStream(stopRecordResponse);
+        await _saveLiveStream(stopRecordResponse);
       }
     } else {
       print('An error occured: streamModelId is null');
@@ -636,14 +670,16 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
   }
 
-  void _saveLiveStream(var data) async {
+  Future<void> _saveLiveStream(var data) async {
     String thumbnailUrl = '';
     var streamFile;
     var streamKey;
+    print(
+        'saving stream: ${data['serverResponse']} - ${data['serverResponse']['uploadingStatus']}');
     if (data['serverResponse'] != null &&
         data['serverResponse']['uploadingStatus'] == 'uploaded') {
       streamKey = data['serverResponse']['fileList'];
-      print('the stream key: $streamKey');
+
       if (streamKey != null) {
         // await awsStorage.list();
       }
@@ -693,10 +729,12 @@ class _LiveStreamingState extends State<LiveStreaming> {
   }
 
   void _onToggleMute() {
-    setState(() {
-      _muted = !_muted;
-    });
-    print('muted: $_muted');
+    if (mounted) {
+      setState(() {
+        _muted = !_muted;
+      });
+    }
+
     // _engine.muteAllRemoteAudioStreams(_muted);
     _engine.muteLocalAudioStream(_muted);
   }
@@ -848,14 +886,16 @@ class _LiveStreamingState extends State<LiveStreaming> {
               '${widget.currentUser?.firstName} - ${widget.currentUser?.lastName}');
       if (state == 5) {
         _client.logout();
-        setState(() {
-          _isLogin = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isLogin = false;
+          });
+        }
       }
     };
 
     _client.onMessageReceived = (AgoraRtmMessage message, String peerId) async {
-      if (message.text.isNotEmpty) {
+      if (message.text.isNotEmpty && _userList[peerId] != null) {
         setState(() {
           showDialog(
               context: context,
@@ -888,17 +928,18 @@ class _LiveStreamingState extends State<LiveStreaming> {
     _client.onRemoteInvitationReceivedByPeer =
         (AgoraRtmRemoteInvitation invite) async {
       if (invite.content == 'accept') {
-        setState(() {
-          userRole = 'publisher';
-          _initializeRtcEngine(userRole);
-        });
+        if (mounted) {
+          setState(() {
+            userRole = 'publisher';
+            _initializeRtcEngine(userRole);
+          });
+        }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            duration: Duration(seconds: 2),
-            content: Text('The host rejected your request to join'),
-          ),
-        );
+        showDialog(
+            context: context,
+            builder: (builder) => const AlertDialog(
+                  content: Text('You request was rejected'),
+                ));
       }
     };
 
@@ -914,17 +955,19 @@ class _LiveStreamingState extends State<LiveStreaming> {
         _toggleQuery();
         if (!_userList.containsKey(member.userId)) {
           _userData = await db.getUserByUserId(userId: member.userId);
-          setState(() {
-            _members.add(member.userId);
-            _userList = {
-              member.userId: _userData,
-            };
-            _log(
-                type: 'joined',
-                user: member.userId,
-                info: 'Joined',
-                fullName: _userList[member.userId]!.firstName);
-          });
+          if (mounted) {
+            setState(() {
+              _members.add(member.userId);
+              _userList = {
+                member.userId: _userData,
+              };
+              _log(
+                  type: 'joined',
+                  user: member.userId,
+                  info: 'Joined',
+                  fullName: _userList[member.userId]!.firstName);
+            });
+          }
         }
       };
       channel.onMemberLeft = (AgoraRtmMember member) async {
@@ -932,26 +975,30 @@ class _LiveStreamingState extends State<LiveStreaming> {
         _toggleQuery();
         if (_userList.containsKey(member.userId) &&
             _members.contains(member.userId)) {
-          setState(() {
-            _members.remove(member.userId);
-            _userList.remove(member.userId);
-            _log(
-                type: 'joined',
-                info: 'Left',
-                user: member.userId,
-                fullName: _userList[member.userId]!.firstName);
-          });
+          if (mounted) {
+            setState(() {
+              _members.remove(member.userId);
+              _userList.remove(member.userId);
+              _log(
+                  type: 'joined',
+                  info: 'Left',
+                  user: member.userId,
+                  fullName: _userList[member.userId]!.firstName);
+            });
+          }
         }
       };
       channel.onMessageReceived =
           (AgoraRtmMessage message, AgoraRtmMember member) {
-        setState(() {
-          _log(
-              type: 'message',
-              user: member.userId,
-              info: message.text,
-              fullName: _userList[member.userId]!.firstName);
-        });
+        if (mounted) {
+          setState(() {
+            _log(
+                type: 'message',
+                user: member.userId,
+                info: message.text,
+                fullName: _userList[member.userId]!.firstName);
+          });
+        }
       };
     }
     return channel;
@@ -967,10 +1014,12 @@ class _LiveStreamingState extends State<LiveStreaming> {
             info: 'LogedOut',
             user: userRole,
             fullName: _userList[widget.userId]?.firstName);
-        setState(() {
-          _isLogin = false;
-          _isInChannel = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isLogin = false;
+            _isInChannel = false;
+          });
+        }
       } catch (e) {
         _log(type: 'error', info: 'failed logout: $e', user: widget.userId);
       }
@@ -987,27 +1036,22 @@ class _LiveStreamingState extends State<LiveStreaming> {
           _members.add(widget.userId);
           _userList = {widget.userId: _userData};
         }
-
-        setState(() {
-          _isLogin = true;
-          _log(
-              type: 'login',
-              user: widget.userId,
-              fullName: _userList[widget.userId]?.firstName);
-        });
+        if (mounted) {
+          setState(() {
+            _isLogin = true;
+            _log(
+                type: 'login',
+                user: widget.userId,
+                fullName: _userList[widget.userId]?.firstName);
+          });
+        }
       } catch (e) {
-        // _log(type: 'error', info: 'Login error: $e', user: widget.userId);
         print('Failed to login: $e');
       }
     }
   }
 
   Future<void> _toggleQuery() async {
-    // String peerUid = _peerUserIdController.text;
-    // if (peerUid.isEmpty) {
-    //   _log(type: 'message', info: 'Enter peer id', user: widget.userId);
-    //   return;
-    // }
     try {
       var result = await _client.queryPeersOnlineStatus(_members);
       print('the result of query: $result');
@@ -1039,13 +1083,13 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   void _toggleSendRemoteInivitaion() async {
     String peerUid = widget.streamUserId!;
-
+    AgoraRtmMessage message =
+        AgoraRtmMessage.fromText('would like to join your stream');
     try {
-      AgoraRtmMessage message =
-          AgoraRtmMessage.fromText('would like to join your stream');
       await _client.sendMessageToPeer(peerUid, message, false);
-    } catch (e) {
+    } catch (e, stackTrace) {
       print('An error sending invitation to Remote user: $e');
+      await Sentry.captureException(e, stackTrace: stackTrace);
     }
   }
 
@@ -1054,15 +1098,14 @@ class _LiveStreamingState extends State<LiveStreaming> {
       _log(type: 'message', info: 'Enter peer id', user: widget.userId);
       return;
     }
+    AgoraRtmLocalInvitation invitation =
+        AgoraRtmLocalInvitation(peerId, content: text);
 
     try {
-      AgoraRtmLocalInvitation invitation =
-          AgoraRtmLocalInvitation(peerId, content: text);
-
       await _client.sendLocalInvitation(invitation.toJson());
-      print('Invititation sent successfully');
-    } catch (e) {
+    } catch (e, stackTrace) {
       print('error sending local invitation: $e');
+      await Sentry.captureException(e, stackTrace: stackTrace);
     }
   }
 
@@ -1074,10 +1117,11 @@ class _LiveStreamingState extends State<LiveStreaming> {
         if (_channel != null) {
           _client.releaseChannel(_channel!.channelId!);
         }
-        // _channelMessageController.clear();
-        setState(() {
-          _isInChannel = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isInChannel = false;
+          });
+        }
       } catch (e) {
         _log(
             type: 'error',
@@ -1096,10 +1140,11 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
         _channel = await _createChannel(channelId);
         await _channel?.join();
-
-        setState(() {
-          _isInChannel = true;
-        });
+        if (mounted) {
+          setState(() {
+            _isInChannel = true;
+          });
+        }
       } catch (e) {
         _log(
             type: 'error',

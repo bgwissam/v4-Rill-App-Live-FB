@@ -724,7 +724,8 @@ class _CameraScreenState extends State<CameraScreen>
                                                         if (startRecording[
                                                                 'sid']
                                                             .isNotEmpty) {
-                                                          _startRecordingLiveStream();
+                                                          _startRecordingLiveStream(
+                                                              randomId);
                                                         } else {
                                                           //add code here to show the recording initiation failed
                                                           await Sentry
@@ -858,7 +859,7 @@ class _CameraScreenState extends State<CameraScreen>
   }
 
   //The following functions will start recording a live stream
-  _startRecordingLiveStream() async {
+  _startRecordingLiveStream(var randomId) async {
     if (_character != DescretionCharacter.allages) {
       _isDescrete = true;
     }
@@ -895,7 +896,7 @@ class _CameraScreenState extends State<CameraScreen>
             streamModelId: streamRec,
             streamUserId: widget.userId,
             loadingStateCallback: callBackLoadingState,
-            recordingId: '12345',
+            recordingId: randomId.toString(),
           ),
         ),
       );

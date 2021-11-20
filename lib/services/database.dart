@@ -568,7 +568,11 @@ class DatabaseService {
       return await liveStreamingCollection
           .doc(uid)
           .get()
-          .then((value) => (value.data() as Map)[LiveStreamingParams.USER_ID]);
+          .then((value) => (value.data() as Map)[LiveStreamingParams.USER_ID])
+          .catchError((err) async {
+        await Sentry.captureException(err);
+        return 'Error fetching stream: $err';
+      });
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
       return '';
