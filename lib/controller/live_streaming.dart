@@ -117,6 +117,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   @override
   void initState() {
     super.initState();
+    userRole = widget.userRole;
     // To keep the screen on:
     Wakelock.enable();
     _messageList = [];
@@ -133,7 +134,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   }
 
   //Will initialize the Rtc Engine
-  Future<void> _initializeRtcEngine() async {
+  Future<void> _initializeRtcEngine(String userRole) async {
     if (param.app_ID.isNotEmpty) {
       RtcEngineContext rtcContext = RtcEngineContext(param.app_ID);
       _engine = await RtcEngine.createWithContext(rtcContext);
@@ -179,6 +180,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
             );
           }, //Leave Channel
           leaveChannel: (stats) {
+            print('left channel');
             setState(
               () {
                 final info = 'Left Channel: $stats';
@@ -189,6 +191,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
             );
           }, //Join Channel
           userJoined: (uid, elapsed) {
+            print('joined channel: $uid');
             setState(
               () {
                 _remoteId = uid;
@@ -223,7 +226,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         await Sentry.captureException('Enabling video failed: $err');
       });
       await _engine.enableLocalAudio(true);
-      if (widget.userRole == 'subscriber') {
+      if (userRole == 'subscriber') {
         _engine.disableAudio();
       }
 
@@ -234,7 +237,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         await Sentry.captureException(
             'Error setting the channel Profile: $err');
       });
-      if (widget.userRole == 'publisher') {
+      if (userRole == 'publisher') {
         await _engine.setClientRole(ClientRole.Broadcaster);
       } else {
         await _engine.setClientRole(ClientRole.Audience);
@@ -248,9 +251,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   //Will initialize the agora channel, token and app id
   Future<void> initializeAgore() async {
     if (widget.rtcToken.isNotEmpty) {
-      _infoString
-          .add('Rtc_Token: ${widget.rtcToken} - Rtm_Token: ${widget.rtmToken}');
-      await _initializeRtcEngine();
+      await _initializeRtcEngine(userRole);
 
       //Join the channel
       await _engine.joinChannel(
@@ -306,7 +307,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
                 return Stack(
                   children: [
                     //Show the video view
-                    widget.userRole == 'publisher'
+                    userRole == 'publisher'
                         ? _broadCastView()
                         : _audienceView(),
                     //show the toolbar to control the view
@@ -314,7 +315,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
                     //_toolBar(),
 
                     //show messaging bar
-                    widget.userRole == 'publisher'
+                    userRole == 'publisher'
                         ? const SizedBox.shrink()
                         : SizedBox(
                             width: size.width,
@@ -333,7 +334,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
               }
             },
           ),
-          widget.userRole == 'publisher' ? _streamerToolBar() : _bottomBar()
+          userRole == 'publisher' ? _streamerToolBar() : _bottomBar()
         ],
       ),
       //bottomNavigationBar: _bottomBar(),
@@ -344,7 +345,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   List<Widget> _getRenderViews() {
     final List<StatefulWidget> list = [];
     //the broadcaster will access the local views
-    if (widget.userRole == 'publisher') {
+    if (userRole == 'publisher') {
       print('user adding local view');
       list.add(RtcLocalView.SurfaceView());
     }
@@ -434,7 +435,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
               child: view,
             ))
         .toList();
-    return widget.userRole == 'publisher'
+    return userRole == 'publisher'
         ? Expanded(
             child: Row(children: wrappedViews),
           )
@@ -568,8 +569,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
       child: TextButton(
         child: Text('Request to Join', style: textStyle_19),
         onPressed: () async {
-          print('we shall add this later');
-          _toggleSendPeerMessage();
+          _toggleSendRemoteInivitaion();
         },
       ),
     );
@@ -822,25 +822,51 @@ class _LiveStreamingState extends State<LiveStreaming> {
       }
     };
 
-    _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
-      _log(info: message.text, type: 'message', user: peerId, fullName: peerId);
+    _client.onMessageReceived = (AgoraRtmMessage message, String peerId) async {
+      if (message.text.isNotEmpty) {
+        setState(() {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                    title: Text('Joining Live'),
+                    content: Text(
+                        '${_userList[peerId]!.firstName} ${_userList[peerId]!.lastName} ${message.text}'),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            _toggleSendLocalInvitation(peerId, 'accept');
+                            Navigator.pop(context);
+                          },
+                          child: Text('Accept')),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('Reject')),
+                    ],
+                  ));
+        });
+      }
     };
 
     _client.onLocalInvitationReceivedByPeer = (AgoraRtmLocalInvitation invite) {
-      _log(
-        type: 'invite',
-        info: 'invitation received Local',
-        user: invite.calleeId,
-      );
+      print(
+          'we have received a local invitation: ${invite.calleeId} - ${invite.content}');
+      // _log(
+      //   type: 'invite',
+      //   info: 'invitation received Local',
+      //   user: invite.calleeId,
+      // );
     };
 
     _client.onRemoteInvitationReceivedByPeer =
-        (AgoraRtmRemoteInvitation invite) {
-      _log(
-        type: 'invite',
-        info: 'invitation received Remote',
-        user: invite.callerId,
-      );
+        (AgoraRtmRemoteInvitation invite) async {
+      print(
+          'we have received a Remote invitation: ${invite.callerId} - ${invite.content}');
+      setState(() {
+        userRole = 'publisher';
+        _initializeRtcEngine(userRole);
+      });
     };
 
     await _toggleLogin();
@@ -851,6 +877,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
     AgoraRtmChannel? channel = await _client.createChannel(name);
     if (channel != null) {
       channel.onMemberJoined = (AgoraRtmMember member) async {
+        print('A member joined: ${member.userId}');
         _toggleQuery();
         if (!_userList.containsKey(member.userId)) {
           _userData = await db.getUserByUserId(userId: member.userId);
@@ -868,6 +895,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         }
       };
       channel.onMemberLeft = (AgoraRtmMember member) {
+        print('a member left: ${member.userId}');
         _toggleQuery();
         if (_userList.containsKey(member.userId) &&
             _members.contains(member.userId)) {
@@ -904,7 +932,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         _log(
             type: 'login',
             info: 'LogedOut',
-            user: widget.userId,
+            user: userRole,
             fullName: _userList[widget.userId]?.firstName);
         setState(() {
           _isLogin = false;
@@ -977,31 +1005,32 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
   }
 
-  void _toggleSendLocalInvitation() async {
-    String peerUid = _peerUserIdController.text;
-    if (peerUid.isEmpty) {
+  void _toggleSendRemoteInivitaion() async {
+    String peerUid = widget.streamUserId!;
+
+    try {
+      AgoraRtmMessage message =
+          AgoraRtmMessage.fromText('would like to join your stream');
+      await _client.sendMessageToPeer(peerUid, message, false);
+    } catch (e) {
+      print('An error sending invitation to Remote user: $e');
+    }
+  }
+
+  void _toggleSendLocalInvitation(String peerId, String text) async {
+    if (peerId.isEmpty) {
       _log(type: 'message', info: 'Enter peer id', user: widget.userId);
       return;
     }
-    String text = 'Woud you like to join';
+
     try {
       AgoraRtmLocalInvitation invitation =
-          AgoraRtmLocalInvitation(peerUid, content: text);
-      _log(
-          type: 'message',
-          info: 'Invitation: $invitation',
-          user: widget.userId,
-          fullName:
-              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+          AgoraRtmLocalInvitation(peerId, content: text);
+
       await _client.sendLocalInvitation(invitation.toJson());
       print('Invititation sent successfully');
     } catch (e) {
-      _log(
-          type: 'error',
-          info: 'Send Invitation Error: $e',
-          user: widget.userId,
-          fullName:
-              '${widget.currentUser?.firstName} ${widget.currentUser?.lastName}');
+      print('error sending local invitation: $e');
     }
   }
 

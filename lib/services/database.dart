@@ -681,6 +681,7 @@ class DatabaseService {
           url: (doc.data() as Map)[ImageVideoParams.URL],
           tags: (doc.data() as Map)[ImageVideoParams.TAGS],
           type: (doc.data() as Map)[ImageVideoParams.TYPE],
+          //time: (doc.data() as Map)[ImageVideoParams.TIME],
           videoThumbnailurl: (doc.data() as Map)[ImageVideoParams.THUMBNAIL],
           description: (doc.data() as Map)[ImageVideoParams.DESCRIPTION]);
     }).toList();
@@ -688,7 +689,10 @@ class DatabaseService {
 
   //Stream image file
   Stream<List<ImageVideoModel?>> getImageList() {
-    return imageVideoCollection.snapshots().map(_mapImageFromSnapshot);
+    return imageVideoCollection
+        .orderBy(ImageVideoParams.TIME, descending: true)
+        .snapshots()
+        .map(_mapImageFromSnapshot);
   }
 
   //stream image video files as per user

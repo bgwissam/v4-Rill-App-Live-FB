@@ -525,8 +525,7 @@ class _MainScreenState extends State<MainScreen>
                                               .channelName
                                               .toString(),
                                           streamUserId:
-                                              streamingProvider[index]!
-                                                  .streamerId,
+                                              streamingProvider[index]!.userId,
                                           userRole: userType,
                                           rtcToken: streamingProvider[index]!
                                               .rtcToken

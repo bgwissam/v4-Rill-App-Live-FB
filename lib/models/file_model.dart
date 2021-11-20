@@ -11,6 +11,7 @@ class ImageVideoModel {
   String? type;
   String? videoThumbnailurl;
   String? description;
+  DateTime? time;
 
   ImageVideoModel(
       {this.uid,
@@ -20,7 +21,8 @@ class ImageVideoModel {
       this.name,
       this.type,
       this.videoThumbnailurl,
-      this.description});
+      this.description,
+      this.time});
 }
 
 class StreamingModel {
