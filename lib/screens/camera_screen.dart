@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +15,7 @@ import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/aspect_ration_video.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 
@@ -27,6 +29,7 @@ class CameraScreen extends StatefulWidget {
 }
 
 enum DescretionCharacter { descrete, allages }
+enum JoiningVariable { Yes, No }
 
 class _CameraScreenState extends State<CameraScreen>
     with TickerProviderStateMixin {
@@ -48,6 +51,7 @@ class _CameraScreenState extends State<CameraScreen>
   bool _isCameraInitialized = false;
   bool _isRearCameraSelected = true;
   bool _ismicOn = true;
+  bool _allowJoining = true;
   String? description;
   FlashMode? _currentFlashMode;
   final ImagePicker _picker = ImagePicker();
@@ -63,7 +67,9 @@ class _CameraScreenState extends State<CameraScreen>
   int? selectedIndex = 0;
   final _formKey = GlobalKey<FormState>();
   int paymentValue = 0;
+  var rand = Random();
   DescretionCharacter? _character = DescretionCharacter.allages;
+  JoiningVariable? _joining = JoiningVariable.Yes;
   bool? _isDescrete = false;
   //Maps
   late Map acquireResponse;
@@ -229,11 +235,89 @@ class _CameraScreenState extends State<CameraScreen>
                     ),
                   ),
                 ),
+                //Allow joining
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: TextButton(
+                      onPressed: () {
+                        _allowUsersToJoin();
+                      },
+                      style: TextButton.styleFrom(
+                          primary: Colors.transparent,
+                          side: BorderSide(color: color_4, width: 2)),
+                      child: Text('Allow joining', style: textStyle_19),
+                    ),
+                  ),
+                ),
               ],
             )
           ],
         ),
       ),
+    );
+  }
+
+  _allowUsersToJoin() {
+    showDialog(
+      context: context,
+      builder: (builder) => StatefulBuilder(builder: (context, setState) {
+        return AlertDialog(
+            content: SizedBox(
+          height: MediaQuery.of(context).size.height / 5,
+          width: MediaQuery.of(context).size.width - 100,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('Allow users to join', style: textStyle_6),
+              Row(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 3 - 10,
+                    child: Row(
+                      children: [
+                        Radio<JoiningVariable>(
+                          activeColor: color_4,
+                          value: JoiningVariable.Yes,
+                          groupValue: _joining,
+                          onChanged: (JoiningVariable? value) {
+                            setState(() {
+                              print('the value: $value');
+                              _joining = value;
+                            });
+                          },
+                        ),
+                        Expanded(child: Text('Yes', style: textStyle_19))
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 3 - 10,
+                    child: Row(children: [
+                      Radio<JoiningVariable>(
+                        activeColor: color_4,
+                        value: JoiningVariable.No,
+                        groupValue: _joining,
+                        onChanged: (JoiningVariable? value) {
+                          setState(() {
+                            _joining = value;
+                          });
+                        },
+                      ),
+                      Expanded(child: Text('No', style: textStyle_19))
+                    ]),
+                  ),
+                ],
+              ),
+              Text(
+                  'Allow users to join if you would like other users to join your stream as hosts',
+                  style: textStyle_21),
+            ],
+          ),
+        ));
+      }),
     );
   }
 
@@ -296,7 +380,7 @@ class _CameraScreenState extends State<CameraScreen>
       builder: (builder) => StatefulBuilder(builder: (context, setState) {
         return AlertDialog(
             content: SizedBox(
-          height: MediaQuery.of(context).size.height / 4,
+          height: MediaQuery.of(context).size.height / 5,
           width: MediaQuery.of(context).size.width - 100,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -344,7 +428,7 @@ class _CameraScreenState extends State<CameraScreen>
               ),
               Text(
                   'This is for adult content that is not suitable for children, and for some adults as well. Be very careful about labelling your content',
-                  style: textStyle_20),
+                  style: textStyle_21),
             ],
           ),
         ));
@@ -374,7 +458,7 @@ class _CameraScreenState extends State<CameraScreen>
                                 ? Positioned(
                                     left: 0,
                                     top: 20,
-                                    height: 120,
+                                    height: 150,
                                     width: size.width - 10,
                                     child: _buildLiveStreamingFields())
                                 : const SizedBox.shrink(),
@@ -446,227 +530,259 @@ class _CameraScreenState extends State<CameraScreen>
                                             ),
                                           ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            print('just tapping');
-                                          },
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsets.only(bottom: 20),
-                                            child: Align(
-                                              alignment: Alignment.bottomCenter,
-                                              child: IconButton(
-                                                alignment: Alignment.center,
-                                                iconSize: 60,
-                                                onPressed: () async {
-                                                  print(
-                                                      'camera images pressed');
-                                                  if (selectedButton == 2) {
-                                                    var result =
-                                                        await _controller
-                                                            ?.takePicture();
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 20),
+                                          child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: IconButton(
+                                              alignment: Alignment.center,
+                                              iconSize: 60,
+                                              onPressed: () async {
+                                                var randomId =
+                                                    rand.nextInt(99999);
+                                                if (selectedButton == 2) {
+                                                  var result = await _controller
+                                                      ?.takePicture();
+                                                  setState(() {
+                                                    _camButtonPressed = true;
+                                                    _previewImage(result);
+                                                  });
+                                                }
+                                                if (selectedButton == 1) {
+                                                  if (mounted) {
                                                     setState(() {
                                                       _camButtonPressed = true;
-                                                      _previewImage(result);
                                                     });
                                                   }
-                                                  if (selectedButton == 1) {
-                                                    if (mounted) {
-                                                      setState(() {
-                                                        _camButtonPressed =
-                                                            true;
-                                                      });
-                                                    }
 
-                                                    if (_controller == null ||
-                                                        !_controller!.value
-                                                            .isInitialized) {
-                                                      print(
-                                                          'error select camera first');
-                                                    }
+                                                  if (_controller == null ||
+                                                      !_controller!.value
+                                                          .isInitialized) {
+                                                    print(
+                                                        'error select camera first');
+                                                  }
 
-                                                    if (_controller!.value
-                                                        .isRecordingVideo) {
+                                                  if (_controller!
+                                                      .value.isRecordingVideo) {
+                                                    setState(() {
+                                                      _isRecordingVideo = true;
+                                                    });
+                                                  }
+                                                  try {
+                                                    if (!_isRecordingVideo) {
+                                                      await _controller!
+                                                          .startVideoRecording();
                                                       setState(() {
                                                         _isRecordingVideo =
                                                             true;
+                                                        print(
+                                                            'is recordinging $_isRecordingVideo');
+                                                      });
+                                                    } else {
+                                                      var result =
+                                                          await _controller!
+                                                              .stopVideoRecording()
+                                                              .then(
+                                                                  (file) async {
+                                                        print(
+                                                            'video: ${file.path} - ${file.name} - ${file.length}');
+                                                        if (mounted) {
+                                                          setState(() {});
+                                                        }
+
+                                                        if (file != null) {
+                                                          _previewVideo(file);
+                                                        }
+                                                      });
+
+                                                      setState(() {
+                                                        _isRecordingVideo =
+                                                            false;
                                                       });
                                                     }
-                                                    try {
-                                                      if (!_isRecordingVideo) {
-                                                        await _controller!
-                                                            .startVideoRecording();
-                                                        setState(() {
-                                                          _isRecordingVideo =
-                                                              true;
-                                                          print(
-                                                              'is recordinging $_isRecordingVideo');
-                                                        });
-                                                      } else {
-                                                        var result =
-                                                            await _controller!
-                                                                .stopVideoRecording()
-                                                                .then(
-                                                                    (file) async {
-                                                          print(
-                                                              'video: ${file.path} - ${file.name} - ${file.length}');
-                                                          if (mounted) {
-                                                            setState(() {});
-                                                          }
-
-                                                          if (file != null) {
-                                                            _previewVideo(file);
-                                                          }
-                                                        });
-
-                                                        setState(() {
-                                                          _isRecordingVideo =
-                                                              false;
-                                                        });
-                                                      }
-                                                    } on CameraException catch (e, stackTrace) {
-                                                      print(
-                                                          'An exception with the camera occured: $e - $stackTrace');
+                                                  } on CameraException catch (e, stackTrace) {
+                                                    print(
+                                                        'An exception with the camera occured: $e - $stackTrace');
+                                                  }
+                                                }
+                                                if (selectedButton == 0) {
+                                                  //validate form first
+                                                  if (!_formKey.currentState!
+                                                      .validate()) {
+                                                    return;
+                                                  } else {
+                                                    if (_channelName != null &&
+                                                        _channelName != '') {
+                                                      setState(() {
+                                                        _isLoadingStream = true;
+                                                      });
+                                                      await _getTokens();
+                                                    } else {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (builder) =>
+                                                            const AlertDialog(
+                                                          title: Text(
+                                                              'Add a title first!'),
+                                                        ),
+                                                      );
                                                     }
                                                   }
-                                                  if (selectedButton == 0) {
-                                                    //validate form first
-                                                    if (!_formKey.currentState!
-                                                        .validate()) {
-                                                      return;
-                                                    } else {
-                                                      if (_channelName !=
-                                                              null &&
-                                                          _channelName != '') {
+                                                  //live streaming
+                                                  if (mounted &&
+                                                      _channelName != null &&
+                                                      _channelName != '') {
+                                                    setState(() {
+                                                      _camButtonPressed = true;
+                                                      _isLoadingStream = true;
+                                                    });
+                                                  }
+                                                  if (rtcToken == 'failed') {
+                                                    return;
+                                                  }
+                                                  if (_controller == null ||
+                                                      !_controller!.value
+                                                          .isInitialized) {
+                                                    //add code here to show the recording initiation failed
+                                                    await Sentry.captureMessage(
+                                                        'Failed to initiate camera, random Id: $randomId - Token: $rtcToken');
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      SnackBar(
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    700),
+                                                        content: Text(
+                                                            'Failed to initiate camera: Random Id: $randomId'),
+                                                      ),
+                                                    );
+                                                    return;
+                                                  }
+
+                                                  if (_controller!
+                                                      .value.isRecordingVideo) {
+                                                    setState(() {
+                                                      _isLoadingStream = true;
+                                                    });
+                                                  }
+                                                  if (_channelName != null &&
+                                                      _channelName != '') {
+                                                    try {
+                                                      if (!_isRecordingVideo) {
                                                         setState(() {
                                                           _isLoadingStream =
                                                               true;
                                                         });
-                                                        await _getTokens();
-                                                      } else {
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (builder) =>
-                                                              const AlertDialog(
-                                                            title: Text(
-                                                                'Add a title first!'),
-                                                          ),
-                                                        );
-                                                      }
-                                                    }
-                                                    //live streaming
-                                                    if (mounted &&
-                                                        _channelName != null &&
-                                                        _channelName != '') {
-                                                      setState(() {
-                                                        _camButtonPressed =
-                                                            true;
-                                                        _isLoadingStream = true;
-                                                      });
-                                                    }
-                                                    if (rtcToken == 'failed') {
-                                                      return;
-                                                    }
-                                                    if (_controller == null ||
-                                                        !_controller!.value
-                                                            .isInitialized) {
-                                                      print(
-                                                          'error select camera first');
-                                                      return;
-                                                    }
 
-                                                    if (_controller!.value
-                                                        .isRecordingVideo) {
-                                                      setState(() {
-                                                        _isLoadingStream = true;
-                                                      });
-                                                    }
-                                                    if (_channelName != null &&
-                                                        _channelName != '') {
-                                                      try {
-                                                        if (!_isRecordingVideo) {
-                                                          setState(() {
-                                                            _isLoadingStream =
-                                                                true;
-                                                          });
-                                                          //Check if recording could be started
-                                                          var acquire =
-                                                              await _recordingController
-                                                                  .getVideoRecordingRefId(
-                                                                      _channelName!,
-                                                                      '12345',
-                                                                      rtcToken!);
-                                                          acquireResponse =
+                                                        //Check if recording could be started
+                                                        var acquire = await _recordingController
+                                                            .getVideoRecordingRefId(
+                                                                _channelName!,
+                                                                randomId
+                                                                    .toString(),
+                                                                rtcToken!);
+                                                        acquireResponse =
+                                                            await json.decode(
+                                                                acquire.body);
+
+                                                        if (acquireResponse[
+                                                                'resourceId'] !=
+                                                            null) {
+                                                          var start = await _recordingController
+                                                              .startRecordingVideo(
+                                                                  acquireResponse[
+                                                                      'resourceId'],
+                                                                  'mix',
+                                                                  _channelName!,
+                                                                  randomId
+                                                                      .toString(),
+                                                                  rtcToken!);
+                                                          startRecording =
                                                               await json.decode(
-                                                                  acquire.body);
-                                                          print(
-                                                              'the result Acquire: $acquireResponse');
-                                                          if (acquireResponse[
-                                                                  'resourceId'] !=
-                                                              null) {
-                                                            var start = await _recordingController
-                                                                .startRecordingVideo(
-                                                                    acquireResponse[
-                                                                        'resourceId'],
-                                                                    'mix',
-                                                                    _channelName!,
-                                                                    '12345',
-                                                                    rtcToken!);
-                                                            startRecording =
-                                                                await json
-                                                                    .decode(start
-                                                                        .body);
-                                                          }
-                                                          print(
-                                                              'the result start: $startRecording');
-                                                          if (startRecording[
-                                                                  'sid']
-                                                              .isNotEmpty) {
-                                                            _startRecordingLiveStream();
-                                                          } else {
-                                                            //add code here to show the recording initiation failed
-                                                            print(
-                                                                'the recording initiation failed');
-                                                          }
+                                                                  start.body);
                                                         } else {
-                                                          setState(() {
-                                                            _isLoadingStream =
-                                                                false;
-                                                            _camButtonPressed =
-                                                                false;
-                                                          });
+                                                          //add code here to show the recording initiation failed
+                                                          await Sentry
+                                                              .captureMessage(
+                                                                  'Failed to acquire response Id, random Id: $randomId');
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          700),
+                                                              content: Text(
+                                                                  'Failed to acquire response Id, Random Id: $randomId'),
+                                                            ),
+                                                          );
                                                         }
-                                                      } on CameraException catch (e, stackTrace) {
-                                                        print(
-                                                            'An exception with the camera occured: $e - $stackTrace');
-                                                      }
-                                                    }
-                                                    //Start live streaming
 
+                                                        if (startRecording[
+                                                                'sid']
+                                                            .isNotEmpty) {
+                                                          _startRecordingLiveStream();
+                                                        } else {
+                                                          //add code here to show the recording initiation failed
+                                                          await Sentry
+                                                              .captureMessage(
+                                                                  'Recording failed to initiated, random Id: $randomId');
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          700),
+                                                              content: Text(
+                                                                  'Recording failed to initiate, Random Id: $randomId'),
+                                                            ),
+                                                          );
+                                                        }
+                                                      } else {
+                                                        setState(() {
+                                                          _isLoadingStream =
+                                                              false;
+                                                          _camButtonPressed =
+                                                              false;
+                                                        });
+                                                      }
+                                                    } on CameraException catch (e, stackTrace) {
+                                                      await Sentry
+                                                          .captureException(e,
+                                                              stackTrace:
+                                                                  stackTrace);
+                                                    }
                                                   }
-                                                  //Open phone gallery
-                                                  if (selectedButton == 3) {
-                                                    //open image gallery
-                                                    await _imagePicker.pickImage(
-                                                        source:
-                                                            ImageSource.gallery,
-                                                        preferredCameraDevice:
-                                                            CameraDevice.front,
-                                                        imageQuality: 25,
-                                                        maxHeight: 400,
-                                                        maxWidth: 400);
-                                                  }
-                                                },
-                                                icon: !_camButtonPressed
-                                                    ? Image.asset(
-                                                        'assets/icons/target_rill_ver2.png',
-                                                        color: Colors.white,
-                                                      )
-                                                    : Image.asset(
-                                                        'assets/icons/target_rill_dark_ver2.png',
-                                                        color: Colors.white,
-                                                      ),
-                                              ),
+                                                  //Start live streaming
+
+                                                }
+                                                //Open phone gallery
+                                                if (selectedButton == 3) {
+                                                  //open image gallery
+                                                  await _imagePicker.pickImage(
+                                                      source:
+                                                          ImageSource.gallery,
+                                                      preferredCameraDevice:
+                                                          CameraDevice.front,
+                                                      imageQuality: 25,
+                                                      maxHeight: 400,
+                                                      maxWidth: 400);
+                                                }
+                                              },
+                                              icon: !_camButtonPressed
+                                                  ? Image.asset(
+                                                      'assets/icons/target_rill_ver2.png',
+                                                      color: Colors.white,
+                                                    )
+                                                  : Image.asset(
+                                                      'assets/icons/target_rill_dark_ver2.png',
+                                                      color: Colors.white,
+                                                    ),
                                             ),
                                           ),
                                         ),
@@ -749,6 +865,7 @@ class _CameraScreenState extends State<CameraScreen>
     //save stream to your database in order for other users to view it
     var streamRec = await db.createNewDataStream(
         channelName: _channelName,
+        allowJoining: _joining == JoiningVariable.Yes ? true : false,
         rtcToken: rtcToken,
         rtmToken: rtmToken,
         userId: widget.userId,

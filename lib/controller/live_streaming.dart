@@ -33,6 +33,7 @@ class LiveStreaming extends StatefulWidget {
   final Function? loadingStateCallback;
   final String? recordingId;
   final UserModel? currentUser;
+  final bool? allowJoining;
   const LiveStreaming({
     required this.channelName,
     required this.userRole,
@@ -49,6 +50,7 @@ class LiveStreaming extends StatefulWidget {
     this.uid,
     this.recordingId,
     this.currentUser,
+    this.allowJoining,
   }) : super(key: key);
 
   @override
@@ -251,14 +253,35 @@ class _LiveStreamingState extends State<LiveStreaming> {
   //Will initialize the agora channel, token and app id
   Future<void> initializeAgore() async {
     if (widget.rtcToken.isNotEmpty) {
-      await _initializeRtcEngine(userRole);
+      try {
+        await _initializeRtcEngine(userRole);
 
-      //Join the channel
-      await _engine.joinChannel(
-          widget.rtcToken, widget.channelName, null, widget.uid!);
+        //Join the channel
+        await _engine
+            .joinChannel(widget.rtcToken, widget.channelName, null, widget.uid!)
+            .catchError((err) async {
+          await Sentry.captureException(err);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to joinChannel: $err'),
+            ),
+          );
+        });
+      } catch (e, stackTrace) {
+        await Sentry.captureException(e, stackTrace: stackTrace);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to initialize Rtc Engine: $e'),
+          ),
+        );
+      }
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Failed to connect')));
+      await Sentry.captureException('RTC token is empty');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('RTC token is empty'),
+        ),
+      );
     }
   }
 
@@ -310,10 +333,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
                     userRole == 'publisher'
                         ? _broadCastView()
                         : _audienceView(),
-                    //show the toolbar to control the view
-
-                    //_toolBar(),
-
                     //show messaging bar
                     userRole == 'publisher'
                         ? const SizedBox.shrink()
@@ -337,7 +356,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
           userRole == 'publisher' ? _streamerToolBar() : _bottomBar()
         ],
       ),
-      //bottomNavigationBar: _bottomBar(),
     );
   }
 
@@ -564,13 +582,27 @@ class _LiveStreamingState extends State<LiveStreaming> {
       height: 45,
       margin: EdgeInsets.only(right: 5, bottom: 5),
       decoration: BoxDecoration(
-          border: Border.all(color: color_4),
+          border: Border.all(color: widget.allowJoining! ? color_4 : color_11),
           borderRadius: BorderRadius.circular(15)),
       child: TextButton(
-        child: Text('Request to Join', style: textStyle_19),
-        onPressed: () async {
-          _toggleSendRemoteInivitaion();
-        },
+        child: Text('Request to Join',
+            style: widget.allowJoining! ? textStyle_19 : textStyle_24),
+        onPressed: widget.allowJoining!
+            ? () async {
+                var views = _getRenderViews();
+                if (views.length < 4) {
+                  _toggleSendRemoteInivitaion();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      duration: Duration(seconds: 2),
+                      content: Text(
+                          'The channel has reached maximum number of hosts'),
+                    ),
+                  );
+                }
+              }
+            : null,
       ),
     );
   }
@@ -850,23 +882,24 @@ class _LiveStreamingState extends State<LiveStreaming> {
     };
 
     _client.onLocalInvitationReceivedByPeer = (AgoraRtmLocalInvitation invite) {
-      print(
-          'we have received a local invitation: ${invite.calleeId} - ${invite.content}');
-      // _log(
-      //   type: 'invite',
-      //   info: 'invitation received Local',
-      //   user: invite.calleeId,
-      // );
+      //At the moment we have nothing to do with local invitations
     };
 
     _client.onRemoteInvitationReceivedByPeer =
         (AgoraRtmRemoteInvitation invite) async {
-      print(
-          'we have received a Remote invitation: ${invite.callerId} - ${invite.content}');
-      setState(() {
-        userRole = 'publisher';
-        _initializeRtcEngine(userRole);
-      });
+      if (invite.content == 'accept') {
+        setState(() {
+          userRole = 'publisher';
+          _initializeRtcEngine(userRole);
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 2),
+            content: Text('The host rejected your request to join'),
+          ),
+        );
+      }
     };
 
     await _toggleLogin();
@@ -894,7 +927,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
           });
         }
       };
-      channel.onMemberLeft = (AgoraRtmMember member) {
+      channel.onMemberLeft = (AgoraRtmMember member) async {
         print('a member left: ${member.userId}');
         _toggleQuery();
         if (_userList.containsKey(member.userId) &&
@@ -976,8 +1009,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
     //   return;
     // }
     try {
-      Map<dynamic, dynamic> result =
-          await _client.queryPeersOnlineStatus([widget.currentUser!.userId!]);
+      var result = await _client.queryPeersOnlineStatus(_members);
       print('the result of query: $result');
     } catch (e) {
       _log(type: 'error', info: 'Query Error: $e', user: widget.userId);

@@ -71,6 +71,7 @@ class LiveStreamingParams {
   static String PAYMENT_VIEW = 'paymentView';
   static String DESCRETION = 'descretion';
   static String DESCRIPTION = 'description';
+  static String ALLOW_JOINING = 'allowJoining';
 }
 
 class CommentParameters {

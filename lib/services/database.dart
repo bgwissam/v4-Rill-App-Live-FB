@@ -495,6 +495,7 @@ class DatabaseService {
       String? resourceId,
       int? paymentPerView,
       bool? descretion,
+      bool? allowJoining,
       String? sid}) async {
     try {
       var result = await liveStreamingCollection.add({
@@ -508,6 +509,7 @@ class DatabaseService {
         LiveStreamingParams.PAYMENT_VIEW: paymentPerView,
         LiveStreamingParams.DESCRETION: descretion,
         LiveStreamingParams.sid: sid,
+        LiveStreamingParams.ALLOW_JOINING: allowJoining,
       }).then((value) => value.id);
 
       return result;
@@ -542,7 +544,8 @@ class DatabaseService {
           resourceId: (doc.data() as Map)[LiveStreamingParams.resouceId],
           paymentPerView: (doc.data() as Map)[LiveStreamingParams.PAYMENT_VIEW],
           descretion: (doc.data() as Map)[LiveStreamingParams.DESCRETION],
-          sid: (doc.data() as Map)[LiveStreamingParams.sid]);
+          sid: (doc.data() as Map)[LiveStreamingParams.sid],
+          allowJoining: (doc.data() as Map)[LiveStreamingParams.ALLOW_JOINING]);
     }).toList();
   }
 

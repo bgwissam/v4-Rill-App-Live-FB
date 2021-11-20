@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/parameters.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class RecordingController {
   Parameters param = Parameters();
@@ -40,8 +41,9 @@ class RecordingController {
       );
 
       return result;
-    } catch (e) {
-      print('Error fetching data: $e');
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      print('Error acquiring resource Id: $e');
       rethrow;
     }
   }
@@ -106,8 +108,10 @@ class RecordingController {
       );
 
       return result;
-    } catch (e) {
-      print('start recording could not be processed: $e');
+    } catch (e, stackTrace) {
+      print('Error start recording: $e');
+      await Sentry.captureException(e, stackTrace: stackTrace);
+
       rethrow;
     }
   }

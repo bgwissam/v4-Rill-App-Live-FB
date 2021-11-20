@@ -39,6 +39,7 @@ class StreamingModel {
   int? paymentPerView;
   bool? descretion;
   String? sid;
+  bool? allowJoining;
   StreamingModel(
       {this.uid,
       this.userId,
@@ -52,7 +53,8 @@ class StreamingModel {
       this.resourceId,
       this.paymentPerView,
       this.descretion,
-      this.sid});
+      this.sid,
+      this.allowJoining});
 }
 
 //Ended stream model

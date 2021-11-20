@@ -524,6 +524,9 @@ class _MainScreenState extends State<MainScreen>
                                           channelName: streamingProvider[index]!
                                               .channelName
                                               .toString(),
+                                          allowJoining:
+                                              streamingProvider[index]!
+                                                  .allowJoining,
                                           streamUserId:
                                               streamingProvider[index]!.userId,
                                           userRole: userType,
@@ -919,15 +922,7 @@ class _MainScreenState extends State<MainScreen>
                                                     });
                                                     //Get token
                                                     _userRole = 'publisher';
-                                                    print(
-                                                        'the client Role: $_userRole');
 
-                                                    // rtcToken = await tokenGenerator
-                                                    //     .createVideoAudioChannelToken(
-                                                    //         channelName:
-                                                    //             _channelName,
-                                                    //         role: _userRole,
-                                                    //         userId: _userId);
                                                     var acquireResult =
                                                         await recordingController
                                                             .getVideoRecordingRefId(
@@ -937,6 +932,8 @@ class _MainScreenState extends State<MainScreen>
                                                     acquireResponse =
                                                         await json.decode(
                                                             acquireResult.body);
+                                                    print(
+                                                        'the acquired Response: $acquireResponse');
 
                                                     //check if acquire id has returned a value
                                                     if (acquireResponse[
