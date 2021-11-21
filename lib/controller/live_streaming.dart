@@ -8,6 +8,7 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:rillliveapp/controller/recording_controller.dart';
 import 'package:rillliveapp/models/user_model.dart';
+import 'package:rillliveapp/screens/main_screen.dart';
 import 'package:rillliveapp/services/amplify_storage.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
@@ -111,7 +112,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
     _users.clear();
     _engine.leaveChannel();
     _engine.destroy();
-    widget.userRole == 'publisher' ? _onCallEnd(context) : null;
+    //widget.userRole == 'publisher' ? _onCallEnd(context) : null;
     super.dispose();
   }
 
@@ -227,13 +228,19 @@ class _LiveStreamingState extends State<LiveStreaming> {
         print('Error enableing video: $err');
         await Sentry.captureException('Enabling video failed: $err');
       });
+
+      await _engine.setEnableSpeakerphone(true).catchError((err) {
+        print('Error setting phone speaker: $err');
+      }).then((value) {
+        print('Speaker phone has been enabled');
+      });
+
       await _engine.enableLocalAudio(true).catchError((err) async {
         print('Error enabling audio: $err');
         await Sentry.captureException('Enabling audio failed: $err');
+      }).then((value) {
+        print('Local audio has been enabled');
       });
-      if (userRole == 'subscriber') {
-        _engine.disableAudio();
-      }
 
       await _engine
           .setChannelProfile(ChannelProfile.LiveBroadcasting)
@@ -322,42 +329,53 @@ class _LiveStreamingState extends State<LiveStreaming> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: Stack(
-        children: [
-          FutureBuilder(
-            future: _futureRenderViews(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                return Stack(
-                  children: [
-                    //Show the video view
-                    userRole == 'publisher'
-                        ? _broadCastView()
-                        : _audienceView(),
-                    //show messaging bar
-                    userRole == 'publisher'
-                        ? const SizedBox.shrink()
-                        : SizedBox(
-                            width: size.width,
-                            child: _bottomBar(),
-                          ),
-                    //will list the messages for this stream
-                    messageList(),
-                  ],
-                );
-              } else {
-                return const Center(
-                  child: LoadingAmination(
-                    animationType: 'ThreeInOut',
-                  ),
-                );
-              }
-            },
+    return WillPopScope(
+      onWillPop: () async {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('You need to end call first'),
+            duration: Duration(milliseconds: 900),
           ),
-          userRole == 'publisher' ? _streamerToolBar() : _bottomBar()
-        ],
+        );
+        return false;
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: Stack(
+          children: [
+            FutureBuilder(
+              future: _futureRenderViews(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return Stack(
+                    children: [
+                      //Show the video view
+                      userRole == 'publisher'
+                          ? _broadCastView()
+                          : _audienceView(),
+                      //show messaging bar
+                      userRole == 'publisher'
+                          ? const SizedBox.shrink()
+                          : SizedBox(
+                              width: size.width,
+                              child: _bottomBar(),
+                            ),
+                      //will list the messages for this stream
+                      messageList(),
+                    ],
+                  );
+                } else {
+                  return const Center(
+                    child: LoadingAmination(
+                      animationType: 'ThreeInOut',
+                    ),
+                  );
+                }
+              },
+            ),
+            userRole == 'publisher' ? _streamerToolBar() : _bottomBar()
+          ],
+        ),
       ),
     );
   }
@@ -645,6 +663,15 @@ class _LiveStreamingState extends State<LiveStreaming> {
   //tool bar functions
   void _onCallEnd(BuildContext context) async {
     String streamingId = '';
+    print('fetchStreamVideoUrl counter: ${DateTime.now().second}');
+    //send a message to kick out all users
+    await _channel
+        ?.sendMessage(AgoraRtmMessage.fromText('callEnded'))
+        .catchError((err) async {
+      print('Could not send the end stream text');
+      await Sentry.captureException(err);
+    });
+
     if (widget.streamModelId != null) {
       streamingId = await db.fetchStreamingVideoUrl(uid: widget.streamModelId);
       if (streamingId == widget.streamUserId) {
@@ -989,7 +1016,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
         }
       };
       channel.onMessageReceived =
-          (AgoraRtmMessage message, AgoraRtmMember member) {
+          (AgoraRtmMessage message, AgoraRtmMember member) async {
         if (mounted) {
           setState(() {
             _log(
@@ -998,6 +1025,19 @@ class _LiveStreamingState extends State<LiveStreaming> {
                 info: message.text,
                 fullName: _userList[member.userId]!.firstName);
           });
+        }
+        print(
+            'End call: member: ${member.userId} - Streamer: ${widget.streamUserId}');
+        //kick out users if call ended
+        if (member.userId == widget.streamUserId &&
+            message.text == 'callEnded') {
+          print('time to kick you out');
+          await Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (builder) => MainScreen(
+                      currenUser: widget.currentUser, userId: widget.userId)),
+              (route) => false);
         }
       };
     }

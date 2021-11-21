@@ -564,14 +564,16 @@ class DatabaseService {
 
   //fetch all streaming videos
   Future<String> fetchStreamingVideoUrl({String? uid}) async {
+    print('fetchStreamVideoUrl id: $uid');
     try {
-      return await liveStreamingCollection
-          .doc(uid)
-          .get()
-          .then((value) => (value.data() as Map)[LiveStreamingParams.USER_ID])
-          .catchError((err) async {
+      return await liveStreamingCollection.doc(uid).get().then((value) {
+        print(
+            'fetchStreamVideoUrl value: ${(value.data() as Map)[LiveStreamingParams.USER_ID]}');
+        return (value.data() as Map)[LiveStreamingParams.USER_ID];
+      }).catchError((err) async {
         await Sentry.captureException(err);
-        return 'Error fetching stream: $err';
+        print('fetchStreamVideoUrl error: $err');
+        return 'fetchStreamVideoUrl error: $err';
       });
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
