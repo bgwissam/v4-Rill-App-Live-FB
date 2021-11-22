@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rillliveapp/controller/live_streaming.dart';
 import 'package:rillliveapp/controller/recording_controller.dart';
@@ -75,13 +76,14 @@ class _CameraScreenState extends State<CameraScreen>
   late Map acquireResponse;
   late Map startRecording;
 
-  Widget textButton(String text, Function()? function, Color color) {
+  Widget textButton(
+      String text, Function()? function, Color color, bool selected) {
     return TextButton(
       onPressed: function,
       child: Text(
         text,
         style: TextStyle(
-          color: color,
+          color: selected ? color_4 : color,
           fontSize: 15,
         ),
       ),
@@ -91,7 +93,10 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   void initState() {
     super.initState();
-
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     onNewCameraSelected(cameras[0]);
     _scrollController = ScrollController();
   }
@@ -112,6 +117,12 @@ class _CameraScreenState extends State<CameraScreen>
 
   @override
   void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     _controller?.dispose();
     super.dispose();
   }
@@ -442,12 +453,12 @@ class _CameraScreenState extends State<CameraScreen>
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
         body: _isCameraInitialized
             ? Column(
                 children: [
                   SizedBox(
                     height: size.height - 25,
+                    width: size.width,
                     child: ClipRRect(
                       child: AspectRatio(
                         aspectRatio: 1 / _controller!.value.aspectRatio,
@@ -808,16 +819,20 @@ class _CameraScreenState extends State<CameraScreen>
                                           setState(() {
                                             selectedButton = 0;
                                           });
-                                        }, Colors.white)),
+                                        },
+                                            Colors.white,
+                                            selectedButton == 0
+                                                ? true
+                                                : false)),
                                     RotatedBox(
                                       quarterTurns: 1,
                                       child: textButton('Video', () {
                                         setState(() {
                                           selectedButton = 1;
-
                                           _vcontroller?.initialize();
                                         });
-                                      }, Colors.white),
+                                      }, Colors.white,
+                                          selectedButton == 1 ? true : false),
                                     ),
                                     RotatedBox(
                                       quarterTurns: 1,
@@ -825,7 +840,8 @@ class _CameraScreenState extends State<CameraScreen>
                                         setState(() {
                                           selectedButton = 2;
                                         });
-                                      }, Colors.white),
+                                      }, Colors.white,
+                                          selectedButton == 2 ? true : false),
                                     ),
                                     RotatedBox(
                                       quarterTurns: 1,
@@ -833,7 +849,8 @@ class _CameraScreenState extends State<CameraScreen>
                                         setState(() {
                                           selectedButton = 3;
                                         });
-                                      }, Colors.white),
+                                      }, Colors.white,
+                                          selectedButton == 3 ? true : false),
                                     ),
                                   ]),
                                 ),
