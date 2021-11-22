@@ -29,6 +29,7 @@ dependencies:
   video_thumbnail: ^0.4.3
   cached_network_image: ^3.1.0
   sentry_flutter: 
+  url_launcher: ^6.0.15
   #amplify packages
   amplify_flutter: ^0.2.6
   amplify_analytics_pinpoint: ^0.2.6

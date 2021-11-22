@@ -125,9 +125,6 @@ class RegisterState extends State<Register> {
   String? phoneFullNumber;
   String? bioDescription;
   String? profileImageUrl;
-  String? frontIdUrl;
-  String? backIdUrl;
-  bool? isVerified;
   List<dynamic>? interest = [];
   late FirebaseStorage storageReferece;
   late String errorMessage = '';
@@ -178,7 +175,7 @@ class RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
-    print('the image: ${widget.userModel}');
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -273,14 +270,11 @@ class RegisterState extends State<Register> {
                         phoneFullNumber ?? widget.userModel?.phoneFullNumber,
                     dob: _selectedDate,
                     avatarUrl: profileImageUrl ?? widget.userModel?.avatarUrl,
-                    // frontIdUrl: frontIdUrl ?? widget.userModel?.frontIdUrl,
                     bioDescription:
                         bioDescription ?? widget.userModel?.bioDescription,
                     interests: interest!.isNotEmpty
                         ? interest
                         : widget.userModel?.interest,
-                    //backIdUrl: backIdUrl ?? widget.userModel?.backIdUrl,
-                    isVerifiedById: isVerified ?? false,
                   )
                       .catchError((error, stackTrace) async {
                     print('An error updating user: $error: stack: $stackTrace');
@@ -309,9 +303,6 @@ class RegisterState extends State<Register> {
               child: !_isSavingUpdating
                   ? Column(
                       children: [
-                        widget.userModel != null
-                            ? Container(child: _buildProfileVerification())
-                            : const SizedBox.shrink(),
                         widget.userModel != null
                             ? Center(
                                 child: GestureDetector(
@@ -603,13 +594,6 @@ class RegisterState extends State<Register> {
                                   height: 12,
                                 ),
 
-                                widget.userModel != null
-                                    ? SizedBox(
-                                        height: 180,
-                                        width: _size.width,
-                                        child: _supportingDocuments())
-                                    : const SizedBox.shrink(),
-
                                 errorMessage.isNotEmpty
                                     ? Center(
                                         child: SizedBox(
@@ -634,206 +618,6 @@ class RegisterState extends State<Register> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildProfileVerification() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Card(
-            elevation: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Image.asset(
-                      'assets/icons/verified_rill_icon.png',
-                      color: color_4,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: ListTile(
-                        title: Text('Status'),
-                        subtitle: widget.userModel?.isIdVerified != null
-                            ? Text('${widget.userModel?.isIdVerified}')
-                            : Text('Not Applied')),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Text(
-                          'Verification bade helps you distinguish yourself from scammers and fake profiles',
-                          style: textStyle_16),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () async {
-              if (frontId != null && backId != null) {
-                storageReferece = FirebaseStorage.instance;
-                Reference refFront = storageReferece
-                    .ref()
-                    .child('verification_id/${Path.basename(frontId!.path)}');
-                Reference refBack = storageReferece
-                    .ref()
-                    .child('verification_id/${Path.basename(backId!.path)}');
-                UploadTask uploadTaskFront =
-                    refFront.putFile(File(frontId!.path));
-                UploadTask uploadTaskBack = refBack.putFile(File(backId!.path));
-
-                var downloadFrontImageUrl =
-                    await (await uploadTaskFront).ref.getDownloadURL();
-                var downloadBackImageUrl =
-                    await (await uploadTaskBack).ref.getDownloadURL();
-                frontIdUrl = downloadFrontImageUrl.toString();
-                backIdUrl = downloadBackImageUrl.toString();
-                if (frontIdUrl != null && backIdUrl != null) {
-                  await db.verifyUser(
-                      userId: widget.userModel!.userId,
-                      frontIdUrl: frontIdUrl,
-                      backIdUrl: backIdUrl);
-                }
-              }
-            },
-            child: Text('Apply for Profile Verification',
-                textAlign: TextAlign.left, style: textStyle_3),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _supportingDocuments() {
-    print('back id: ${widget.userModel!.backIdUrl}');
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Supporting Documents', style: textStyle_18),
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Row(
-              children: [
-                //Front id side
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        _showPicker(context, 'frontId');
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(5),
-                        height: 120,
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.grey[100]),
-                        child: frontId == null &&
-                                widget.userModel?.frontIdUrl == null
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                    Expanded(
-                                      child: Image.asset(
-                                          'assets/icons/add_rill.png',
-                                          color: color_4),
-                                    ),
-                                    Expanded(
-                                        child: Text(
-                                            'Upload Front Side of a recognised ID proof',
-                                            textAlign: TextAlign.center,
-                                            style: textStyle_17)),
-                                  ])
-                            : frontId != null
-                                ? Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: FileImage(frontId!),
-                                          fit: BoxFit.fill),
-                                    ),
-                                  )
-                                : Container(
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: NetworkImage(
-                                                widget.userModel!.frontIdUrl!),
-                                            fit: BoxFit.fill)),
-                                  ),
-                      ),
-                    ),
-                  ),
-                ),
-                //Back id side
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        _showPicker(context, 'backId');
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(5),
-                        height: 120,
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.grey[100]),
-                        child: backId == null &&
-                                widget.userModel?.backIdUrl == null
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                    Expanded(
-                                      child: Image.asset(
-                                          'assets/icons/add_rill.png',
-                                          color: color_4),
-                                    ),
-                                    Expanded(
-                                        child: Text(
-                                            'Upload Back Side of a recognised ID proof',
-                                            textAlign: TextAlign.center,
-                                            style: textStyle_17)),
-                                  ])
-                            : backId != null
-                                ? Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: FileImage(backId!),
-                                          fit: BoxFit.fill),
-                                    ),
-                                  )
-                                : Container(
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: NetworkImage(
-                                                widget.userModel!.backIdUrl!),
-                                            fit: BoxFit.fill)),
-                                  ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
       ),
     );
   }

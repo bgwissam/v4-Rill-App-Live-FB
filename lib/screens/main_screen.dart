@@ -33,9 +33,12 @@ import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/loading_view.dart';
 import 'package:rillliveapp/shared/parameters.dart';
 import 'package:rillliveapp/shared/video_viewer.dart';
+import 'package:rillliveapp/verification/id_verification.dart';
 import 'package:rillliveapp/wallet/wallet_view.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 import '../wrapper.dart';
 
@@ -177,7 +180,7 @@ class _MainScreenState extends State<MainScreen>
                         await Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (builder) => Register(
+                            builder: (builder) => IdVerification(
                               userModel: userProvider,
                             ),
                           ),
@@ -218,7 +221,23 @@ class _MainScreenState extends State<MainScreen>
                     ListTile(
                       title: Text('Privacy',
                           style: Theme.of(context).textTheme.headline6),
-                      onTap: () async {},
+                      onTap: () async {
+                        const privacyUrl =
+                            'https://rilllive.com/privacy-policy';
+
+                        try {
+                          await launch(privacyUrl);
+                        } catch (e, stackTrace) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Failed to open'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                          await Sentry.captureException(e,
+                              stackTrace: stackTrace);
+                        }
+                      },
                       leading: ImageIcon(
                           AssetImage('assets/icons/Lock_Rill_Icon.png'),
                           color: color_4),
@@ -240,23 +259,6 @@ class _MainScreenState extends State<MainScreen>
                           ),
                         );
                       },
-                    ),
-                    ListTile(
-                      title: Text('Payment',
-                          style: Theme.of(context).textTheme.headline6),
-                      onTap: () async {},
-                      leading: ImageIcon(
-                        AssetImage("assets/icons/Square_Money_Rill.png"),
-                        color: color_4,
-                      ),
-                    ),
-                    ListTile(
-                      title: Text('Ads',
-                          style: Theme.of(context).textTheme.headline6),
-                      onTap: () async {},
-                      leading: ImageIcon(
-                          AssetImage('assets/icons/Grid_Rill_Icon.png'),
-                          color: color_4),
                     ),
                     ListTile(
                       title: Text('Help',
