@@ -647,6 +647,7 @@ class _AccountScreenState extends State<AccountScreen>
                   context,
                   MaterialPageRoute(
                     builder: (builder) => ImageViewerProvider(
+                      userModel: userProvider,
                       imageUrl: feedProvider[index]!.url!,
                       collection: 'comments',
                       fileId: feedProvider[index]!.uid,

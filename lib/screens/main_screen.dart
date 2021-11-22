@@ -28,6 +28,7 @@ import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/aspect_ration_video.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
+import 'package:rillliveapp/shared/help_page.dart';
 import 'package:rillliveapp/shared/image_viewer.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/loading_view.dart';
@@ -263,7 +264,14 @@ class _MainScreenState extends State<MainScreen>
                     ListTile(
                       title: Text('Help',
                           style: Theme.of(context).textTheme.headline6),
-                      onTap: () async {},
+                      onTap: () async {
+                        await Navigator.push(context,
+                            MaterialPageRoute(builder: (builder) {
+                          return HelpPage(
+                            userModel: userProvider,
+                          );
+                        }));
+                      },
                       leading: ImageIcon(
                           AssetImage('assets/icons/info_rill_icon.png'),
                           color: color_4),
