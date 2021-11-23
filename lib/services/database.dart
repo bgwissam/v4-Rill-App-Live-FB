@@ -368,6 +368,9 @@ class DatabaseService {
   Future<void> addFollowing(
       {String? followerId,
       String? userId,
+      String? myFirstName,
+      String? myLastName,
+      String? myAvatarUrl,
       String? followerFirstName,
       String? followerLastName,
       String? avatarUrl}) async {
@@ -389,8 +392,9 @@ class DatabaseService {
           .collection(FollowParameters.followers!)
           .doc(userId)
           .set({
-        UserParams.FIRST_NAME: followerFirstName,
-        UserParams.LAST_NAME: followerLastName,
+        UserParams.FIRST_NAME: myFirstName,
+        UserParams.LAST_NAME: myLastName,
+        UserParams.AVATAR: myAvatarUrl,
       });
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);

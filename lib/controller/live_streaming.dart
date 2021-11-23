@@ -83,7 +83,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   bool _isInChannel = false;
   bool personBool = false;
   bool accepted = false;
-
+  bool _isLoading = false;
   int userNo = 0;
   int _remoteId = 0;
   double _chatItemHeight = 60;
@@ -373,7 +373,14 @@ class _LiveStreamingState extends State<LiveStreaming> {
                 }
               },
             ),
-            userRole == 'publisher' ? _streamerToolBar() : _bottomBar()
+            userRole == 'publisher' ? _streamerToolBar() : _bottomBar(),
+            _isLoading
+                ? const Center(
+                    child: LoadingAmination(
+                      animationType: 'ThreeInOut',
+                    ),
+                  )
+                : const SizedBox.shrink(),
           ],
         ),
       ),
@@ -553,81 +560,130 @@ class _LiveStreamingState extends State<LiveStreaming> {
   }
 
   Widget _streamerToolBar() {
-    return Positioned(
-      left: 0,
-      top: size.height - (size.height / 5.3),
-      height: 160,
-      width: size.width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
-            margin: EdgeInsets.only(right: 35),
-            width: size.width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(
-                  width: 60,
-                  height: 20,
-                  child: Image.asset('assets/icons/eye_rill_icon_light.png',
-                      color: color_13),
-                ),
-                Text(
-                  '${_members.length}',
-                  style: textStyle_20,
-                ),
-              ],
-            ),
+    return Stack(children: [
+      Positioned(
+        left: size.width / 12,
+        top: size.height / 14,
+        child: Container(
+          alignment: Alignment.center,
+          height: 30,
+          width: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(40),
+            color: color_5,
           ),
-          Row(
+          child: Text('Live', style: textStyle_15),
+        ),
+      ),
+      Positioned(
+        left: size.width / 3,
+        top: size.height / 14,
+        child: Container(
+          height: 30,
+          width: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(40),
+            color: color_11,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                flex: 1,
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                  padding: const EdgeInsets.symmetric(vertical: 35.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      RawMaterialButton(
-                          onPressed: _onToggleMute,
-                          child: Icon(
-                            _muted ? Icons.mic_off : Icons.mic,
-                            color: _muted ? Colors.white : Colors.redAccent,
-                            size: 20.0,
-                          ),
-                          shape: const CircleBorder(),
-                          elevation: 2.0,
-                          fillColor: _muted ? Colors.redAccent : Colors.white,
-                          padding: const EdgeInsets.all(12.0)),
-                      RawMaterialButton(
-                        onPressed: () => _onCallEnd(context),
-                        child: const Icon(Icons.call_end,
-                            color: Colors.white, size: 30.0),
-                        shape: const CircleBorder(),
-                        elevation: 2.0,
-                        fillColor: Colors.red,
-                        padding: const EdgeInsets.all(15.0),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () => _onSwitchCamera(context),
-                        child: const Icon(Icons.switch_camera,
-                            color: Colors.white, size: 20.0),
-                        shape: const CircleBorder(),
-                        elevation: 2.0,
-                        fillColor: Colors.grey,
-                        padding: const EdgeInsets.all(12.0),
-                      ),
-                    ],
-                  ),
-                ),
+              SizedBox(
+                width: 30,
+                height: 30,
+                child: Image.asset('assets/icons/eye_rill_icon_light.png',
+                    color: color_13),
+              ),
+              Text(
+                '${_members.length}',
+                style: textStyle_20,
               ),
             ],
           ),
-        ],
+        ),
       ),
-    );
+      Positioned(
+        left: 0,
+        bottom: size.height / 20,
+        height: 50,
+        width: size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
+                  width: size.width / 2,
+                  height: 40,
+                  child: TextField(
+                    cursorColor: Colors.blue,
+                    textInputAction: TextInputAction.send,
+                    style: textStyle_22,
+                    controller: _channelMessageController,
+                    textCapitalization: TextCapitalization.sentences,
+                    onSubmitted: (val) async {
+                      await _toggleSendChannelMessage();
+                      setState(() {
+                        _channelMessageController.clear();
+                      });
+                    },
+                    decoration: InputDecoration(
+                        hintText: 'Say something..',
+                        hintStyle: textStyle_20,
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(color: color_13)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(color: color_13))),
+                  ),
+                ),
+                Container(
+                  height: 45,
+                  margin: EdgeInsets.only(right: 5, bottom: 5),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: color_5),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: TextButton(
+                      child: Text('End Recording', style: textStyle_25),
+                      onPressed: () async =>
+                          !_isLoading ? _onCallEnd(context) : null),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      Positioned(
+        right: 0,
+        bottom: size.height / 20,
+        child: SizedBox(
+          height: 100,
+          width: 40,
+          child: Column(
+            children: [
+              RawMaterialButton(
+                  onPressed: _onToggleMute,
+                  child: Icon(
+                    _muted ? Icons.mic_off : Icons.mic,
+                    color: Colors.white,
+                    size: 20.0,
+                  ),
+                  elevation: 2.0,
+                  padding: const EdgeInsets.all(12.0)),
+              RawMaterialButton(
+                onPressed: () => _onSwitchCamera(context),
+                child: const Icon(Icons.switch_camera,
+                    color: Colors.white, size: 20.0),
+                elevation: 2.0,
+                padding: const EdgeInsets.all(12.0),
+              ),
+            ],
+          ),
+        ),
+      )
+    ]);
   }
 
   Widget _requestJoin() {
@@ -662,6 +718,12 @@ class _LiveStreamingState extends State<LiveStreaming> {
 
   //tool bar functions
   void _onCallEnd(BuildContext context) async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+    print('Loading: $_isLoading');
     String streamingId = '';
     print('fetchStreamVideoUrl counter: ${DateTime.now().second}');
     //send a message to kick out all users
@@ -693,6 +755,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
     } else {
       print('An error occured: streamModelId is null');
       await Sentry.captureException('streamModelId is null');
+      Navigator.pop(context);
       Navigator.pop(context);
     }
   }
@@ -752,6 +815,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
     } else {
       await Sentry.captureException('Error obtaining server response aws');
     }
+    Navigator.pop(context);
     Navigator.pop(context);
   }
 

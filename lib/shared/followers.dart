@@ -69,7 +69,7 @@ class _FollowersState extends State<Followers> {
                   leading: widget.userFollowed[index]?.avatarUrl != null
                       ? SizedBox(
                           height: 50,
-                          width: 75,
+                          width: 50,
                           child: FittedBox(
                             child: CachedNetworkImage(
                               imageUrl: widget.userFollowed[index]!.avatarUrl!,
@@ -85,7 +85,7 @@ class _FollowersState extends State<Followers> {
                         )
                       : Container(
                           height: 50,
-                          width: 75,
+                          width: 50,
                           decoration: BoxDecoration(
                               border: Border.all(),
                               borderRadius: BorderRadius.circular(10)),
@@ -173,7 +173,7 @@ class _FollowersState extends State<Followers> {
     }
     if (widget.usersFollowing.isNotEmpty) {
       return SizedBox(
-        height: 100,
+        height: _size.height,
         child: ListView.builder(
             itemCount: widget.usersFollowing.length,
             itemBuilder: (context, index) {
@@ -183,7 +183,7 @@ class _FollowersState extends State<Followers> {
                   leading: widget.usersFollowing[index]?.avatarUrl != null
                       ? SizedBox(
                           height: 50,
-                          width: 75,
+                          width: 50,
                           child: FittedBox(
                             child: Image.network(
                                 widget.usersFollowing[index]!.avatarUrl!),
@@ -192,7 +192,7 @@ class _FollowersState extends State<Followers> {
                         )
                       : Container(
                           height: 50,
-                          width: 75,
+                          width: 50,
                           decoration: BoxDecoration(
                               border: Border.all(),
                               borderRadius: BorderRadius.circular(10)),

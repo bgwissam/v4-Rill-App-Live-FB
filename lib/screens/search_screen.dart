@@ -471,6 +471,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                   } else {
                                     await db.addFollowing(
                                         userId: widget.userId,
+                                        myFirstName:
+                                            widget.userModel?.firstName,
+                                        myLastName: widget.userModel?.lastName,
+                                        myAvatarUrl:
+                                            widget.userModel?.avatarUrl,
                                         followerId: _searchedList[index].userId,
                                         followerFirstName:
                                             _searchedList[index].firstName,

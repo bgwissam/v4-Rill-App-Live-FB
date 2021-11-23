@@ -62,7 +62,7 @@ class AccountProvider extends StatelessWidget {
         StreamProvider<List<UsersFollowing?>>.value(
           value: db.getUsersBeingFollowed(
               userId: userModel?.userId,
-              collection: FollowParameters.followers!),
+              collection: FollowParameters.following!),
           initialData: [],
           catchError: (context, error) {
             print('An error fetching user: $error');
@@ -72,7 +72,7 @@ class AccountProvider extends StatelessWidget {
         StreamProvider<List<UsersFollowed?>>.value(
           value: db.getUsersFollowingUser(
               userId: userModel?.userId,
-              collection: FollowParameters.following!),
+              collection: FollowParameters.followers!),
           initialData: [],
           catchError: (context, error) {
             print('An error fetching user: $error');
@@ -215,33 +215,34 @@ class _AccountScreenState extends State<AccountScreen>
                               Padding(
                                 padding: const EdgeInsets.only(right: 4),
                                 child: Column(children: [
-                                  Container(
-                                    width: size.width / 6,
-                                    height: 30,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: color_9),
-                                    child: InkWell(
-                                      onTap: () async {
-                                        await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (builder) {
-                                              return Followers(
-                                                followers: true,
-                                                userModel: userProvider,
-                                                userFollowed: [],
-                                                usersFollowing: following,
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      },
+                                  InkWell(
+                                    onTap: () async {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (builder) {
+                                            return Followers(
+                                              followers: true,
+                                              userModel: userProvider,
+                                              userFollowed: followers,
+                                              usersFollowing: [],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: size.width / 6,
+                                      height: 30,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: color_9),
                                       child: Text(
-                                        following != null &&
-                                                following.length > 0
-                                            ? '${following.length}'
+                                        followers != null &&
+                                                followers.length > 0
+                                            ? '${followers.length}'
                                             : '00',
                                         style: heading_3,
                                         textAlign: TextAlign.center,
@@ -262,33 +263,34 @@ class _AccountScreenState extends State<AccountScreen>
                               Padding(
                                 padding: const EdgeInsets.only(right: 4),
                                 child: Column(children: [
-                                  Container(
-                                    width: size.width / 6,
-                                    height: 30,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: color_9),
-                                    child: InkWell(
-                                      onTap: () async {
-                                        await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (builder) {
-                                              return Followers(
-                                                followers: false,
-                                                userModel: userProvider,
-                                                userFollowed: followers,
-                                                usersFollowing: [],
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      },
+                                  InkWell(
+                                    onTap: () async {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (builder) {
+                                            return Followers(
+                                              followers: false,
+                                              userModel: userProvider,
+                                              userFollowed: [],
+                                              usersFollowing: following,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: size.width / 6,
+                                      height: 30,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: color_9),
                                       child: Text(
-                                        followers != null &&
-                                                followers.length > 0
-                                            ? '${followers.length}'
+                                        following != null &&
+                                                following.length > 0
+                                            ? '${following.length}'
                                             : '00',
                                         style: heading_3,
                                         textAlign: TextAlign.center,
