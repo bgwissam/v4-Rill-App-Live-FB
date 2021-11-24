@@ -1,5 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rillliveapp/models/file_model.dart';
@@ -12,7 +10,6 @@ import 'package:rillliveapp/shared/image_viewer.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/message_service.dart';
 import 'package:rillliveapp/shared/video_viewer.dart';
-import 'package:video_player/video_player.dart';
 
 class SearchScreenProviders extends StatelessWidget {
   const SearchScreenProviders({Key? key, this.userId, this.userModel})
@@ -398,128 +395,143 @@ class _SearchScreenState extends State<SearchScreen> {
       child: SizedBox(
         width: _size.width,
         height: _size.height - 275,
-        child: ListView.builder(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          itemCount: _searchedList.length,
-          itemBuilder: (context, index) {
-            print('the search list length: ${_searchedList.length}');
-            return _searchedList[index].userId != widget.userId
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: InkWell(
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (builder) => Scaffold(
-                              body: AccountProvider(
-                                userId: widget.userId,
-                                myProfile: false,
-                                userModel: _searchedList[index],
+        child: _searchedList != null
+            ? ListView.builder(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                itemCount: _searchedList.length,
+                itemBuilder: (context, index) {
+                  print('the search list length: ${_searchedList.length}');
+                  return _searchedList[index].userId != widget.userId
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: InkWell(
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (builder) => Scaffold(
+                                    body: AccountProvider(
+                                      userId: widget.userId,
+                                      myProfile: false,
+                                      userModel: _searchedList[index],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 80,
+                              alignment: Alignment.center,
+                              child: ListTile(
+                                leading: _searchedList[index].avatarUrl != null
+                                    ? SizedBox(
+                                        height: 50,
+                                        width: 75,
+                                        child: FittedBox(
+                                          child: Image.network(
+                                              _searchedList[index].avatarUrl),
+                                          fit: BoxFit.fill,
+                                        ),
+                                      )
+                                    : Container(
+                                        height: 50,
+                                        width: 75,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                title: Text(
+                                    '${_searchedList[index].firstName} ${_searchedList[index].lastName}'),
+                                subtitle: Row(
+                                  children: [
+                                    Text('User details'),
+                                    TextButton(
+                                      child: followed.isNotEmpty &&
+                                              followed.contains(
+                                                  _searchedList[index].userId)
+                                          ? Text('Followed',
+                                              style: textStyle_10)
+                                          : Text('Follow',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline6),
+                                      onPressed: () async {
+                                        if (followed.isNotEmpty &&
+                                            followed.contains(
+                                                _searchedList[index].userId)) {
+                                          await db.deleteFollowing(
+                                            userId: widget.userId,
+                                            followerId:
+                                                _searchedList[index].userId,
+                                          );
+                                          setState(() {
+                                            followed.remove(
+                                                _searchedList[index].userId);
+                                          });
+                                        } else {
+                                          await db.addFollowing(
+                                              userId: widget.userId,
+                                              myFirstName:
+                                                  widget.userModel?.firstName,
+                                              myLastName:
+                                                  widget.userModel?.lastName,
+                                              myAvatarUrl:
+                                                  widget.userModel?.avatarUrl,
+                                              followerId:
+                                                  _searchedList[index].userId,
+                                              followerFirstName:
+                                                  _searchedList[index]
+                                                      .firstName,
+                                              followerLastName:
+                                                  _searchedList[index].lastName,
+                                              avatarUrl: _searchedList[index]
+                                                  .avatarUrl);
+                                          //Notify the person being followed of the user following
+                                          try {
+                                            print(
+                                                'the token: ${_searchedList[index]?.fcmToken}');
+                                            ms.token =
+                                                _searchedList[index]?.fcmToken;
+                                            ms.senderId =
+                                                widget.userModel?.userId;
+                                            ms.senderName =
+                                                '${widget.userModel?.firstName} ${widget.userModel?.lastName}';
+                                            ms.receiverId =
+                                                _searchedList[index]?.userId;
+                                            ms.messageType = 'follow';
+                                            ms.messageTitle = 'New Follower';
+                                            ms.messageBody =
+                                                'started following you';
+                                            ms.sendPushMessage();
+                                          } catch (e) {
+                                            print(
+                                                'an error occured try to send push message');
+                                          }
+
+                                          setState(() {
+                                            followed.add(
+                                                _searchedList[index].userId);
+                                          });
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(10.0)),
                             ),
                           ),
-                        );
-                      },
-                      child: Container(
-                        height: 80,
-                        alignment: Alignment.center,
-                        child: ListTile(
-                          leading: _searchedList[index].avatarUrl != null
-                              ? SizedBox(
-                                  height: 50,
-                                  width: 75,
-                                  child: FittedBox(
-                                    child: Image.network(
-                                        _searchedList[index].avatarUrl),
-                                    fit: BoxFit.fill,
-                                  ),
-                                )
-                              : Container(
-                                  height: 50,
-                                  width: 75,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      borderRadius: BorderRadius.circular(10)),
-                                ),
-                          title: Text(
-                              '${_searchedList[index].firstName} ${_searchedList[index].lastName}'),
-                          subtitle: Row(
-                            children: [
-                              Text('User details'),
-                              TextButton(
-                                child: followed.isNotEmpty &&
-                                        followed.contains(
-                                            _searchedList[index].userId)
-                                    ? Text('Followed', style: textStyle_10)
-                                    : Text('Follow',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6),
-                                onPressed: () async {
-                                  if (followed.isNotEmpty &&
-                                      followed.contains(
-                                          _searchedList[index].userId)) {
-                                    await db.deleteFollowing(
-                                      userId: widget.userId,
-                                      followerId: _searchedList[index].userId,
-                                    );
-                                    setState(() {
-                                      followed
-                                          .remove(_searchedList[index].userId);
-                                    });
-                                  } else {
-                                    await db.addFollowing(
-                                        userId: widget.userId,
-                                        myFirstName:
-                                            widget.userModel?.firstName,
-                                        myLastName: widget.userModel?.lastName,
-                                        myAvatarUrl:
-                                            widget.userModel?.avatarUrl,
-                                        followerId: _searchedList[index].userId,
-                                        followerFirstName:
-                                            _searchedList[index].firstName,
-                                        followerLastName:
-                                            _searchedList[index].lastName,
-                                        avatarUrl:
-                                            _searchedList[index].avatarUrl);
-                                    //Notify the person being followed of the user following
-                                    try {
-                                      print(
-                                          'the token: ${_searchedList[index]?.fcmToken}');
-                                      ms.token = _searchedList[index]?.fcmToken;
-                                      ms.senderId = widget.userModel?.userId;
-                                      ms.senderName =
-                                          '${widget.userModel?.firstName} ${widget.userModel?.lastName}';
-                                      ms.receiverId =
-                                          _searchedList[index]?.userId;
-                                      ms.messageType = 'follow';
-                                      ms.messageTitle = 'New Follower';
-                                      ms.messageBody = 'started following you';
-                                      ms.sendPushMessage();
-                                    } catch (e) {
-                                      print(
-                                          'an error occured try to send push message');
-                                    }
-
-                                    setState(() {
-                                      followed.add(_searchedList[index].userId);
-                                    });
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[100],
-                            borderRadius: BorderRadius.circular(10.0)),
-                      ),
-                    ),
-                  )
-                : SizedBox.shrink();
-          },
-        ),
+                        )
+                      : SizedBox.shrink();
+                },
+              )
+            : const LoadingAmination(
+                animationType: 'ThreeInOut',
+              ),
       ),
     );
   }

@@ -253,7 +253,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
 
   //will caluclate the number of followers gained
   _getNumberOfFolloers() async {
-    var result = await db.getFollowersList(userId: widget.userId);
+    var result = await db.getFollowersListLenght(userId: widget.userId);
     setState(() {
       numberOfFollowers = result;
       _followerNumber = true;

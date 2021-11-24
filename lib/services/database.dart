@@ -316,8 +316,8 @@ class DatabaseService {
         .map(_userDataFromSnapshot);
   }
 
-  //get followers
-  Future<int> getFollowersList({String? userId}) async {
+  //get followers number
+  Future<int> getFollowersListLenght({String? userId}) async {
     return await userModelCollection
         .doc(userId)
         .collection('followers')
@@ -325,6 +325,15 @@ class DatabaseService {
         .then((value) {
       return value.size;
     });
+  }
+
+  //get followers data
+  getFollowersList({String? userId}) async {
+    return await userModelCollection
+        .doc(userId)
+        .collection('followers')
+        .get()
+        .then((value) => value.docs);
   }
 
   //will stream the users followed by a certain user
@@ -891,7 +900,6 @@ class DatabaseService {
           .get()
           .then((value) {
         return value.docs.map((e) {
-          print('the value: ${e.id}');
           return e.id;
         }).first;
       });
@@ -917,6 +925,7 @@ class DatabaseService {
       String? avatarUrlTwo,
       ChatRoomModel? chatRoomMap}) async {
     try {
+      var currentTime = DateTime.now().millisecondsSinceEpoch;
       messagesCollection.doc(chatRoomId).set({
         ChatRoomParameters.users: chatRoomMap!.users,
       });
@@ -927,6 +936,7 @@ class DatabaseService {
           .set({
         ChatRoomParameters.userId: userId,
         ChatRoomParameters.chattingWith: userTwoId,
+        ConversationRoomParam.time: currentTime,
         UserParams.USER_NAME: userNameTwo,
         UserParams.FIRST_NAME: firstNameTwo,
         UserParams.LAST_NAME: lastNameTwo,
@@ -939,6 +949,7 @@ class DatabaseService {
           .set({
         ChatRoomParameters.userId: userId,
         ChatRoomParameters.chattingWith: userOneId,
+        ConversationRoomParam.time: currentTime,
         UserParams.USER_NAME: userNameOne,
         UserParams.FIRST_NAME: firstNameOne,
         UserParams.LAST_NAME: lastNameOne,

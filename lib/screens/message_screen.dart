@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rillliveapp/authentication/signin.dart';
 import 'package:rillliveapp/messaging/conversation_screen.dart';
+import 'package:rillliveapp/models/message_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
@@ -17,17 +18,21 @@ class MessagesScreen extends StatefulWidget {
 }
 
 class _MessagesScreenState extends State<MessagesScreen> {
-  late String _searchWord;
+  String? _searchWord = '';
   late List<Map<String, dynamic>> messageList = [];
   var unread;
   late List<Map<String, dynamic>> chatList = [];
+  List<UserModel> _userFollowingMe = [];
+  var _searchedList;
+  var _size;
   //Controllers
   DatabaseService db = DatabaseService();
+
   //Streams
   late Stream<QuerySnapshot> messageStream;
   @override
   Widget build(BuildContext context) {
-    var _size = MediaQuery.of(context).size;
+    _size = MediaQuery.of(context).size;
     return widget.userId != null
         ? SizedBox(
             height: _size.height - 100,
@@ -52,7 +57,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               color: color_4,
                               height: 30,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              //show buttom modal
+                              _buildFollowersList();
+                            },
                           ),
                         ),
                       ],
@@ -112,6 +120,37 @@ class _MessagesScreenState extends State<MessagesScreen> {
         },
       ),
     );
+  }
+
+  _buildSearchListFilter(String text) {
+    var result = [];
+    //wait for stream to populate
+    if (text.isEmpty) {
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        setState(() {
+          _searchedList = messageStream;
+        });
+      });
+      return;
+    }
+    if (messageStream != null) {
+      // .where(
+      //   (_user) => _user.firstName
+      //       .toString()
+      //       .toLowerCase()
+      //       .contains(text.toString().toLowerCase()),
+      // )
+      // .toList();
+      setState(() {
+        _searchedList = result;
+      });
+    }
+  }
+
+  _getFollowers() {
+    var result = db.getFollowersList(userId: widget.userId);
+
+    return result;
   }
 
   _getMessageStream() {
@@ -182,7 +221,6 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                   future: unread,
                                   builder: (context, AsyncSnapshot snapshot) {
                                     if (snapshot.hasData) {
-                                      print('the chat index: $index');
                                       if (snapshot.connectionState ==
                                           ConnectionState.done) {
                                         if (snapshot.data.isNotEmpty) {
@@ -236,6 +274,61 @@ class _MessagesScreenState extends State<MessagesScreen> {
         );
       },
     );
+  }
+
+  _buildFollowersList() async {
+    showModalBottomSheet<dynamic>(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (builder) {
+          return Wrap(children: [
+            Container(
+                padding: EdgeInsets.all(10),
+                height: 5 * _size.height / 6,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
+                ),
+                child: FutureBuilder(
+                    future: _getFollowers(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.data != null && snapshot.data.isNotEmpty)
+                        print('the data: ${snapshot.data[0]['firstName']}');
+                      return ListView.builder(
+                          itemCount: _userFollowingMe.length,
+                          itemBuilder: (builder, index) {
+                            return ListTile(
+                              leading: SizedBox(
+                                height: 60,
+                                width: 60,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: _userFollowingMe[index]
+                                                    .avatarUrl !=
+                                                null
+                                            ? NetworkImage(
+                                                _userFollowingMe[index]
+                                                    .avatarUrl!)
+                                            : Image.asset(
+                                                    'assets/images/empty_profile_photo.png')
+                                                .image,
+                                        fit: BoxFit.fill),
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                  '${_userFollowingMe[index].firstName} ${_userFollowingMe[index].lastName}'),
+                            );
+                          });
+                    })),
+          ]);
+        });
   }
 
   //Mark messages as read when chat is accessed
