@@ -53,29 +53,32 @@ class _CommentAddState extends State<CommentAdd> {
                       suffixIcon: IconButton(
                         icon: Image.asset('assets/icons/send_rill.png',
                             color: color_4),
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            if (_newComment.isNotEmpty) {
-                              await db.addComment(
-                                  uid: widget.fileId,
-                                  userId: widget.userModel!.userId,
-                                  comment: _newComment,
-                                  collection: widget.collection,
-                                  dateTime: DateTime.now(),
-                                  fullName:
-                                      '${widget.userModel!.firstName} ${widget.userModel!.lastName}');
-                              setState(() {
-                                _newComment = '';
-                                _commentController.clear();
-                                FocusScopeNode currentFocus =
-                                    FocusScope.of(context);
-                                if (!currentFocus.hasPrimaryFocus) {
-                                  currentFocus.unfocus();
+                        onPressed: widget.userModel?.userId != null
+                            ? () async {
+                                if (_formKey.currentState!.validate()) {
+                                  if (_newComment.isNotEmpty) {
+                                    await db.addComment(
+                                        uid: widget.fileId,
+                                        avatarUrl: widget.userModel?.avatarUrl,
+                                        userId: widget.userModel!.userId,
+                                        comment: _newComment,
+                                        collection: widget.collection,
+                                        dateTime: DateTime.now(),
+                                        fullName:
+                                            '${widget.userModel!.firstName} ${widget.userModel!.lastName}');
+                                    setState(() {
+                                      _newComment = '';
+                                      _commentController.clear();
+                                      FocusScopeNode currentFocus =
+                                          FocusScope.of(context);
+                                      if (!currentFocus.hasPrimaryFocus) {
+                                        currentFocus.unfocus();
+                                      }
+                                    });
+                                  }
                                 }
-                              });
-                            }
-                          }
-                        },
+                              }
+                            : null,
                       ),
                       prefixIcon: Image.asset(
                         'assets/icons/pop_rill_icon_light.png',
@@ -83,8 +86,9 @@ class _CommentAddState extends State<CommentAdd> {
                         color: color_4,
                       ),
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: color_4)),
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: color_4),
+                      ),
                     ),
                     validator: (val) {
                       if (val!.isEmpty) {

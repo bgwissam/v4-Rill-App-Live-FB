@@ -6,6 +6,7 @@ import 'package:rillliveapp/models/message_model.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
+import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/parameters.dart';
 
 class MessagesScreen extends StatefulWidget {
@@ -27,6 +28,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
   var _size;
   //Controllers
   DatabaseService db = DatabaseService();
+  ChatRoomModel chatRoomMap = ChatRoomModel();
 
   //Streams
   late Stream<QuerySnapshot> messageStream;
@@ -97,6 +99,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
   void initState() {
     super.initState();
     _getMessageStream();
+    chatRoomMap = ChatRoomModel(userId: '', users: []);
     unread = _getUnreadMessages();
   }
 
@@ -297,35 +300,76 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 child: FutureBuilder(
                     future: _getFollowers(),
                     builder: (context, AsyncSnapshot snapshot) {
-                      if (snapshot.data != null && snapshot.data.isNotEmpty)
-                        print('the data: ${snapshot.data[0]['firstName']}');
-                      return ListView.builder(
-                          itemCount: _userFollowingMe.length,
-                          itemBuilder: (builder, index) {
-                            return ListTile(
-                              leading: SizedBox(
-                                height: 60,
-                                width: 60,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: _userFollowingMe[index]
-                                                    .avatarUrl !=
-                                                null
-                                            ? NetworkImage(
-                                                _userFollowingMe[index]
-                                                    .avatarUrl!)
-                                            : Image.asset(
-                                                    'assets/images/empty_profile_photo.png')
-                                                .image,
-                                        fit: BoxFit.fill),
+                      if (snapshot.hasData) {
+                        return Container(
+                          padding: EdgeInsets.all(10),
+                          height: 80,
+                          child: ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (builder, index) {
+                                //Fill the list of users following
+                                _userFollowingMe.add(UserModel(
+                                  userId: snapshot.data[index].id,
+                                  firstName: snapshot.data[index]
+                                      [UserParams.FIRST_NAME],
+                                  lastName: snapshot.data[index]
+                                      [UserParams.LAST_NAME],
+                                  avatarUrl: snapshot.data[index]
+                                      [UserParams.AVATAR],
+                                ));
+
+                                return GestureDetector(
+                                  onTap: () async {
+                                    if (_userFollowingMe.isNotEmpty) {
+                                      await _openMessageConversation(
+                                          userFollowingMe:
+                                              _userFollowingMe[index]);
+                                    }
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            spreadRadius: 3,
+                                            blurRadius: 2,
+                                            offset: Offset(0, 2),
+                                          )
+                                        ]),
+                                    child: ListTile(
+                                      leading: Container(
+                                        height: 50,
+                                        width: 50,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: snapshot.data[index]
+                                                          [UserParams.AVATAR] !=
+                                                      null
+                                                  ? NetworkImage(
+                                                      snapshot.data[index]
+                                                          [UserParams.AVATAR])
+                                                  : Image.asset(
+                                                          'assets/images/empty_profile_photo.png')
+                                                      .image,
+                                              fit: BoxFit.fill),
+                                        ),
+                                      ),
+                                      title: Text(
+                                          '${snapshot.data[index][UserParams.FIRST_NAME]} ${snapshot.data[index][UserParams.LAST_NAME]}'),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              title: Text(
-                                  '${_userFollowingMe[index].firstName} ${_userFollowingMe[index].lastName}'),
-                            );
-                          });
+                                );
+                              }),
+                        );
+                      } else {
+                        return const Center(
+                          child: LoadingAmination(
+                            animationType: 'ThreeInOut',
+                          ),
+                        );
+                      }
                     })),
           ]);
         });
@@ -347,7 +391,46 @@ class _MessagesScreenState extends State<MessagesScreen> {
         chatList.add({'chatId': chat, 'unread': unreadChats});
       }
     }
-    print('the chatList: $chatList');
     return chatList;
+  }
+
+  Future _openMessageConversation({UserModel? userFollowingMe}) async {
+    if (chatRoomMap.users!.isNotEmpty) {
+      chatRoomMap.users!.clear();
+    }
+
+    var chatRoomId = '${widget.userId}${userFollowingMe?.userId}';
+
+    chatRoomMap.users!.add(widget.userId!);
+    chatRoomMap.users!.add(userFollowingMe!.userId!);
+    //check if chatroom exists
+    var result = await db.getChatRoom(
+        chattingWith: userFollowingMe.userId, userId: widget.userId);
+    if (result.isEmpty) {
+      await db.createChatRoom(
+          userTwoId: userFollowingMe.userId,
+          userNameTwo: userFollowingMe.userName ?? '',
+          firstNameTwo: userFollowingMe.firstName,
+          lastNameTwo: userFollowingMe.lastName,
+          avatarUrlTwo: userFollowingMe.avatarUrl,
+          userOneId: widget.userModel!.userId,
+          userNameOne: widget.userModel!.userName ?? '',
+          firstNameOne: widget.userModel!.firstName,
+          lastNameOne: widget.userModel!.lastName,
+          avatarUrlOne: widget.userModel!.avatarUrl,
+          chatRoomId: chatRoomId,
+          chatRoomMap: chatRoomMap);
+    }
+
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (builder) => ConversationScreen(
+          otherUser: userFollowingMe.userId,
+          currentUser: widget.userModel,
+          chatRoomId: result.isEmpty ? chatRoomId : result,
+        ),
+      ),
+    );
   }
 }

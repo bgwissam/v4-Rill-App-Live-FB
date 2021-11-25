@@ -81,10 +81,15 @@ class _ImageViewerState extends State<ImageViewer> {
     if (getUser != null) {
       //If opening the image or video was successful then we add a user view
       if (widget.userModel!.userId != widget.imageOwnerId) {
+        //adds user view within user id document
         _addUserView(
             userId: widget.userModel!.userId,
             fileId: widget.fileId,
             ownerId: widget.imageOwnerId);
+
+        //adds user view for the document collection
+        _addDocumentView(
+            documentId: widget.fileId, viewerId: widget.userModel!.userId);
         //check isLike status
         _getIsLikeStatus();
       }
@@ -173,10 +178,12 @@ class _ImageViewerState extends State<ImageViewer> {
               ),
               resizeToAvoidBottomInset: true,
               body: SizedBox(height: _size.height, child: _buildImageViewer()),
-              bottomNavigationBar: CommentAdd(
-                  userModel: widget.userModel,
-                  fileId: widget.fileId,
-                  collection: 'comments'),
+              bottomNavigationBar: widget.userModel?.userId != null
+                  ? CommentAdd(
+                      userModel: widget.userModel,
+                      fileId: widget.fileId,
+                      collection: 'comments')
+                  : SizedBox.shrink(),
             );
           } else if (snapshot.hasError) {
             return Center(
@@ -276,6 +283,14 @@ class _ImageViewerState extends State<ImageViewer> {
         viewerId: userId,
         fileId: fileId,
         timeViewed: currentTime);
+  }
+
+  _addDocumentView({
+    String? documentId,
+    String? viewerId,
+  }) async {
+    await db.addDocumentView(
+        documentId: documentId, viewerId: viewerId, timeViewed: currentTime);
   }
 
   //Add like

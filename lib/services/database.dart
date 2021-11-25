@@ -811,6 +811,7 @@ class DatabaseService {
       return CommentModel(
         uid: (doc.data() as Map)[CommentParameters.UID],
         userId: (doc.data() as Map)[CommentParameters.USER_ID],
+        avatarUrl: (doc.data() as Map)[CommentParameters.AVATAR],
         fullName: (doc.data() as Map)[CommentParameters.FULL_NAME],
         comment: (doc.data() as Map)[CommentParameters.COMMENT],
         dateTime: (doc.data() as Map)[CommentParameters.DATE_TIME],
@@ -839,6 +840,15 @@ class DatabaseService {
     await userModelCollection.doc(ownerId).collection('fileViews').add({
       AnalyticParam.viewerId: viewerId,
       AnalyticParam.fileId: fileId,
+      AnalyticParam.time: timeViewed,
+    });
+  }
+
+  //Will add user views for each document with it's own sub collection
+  Future<void> addDocumentView(
+      {String? documentId, String? viewerId, DateTime? timeViewed}) async {
+    await imageVideoCollection.doc(documentId).collection('fileViews').add({
+      AnalyticParam.viewerId: viewerId,
       AnalyticParam.time: timeViewed,
     });
   }

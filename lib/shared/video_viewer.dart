@@ -79,6 +79,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       StreamController.broadcast();
   var commentProvider;
   var getUser;
+  var currentTime = DateTime.now();
   bool _isLiked = false;
   @override
   void initState() {
@@ -94,7 +95,25 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     _betterPlayerController.setupDataSource(dataSource);
     _betterPlayerController.addEventsListener(_handleEvent);
     _scrollController = ScrollController();
+
     getUser = _detailsForImageOwner(uid: widget.videoOwnerId);
+    //Check for user views
+    if (getUser != null) {
+      //If opening the image or video was successful then we add a user view
+      if (widget.userModel!.userId != widget.videoOwnerId) {
+        //adds user view within user id document
+        _addUserView(
+            userId: widget.userModel!.userId,
+            fileId: widget.fileId,
+            ownerId: widget.videoOwnerId);
+
+        //adds user view for the document collection
+        _addDocumentView(
+            documentId: widget.fileId, viewerId: widget.userModel!.userId);
+        //check isLike status
+        _getIsLikeStatus();
+      }
+    }
   }
 
   @override
@@ -125,10 +144,12 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                 leading: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: FittedBox(
-                    fit: BoxFit.fill,
-                    child: Image.network(snapshot.data.avatarUrl ??
-                        'assets/images/empty_profile_photo.png'),
-                  ),
+                      fit: BoxFit.fill,
+                      child: snapshot.data.avatarUrl != null
+                          ? Image.network(snapshot.data.avatarUrl ??
+                              'assets/images/empty_profile_photo.png')
+                          : Image.asset(
+                              'assets/images/empty_profile_photo.png')),
                 ),
                 title: Row(
                   children: [
@@ -204,10 +225,12 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
               ),
               bottomNavigationBar: ScrollToHideWidget(
                 controller: _scrollController,
-                child: CommentAdd(
-                    userModel: widget.userModel,
-                    fileId: widget.fileId,
-                    collection: 'comments'),
+                child: widget.userModel?.userId != null
+                    ? CommentAdd(
+                        userModel: widget.userModel,
+                        fileId: widget.fileId,
+                        collection: 'comments')
+                    : SizedBox.shrink(),
               ),
             );
           } else if (snapshot.hasError) {
@@ -250,6 +273,15 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                 ? 'assets/icons/heart_rill_icon_dark.png'
                 : 'assets/icons/heart_rill_icon_light.png'),
             onPressed: () async {
+              if (!_isLiked) {
+                await _addUserLike(
+                    userId: widget.userModel!.userId,
+                    ownerId: widget.videoOwnerId,
+                    fileId: widget.fileId);
+              } else {
+                await _deleteUserLike(
+                    userId: widget.userModel!.userId, fileId: widget.fileId);
+              }
               setState(() {
                 _isLiked = !_isLiked;
               });
@@ -258,6 +290,55 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
         ),
       ],
     );
+  }
+
+  //Add user views to this file
+  _addUserView({String? ownerId, String? userId, String? fileId}) async {
+    await db.addUserViewToFiles(
+        ownerId: ownerId,
+        viewerId: userId,
+        fileId: fileId,
+        timeViewed: currentTime);
+  }
+
+  _addDocumentView({
+    String? documentId,
+    String? viewerId,
+  }) async {
+    await db.addDocumentView(
+        documentId: documentId, viewerId: viewerId, timeViewed: currentTime);
+  }
+
+  //Add like
+  _addUserLike({String? ownerId, String? userId, String? fileId}) async {
+    if (!_isLiked) {
+      await db.addLike(
+          fileOwnerId: ownerId,
+          likerId: userId,
+          likeTime: currentTime,
+          fileId: fileId);
+    } else {
+      await db.deleteLike(likerId: userId, fileId: fileId);
+    }
+  }
+
+  //delete like
+  _deleteUserLike({String? userId, String? fileId}) async {
+    if (_isLiked) {
+      await db.deleteLike(userId: userId, fileId: fileId);
+    }
+  }
+
+  //Get if file is liked or not
+  _getIsLikeStatus() async {
+    var result = await db.getIfFileIsLiked(
+      userId: widget.userModel!.userId,
+      fileId: widget.fileId,
+    );
+
+    setState(() {
+      _isLiked = result;
+    });
   }
 
   Widget _videoPlayerBetter() {

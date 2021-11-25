@@ -51,9 +51,25 @@ class _CommentsViewState extends State<CommentsView> {
                     border: Border.all(color: color_6)),
                 child: ListTile(
                   leading: widget.imageComments[index]!.avatarUrl != null
-                      ? CachedNetworkImage(
-                          imageUrl: widget.imageComments[index]!.avatarUrl!)
-                      : Image.asset('assets/images/empty_profile_photo.png'),
+                      ? Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(widget
+                                      .imageComments[index]!.avatarUrl!))),
+                        )
+                      : Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: Image.asset(
+                                          'assets/images/empty_profile_photo.png')
+                                      .image)),
+                        ),
                   title: Row(
                     children: [
                       Expanded(

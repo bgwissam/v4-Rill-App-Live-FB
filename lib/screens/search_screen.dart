@@ -93,7 +93,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _onFocusChanged() {
     setState(() {
-      _searchSelected = true;
+      if (widget.userId != null) {
+        _searchSelected = true;
+      }
     });
   }
 
