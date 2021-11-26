@@ -829,6 +829,14 @@ class DatabaseService {
         .map(_mapCommentFromSnapshot);
   }
 
+  Stream<int> streamViewsForFile({String? fileId, String? collection}) {
+    return imageVideoCollection
+        .doc(fileId)
+        .collection(collection!)
+        .snapshots()
+        .map((event) => event.docs.length);
+  }
+
   //This section will handle image, video, stream and profile views
   //It will form the analytics for this app
   //views will be added in a collection under each user

@@ -185,8 +185,16 @@ class _FollowersState extends State<Followers> {
                           height: 50,
                           width: 50,
                           child: FittedBox(
-                            child: Image.network(
-                                widget.usersFollowing[index]!.avatarUrl!),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  widget.usersFollowing[index]!.avatarUrl!,
+                              progressIndicatorBuilder:
+                                  (context, url, progress) => const Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child:
+                                    Center(child: CircularProgressIndicator()),
+                              ),
+                            ),
                             fit: BoxFit.fill,
                           ),
                         )
@@ -197,70 +205,80 @@ class _FollowersState extends State<Followers> {
                               border: Border.all(),
                               borderRadius: BorderRadius.circular(10)),
                         ),
-                  title: Text(
-                      '${widget.usersFollowing[index]!.firstName} ${widget.usersFollowing[index]!.lastName}'),
-                  subtitle: Container(
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(50)),
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateColor.resolveWith((states) => color_4),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                          '${widget.usersFollowing[index]!.firstName} ${widget.usersFollowing[index]!.lastName}',
+                          style: textStyle_1),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50)),
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                                (states) => color_4),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(25))),
-                      ),
-                      child: Text('Message', style: textStyle_4),
-                      onPressed: () async {
-                        if (chatRoomMap.users!.isNotEmpty) {
-                          chatRoomMap.users!.clear();
-                        }
-
-                        var chatRoomId =
-                            '${widget.userModel!.userId}${widget.usersFollowing[index]!.userId}';
-
-                        chatRoomMap.users!.add(widget.userModel!.userId!);
-                        chatRoomMap.users!
-                            .add(widget.usersFollowing[index]!.userId!);
-                        //check if chatroom exists
-                        var result = await db.getChatRoom(
-                            chattingWith: widget.usersFollowing[index]!.userId!,
-                            userId: widget.userModel!.userId);
-                        print('the result of getting room: $result');
-
-                        if (result.isEmpty) {
-                          await db.createChatRoom(
-                              userOneId: widget.userModel!.userId,
-                              // userNameOne: widget.userModel!.userName ?? '',
-                              firstNameOne: widget.userModel!.firstName,
-                              lastNameOne: widget.userModel!.lastName,
-                              avatarUrlOne: widget.userModel!.avatarUrl,
-                              userTwoId: widget.usersFollowing[index]!.userId,
-                              userNameTwo:
-                                  widget.usersFollowing[index]!.userName ?? '',
-                              firstNameTwo:
-                                  widget.usersFollowing[index]!.firstName,
-                              lastNameTwo:
-                                  widget.usersFollowing[index]!.lastName,
-                              avatarUrlTwo:
-                                  widget.usersFollowing[index]!.avatarUrl,
-                              chatRoomId: chatRoomId,
-                              chatRoomMap: chatRoomMap);
-                        }
-
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (builder) => ConversationScreen(
-                              currentUser: widget.userModel,
-                              chatRoomId: result.isEmpty ? chatRoomId : result,
-                            ),
                           ),
-                        );
-                      },
-                    ),
+                          child: Text('Message', style: textStyle_4),
+                          onPressed: () async {
+                            if (chatRoomMap.users!.isNotEmpty) {
+                              chatRoomMap.users!.clear();
+                            }
+
+                            var chatRoomId =
+                                '${widget.userModel!.userId}${widget.usersFollowing[index]!.userId}';
+
+                            chatRoomMap.users!.add(widget.userModel!.userId!);
+                            chatRoomMap.users!
+                                .add(widget.usersFollowing[index]!.userId!);
+                            //check if chatroom exists
+                            var result = await db.getChatRoom(
+                                chattingWith:
+                                    widget.usersFollowing[index]!.userId!,
+                                userId: widget.userModel!.userId);
+                            print('the result of getting room: $result');
+
+                            if (result.isEmpty) {
+                              await db.createChatRoom(
+                                  userOneId: widget.userModel!.userId,
+                                  // userNameOne: widget.userModel!.userName ?? '',
+                                  firstNameOne: widget.userModel!.firstName,
+                                  lastNameOne: widget.userModel!.lastName,
+                                  avatarUrlOne: widget.userModel!.avatarUrl,
+                                  userTwoId:
+                                      widget.usersFollowing[index]!.userId,
+                                  userNameTwo:
+                                      widget.usersFollowing[index]!.userName ??
+                                          '',
+                                  firstNameTwo:
+                                      widget.usersFollowing[index]!.firstName,
+                                  lastNameTwo:
+                                      widget.usersFollowing[index]!.lastName,
+                                  avatarUrlTwo:
+                                      widget.usersFollowing[index]!.avatarUrl,
+                                  chatRoomId: chatRoomId,
+                                  chatRoomMap: chatRoomMap);
+                            }
+
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (builder) => ConversationScreen(
+                                  currentUser: widget.userModel,
+                                  chatRoomId:
+                                      result.isEmpty ? chatRoomId : result,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );

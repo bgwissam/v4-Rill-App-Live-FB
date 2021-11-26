@@ -95,11 +95,11 @@ class RecordingController {
                 "avFileType": ["hls"]
               },
               "storageConfig": <String, dynamic>{
-                "vendor": 1,
-                "region": 3,
-                "bucket": param.s3_bucket_id,
-                "accessKey": param.s3_access_key,
-                "secretKey": param.s3_secret_key,
+                "vendor": 6,
+                "region": 0,
+                "bucket": param.google_firebase_bucket_id,
+                "accessKey": param.google_firebase_access_key,
+                "secretKey": param.google_firebase_secret_key,
                 "fileNamePrefix": ["streams", "recordings"]
               },
             },

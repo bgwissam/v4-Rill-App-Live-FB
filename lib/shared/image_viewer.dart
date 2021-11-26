@@ -30,13 +30,26 @@ class ImageViewerProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     DatabaseService db = DatabaseService();
 
-    return StreamProvider<List<CommentModel?>>.value(
-      initialData: [],
-      value: db.streamCommentForFile(fileId: fileId, collection: collection),
-      catchError: (context, error) {
-        print('an error occured: $error');
-        return [];
-      },
+    return MultiProvider(
+      providers: [
+        StreamProvider<List<CommentModel?>>.value(
+          initialData: [],
+          value:
+              db.streamCommentForFile(fileId: fileId, collection: collection),
+          catchError: (context, error) {
+            print('an error occured: $error');
+            return [];
+          },
+        ),
+        StreamProvider<int>.value(
+            initialData: 0,
+            value:
+                db.streamViewsForFile(fileId: fileId, collection: 'fileViews'),
+            catchError: (context, error) {
+              print('an error occured retreiving views: $error');
+              return 0;
+            })
+      ],
       child: ImageViewer(
         userModel: userModel,
         fileId: fileId,
@@ -70,6 +83,7 @@ class _ImageViewerState extends State<ImageViewer> {
   late var _size;
   late String _newComment;
   var commentProvider;
+  var viewsNumber;
   DatabaseService db = DatabaseService();
   var getUser;
   var currentTime = DateTime.now();
@@ -99,6 +113,7 @@ class _ImageViewerState extends State<ImageViewer> {
   @override
   Widget build(BuildContext context) {
     commentProvider = Provider.of<List<CommentModel?>>(context);
+    viewsNumber = Provider.of<int>(context);
     _size = MediaQuery.of(context).size;
     return FutureBuilder(
         future: getUser,
@@ -149,7 +164,7 @@ class _ImageViewerState extends State<ImageViewer> {
                               child: Image.asset(
                                   'assets/icons/eye_rill_icon_light.png')),
                           Text(
-                            '321',
+                            '$viewsNumber',
                             style: heading_4,
                           )
                         ],

@@ -18,6 +18,18 @@ class Parameters {
 //rtc token base url
   final rtc_base_url =
       'https://app.rilllive.com/public/services/agora/rtc-token.php';
+
+//Google storage id
+  final google_bucket_id = 'rill_live_streaming';
+  final google_access_key =
+      'GOOG1E47QY2T5WCQ77LIGTWH45WTSJADRRG45KCTD6JQJCNHBPCA7EUVXDQ3Y';
+  final google_secret_key = 'NwdwQ3v6df/IZnYUaUx1jx5Xilb5F7fj2BI+f2ut';
+
+//Google firebase storage param
+  final google_firebase_bucket_id = 'rill-app-live.appspot.com';
+  final google_firebase_access_key =
+      'GOOG1ERTOYWFTGCYT7ZR2R5CZIKOJ2RSROCIXZKBUXO5T3GDUIYKYIZZMI6EA';
+  final google_firebase_secret_key = 'UabDTW904t+7htzhPIlpYzl3Z/bjDRueAgsthqMB';
 }
 
 class UserParams {

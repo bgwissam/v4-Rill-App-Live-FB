@@ -731,7 +731,8 @@ class _CameraScreenState extends State<CameraScreen>
                                                             ),
                                                           );
                                                         }
-
+                                                        print(
+                                                            'The start response: $startRecording');
                                                         if (startRecording[
                                                                 'sid']
                                                             .isNotEmpty) {

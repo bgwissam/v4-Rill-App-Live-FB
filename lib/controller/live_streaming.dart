@@ -97,6 +97,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   late FirebaseStorage storageRef;
   AWSstorage awsStorage = AWSstorage();
   final _scrollController = ScrollController();
+  late RtcEngineContext rtcContext;
 
   //Live messaging controllers
   final _userNameController = TextEditingController();
@@ -112,7 +113,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
     _users.clear();
     _engine.leaveChannel();
     _engine.destroy();
-    //widget.userRole == 'publisher' ? _onCallEnd(context) : null;
     super.dispose();
   }
 
@@ -133,34 +133,41 @@ class _LiveStreamingState extends State<LiveStreaming> {
   //The scroll to index will allow the listview to scroll to the last index
   void _scrollToIndex(lastIndex) {
     _scrollController.animateTo(_chatItemHeight * lastIndex,
-        duration: Duration(milliseconds: 600), curve: Curves.easeIn);
+        duration: const Duration(milliseconds: 600), curve: Curves.easeIn);
   }
 
   //Will initialize the Rtc Engine
   Future<void> _initializeRtcEngine(String userRole) async {
     if (param.app_ID.isNotEmpty) {
-      RtcEngineContext rtcContext = RtcEngineContext(param.app_ID);
-      _engine = await RtcEngine.createWithContext(rtcContext);
+      rtcContext = RtcEngineContext(param.app_ID);
+      _engine = await RtcEngine.createWithContext(rtcContext)
+          .catchError((err, stackTrace) async {
+        await Sentry.captureException(err, stackTrace: stackTrace);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 2),
+            content: Text('Error created RTC engine context: $err'),
+          ),
+        );
+      });
 
       //set event handlers
       _engine.setEventHandler(
         RtcEngineEventHandler(
           warning: (warningCode) {
+            print('the warning codes: $warningCode');
             setState(() {
               final info = 'Warning error: $warningCode';
               _infoString.add(info);
             });
           },
           error: (errorCode) {
-            setState(() {
-              final info = 'Error: $errorCode';
-              _infoString.add(info);
-            });
             if (errorCode.index > 0) {
+              print('Error happending when setting event handlers: $errorCode');
               //will show if an error showed up
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  duration: const Duration(milliseconds: 700),
+                  duration: const Duration(seconds: 2),
                   content: Text('${errorCode.index} - $errorCode'),
                 ),
               );
@@ -168,12 +175,14 @@ class _LiveStreamingState extends State<LiveStreaming> {
             }
           },
           joinChannelSuccess: (channel, uid, elapsed) async {
-            var queryResponse = await recordingController.queryRecoding(
-                resourceId: widget.resourceId,
-                sid: widget.sid,
-                mode: widget.mode);
-            print(
-                'Query response: ${queryResponse.body} Join Success: $channel - $uid - $elapsed');
+            await recordingController
+                .queryRecoding(
+                    resourceId: widget.resourceId,
+                    sid: widget.sid,
+                    mode: widget.mode)
+                .catchError((error) {
+              print('Error joining channel: $error');
+            });
             setState(
               () {
                 _joined = true;
@@ -183,7 +192,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
             );
           }, //Leave Channel
           leaveChannel: (stats) {
-            print('left channel');
             setState(
               () {
                 final info = 'Left Channel: $stats';
@@ -194,7 +202,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
             );
           }, //Join Channel
           userJoined: (uid, elapsed) {
-            print('joined channel: $uid');
             setState(
               () {
                 _remoteId = uid;
@@ -203,7 +210,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
                 _users.add(uid);
               },
             );
-            print('Added users: $_users');
           }, //userJoined
           userOffline: (uid, elapsed) {
             setState(
@@ -331,13 +337,16 @@ class _LiveStreamingState extends State<LiveStreaming> {
     size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('You need to end call first'),
-            duration: Duration(milliseconds: 900),
-          ),
-        );
-        return false;
+        if (widget.userId == widget.streamUserId) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('You need to end call first'),
+              duration: Duration(milliseconds: 900),
+            ),
+          );
+          return false;
+        }
+        return true;
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -512,15 +521,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
     return Expanded(
       child: Row(children: wrappedViews),
     );
-
-    // return userRole == 'publisher'
-    //     ? Expanded(
-    //         child: Row(children: wrappedViews),
-    //       )
-    //     : SizedBox(
-    //         width: size.width,
-    //         child: Row(children: wrappedViews),
-    //       );
   }
 
   //Info panel to show logs
@@ -734,28 +734,25 @@ class _LiveStreamingState extends State<LiveStreaming> {
       await Sentry.captureException(err);
     });
 
-    if (widget.streamModelId != null) {
+    if (widget.streamModelId != null && widget.streamUserId == widget.userId) {
       streamingId = await db.fetchStreamingVideoUrl(uid: widget.streamModelId);
-      if (streamingId == widget.streamUserId) {
-        //widget.loadingStateCallback!();
-        //Stop the recording and save the stream to the bucket
-        var stopRecordingResult = await recordingController.stopRecordingVideos(
-          channelName: widget.channelName,
-          userId: widget.recordingId!,
-          sid: widget.sid,
-          resouceId: widget.resourceId,
-          mode: widget.mode,
-        );
-        await db.deleteStreamingVideo(streamId: widget.streamModelId);
-        var stopRecordResponse = await json.decode(stopRecordingResult.body);
-        print('the stop response: $stopRecordResponse');
-        //save the live stream to firebase
-        await _saveLiveStream(stopRecordResponse);
-      }
+
+      //Stop the recording and save the stream to the bucket
+      var stopRecordingResult = await recordingController.stopRecordingVideos(
+        channelName: widget.channelName,
+        userId: widget.recordingId!,
+        sid: widget.sid,
+        resouceId: widget.resourceId,
+        mode: widget.mode,
+      );
+      await db.deleteStreamingVideo(streamId: widget.streamModelId);
+      var stopRecordResponse = await json.decode(stopRecordingResult.body);
+      print('the stop response: $stopRecordResponse');
+      //save the live stream to firebase
+      await _saveLiveStream(stopRecordResponse);
     } else {
-      print('An error occured: streamModelId is null');
-      await Sentry.captureException('streamModelId is null');
-      Navigator.pop(context);
+      print('Ended the video, the streamer is not the video creator');
+      // await Sentry.captureException('streamModelId is null');
       Navigator.pop(context);
     }
   }
@@ -764,8 +761,8 @@ class _LiveStreamingState extends State<LiveStreaming> {
     String thumbnailUrl = '';
     var streamFile;
     var streamKey;
-    print(
-        'saving stream: ${data['serverResponse']} - ${data['serverResponse']['uploadingStatus']}');
+
+    print('saving stream: $data');
     if (data['serverResponse'] != null &&
         data['serverResponse']['uploadingStatus'] == 'uploaded') {
       streamKey = data['serverResponse']['fileList'];
@@ -793,21 +790,21 @@ class _LiveStreamingState extends State<LiveStreaming> {
         // }
 
         if (data['serverResponse']['uploadingStatus'] == 'uploaded') {
-          var streamUrl =
-              'https://videos165240-dev.s3.us-west-2.amazonaws.com/${data['serverResponse']['fileList']}';
+          var streamUrl = data['serverResponse']['fileList'];
 
-          var result = await db.saveEndedLiveStream(
-              userId: widget.userId,
-              thumbnailUrl: thumbnailUrl,
-              streamUrl: streamUrl,
-              description: 'We will create that later');
+          print('the stream url: $streamUrl');
+          // var result = await db.saveEndedLiveStream(
+          //     userId: widget.userId,
+          //     thumbnailUrl: thumbnailUrl,
+          //     streamUrl: streamUrl,
+          //     description: 'We will create that later');
 
-          if (result.isNotEmpty) {
-            print('The video stream was uploaded properly');
-          } else {
-            print(
-                'An error occured uploading stream, check with customer support');
-          }
+          // if (result.isNotEmpty) {
+          //   print('The video stream was uploaded properly');
+          // } else {
+          //   print(
+          //       'An error occured uploading stream, check with customer support');
+          // }
         }
       } else {
         print('stream file is null');

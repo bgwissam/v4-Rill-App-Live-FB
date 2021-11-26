@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:chewie/chewie.dart';
+import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -40,6 +42,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import '../main.dart';
 import '../wrapper.dart';
 
@@ -80,6 +83,7 @@ class _MainScreenState extends State<MainScreen>
   late Map acquireResponse;
   late Map startRecordingResponse;
   UserModel _currentUser = UserModel();
+  late PackageInfo packageInfo;
   //Controllers
   late VideoPlayerController _videoPlayerController;
   late TabController _tabController;
@@ -119,7 +123,7 @@ class _MainScreenState extends State<MainScreen>
   @override
   void initState() {
     super.initState();
-
+    _getPackageInfor();
     _tabController = TabController(length: 2, vsync: this);
     controller = CameraController(cameras[0], ResolutionPreset.max);
     getSubscriptionFeed = _getSubscriptionChannels();
@@ -137,6 +141,18 @@ class _MainScreenState extends State<MainScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+  }
+
+  _getPackageInfor() async {
+    if (Platform.isAndroid) {
+      var androidInfo = await DeviceInfoPlugin().androidInfo;
+      var release = androidInfo.version.release;
+      var sdkInt = androidInfo.version.sdkInt;
+      var manufacturer = androidInfo.manufacturer;
+      var model = androidInfo.model;
+      print(
+          'Phone info: release: $release - sdk: $sdkInt - manufacturer: $manufacturer - model: $model');
+    }
   }
 
   @override
@@ -265,12 +281,20 @@ class _MainScreenState extends State<MainScreen>
                       title: Text('Help',
                           style: Theme.of(context).textTheme.headline6),
                       onTap: () async {
-                        await Navigator.push(context,
-                            MaterialPageRoute(builder: (builder) {
-                          return HelpPage(
-                            userModel: userProvider,
+                        const helpUrl = 'https://www.rilllive.com/help/';
+
+                        try {
+                          await launch(helpUrl);
+                        } catch (e, stackTrace) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Failed to open'),
+                              duration: Duration(seconds: 2),
+                            ),
                           );
-                        }));
+                          await Sentry.captureException(e,
+                              stackTrace: stackTrace);
+                        }
                       },
                       leading: ImageIcon(
                           AssetImage('assets/icons/info_rill_icon.png'),
@@ -534,6 +558,8 @@ class _MainScreenState extends State<MainScreen>
                                           channelName: streamingProvider[index]!
                                               .channelName
                                               .toString(),
+                                          streamModelId:
+                                              streamingProvider[index]!.uid,
                                           allowJoining:
                                               streamingProvider[index]!
                                                   .allowJoining,
@@ -1411,7 +1437,7 @@ class _MainScreenState extends State<MainScreen>
   //Subscribed feed section
   Widget _subscribedFeed() {
     VideoPlayerController _videoPlayerController;
-
+    ChewieController _chewieController;
     return RefreshIndicator(
       onRefresh: _pullRefresh,
       child: GridView.builder(
@@ -1426,10 +1452,13 @@ class _MainScreenState extends State<MainScreen>
           print('stream url: ${endedStreamModels[index]!.streamUrl!}');
           if (endedStreamModels[index]!.uid != null) {
             _videoPlayerController = VideoPlayerController.network(
-                endedStreamModels[index]!.streamUrl!)
-              ..initialize().then((_) {
-                setState(() {});
-              });
+                endedStreamModels[index]!.streamUrl!);
+            _chewieController = ChewieController(
+              videoPlayerController: _videoPlayerController,
+              aspectRatio: 2 / 3,
+              autoPlay: false,
+              looping: false,
+            );
             return Container(
               alignment: Alignment.center,
               child: InkWell(
@@ -1448,14 +1477,9 @@ class _MainScreenState extends State<MainScreen>
                   //   ),
                   // );
                 },
-                child: _videoPlayerController.value.isInitialized
-                    ? AspectRatio(
-                        aspectRatio: _videoPlayerController.value.aspectRatio,
-                        child: VideoPlayer(_videoPlayerController),
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                child: Chewie(
+                  controller: _chewieController,
+                ),
               ),
             );
           }

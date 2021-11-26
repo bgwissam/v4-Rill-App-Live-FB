@@ -34,13 +34,26 @@ class VideoPlayerProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DatabaseService db = DatabaseService();
-    return StreamProvider<List<CommentModel?>>.value(
-      initialData: [],
-      value: db.streamCommentForFile(fileId: fileId, collection: collection),
-      catchError: (context, error) {
-        print('an error occured: $error');
-        return [];
-      },
+    return MultiProvider(
+      providers: [
+        StreamProvider<List<CommentModel?>>.value(
+          initialData: [],
+          value:
+              db.streamCommentForFile(fileId: fileId, collection: collection),
+          catchError: (context, error) {
+            print('an error occured retreiving comments: $error');
+            return [];
+          },
+        ),
+        StreamProvider<int>.value(
+            initialData: 0,
+            value:
+                db.streamViewsForFile(fileId: fileId, collection: 'fileViews'),
+            catchError: (context, error) {
+              print('an error occured retreiving views: $error');
+              return 0;
+            })
+      ],
       child: VideoPlayerPage(
         videoPlayerUrl: playerUrl,
         userModel: userModel,
@@ -78,6 +91,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   StreamController<DateTime> _eventStreamController =
       StreamController.broadcast();
   var commentProvider;
+  var viewsNumber;
   var getUser;
   var currentTime = DateTime.now();
   bool _isLiked = false;
@@ -135,6 +149,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   @override
   Widget build(BuildContext context) {
     commentProvider = Provider.of<List<CommentModel?>>(context);
+    viewsNumber = Provider.of<int>(context);
     return FutureBuilder(
         future: getUser,
         builder: (context, AsyncSnapshot snapshot) {
@@ -184,7 +199,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                               child: Image.asset(
                                   'assets/icons/eye_rill_icon_light.png')),
                           Text(
-                            '321',
+                            '$viewsNumber',
                             style: heading_4,
                           )
                         ],
