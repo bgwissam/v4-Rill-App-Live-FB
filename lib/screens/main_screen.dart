@@ -30,7 +30,6 @@ import 'package:rillliveapp/services/database.dart';
 import 'package:rillliveapp/services/storage_data.dart';
 import 'package:rillliveapp/shared/aspect_ration_video.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
-import 'package:rillliveapp/shared/help_page.dart';
 import 'package:rillliveapp/shared/image_viewer.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
 import 'package:rillliveapp/shared/loading_view.dart';
@@ -1450,15 +1449,36 @@ class _MainScreenState extends State<MainScreen>
         itemCount: endedStreamModels.length,
         itemBuilder: (context, index) {
           print('stream url: ${endedStreamModels[index]!.streamUrl!}');
-          if (endedStreamModels[index]!.uid != null) {
+
+          if (endedStreamModels[index]!.streamUrl != null) {
             _videoPlayerController = VideoPlayerController.network(
-                endedStreamModels[index]!.streamUrl!);
-            _chewieController = ChewieController(
-              videoPlayerController: _videoPlayerController,
-              aspectRatio: 2 / 3,
-              autoPlay: false,
-              looping: false,
+              endedStreamModels[index]!.streamUrl!,
+              formatHint: VideoFormat.hls,
             );
+            _videoPlayerController.initialize().then((_) {
+              setState(() {});
+              _videoPlayerController.play();
+            });
+
+            _videoPlayerController.addListener(() {
+              if (_videoPlayerController.value.hasError) {
+                print(
+                    'Video Error: ${_videoPlayerController.value.errorDescription}');
+              }
+              if (_videoPlayerController.value.isBuffering) {
+                print('Please wait');
+              }
+              if (_videoPlayerController.value.isInitialized) {
+                print('the video is initialized');
+              }
+            });
+
+            // _chewieController = ChewieController(
+            //   videoPlayerController: _videoPlayerController,
+            //   aspectRatio: 2 / 3,
+            //   autoPlay: false,
+            //   looping: false,
+            // );
             return Container(
               alignment: Alignment.center,
               child: InkWell(
@@ -1477,9 +1497,7 @@ class _MainScreenState extends State<MainScreen>
                   //   ),
                   // );
                 },
-                child: Chewie(
-                  controller: _chewieController,
-                ),
+                child: VideoPlayer(_videoPlayerController),
               ),
             );
           }
@@ -1554,24 +1572,6 @@ class _MainScreenState extends State<MainScreen>
     //       }
     //     });
   }
-
-  //Listen to streaming videos
-  // Future<String> listenToStreamingVideos() async {
-  //   var streamResponse = await db.subscribeToStreamingModel();
-  //   print('The stream response: $streamResponse');
-  //   return streamResponse;
-  // }
-
-  //Get streaming videos
-  // Future<List<dynamic>> _getStreamingVideos() async {
-  //   List<String> videos = [];
-
-  //   var response = await db.fetchStreamingVideoUrl();
-  //   Map result = json.decode(response);
-  //   var liveStreamVideos = result['listStreamingModels'];
-
-  //   return liveStreamVideos['items'];
-  // }
 
   //Get all object from bucket
   Future<List<dynamic>> _getAllObjects() async {

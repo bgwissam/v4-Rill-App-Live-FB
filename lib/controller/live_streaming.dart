@@ -762,17 +762,34 @@ class _LiveStreamingState extends State<LiveStreaming> {
     var streamFile;
     var streamKey;
 
-    print('saving stream: $data');
     if (data['serverResponse'] != null &&
         data['serverResponse']['uploadingStatus'] == 'uploaded') {
       streamKey = data['serverResponse']['fileList'];
 
-      if (streamKey != null) {
-        // await awsStorage.list();
+      //Get the url for the live streaming
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage.ref().child(streamKey);
+
+      String url = (await ref.getDownloadURL()).toString();
+
+      print('this is the url: $url');
+      if (url.isNotEmpty) {
+        var result = await db.saveEndedLiveStream(
+            userId: widget.userId,
+            thumbnailUrl: thumbnailUrl,
+            streamUrl: url,
+            description: 'We will create that later');
+
+        if (result.isNotEmpty) {
+          print('The video stream was uploaded properly');
+        } else {
+          print(
+              'An error occured uploading stream, check with customer support');
+        }
       }
 
       //generate streaming thumbnail
-      StorageData sd = StorageData();
+      // StorageData sd = StorageData();
       if (streamKey != null) {
         // var key = await sd.generateThumbnailUrl(streamFile);
         // print('data streaming: $key');
@@ -789,23 +806,6 @@ class _LiveStreamingState extends State<LiveStreaming> {
         //   print('data streaming thumbnail: $thumbnailUrl');
         // }
 
-        if (data['serverResponse']['uploadingStatus'] == 'uploaded') {
-          var streamUrl = data['serverResponse']['fileList'];
-
-          print('the stream url: $streamUrl');
-          // var result = await db.saveEndedLiveStream(
-          //     userId: widget.userId,
-          //     thumbnailUrl: thumbnailUrl,
-          //     streamUrl: streamUrl,
-          //     description: 'We will create that later');
-
-          // if (result.isNotEmpty) {
-          //   print('The video stream was uploaded properly');
-          // } else {
-          //   print(
-          //       'An error occured uploading stream, check with customer support');
-          // }
-        }
       } else {
         print('stream file is null');
       }

@@ -100,7 +100,7 @@ class RecordingController {
                 "bucket": param.google_firebase_bucket_id,
                 "accessKey": param.google_firebase_access_key,
                 "secretKey": param.google_firebase_secret_key,
-                "fileNamePrefix": ["streams", "recordings"]
+                "fileNamePrefix": ["streams"]
               },
             },
           },
