@@ -1473,13 +1473,14 @@ class _MainScreenState extends State<MainScreen>
               }
             });
 
-            // _chewieController = ChewieController(
-            //   videoPlayerController: _videoPlayerController,
-            //   aspectRatio: 2 / 3,
-            //   autoPlay: false,
-            //   looping: false,
-            // );
+            _chewieController = ChewieController(
+              videoPlayerController: _videoPlayerController,
+              aspectRatio: 2 / 3,
+              autoPlay: false,
+              looping: false,
+            );
             return Container(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               alignment: Alignment.center,
               child: InkWell(
                 onTap: () async {
@@ -1497,7 +1498,9 @@ class _MainScreenState extends State<MainScreen>
                   //   ),
                   // );
                 },
-                child: VideoPlayer(_videoPlayerController),
+                child: Chewie(
+                  controller: _chewieController,
+                ),
               ),
             );
           }

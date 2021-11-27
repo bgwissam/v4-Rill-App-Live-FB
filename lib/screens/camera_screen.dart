@@ -35,7 +35,7 @@ enum JoiningVariable { Yes, No }
 class _CameraScreenState extends State<CameraScreen>
     with TickerProviderStateMixin {
   //controllers
-  CameraController? _controller;
+  CameraController? _cameraController;
   VideoPlayerController? _vcontroller;
   VideoPlayerController? _toBeDisposed;
   RecordingController _recordingController = RecordingController();
@@ -59,12 +59,14 @@ class _CameraScreenState extends State<CameraScreen>
   int selectedButton = 0;
   late bool _isUploadingFile = false;
   late bool _isRecordingVideo = false;
+  late bool _isLoadingStream = false;
+  late bool _camButtonPressed = false;
+  late bool _isLiveStreaming = false;
   String? rtcToken;
   String? rtmToken;
   String? _channelName;
   int? uid;
-  late bool _isLoadingStream = false;
-  late bool _camButtonPressed = false;
+
   int? selectedIndex = 0;
   final _formKey = GlobalKey<FormState>();
   int paymentValue = 0;
@@ -103,14 +105,14 @@ class _CameraScreenState extends State<CameraScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (_controller == null || !_controller!.value.isInitialized) {
+    if (_cameraController == null || !_cameraController!.value.isInitialized) {
       return;
     }
     if (state == AppLifecycleState.inactive) {
-      _controller?.dispose();
+      _cameraController?.dispose();
     } else if (state == AppLifecycleState.resumed) {
-      if (_controller != null) {
-        onNewCameraSelected(_controller!.description);
+      if (_cameraController != null) {
+        onNewCameraSelected(_cameraController!.description);
       }
     }
   }
@@ -123,12 +125,12 @@ class _CameraScreenState extends State<CameraScreen>
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    _controller?.dispose();
+    _cameraController?.dispose();
     super.dispose();
   }
 
   void onNewCameraSelected(CameraDescription cameraDescription) async {
-    final previousCameraController = _controller;
+    final previousCameraController = _cameraController;
 
     final CameraController cameraController = CameraController(
       cameraDescription,
@@ -139,7 +141,7 @@ class _CameraScreenState extends State<CameraScreen>
     await previousCameraController?.dispose();
     if (mounted) {
       setState(() {
-        _controller = cameraController;
+        _cameraController = cameraController;
       });
     }
 
@@ -159,14 +161,14 @@ class _CameraScreenState extends State<CameraScreen>
             .then((value) => _maxAvailableExposureOffset = value),
       ]);
 
-      _currentFlashMode = _controller!.value.flashMode;
+      _currentFlashMode = _cameraController!.value.flashMode;
     } on CameraException catch (e) {
       print('Error initializing camera: $e');
     }
 
     if (mounted) {
       setState(() {
-        _isCameraInitialized = _controller!.value.isInitialized;
+        _isCameraInitialized = _cameraController!.value.isInitialized;
       });
     }
   }
@@ -461,10 +463,12 @@ class _CameraScreenState extends State<CameraScreen>
                     width: size.width,
                     child: ClipRRect(
                       child: AspectRatio(
-                        aspectRatio: 1 / _controller!.value.aspectRatio,
+                        aspectRatio: 1 / _cameraController!.value.aspectRatio,
                         child: Stack(
                           children: [
-                            _controller!.buildPreview(),
+                            !_isLiveStreaming
+                                ? _cameraController!.buildPreview()
+                                : Container(),
                             selectedButton == 0
                                 ? Positioned(
                                     left: 0,
@@ -552,8 +556,9 @@ class _CameraScreenState extends State<CameraScreen>
                                                 var randomId =
                                                     rand.nextInt(99999);
                                                 if (selectedButton == 2) {
-                                                  var result = await _controller
-                                                      ?.takePicture();
+                                                  var result =
+                                                      await _cameraController
+                                                          ?.takePicture();
                                                   setState(() {
                                                     _camButtonPressed = true;
                                                     _previewImage(result);
@@ -566,14 +571,15 @@ class _CameraScreenState extends State<CameraScreen>
                                                     });
                                                   }
 
-                                                  if (_controller == null ||
-                                                      !_controller!.value
+                                                  if (_cameraController ==
+                                                          null ||
+                                                      !_cameraController!.value
                                                           .isInitialized) {
                                                     print(
                                                         'error select camera first');
                                                   }
 
-                                                  if (_controller!
+                                                  if (_cameraController!
                                                       .value.isRecordingVideo) {
                                                     setState(() {
                                                       _isRecordingVideo = true;
@@ -581,7 +587,7 @@ class _CameraScreenState extends State<CameraScreen>
                                                   }
                                                   try {
                                                     if (!_isRecordingVideo) {
-                                                      await _controller!
+                                                      await _cameraController!
                                                           .startVideoRecording();
                                                       setState(() {
                                                         _isRecordingVideo =
@@ -591,7 +597,7 @@ class _CameraScreenState extends State<CameraScreen>
                                                       });
                                                     } else {
                                                       var result =
-                                                          await _controller!
+                                                          await _cameraController!
                                                               .stopVideoRecording()
                                                               .then(
                                                                   (file) async {
@@ -651,8 +657,9 @@ class _CameraScreenState extends State<CameraScreen>
                                                   if (rtcToken == 'failed') {
                                                     return;
                                                   }
-                                                  if (_controller == null ||
-                                                      !_controller!.value
+                                                  if (_cameraController ==
+                                                          null ||
+                                                      !_cameraController!.value
                                                           .isInitialized) {
                                                     //add code here to show the recording initiation failed
                                                     await Sentry.captureMessage(
@@ -672,7 +679,7 @@ class _CameraScreenState extends State<CameraScreen>
                                                     return;
                                                   }
 
-                                                  if (_controller!
+                                                  if (_cameraController!
                                                       .value.isRecordingVideo) {
                                                     setState(() {
                                                       _isLoadingStream = true;
@@ -894,8 +901,11 @@ class _CameraScreenState extends State<CameraScreen>
         paymentPerView: paymentValue,
         descretion: _isDescrete,
         sid: startRecording['sid']);
+    setState(() {
+      _isLiveStreaming = true;
+    });
+    await _cameraController?.dispose();
 
-    print('the stream rec: $streamRec');
     if (streamRec != null) {
       await Navigator.push(
         context,
@@ -1089,7 +1099,7 @@ class _CameraScreenState extends State<CameraScreen>
                     ),
                     TextButton(
                       onPressed: () async {
-                        await _controller!.pausePreview();
+                        await _cameraController!.pausePreview();
                         //await vController.dispose();
                         // await _controller!.dispose();
                         Navigator.pop(context);

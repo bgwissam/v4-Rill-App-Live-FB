@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:rillliveapp/controller/recording_controller.dart';
+import 'package:rillliveapp/main.dart';
 import 'package:rillliveapp/models/user_model.dart';
 import 'package:rillliveapp/screens/main_screen.dart';
 import 'package:rillliveapp/services/amplify_storage.dart';
@@ -111,6 +112,7 @@ class _LiveStreamingState extends State<LiveStreaming> {
   void dispose() {
     Wakelock.disable();
     _users.clear();
+    _channel?.leave();
     _engine.leaveChannel();
     _engine.destroy();
     super.dispose();
@@ -301,32 +303,32 @@ class _LiveStreamingState extends State<LiveStreaming> {
     }
   }
 
-  Future<void> _showMyStreamMessageDialog(
-      int uid, int streamId, String data) async {
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Received from $uid'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: [
-                  Text('Stream Id: $streamId: $data'),
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Ok'),
-              ),
-            ],
-          );
-        });
-  }
+  // Future<void> _showMyStreamMessageDialog(
+  //     int uid, int streamId, String data) async {
+  //   return showDialog(
+  //       context: context,
+  //       barrierDismissible: false,
+  //       builder: (BuildContext context) {
+  //         return AlertDialog(
+  //           title: Text('Received from $uid'),
+  //           content: SingleChildScrollView(
+  //             child: ListBody(
+  //               children: [
+  //                 Text('Stream Id: $streamId: $data'),
+  //               ],
+  //             ),
+  //           ),
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () {
+  //                 Navigator.pop(context);
+  //               },
+  //               child: Text('Ok'),
+  //             ),
+  //           ],
+  //         );
+  //       });
+  // }
 
   Future<List<Widget>> _futureRenderViews() async {
     return _getRenderViews();
@@ -1059,14 +1061,18 @@ class _LiveStreamingState extends State<LiveStreaming> {
         }
       };
       channel.onMemberLeft = (AgoraRtmMember member) async {
-        print('a member left: ${member.userId}');
+        print(
+            'a member left: ${member.userId} - userList: $_userList members: $_members');
         _toggleQuery();
         if (_userList.containsKey(member.userId) &&
             _members.contains(member.userId)) {
+          print('a member left id: $member - $_userList');
           if (mounted) {
             setState(() {
               _members.remove(member.userId);
               _userList.remove(member.userId);
+              print(
+                  'a member removed: userList $_userList - members: $_members');
               _log(
                   type: 'joined',
                   info: 'Left',
