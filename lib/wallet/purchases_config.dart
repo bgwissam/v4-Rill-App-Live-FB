@@ -43,6 +43,7 @@ class _PurchaseConfigState extends State<PurchaseConfig> {
 
   @override
   void initState() {
+    _setProductDetails();
     final Stream<List<PurchaseDetails>> purchaseUpdated =
         _inAppPurchase.purchaseStream;
     _subscription = purchaseUpdated.listen((purchaseDetailsList) {
@@ -54,39 +55,54 @@ class _PurchaseConfigState extends State<PurchaseConfig> {
     });
 
     initStoreInfo();
+    print('the products: $_products');
     super.initState();
   }
 
   _setProductDetails() async {
     _products = [
       ProductDetails(
-          id: 'coins100',
+          id: 'coins_20',
+          title: '20',
+          description: '20 Coins',
+          price: '2',
+          rawPrice: 2.0,
+          currencyCode: 'CAD'),
+      ProductDetails(
+          id: 'coins_100',
           title: '100',
-          description: 'Coins',
-          price: '5',
-          rawPrice: 5.0,
-          currencyCode: 'USD'),
+          description: '100 Coins',
+          price: '9.8',
+          rawPrice: 9.8,
+          currencyCode: 'CAD'),
       ProductDetails(
-          id: 'coins1000',
-          title: '1000',
-          description: 'Coins',
-          price: '10',
-          rawPrice: 10.0,
-          currencyCode: 'USD'),
-      ProductDetails(
-          id: 'coins10000',
-          title: '10000',
-          description: 'Coins',
-          price: '15',
-          rawPrice: 15.0,
-          currencyCode: 'USD'),
-      ProductDetails(
-          id: 'coins50000',
-          title: '50000',
-          description: 'Coins',
+          id: 'coins_200',
+          title: '200',
+          description: '200 Coins',
           price: '20',
           rawPrice: 20.0,
-          currencyCode: 'USD'),
+          currencyCode: 'CAD'),
+      ProductDetails(
+          id: 'coins_500',
+          title: '500',
+          description: '500 Coins',
+          price: '50',
+          rawPrice: 50.0,
+          currencyCode: 'CAD'),
+      ProductDetails(
+          id: 'coins_1000',
+          title: '1000',
+          description: '1000 Coins',
+          price: '100',
+          rawPrice: 100.0,
+          currencyCode: 'CAD'),
+      ProductDetails(
+          id: 'coins_2000',
+          title: '2000',
+          description: '2000 Coins',
+          price: '200',
+          rawPrice: 200.0,
+          currencyCode: 'CAD'),
     ];
   }
 
