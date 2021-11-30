@@ -15,6 +15,7 @@ import 'package:rillliveapp/amplifyconfiguration.dart';
 import 'package:rillliveapp/push/push_notification.dart';
 import 'package:rillliveapp/screens/notification_screen.dart';
 import 'package:rillliveapp/services/auth.dart';
+import 'package:rillliveapp/services/purchase_logic.dart';
 import 'package:rillliveapp/shared/color_styles.dart';
 import 'package:rillliveapp/shared/error_screen.dart';
 import 'package:rillliveapp/shared/loading_animation.dart';
@@ -94,6 +95,10 @@ class MyApp extends StatelessWidget {
                     return null;
                   },
                 ),
+                ChangeNotifierProvider<PurchaseLogic>(
+                  create: (context) => PurchaseLogic(),
+                  lazy: false,
+                )
               ],
               child: MaterialApp(
                 navigatorObservers: [

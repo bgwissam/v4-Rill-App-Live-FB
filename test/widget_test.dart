@@ -7,11 +7,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_platform_interface/src/in_app_purchase_platform_addition.dart';
 
 import 'package:rillliveapp/main.dart';
+import 'package:rillliveapp/services/purchase_logic.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    IAPConnection.instance = TestIAPConnection();
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
 
@@ -27,4 +31,53 @@ void main() {
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });
+}
+
+class TestIAPConnection implements InAppPurchase {
+  @override
+  Future<bool> buyConsumable(
+      {required PurchaseParam purchaseParam, bool autoConsume = true}) {
+    return Future.value(false);
+  }
+
+  @override
+  Future<bool> buyNonConsumable({required PurchaseParam purchaseParam}) {
+    return Future.value(false);
+  }
+
+  @override
+  Future<void> completePurchase(PurchaseDetails purchase) {
+    return Future.value();
+  }
+
+  @override
+  T getPlatformAddition<T extends InAppPurchasePlatformAddition?>() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> isAvailable() {
+    return Future.value(false);
+  }
+
+  @override
+  // TODO: implement purchaseStream
+  Stream<List<PurchaseDetails>> get purchaseStream =>
+      Stream.value(<PurchaseDetails>[]);
+
+  @override
+  Future<ProductDetailsResponse> queryProductDetails(Set<String> identifiers) {
+    return Future.value(
+      ProductDetailsResponse(
+        productDetails: [],
+        notFoundIDs: [],
+      ),
+    );
+  }
+
+  @override
+  Future<void> restorePurchases({String? applicationUserName}) {
+    // TODO: implement restorePurchases
+    throw UnimplementedError();
+  }
 }
