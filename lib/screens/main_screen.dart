@@ -538,6 +538,8 @@ class _MainScreenState extends State<MainScreen>
                             userId:
                                 streamingProvider[index]!.userId.toString()),
                         builder: (context, AsyncSnapshot snapshot) {
+                          print(
+                              'the joining: ${streamingProvider[index]!.allowJoining.runtimeType}');
                           if (snapshot.hasData) {
                             return GestureDetector(
                               onTap: () async {
@@ -707,14 +709,15 @@ class _MainScreenState extends State<MainScreen>
   Future<String> _getRtmToken(String channelName) async {
     var rtmResult = await rtmTokenGenerator.createMessagingToken(
         channelName: channelName, userAccount: widget.userId!, role: '2');
-    print('what happened here');
     rtmToken = rtmResult['token'];
     return rtmToken;
   }
 
   //Get streamer details
   Future<UserModel> getStreamerDetails({String? userId}) async {
-    var result = await db.getUserByUserId(userId: userId);
+    var result = await db.getUserByUserId(userId: userId).catchError((err) {
+      print('an error occured: $err');
+    });
 
     return result;
   }

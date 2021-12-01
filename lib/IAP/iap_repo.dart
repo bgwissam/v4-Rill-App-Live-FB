@@ -20,14 +20,14 @@ class IAPRepo extends ChangeNotifier {
   late StreamSubscription<User?> _userSubscription;
   StreamSubscription<QuerySnapshot>? _purchaseSubscription;
 
-  IAPRepo(FirebaseNotifier firebaseNotifier) {
-    firebaseNotifier.firestore.then((val) {
-      _auth = FirebaseAuth.instance;
-      _firestore = val;
-      updatePurchases();
-      listenToLogin();
-    });
-  }
+  // IAPRepo(FirebaseNotifier firebaseNotifier) {
+  //   firebaseNotifier.firestore.then((val) {
+  //     _auth = FirebaseAuth.instance;
+  //     _firestore = val;
+  //     updatePurchases();
+  //     listenToLogin();
+  //   });
+  // }
 
   void listenToLogin() {
     _user = _auth.currentUser;
