@@ -49,70 +49,72 @@ class _WalletViewState extends State<WalletView> {
         backgroundColor: Colors.transparent,
         body: Padding(
           padding: const EdgeInsets.only(left: 10, top: 45),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //Top text wallet
-              Text(
-                'Wallet',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              //current balance view
-              Container(
-                height: 75,
-                margin: EdgeInsets.only(top: 10, bottom: 15),
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(10)),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: ImageIcon(
-                          AssetImage('assets/icons/money_rill_icon.png'),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${currentBalance ?? 0}',
-                              style: textStyle_3,
-                            ),
-                            Text('Rill Coins', style: textStyle_15)
-                          ]),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Container(
-                        padding: EdgeInsets.all(5),
-                        margin: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Text(
-                          'Rill Coint lets you unlock the features made for you to enjoy on the App',
-                          style: textStyle_9,
-                        ),
-                      ),
-                    )
-                  ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //Top text wallet
+                Text(
+                  'Wallet',
+                  style: Theme.of(context).textTheme.headline6,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: storeWidget,
-              ),
-            ],
+                //current balance view
+                Container(
+                  height: 75,
+                  margin: EdgeInsets.only(top: 10, bottom: 15),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: ImageIcon(
+                            AssetImage('assets/icons/money_rill_icon.png'),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${currentBalance ?? 0}',
+                                style: textStyle_3,
+                              ),
+                              Text('Rill Coins', style: textStyle_15)
+                            ]),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          margin: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Text(
+                            'Rill Coint lets you unlock the features made for you to enjoy on the App',
+                            style: textStyle_9,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: storeWidget,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -133,7 +135,7 @@ class _PurchasesAvailable extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     var purchases = context.watch<PurchaseLogic>();
     var products = purchases.products;
-
+    print('purchases available: $products');
     return SizedBox(
       height: size.height,
       child: Padding(

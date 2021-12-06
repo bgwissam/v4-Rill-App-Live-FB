@@ -374,7 +374,6 @@ class _MainScreenState extends State<MainScreen>
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         var notification = message.notification;
         var androidNotification = message.notification!.android;
-        print('Notification: ${notification?.title} - ${notification?.body}');
         if (notification!.title != null) {
           flutterLocalNotificationsPlugin!.show(
             notification.hashCode,
@@ -1451,8 +1450,6 @@ class _MainScreenState extends State<MainScreen>
             childAspectRatio: 0.7),
         itemCount: endedStreamModels.length,
         itemBuilder: (context, index) {
-          print('stream url: ${endedStreamModels[index]!.streamUrl!}');
-
           if (endedStreamModels[index]!.streamUrl != null) {
             _videoPlayerController = VideoPlayerController.network(
               endedStreamModels[index]!.streamUrl!,
